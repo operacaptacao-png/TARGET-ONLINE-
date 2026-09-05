@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D | The Unit 2 Challenge</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #1A1A1A; --white: #FFFFFF; --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-main: #E67E22;
+            --font-title: 'Montserrat', sans-serif; --font-text: 'Roboto', sans-serif;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body { font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px 120px 15px; display: flex; justify-content: center; background: linear-gradient(135deg, #e67e22 0%, #d35400 50%, #c0392b 100%); background-attachment: fixed; }
+        .book-page { background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh; box-shadow: 0 25px 60px rgba(0,0,0,0.4); border-radius: 24px; padding: 50px; position: relative; z-index: 1; box-sizing: border-box; margin: 0 auto;}
+        .lesson-banner { width: 100%; height: 220px; background: linear-gradient(rgba(211, 84, 0, 0.7), rgba(192, 57, 43, 0.8)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        .lesson-banner h1 { color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4); text-align: center; }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; box-sizing: border-box;}
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .story-transition-box { background: #fffcf2; border-left: 5px solid #eab308; padding: 20px; border-radius: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 16px; line-height: 1.8; color: #854d0e; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; text-transform: uppercase;}
+        
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; background: white; padding: 25px; border-radius: 12px; border: 2px dashed #ccc; min-height: 60px; }
+        .draggable-word { background: #333; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: grab; user-select: none; transition: 0.2s; display: inline-block; }
+        .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media(max-width: 768px){ .category-grid { grid-template-columns: 1fr; } }
+        .category-box { background: white; padding: 20px; border-radius: 16px; border: 2px dashed var(--theme-purple-border); text-align: center; min-height: 150px; display: flex; flex-direction: column; }
+        .category-title { font-weight: bold; color: var(--theme-purple-border); margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .drop-zone { flex: 1; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; justify-content: center; }
+
+        .quiz-question { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
+        .quiz-question p { margin-top: 0; font-weight: bold; font-size: 16px; }
+        .quiz-options label { display: block; margin-bottom: 10px; cursor: pointer; padding: 10px; border-radius: 8px; background: #f8fafc; transition: 0.2s; }
+        .quiz-options label:hover { background: #e2e8f0; }
+
+        .btn-finish { background: var(--orange-main); color: white; border: none; padding: 18px 40px; font-family: var(--font-title); font-weight: 800; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 20px; }
+        .btn-finish:hover { background: #d35400; transform: scale(1.02); }
+        .btn-finish:disabled { background: #71717a; cursor: not-allowed; transform: none; }
+
+        .report-wrapper { display: none; margin-top: 30px; animation: popIn 0.5s ease; }
+        @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .detailed-report-card { background: white; border-radius: 20px; padding: 30px; border: 3px solid #d35400; box-shadow: 0 15px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; margin-bottom: 25px;}
+        .detailed-report-card::before { content: '★'; position: absolute; top: 10px; right: 20px; font-size: 60px; color: #e2e8f0; opacity: 0.5; }
+        
+        .rc-header { text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-bottom: 20px; }
+        .rc-header h2 { color: #d35400; font-size: 28px; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .rc-scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        @media(max-width: 600px) { .rc-scores-grid { grid-template-columns: 1fr; } }
+        .rc-score-item { background: #f8fafc; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
+        .rc-score-item.mastered { border-left: 5px solid #22c55e; }
+        .rc-score-item.review { border-left: 5px solid #f59e0b; }
+        .rc-score-item span { font-weight: bold; color: #334155; }
+        .rc-score-item .status { font-size: 12px; text-transform: uppercase; font-weight: bold; margin-right: 10px;}
+        .rc-score-item.mastered .status { color: #22c55e; }
+        .rc-score-item.review .status { color: #f59e0b; }
+        
+        .rc-productions { margin-top: 20px; }
+        .rc-productions h3 { color: var(--orange-main); font-size: 18px; border-bottom: 2px solid var(--orange-main); padding-bottom: 5px; margin-bottom: 15px; }
+        .production-box { background: #fffbeb; border: 1px dashed #fcd34d; padding: 15px; border-radius: 8px; margin-bottom: 15px; font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #451a03; line-height: 1.6; white-space: pre-wrap;}
+        .production-title { font-family: var(--font-text); font-weight: bold; color: #92400e; font-size: 12px; text-transform: uppercase; margin-bottom: 5px; }
+
+        .rc-total { background: #eff6ff; border: 2px solid #ea580c; padding: 20px; border-radius: 12px; text-align: center; margin-top: 20px; }
+        .rc-total span { display: block; color: #9a3412; font-weight: bold; font-size: 16px; margin-bottom: 5px; text-transform: uppercase; }
+        .rc-total strong { color: #ea580c; font-size: 40px; font-family: var(--font-title); font-weight: 900; }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>2D | The Unit 2 Challenge</h1>
+        </div>
+
+        <div id="sec-1" class="activity-section theme-purple active">
+            <h2>Game 1: Food & Dining Sorter</h2>
+            <p class="instruction">Drag each word to the place or category it belongs to.</p>
+            
+            <div id="word-pool" class="word-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
+                <div class="draggable-word" id="w1" draggable="true" ondragstart="drag(event)" data-cat="restaurant">Tomato Soup</div>
+                <div class="draggable-word" id="w2" draggable="true" ondragstart="drag(event)" data-cat="fastfood">Burger & Fries</div>
+                <div class="draggable-word" id="w3" draggable="true" ondragstart="drag(event)" data-cat="grocery">Kilo of Rice</div>
+                <div class="draggable-word" id="w4" draggable="true" ondragstart="drag(event)" data-cat="restaurant">The Bill, please</div>
+                <div class="draggable-word" id="w5" draggable="true" ondragstart="drag(event)" data-cat="fastfood">Street Food Van</div>
+                <div class="draggable-word" id="w6" draggable="true" ondragstart="drag(event)" data-cat="grocery">Liter of Oil</div>
+                <div class="draggable-word" id="w7" draggable="true" ondragstart="drag(event)" data-cat="restaurant">Table for one</div>
+                <div class="draggable-word" id="w8" draggable="true" ondragstart="drag(event)" data-cat="fastfood">Large Soda</div>
+                <div class="draggable-word" id="w9" draggable="true" ondragstart="drag(event)" data-cat="grocery">Cartons of Milk</div>
+            </div>
+
+            <div class="category-grid">
+                <div class="category-box">
+                    <div class="category-title">🍽️ Sit-Down Restaurant</div>
+                    <div class="drop-zone eval-drop" id="dz-restaurant" data-cat="restaurant" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+                <div class="category-box">
+                    <div class="category-title">🍔 Fast Food & Van</div>
+                    <div class="drop-zone eval-drop" id="dz-fastfood" data-cat="fastfood" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+                <div class="category-box">
+                    <div class="category-title">🛒 Grocery Store</div>
+                    <div class="drop-zone eval-drop" id="dz-grocery" data-cat="grocery" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Unit Quiz ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-2" class="activity-section theme-green">
+            <h2>Game 2: Unit 2 Master Quiz</h2>
+            <p class="instruction">Choose the correct answer for each situation.</p>
+
+            <div class="quiz-question" data-ans="A">
+                <p>1. In a restaurant, how do you politely ask for the final check?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="A"> "Can I have the bill, please?"</label>
+                    <label><input type="radio" name="q1" value="B"> "Give me the invoice now!"</label>
+                    <label><input type="radio" name="q1" value="C"> "Where is my money?"</label>
+                </div>
+            </div>
+
+            <div class="quiz-question" data-ans="B">
+                <p>2. What is the standard polite phrase to express what you want to eat?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="A"> "I demand..."</label>
+                    <label><input type="radio" name="q2" value="B"> "I'd like..."</label>
+                    <label><input type="radio" name="q2" value="C"> "I am taking..."</label>
+                </div>
+            </div>
+
+            <div class="quiz-question" data-ans="C">
+                <p>3. At the grocery store, how do you ask for cooking oil?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="A"> "I'd like a slice of oil."</label>
+                    <label><input type="radio" name="q3" value="B"> "I'd like a kilo of oil."</label>
+                    <label><input type="radio" name="q3" value="C"> "I'd like a liter of oil."</label>
+                </div>
+            </div>
+
+            <div class="quiz-question" data-ans="A">
+                <p>4. When paying the waiter and leaving a tip, what do you say?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q4" value="A"> "Keep the change."</label>
+                    <label><input type="radio" name="q4" value="B"> "No change for you."</label>
+                    <label><input type="radio" name="q4" value="C"> "Here is my coin."</label>
+                </div>
+            </div>
+
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Ivete aproveitou ao máximo as delícias de Londres! Agora que a comida e os mantimentos estão resolvidos, ela percebe que as roupas trazidas do Brasil não combinam com a garoa fria de Londres. É hora de visitar uma loja de roupas (Unit 3 - At the clothes shop)!
+            </div>
+
+            <button id="btn-submit" class="btn-finish" onclick="generatePedagogicalReport()">🏁 Complete Unit 2 & View Detailed Report</button>
+
+            <div id="report-wrapper" class="report-wrapper">
+                <div class="detailed-report-card" id="report-card-print">
+                    <div class="rc-header">
+                        <h2>Target On • Unit 2 Pedagogical Report</h2>
+                        <p style="margin: 5px 0 0 0; color: #64748b; font-weight: bold;">Student Performance & Production Evaluation</p>
+                    </div>
+
+                    <div class="rc-scores-grid">
+                        <div class="rc-score-item" id="status-2a">
+                            <div>
+                                <span>2A - Having Dinner:</span>
+                                <div class="status" id="lbl-2a">Mastered</div>
+                            </div>
+                            <strong id="rc-2a">0%</strong>
+                        </div>
+
+                        <div class="rc-score-item" id="status-2b">
+                            <div>
+                                <span>2B - Fast Food:</span>
+                                <div class="status" id="lbl-2b">Mastered</div>
+                            </div>
+                            <strong id="rc-2b">0%</strong>
+                        </div>
+
+                        <div class="rc-score-item" id="status-2c">
+                            <div>
+                                <span>2C - Grocery Store:</span>
+                                <div class="status" id="lbl-2c">Mastered</div>
+                            </div>
+                            <strong id="rc-2c">0%</strong>
+                        </div>
+
+                        <div class="rc-score-item" id="status-2d">
+                            <div>
+                                <span>2D - Unit Challenge:</span>
+                                <div class="status" id="lbl-2d">Mastered</div>
+                            </div>
+                            <strong id="rc-2d">0%</strong>
+                        </div>
+                    </div>
+
+                    <div class="rc-productions">
+                        <h3>Student's Autonomous Written Productions:</h3>
+                        
+                        <div class="production-title">Lesson 2A • Restaurant Order Ticket / Comic Strip:</div>
+                        <div class="production-box" id="prod-2a">No data recorded.</div>
+
+                        <div class="production-title">Lesson 2B • Fast Food Dialogue Order:</div>
+                        <div class="production-box" id="prod-2b">No data recorded.</div>
+
+                        <div class="production-title">Lesson 2C • Grocery Shopping List / Script:</div>
+                        <div class="production-box" id="prod-2c">No data recorded.</div>
+                    </div>
+
+                    <div class="rc-total">
+                        <span>Overall Unit 2 Mastery:</span>
+                        <strong id="rc-avg">0%</strong>
+                    </div>
+                </div>
+
+                <div style="display: none;" id="report-score-summary"></div>
+                <div style="display: none;" id="report-productions-summary"></div>
+
+                <button class="btn-finish" id="cloud-btn" onclick="saveToCloudAndNext(2, 'transicao_2_para_3.html')">☁️ Save Progress to Cloud & Unlock Unit 3 ➔</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if(!target.classList.contains('drop-zone')) target = target.closest('.drop-zone');
+            if(target) target.appendChild(draggedEl);
+        }
+        function dropBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('word-pool').appendChild(document.getElementById(data));
+        }
+
+        function generatePedagogicalReport() {
+            let sorterScore = 0;
+            let totalWords = 9;
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                let targetCat = zone.getAttribute('data-cat');
+                Array.from(zone.children).forEach(word => {
+                    if(word.getAttribute('data-cat') === targetCat) sorterScore++;
+                });
+            });
+
+            let quizScore = 0;
+            let totalQuestions = 4;
+            document.querySelectorAll('.quiz-question').forEach(q => {
+                let expected = q.getAttribute('data-ans');
+                let selected = q.querySelector('input[type="radio"]:checked');
+                if(selected && selected.value === expected) quizScore++;
+            });
+
+            let xp2D = Math.round(((sorterScore / totalWords) * 50) + ((quizScore / totalQuestions) * 50));
+            
+            let xp2A = parseInt(localStorage.getItem('licao_2a_xp')) || 85;
+            let xp2B = parseInt(localStorage.getItem('licao_2b_xp')) || 90;
+            let xp2C = parseInt(localStorage.getItem('licao_2c_xp')) || 85;
+            let avgXP = Math.round((xp2A + xp2B + xp2C + xp2D) / 4);
+
+            let resp2A = JSON.parse(localStorage.getItem('licao2a_respostas') || '{}');
+            let resp2B = JSON.parse(localStorage.getItem('licao2b_respostas') || '{}');
+            let resp2C = JSON.parse(localStorage.getItem('licao2c_respostas') || '{}');
+
+            let txt2A = resp2A.comanda || "Customer order ticket recorded.";
+            let txt2B = resp2B.dialogue || "Fast food order dialogue recorded.";
+            let txt2C = "Shopping list items: Rice (5kg), Cheese (0.5kg), Oil (3L), Milk (1L).";
+
+            document.getElementById('prod-2a').innerText = txt2A;
+            document.getElementById('prod-2b').innerText = txt2B;
+            document.getElementById('prod-2c').innerText = txt2C;
+
+            updateScoreUI('2a', xp2A);
+            updateScoreUI('2b', xp2B);
+            updateScoreUI('2c', xp2C);
+            updateScoreUI('2d', xp2D);
+            document.getElementById('rc-avg').innerText = avgXP + "%";
+
+            document.getElementById('report-score-summary').innerText = `2A: ${xp2A}% | 2B: ${xp2B}% | 2C: ${xp2C}% | 2D: ${xp2D}% - AVG: ${avgXP}%`;
+            document.getElementById('report-productions-summary').innerText = JSON.stringify({ "2A_Order": txt2A, "2B_Dialogue": txt2B, "2C_List": txt2C });
+
+            document.getElementById('btn-submit').style.display = 'none';
+            document.getElementById('report-wrapper').style.display = 'block';
+            setTimeout(() => { document.getElementById('report-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function updateScoreUI(lesson, score) {
+            document.getElementById('rc-' + lesson).innerText = score + "%";
+            let box = document.getElementById('status-' + lesson);
+            let lbl = document.getElementById('lbl-' + lesson);
+            if(score >= 70) {
+                box.classList.add('mastered'); box.classList.remove('review'); lbl.innerText = "Mastered";
+            } else {
+                box.classList.add('review'); box.classList.remove('mastered'); lbl.innerText = "Needs Review";
+            }
+        }
+
+        function saveToCloudAndNext(unitNum, nextUrl) {
+            let playerName = localStorage.getItem('userName') || "Student";
+            let userCode = localStorage.getItem('userCode') || "NO-CODE";
+            
+            const payload = {
+                action: "save_report",
+                name: playerName,
+                turma: userCode,
+                lesson: `Unit ${unitNum} Pedagogical Report`,
+                scoreText: document.getElementById('report-score-summary').innerText,
+                postcardText: document.getElementById('report-productions-summary').innerText,
+                imageBase64: null, imageMimeType: null, imageName: null
+            };
+
+            let btn = document.getElementById('cloud-btn');
+            btn.innerText = "Saving to Cloud ☁️...";
+            btn.disabled = true;
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                advanceToNext(nextUrl);
+            }).catch(() => {
+                advanceToNext(nextUrl);
+            });
+        }
+
+        function advanceToNext(nextUrl) {
+            let avgXP = parseInt(document.getElementById('rc-avg').innerText.replace('%','')) || 85;
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(2, avgXP);
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara(nextUrl, 'link-3a');
+                    return;
+                }
+            }
+            window.location.href = nextUrl;
+        }
+    </script>
+</body>
+</html>

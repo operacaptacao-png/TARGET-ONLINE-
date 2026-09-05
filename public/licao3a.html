@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3A | At the Clothes Shop</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a; 
+            --blue-medium: #1e3a8a; 
+            --blue-light: #3b82f6; 
+            --accent-main: #3b82f6; 
+            --accent-dark: #2563eb;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #f5f3ff; --theme-purple-border: #6366f1;
+            --theme-red-bg: #f8fafc; --theme-red-border: #475569; 
+            --theme-green-bg: #f0fdfa; --theme-green-border: #0d9488;
+            --theme-orange-bg: #f0f9ff; --theme-orange-border: #0284c7; 
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #f1f5f9; --theme-yellow-border: #334155;
+        }
+
+        body {
+            font-family: var(--font-text); 
+            color: var(--black); 
+            margin: 0; 
+            padding: 40px 15px 120px 15px; 
+            display: flex; 
+            justify-content: center; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #334155 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white); 
+            width: 100%; 
+            max-width: 900px; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); 
+            border-radius: 24px; 
+            padding: 50px; 
+            position: relative; 
+            z-index: 1;
+            margin: 0 auto;
+        }
+
+        .lesson-banner {
+            width: 100%; height: 220px;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 40px;
+        }
+
+        .lesson-banner h1 {
+            color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; color: var(--blue-dark); }
+        p.instruction { color: #475569; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: var(--theme-yellow-border); border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .text-input { width: 100%; border: none; border-bottom: 2px solid #ccc; background: transparent; font-family: var(--font-text); font-size: 16px; padding: 10px 5px; outline: none; transition: 0.3s; color: var(--black); font-weight: 500; margin-bottom: 15px; box-sizing: border-box; }
+        .text-input:focus { border-color: var(--accent-main); }
+        
+        .audio-wrapper { display: flex; justify-content: center; width: 100%; }
+        .audio-player { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; font-weight: 600; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .play-btn { background: var(--accent-main); border: none; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 800; font-family: var(--font-title); font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .play-btn:hover { background: var(--accent-dark); transform: scale(1.05); }
+        .speed-btn { background: #e2e8f0; border: 1px solid #cbd5e1; color: #1e293b; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        .illustrative-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; opacity: 0.85; border: 3px solid #e2e8f0; }
+
+        /* ==== 0. WARM UP ==== */
+        .warmup-box { background: white; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid var(--theme-blue-border); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .wu-options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .wu-btn { background: #f8fafc; border: 2px solid #cbd5e1; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: left; color: #334155; }
+        .wu-btn:hover { background: #e0e7ff; border-color: var(--accent-main); }
+        .wu-btn.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
+        .wu-btn.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .btn-checkin { display: none; background: var(--accent-main); color: white; border: none; padding: 15px 40px; font-family: var(--font-title); font-weight: 800; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin: 20px auto 0 auto; box-shadow: 0 5px 15px rgba(59,130,246,0.4); }
+        .btn-checkin:hover { background: var(--accent-dark); transform: scale(1.05); }
+
+        /* ==== 1. PINCEL SELETOR DE CORES ==== */
+        .color-chart { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; background: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 2px dashed #cbd5e1; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .color-drop { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; width: 60px; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .color-drop:hover { opacity: 1; transform: scale(1.1); }
+        .drop-shape { width: 35px; height: 35px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: inset -3px -3px 8px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.8); }
+        
+        .color-blue { background: #3b82f6; } .color-black { background: #0f172a; } .color-green { background: #22c55e; }
+        .color-grey { background: #94a3b8; } .color-purple { background: #a855f7; } .color-brown { background: #78350f; }
+        .color-white { background: #ffffff; } .color-orange { background: #f97316; } .color-red { background: #ef4444; }
+        .color-pink { background: #ec4899; } .color-yellow { background: #eab308; }
+
+        .clothing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media(max-width: 768px) { .clothing-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width: 480px) { .clothing-grid { grid-template-columns: 1fr; } }
+        
+        .cloth-card { display: flex; flex-direction: column; align-items: center; gap: 10px; background: #fdf2f8; padding: 15px; border-radius: 16px; border: 1px solid #fbcfe8; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .cloth-target-name { font-size: 13px; font-weight: bold; color: var(--theme-purple-border); text-transform: uppercase; background: #ffffff; padding: 5px 12px; border-radius: 6px; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .cloth-img-box { width: 90px; height: 90px; border-radius: 8px; display: flex; justify-content: center; align-items: center; background: transparent; }
+        
+        .cloth-mask {
+            width: 100%; height: 100%;
+            background-color: #cbd5e1; 
+            -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center;
+            mask-size: contain; mask-repeat: no-repeat; mask-position: center;
+            transition: background-color 0.3s ease; cursor: crosshair;
+        }
+        .cloth-mask:hover { filter: brightness(0.9); }
+        .cloth-input { width: 100%; border: none; border-bottom: 2px solid #ccc; font-size: 14px; padding: 5px; outline: none; font-weight: bold; text-align: center; color: var(--theme-purple-border); background: transparent; }
+        .cloth-input:focus { border-color: var(--theme-purple-border); }
+
+        /* ==== 2. TARGET SITUATION (T/F) ==== */
+        .tf-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px dashed #cbd5e1; font-size: 15px; font-weight: 500; background: white; border-radius: 8px; margin-bottom: 8px; }
+        .tf-btns { display: flex; gap: 5px; }
+        .tf-btn { padding: 6px 15px; border: 1px solid #ccc; background: #f8fafc; cursor: pointer; border-radius: 50px; font-weight: bold; color: #334155; transition: 0.2s; }
+        .tf-btn.selected-t { background: #22c55e; color: white; border-color: #22c55e; }
+        .tf-btn.selected-f { background: #ef4444; color: white; border-color: #ef4444; }
+
+        /* ==== 3. LANGUAGE GUIDE ==== */
+        .lg-box { background: white; padding: 25px; border-radius: 16px; border-left: 5px solid var(--theme-green-border); margin-bottom: 30px; font-size: 15px; line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .lg-box strong { color: var(--theme-green-border); }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: #f8fafc; padding: 20px; border-radius: 12px; border: 2px dashed var(--theme-green-border); margin-bottom: 20px; }
+        .drag-word { background: var(--theme-green-border); color: white; padding: 6px 15px; border-radius: 6px; font-weight: bold; cursor: grab; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); white-space: nowrap; line-height: 1.5; margin: 0; }
+        .inline-drop { display: inline-flex; align-items: center; justify-content: center; min-width: 130px; height: 35px; border-bottom: 2px dashed #94a3b8; vertical-align: middle; margin: 0 5px; background: #f1f5f9; border-radius: 4px 4px 0 0; transition: 0.2s; box-sizing: border-box; }
+        .inline-drop.drag-over { background: #dcfce7; border-color: #22c55e; }
+        .dialogue-text { background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; line-height: 3.2; font-size: 16px; }
+
+        /* ==== 4. UP TO YOU ==== */
+        .bubble-guide-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .speech-bubble { background: #e0f2fe; color: #0369a1; padding: 15px 20px; border-radius: 20px 20px 20px 0; font-weight: bold; font-size: 14px; border: 2px solid #bae6fd; position: relative; }
+        .speech-bubble.assistant { background: #fefce8; color: #a16207; border-color: #fef08a; border-radius: 20px 20px 0 20px; }
+        .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 600px) { .checklist-grid { grid-template-columns: 1fr; } }
+        .checklist-box { background: white; padding: 25px; border-radius: 16px; border-top: 5px solid var(--theme-orange-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .checklist-item { margin-bottom: 15px; font-weight: 500; font-size: 16px; border-bottom: 1px dashed #eee; padding-bottom: 10px;}
+        .checklist-item input[type="text"] { border: none; border-bottom: 2px solid #ccc; width: 140px; outline: none; text-align: center; font-family: var(--font-text); font-size: 15px; color: var(--theme-orange-border); font-weight: bold; background: transparent; }
+        .checklist-item input[type="text"]:focus { border-color: var(--theme-orange-border); }
+
+        /* ==== 5. HOMEWORK ==== */
+        .reading-text { background: #fffcf2; padding: 25px; border-radius: 12px; border: 1px solid #fde047; font-size: 15px; line-height: 1.8; margin-bottom: 30px; }
+        .reading-text b { color: #854d0e; }
+        .comp-question { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+        .comp-question p { margin: 0 0 10px 0; font-weight: bold; color: var(--blue-dark); }
+
+        /* ==== 6. LANGUAGE AT WORK ==== */
+        .error-card { background: white; padding: 20px; border-radius: 12px; border-left: 4px solid var(--theme-yellow-border); margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .wrong-sentence { color: #ef4444; font-weight: bold; margin-bottom: 10px; font-size: 15px; }
+
+        /* ==== 7. NOW IT'S YOUR TURN ==== */
+        .situation-box { background: white; padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .sit-title { background: var(--blue-dark); color: white; padding: 8px 15px; border-radius: 8px; display: inline-block; font-weight: bold; margin-bottom: 15px; }
+        .sit-role { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid var(--theme-blue-border); }
+        
+        .dialogue-textarea { width: 100%; height: 300px; padding: 20px; border-radius: 12px; border: 2px solid var(--theme-blue-border); font-family: var(--font-text); font-size: 16px; margin-bottom: 20px; box-sizing: border-box; resize: vertical; line-height: 1.6; }
+
+        .btn-finish-wrapper { display: flex; justify-content: center; width: 100%; flex-wrap: wrap; gap: 15px; margin-top: 20px;}
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; margin: 10px auto 0 auto; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%; text-align: center;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+        .btn-finish:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* ==== BOTÃO FLUTUANTE DE GRAMÁTICA ==== */
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+        .grammar-floating-btn { background: var(--theme-green-border); color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(13, 148, 136, 0.4); transition: 0.3s; }
+        .grammar-floating-btn:hover { background: #0f766e; transform: translateY(-5px); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 340px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 2px solid var(--theme-green-border); transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.5; pointer-events: none; }
+        .grammar-box::after { content: ""; position: absolute; top: 100%; right: 40px; margin-left: -10px; border-width: 10px; border-style: solid; border-color: var(--theme-green-border) transparent transparent transparent; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        @media (max-width: 500px) { .grammar-floating-btn { padding: 15px; font-size: 0; } .grammar-box { width: 280px; right: -10px; } .grammar-box::after { right: 25px; } }
+
+        /* MODAL DE RESULTADO */
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
+        .modal-content h2 { color: #f97316; font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>3A | At the Clothes Shop<br><span style="font-size: 20px; font-weight: 500; text-transform: none; letter-spacing: 1px;">Shopping for clothes</span></h1>
+        </div>
+
+        <!-- ================= SEC 0: WARM UP ================= -->
+        <div id="sec-0" class="activity-section theme-blue active">
+            <h2>Warm Up</h2>
+            
+            <img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?auto=format&fit=crop&w=1350&q=80" alt="Clothes rack" class="illustrative-img">
+
+            <div class="warmup-box">
+                <h3 style="color: var(--blue-dark); margin-top:0;">WHAT CAN YOU SEE IN THE PICTURE?</h3>
+                <div class="wu-options" id="wu-options">
+                    <button class="wu-btn" onclick="checkWarmup(this, false)">a) A Hotel. Ivete is in a hotel.</button>
+                    <button class="wu-btn" onclick="checkWarmup(this, true)">b) Clothes shop. Ivete is shopping for clothes.</button>
+                    <button class="wu-btn" onclick="checkWarmup(this, false)">c) An airport. Ivete is going back home.</button>
+                </div>
+                <button id="btn-open-door" class="btn-checkin" onclick="navigateSection('sec-0', 'sec-1')">Open Shop Door ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 1: WORDS AND IDEAS (PINCEL) ================= -->
+        <div id="sec-1" class="activity-section theme-purple">
+            <h2>Words and Ideas</h2>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-purple-border);">
+                    <audio id="audio-1" src="https://files.catbox.moe/z1uc6q.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-1" style="background: var(--theme-purple-border);" onclick="toggleAudio('audio-1', 'btn-audio-1', 'var(--theme-purple-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-1" onclick="changeSpeed('audio-1', 'spd-audio-1')">⚡ 1.0x</button>
+                    <span>Words and Ideas Audio</span>
+                </div>
+            </div>
+
+            <p class="instruction">Color Chart: Click on a color to pick up your brush!</p>
+            <div class="color-chart">
+                <div class="color-drop" onclick="selecionarCor(this, '#3b82f6')"><div class="drop-shape color-blue"></div>Blue</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#0f172a')"><div class="drop-shape color-black"></div>Black</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#22c55e')"><div class="drop-shape color-green"></div>Green</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#94a3b8')"><div class="drop-shape color-grey"></div>Grey</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#a855f7')"><div class="drop-shape color-purple"></div>Purple</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#78350f')"><div class="drop-shape color-brown"></div>Brown</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#ffffff')"><div class="drop-shape color-white"></div>White</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#f97316')"><div class="drop-shape color-orange"></div>Orange</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#ef4444')"><div class="drop-shape color-red"></div>Red</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#ec4899')"><div class="drop-shape color-pink"></div>Pink</div>
+                <div class="color-drop" onclick="selecionarCor(this, '#eab308')"><div class="drop-shape color-yellow"></div>Yellow</div>
+            </div>
+
+            <p class="instruction">Paint the clothes! Click on the items below to color them, then write the item name and color.</p>
+            
+            <div class="clothing-grid" id="painting-area">
+                
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Black Hat</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/fbqcgvK7/71.png'); mask-image: url('https://i.postimg.cc/fbqcgvK7/71.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-1" data-ans="black hat">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">White Coat</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/5ySjD4V5/75.png'); mask-image: url('https://i.postimg.cc/5ySjD4V5/75.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-2" data-ans="white coat">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Red Jumper</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/zXkRcjD8/76.png'); mask-image: url('https://i.postimg.cc/zXkRcjD8/76.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-3" data-ans="red jumper">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Gray Shirt</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/gj83jbPM/74.png'); mask-image: url('https://i.postimg.cc/gj83jbPM/74.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-4" data-ans="gray shirt">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Blue T-shirt</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/vZQ5YK2G/78.png'); mask-image: url('https://i.postimg.cc/vZQ5YK2G/78.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-5" data-ans="blue t-shirt">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Orange Dress</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/qvM01BSf/dress.png'); mask-image: url('https://i.postimg.cc/qvM01BSf/dress.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-6" data-ans="orange dress">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Yellow Skirt</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/xCkvrbx5/72.png'); mask-image: url('https://i.postimg.cc/xCkvrbx5/72.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-7" data-ans="yellow skirt">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Brown Jacket</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/zfvWWg1s/79.png'); mask-image: url('https://i.postimg.cc/zfvWWg1s/79.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-8" data-ans="brown jacket">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Green Shorts</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/j5GzRdBw/73.png'); mask-image: url('https://i.postimg.cc/j5GzRdBw/73.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-9" data-ans="green shorts">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Red Jeans</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/nrbQ6SQs/77.png'); mask-image: url('https://i.postimg.cc/nrbQ6SQs/77.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-10" data-ans="red jeans">
+                </div>
+
+                <div class="cloth-card">
+                    <div class="cloth-target-name">Blue Shoes</div>
+                    <div class="cloth-img-box">
+                        <div class="cloth-mask eval-paint" style="-webkit-mask-image: url('https://i.postimg.cc/zf2CPkjX/70.png'); mask-image: url('https://i.postimg.cc/zf2CPkjX/70.png');" onclick="pintarRoupa(this)"></div>
+                    </div>
+                    <input type="text" class="cloth-input eval-cloth-name" id="pt-11" data-ans="blue shoes">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-0')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 2: TARGET SITUATION ================= -->
+        <div id="sec-2" class="activity-section theme-red">
+            <h2>Target Situation</h2>
+            
+            <img src="https://i.postimg.cc/26Jf64Sz/imagem-ivete-escolhendo-roupa.png" alt="Ivete Shopping" class="illustrative-img">
+
+            <p class="instruction">Listen and answer T (true) or F (false).</p>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-red-border);">
+                    <audio id="audio-2" src="https://files.catbox.moe/cpsnhi.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2" style="background: var(--theme-red-border);" onclick="toggleAudio('audio-2', 'btn-audio-2', 'var(--theme-red-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-2" onclick="changeSpeed('audio-2', 'spd-audio-2')">⚡ 1.0x</button>
+                    <span>Conversation at the Shop</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="tf-row"><span>a) Ivete is looking for a red dress.</span> <div class="tf-btns" id="tf-1" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                <div class="tf-row"><span>b) Ivete is looking for a black coat.</span> <div class="tf-btns" id="tf-2" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                <div class="tf-row"><span>c) Ivete is looking for a skirt.</span> <div class="tf-btns" id="tf-3" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                <div class="tf-row"><span>d) The clothes cost £60.00.</span> <div class="tf-btns" id="tf-4" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                <div class="tf-row"><span>e) She isn’t looking for White shoes.</span> <div class="tf-btns" id="tf-5" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 3: LANGUAGE GUIDE ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>Language Guide</h2>
+            
+            <div class="lg-box">
+                <strong>WHAT ARE YOU LOOKING FOR?</strong><br>
+                We use <b>LOOKING FOR</b> to say the things we want.<br><br>
+                • <i>What are you looking for?</i> I am looking for a dress.<br>
+                • <i>What is she looking for?</i> She is looking for a black coat.<br>
+                • <i>May I help you, madam and sir?</i> Yes, We are looking for two hats.
+            </div>
+
+            <p class="instruction">Complete each dialogue by filling in the blanks with the appropriate words from the word bank.</p>
+            
+            <div id="word-bank" class="word-bank" ondrop="dropInlineBack(event)" ondragover="allowDrop(event)">
+                <div class="drag-word" draggable="true" id="wb1" ondragstart="drag(event)">looking for</div>
+                <div class="drag-word" draggable="true" id="wb2" ondragstart="drag(event)">looking for</div>
+                <div class="drag-word" draggable="true" id="wb3" ondragstart="drag(event)">looking for</div>
+                <div class="drag-word" draggable="true" id="wb4" ondragstart="drag(event)">looking for</div>
+                <div class="drag-word" draggable="true" id="wb5" ondragstart="drag(event)">looking for</div>
+                <div class="drag-word" draggable="true" id="wb6" ondragstart="drag(event)">dress</div>
+                <div class="drag-word" draggable="true" id="wb7" ondragstart="drag(event)">black coat</div>
+                <div class="drag-word" draggable="true" id="wb8" ondragstart="drag(event)">black coat</div>
+                <div class="drag-word" draggable="true" id="wb9" ondragstart="drag(event)">coat</div>
+                <div class="drag-word" draggable="true" id="wb10" ondragstart="drag(event)">help</div>
+                <div class="drag-word" draggable="true" id="wb11" ondragstart="drag(event)">sir</div>
+                <div class="drag-word" draggable="true" id="wb12" ondragstart="drag(event)">sir</div>
+                <div class="drag-word" draggable="true" id="wb13" ondragstart="drag(event)">hats</div>
+                <div class="drag-word" draggable="true" id="wb14" ondragstart="drag(event)">hats</div>
+                <div class="drag-word" draggable="true" id="wb15" ondragstart="drag(event)">shopping assistant</div>
+                <div class="drag-word" draggable="true" id="wb16" ondragstart="drag(event)">sunglasses</div>
+            </div>
+
+            <div class="dialogue-text">
+                <b>Shopper 1:</b> Excuse me, <div class="inline-drop eval-inline" id="lg-d1" data-ans="sir" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>, what are you <div class="inline-drop eval-inline" id="lg-d2" data-ans="looking for" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>?<br>
+                <b>Shopper 2:</b> I’m <div class="inline-drop eval-inline" id="lg-d3" data-ans="looking for" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> a new <div class="inline-drop eval-inline" id="lg-d4" data-ans="black coat" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> for a special occasion.<br>
+                <br>
+                <b>Shopper 1:</b> Hi, I’m <div class="inline-drop eval-inline" id="lg-d5" data-ans="looking for" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> a stylish <div class="inline-drop eval-inline" id="lg-d6" data-ans="dress" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>. Can you <div class="inline-drop eval-inline" id="lg-d7" data-ans="help" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> me find one?<br>
+                <b>Shopping Assistant:</b> Of course! We have a great selection of dresses in the back.<br>
+                <br>
+                <b>Shopper 1:</b> I’m in a hurry, and I can’t find my <div class="inline-drop eval-inline" id="lg-d8" data-ans="black coat" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>. Have you seen it?<br>
+                <b>Shopper 2:</b> Is it a small, black <div class="inline-drop eval-inline" id="lg-d9" data-ans="coat" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>?<br>
+                <b>Shopping Assistant:</b> I found your <div class="inline-drop eval-inline" id="lg-d10" data-ans="black coat" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>. It was left near the entrance.<br>
+                <br>
+                <b>Shopper 1:</b> Hello, <div class="inline-drop eval-inline" id="lg-d11" data-ans="sir" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>. What are you <div class="inline-drop eval-inline" id="lg-d12" data-ans="looking for" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>?<br>
+                <b>Shopper 2:</b> We are <div class="inline-drop eval-inline" id="lg-d13" data-ans="looking for" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> a pair of matching <div class="inline-drop eval-inline" id="lg-d14" data-ans="sunglasses" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> for our trip.<br>
+                <br>
+                <b>Shopper 1:</b> Hi, <div class="inline-drop eval-inline" id="lg-d15" data-ans="shopping assistant" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>. Do you have any <div class="inline-drop eval-inline" id="lg-d16" data-ans="hats" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>? It’s so sunny outside.<br>
+                <b>Shopping Assistant:</b> Yes, we have a great selection of <div class="inline-drop eval-inline" id="lg-d17" data-ans="hats" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> right here.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 4: UP TO YOU ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>Up To You</h2>
+            <p class="instruction">You are at the clothes shop. Work in pairs. Take turns to find the clothes you are looking for.</p>
+            
+            <img src="https://i.postimg.cc/SRCNbZ7Y/4.png" alt="Shopping Cart" class="illustrative-img">
+
+            <div class="bubble-guide-container">
+                <div class="speech-bubble">What are you looking for...</div>
+                <div class="speech-bubble">I am looking for...</div>
+                <div class="speech-bubble assistant">Sorry I don’t have it.</div>
+                <div class="speech-bubble assistant">Can you repeat please?</div>
+                <div class="speech-bubble assistant">Yes, I have it. Here you are!</div>
+            </div>
+
+            <div class="checklist-grid" id="uptoyou-capture-area">
+                <div class="checklist-box">
+                    <h3 style="margin-top:0; color: var(--theme-orange-border);">YOU ARE LOOKING FOR…</h3>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-1"> hat</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-2"> coat</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-3"> jumper</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-4"> shirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-5"> T-shirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-6"> dress</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-7"> skirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-8"> jacket</div>
+                    <div class="checklist-item"><input type="text" class="eval-ut" id="ut-9"> Shorts</div>
+                    <div class="checklist-item"><input type="text" class="eval-ut" id="ut-10"> Jeans</div>
+                    <div class="checklist-item" style="border:none;"><input type="text" class="eval-ut" id="ut-11"> Shoes</div>
+                </div>
+                
+                <div class="checklist-box" style="border-top-color: #f59e0b;">
+                    <h3 style="margin-top:0; color: #f59e0b;">YOU HAVE TO OFFER</h3>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-12"> hat</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-13"> coat</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-14"> jumper</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-15"> shirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-16"> T-shirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-17"> dress</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-18"> skirt</div>
+                    <div class="checklist-item">A <input type="text" class="eval-ut" id="ut-19"> jacket</div>
+                    <div class="checklist-item"><input type="text" class="eval-ut" id="ut-20"> Shorts</div>
+                    <div class="checklist-item"><input type="text" class="eval-ut" id="ut-21"> Jeans</div>
+                    <div class="checklist-item" style="border:none;"><input type="text" class="eval-ut" id="ut-22"> Shoes</div>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 5: HOMEWORK ================= -->
+        <div id="sec-5" class="activity-section theme-gray">
+            <h2>Homework (Cross Curricular)</h2>
+            
+            <img src="https://i.postimg.cc/zG5381QS/3.png" alt="Shopping Illustration" class="illustrative-img">
+
+            <p class="instruction">Read the dialogue below. Then, listen and answer the questions.</p>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-gray-border);">
+                    <audio id="audio-hw" src="https://files.catbox.moe/btocrs.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-hw" style="background: var(--theme-gray-border);" onclick="toggleAudio('audio-hw', 'btn-audio-hw', 'var(--theme-gray-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-hw" onclick="changeSpeed('audio-hw', 'spd-audio-hw')">⚡ 1.0x</button>
+                    <span>Shopping for Clothes Audio</span>
+                </div>
+            </div>
+
+            <div class="reading-text">
+                <h3 style="text-align: center; margin-top: 0;">SHOPPING FOR CLOTHES</h3>
+                <b>SA (Sales Assistant)</b> – Good afternoon. Can I help you?<br>
+                <b>C (Customer)</b> – Good afternoon. Yes, please. I am looking for a dress for a job interview.<br>
+                <b>SA</b> – What colour would you like?<br>
+                <b>C</b> – I don’t know. What colours are there, please?<br>
+                <b>SA</b> – There are different colours. There are black, blue, pink, white and brown dresses. What would you like?<br>
+                <b>C</b> – The white dress, please.<br>
+                <b>SA</b> – Here you are.<br>
+                <b>C</b> – Can I try it on?<br>
+                <b>SA</b> – Of course. The changing room is over there.<br>
+                <i>(Some time later)</i><br>
+                <b>C</b> – It’s incredible! How much is it?<br>
+                <b>SA</b> – It’s 55 pounds.<br>
+                <b>C</b> – Can I pay by card or cash only?<br>
+                <b>SA</b> – You can pay in cash or by card, too.<br>
+                <b>C</b> – Here is my card.<br>
+                <b>SA</b> – Thank you. Your pin number, please.<br>
+                <b>C</b> – Here it is. Thank you.<br>
+                <b>SA</b> – Thank you very much for shopping with us today.<br>
+                <b>C</b> – Bye!
+            </div>
+
+            <h3>COMPREHENSION CHECK</h3>
+            <div class="comp-question"><p>a) What is the customer looking for?</p><input type="text" class="text-input eval-comp" id="hw-1" data-ans="a dress" placeholder="Type your answer..."></div>
+            <div class="comp-question"><p>b) What possible colours are there?</p><input type="text" class="text-input eval-comp" id="hw-2" data-ans="black blue pink white brown" placeholder="Type your answer..."></div>
+            <div class="comp-question"><p>c) How much does it cost?</p><input type="text" class="text-input eval-comp" id="hw-3" data-ans="55 pounds" placeholder="Type your answer..."></div>
+            <div class="comp-question"><p>d) How does she pay: Cash or card?</p><input type="text" class="text-input eval-comp" id="hw-4" data-ans="cards" placeholder="Type your answer..."></div>
+            <div class="comp-question"><p>e) What dress does she buy? What colour is it?</p><input type="text" class="text-input eval-comp" id="hw-5" data-ans="the white dress" placeholder="Type your answer..."></div>
+            <div class="comp-question"><p>f) Why is she looking for a dress?</p><input type="text" class="text-input eval-comp" id="hw-6" data-ans="for a job interview" placeholder="Type your answer..."></div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 6: LANGUAGE AT WORK ================= -->
+        <div id="sec-6" class="activity-section theme-yellow">
+            <h2>Language at Work</h2>
+            
+            <div class="lg-box" style="border-color: var(--theme-yellow-border); margin-bottom: 20px;">
+                We use <b>looking for</b> to say the things we want.<br>
+                • <i>What are you looking for?</i> I am looking for a dress.<br>
+                • <i>What is she looking for?</i> She is looking for a black coat.<br>
+                • <i>May I help you, madam and sir?</i> Yes, We are looking for two hats.
+            </div>
+
+            <p class="instruction">Correct the problems in the sentences below.</p>
+            
+            <div class="error-card">
+                <div class="wrong-sentence">a) I is looking for a pair of jeans.</div>
+                <input type="text" class="text-input eval-error" id="err-1" data-ans="I am looking for a pair of jeans" placeholder="Correct sentence...">
+            </div>
+            <div class="error-card">
+                <div class="wrong-sentence">b) Am you looking for clothes for a job interview?</div>
+                <input type="text" class="text-input eval-error" id="err-2" data-ans="Are you looking for clothes for a job interview" placeholder="Correct sentence...">
+            </div>
+            <div class="error-card">
+                <div class="wrong-sentence">c) This is Sandra. She are looking for a pink skirt.</div>
+                <input type="text" class="text-input eval-error" id="err-3" data-ans="She is looking for a pink skirt" placeholder="Correct sentence...">
+            </div>
+            <div class="error-card">
+                <div class="wrong-sentence">d) Are you look for a pair of white shoes?</div>
+                <input type="text" class="text-input eval-error" id="err-4" data-ans="Are you looking for a pair of white shoes" placeholder="Correct sentence...">
+            </div>
+            <div class="error-card">
+                <div class="wrong-sentence">e) Marcos and Maria am look for clothes to go to the restaurant.</div>
+                <input type="text" class="text-input eval-error" id="err-5" data-ans="Marcos and Maria are looking for clothes to go to the restaurant" placeholder="Correct sentence...">
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 7: NOW IT'S YOUR TURN ================= -->
+        <div id="sec-7" class="activity-section theme-blue">
+            <h2>Now It's Your Turn</h2>
+            <p class="instruction">Step 1. Choose one of the situations below.</p>
+            
+            <div class="situation-box">
+                <div class="sit-title">Situation 1</div>
+                <div class="sit-role"><b>A) Customer:</b> You are at a clothes shop. You are looking for a brown jacket. You have £100, but you want to pay by credit card.</div>
+                <div class="sit-role"><b>B) Sales Person:</b> You only have black and brown jackets. The jackets cost £75. You only accept money.</div>
+            </div>
+
+            <div class="situation-box">
+                <div class="sit-title">Situation 2</div>
+                <div class="sit-role"><b>A) Customer:</b> You are at a clothes shop. You are looking for a red skirt. You only have £110. You want to pay in cash.</div>
+                <div class="sit-role"><b>B) Sales Person:</b> You only have black and pink skirts. The skirts cost £100. You accept cash and card payments.</div>
+            </div>
+
+            <p class="instruction">Step 2. Write your dialogue below and practice acting it out with your teacher.</p>
+            
+            <div id="nowturn-capture-area">
+                <textarea id="nowturn-dialogue" class="dialogue-textarea" placeholder="Write your dialogue here..."></textarea>
+            </div>
+
+            <div class="btn-finish-wrapper">
+                <button class="btn-nav" style="background: var(--theme-blue-border); color: white;" onclick="downloadDiv('nowturn-capture-area', 'My_Dialogue_NowTurn.png')">📤 Download Dialogue</button>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 15px;">
+                <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 3A & Get XP</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO FLUTUANTE GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--theme-green-border); font-weight:bold; margin-bottom:10px; font-size:16px;">❓ Looking for...</div>
+            <div style="margin-bottom:8px;">Usamos <b>LOOKING FOR</b> para expressar o que estamos a procurar (especialmente em lojas). A estrutura muda com o sujeito:</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--theme-green-border);">I (Eu) -> AM</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-green-bg); padding:5px; border-left:3px solid var(--theme-green-border);">"<b>I am</b> looking for a dress."</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--theme-green-border);">HE / SHE / IT (Ele/Ela) -> IS</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-green-bg); padding:5px; border-left:3px solid var(--theme-green-border);">"<b>She is</b> looking for a coat."</div>
+
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--theme-green-border);">YOU / WE / THEY (Tu/Nós/Eles) -> ARE</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-green-bg); padding:5px; border-left:3px solid var(--theme-green-border);">"<b>We are</b> looking for two hats."</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-green-bg); padding:5px; border-left:3px solid var(--theme-green-border); margin-top: 2px;">"What <b>are you</b> looking for?"</div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 3A.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555; text-align: center;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Go to Lesson 3B ➔</button>
+        </div>
+    </div>
+
+    <script>
+        // ==== O PINCEL MÁGICO (CORS ENABLED) ====
+        let pincelAtual = '';
+
+        function selecionarCor(btn, corHex) {
+            pincelAtual = corHex;
+            document.querySelectorAll('.color-drop').forEach(drop => {
+                drop.style.transform = 'scale(1)';
+                drop.style.opacity = '0.5';
+            });
+            btn.style.transform = 'scale(1.2)';
+            btn.style.opacity = '1';
+        }
+
+        function pintarRoupa(el) {
+            if (pincelAtual !== '') {
+                el.style.backgroundColor = pincelAtual;
+            } else {
+                alert("Please, click on a color in the Color Chart first!");
+            }
+        }
+
+        // ==== DOWNLOAD EM HD ====
+        function downloadDiv(divId, filename) { 
+            html2canvas(document.getElementById(divId), { useCORS: true, scale: 2 }).then(canvas => { 
+                let link = document.createElement('a'); 
+                link.download = filename; 
+                link.href = canvas.toDataURL('image/png'); 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                alert("Error downloading image. Make sure your browser allows downloads.");
+                console.error(err);
+            }); 
+        }
+
+        // ==== NAVEGAÇÃO BÁSICA ====
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function checkWarmup(btn, isCorrect) {
+            const container = document.getElementById('wu-options');
+            container.querySelectorAll('.wu-btn').forEach(b => {
+                b.classList.remove('correct', 'wrong');
+                b.disabled = true;
+            });
+            if(isCorrect) {
+                btn.classList.add('correct');
+                document.getElementById('btn-open-door').style.display = 'block';
+            } else {
+                btn.classList.add('wrong');
+                setTimeout(() => {
+                    alert("Incorrect! Look at the picture again.");
+                    container.querySelectorAll('.wu-btn').forEach(b => b.disabled = false);
+                    btn.classList.remove('wrong');
+                }, 800);
+            }
+        }
+
+        function setTF(btn, val) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.tf-btn').forEach(b => { b.classList.remove('selected-t', 'selected-f'); });
+            btn.classList.add(val === 'T' ? 'selected-t' : 'selected-f');
+            parent.setAttribute('data-user-ans', val);
+        }
+
+        // INLINE DRAG AND DROP
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function dropInline(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if (target.classList.contains('drag-word')) target = target.parentElement;
+            if (target.classList.contains('inline-drop')) {
+                if(target.children.length > 0) document.getElementById('word-bank').appendChild(target.children[0]);
+                target.appendChild(draggedEl);
+                target.classList.remove('drag-over');
+            }
+        }
+        function dropInlineBack(ev) {
+            ev.preventDefault();
+            document.getElementById('word-bank').appendChild(document.getElementById(ev.dataTransfer.getData("text")));
+        }
+        document.querySelectorAll('.inline-drop').forEach(zone => {
+            zone.addEventListener('dragenter', () => zone.classList.add('drag-over'));
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
+        });
+
+        // ==== LÓGICA XP E MOCHILA ====
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_3a_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao3a_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    respostas.paintings.forEach((p, idx) => {
+                        let masks = document.querySelectorAll('.eval-paint');
+                        let inputs = document.querySelectorAll('.eval-cloth-name');
+                        if(masks[idx] && p.cor) masks[idx].style.backgroundColor = p.cor;
+                        if(inputs[idx] && p.texto) inputs[idx].value = p.texto;
+                    });
+
+                    for(let id in respostas.tf) {
+                        let val = respostas.tf[id];
+                        let el = document.getElementById(id);
+                        if(el && val) {
+                            el.setAttribute('data-user-ans', val);
+                            let btn = el.querySelector(val === 'T' ? '.selected-t' : '.selected-f');
+                            if(btn) btn.classList.add(val === 'T' ? 'selected-t' : 'selected-f');
+                        }
+                    }
+
+                    for(let zoneId in respostas.inline) {
+                        let wordId = respostas.inline[zoneId];
+                        let zone = document.getElementById(zoneId);
+                        let word = document.getElementById(wordId);
+                        if(zone && word) zone.appendChild(word);
+                    }
+
+                    for(let id in respostas.texts) {
+                        let el = document.getElementById(id);
+                        if(el) el.value = respostas.texts[id];
+                    }
+                }
+                let btnFinish = document.querySelector('.btn-finish');
+                if(btnFinish) { btnFinish.innerText = "🔄 Update Answers & Get XP"; }
+            }
+        });
+
+        let finalXP = 0;
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+            let respostasFotografadas = { paintings: [], tf: {}, inline: {}, texts: {} };
+
+            // 1. Validar Pintura
+            document.querySelectorAll('.cloth-card').forEach(card => {
+                total++;
+                let mask = card.querySelector('.eval-paint');
+                let input = card.querySelector('.eval-cloth-name');
+                let cor = mask.style.backgroundColor;
+                let texto = input.value;
+                respostasFotografadas.paintings.push({cor: cor, texto: texto});
+                
+                if(cor && cor !== 'rgb(203, 213, 225)' && texto.trim().length > 2) {
+                    correct++; 
+                }
+            });
+
+            // 2. Validar T/F
+            document.querySelectorAll('.tf-btns').forEach(tf => {
+                total++;
+                let userAns = tf.getAttribute('data-user-ans');
+                respostasFotografadas.tf[tf.id] = userAns;
+                if(userAns === tf.getAttribute('data-ans')) correct++;
+            });
+
+            // 3. Validar Inline Drop
+            document.querySelectorAll('.eval-inline').forEach(zone => {
+                total++;
+                if(zone.children.length > 0) {
+                    let childWord = zone.children[0].innerText.toLowerCase();
+                    respostasFotografadas.inline[zone.id] = zone.children[0].id;
+                    if(childWord === zone.getAttribute('data-ans').toLowerCase()) correct++;
+                }
+            });
+
+            // 4. Compreensão de Texto & Erros
+            document.querySelectorAll('.eval-comp, .eval-error').forEach(input => {
+                total++;
+                respostasFotografadas.texts[input.id] = input.value;
+                let userAns = input.value.toLowerCase().trim();
+                let realAns = input.getAttribute('data-ans').toLowerCase();
+                
+                let isValid = false;
+                let keywords = realAns.split(' ');
+                for(let word of keywords) {
+                    if(word.length > 2 && userAns.includes(word)) isValid = true;
+                }
+                if(isValid || userAns === realAns) correct++;
+            });
+
+            document.querySelectorAll('.eval-ut').forEach(input => {
+                respostasFotografadas.texts[input.id] = input.value;
+            });
+
+            localStorage.setItem('licao3a_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // FLUXO DE NAVEGAÇÃO 3A -> 3B
+        function returnToMap() {
+            let oldXP = parseInt(localStorage.getItem('licao_3a_xp')) || 0;
+            let xpDifference = finalXP - oldXP; 
+
+            localStorage.setItem('licao_3a_status', 'concluida');
+            localStorage.setItem('licao_3a_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('licao3b.html', 'link-3b');
+                    return;
+                }
+            }
+            window.location.href = "licao3b.html"; 
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) { a.pause(); const otherBtn = document.getElementById('btn-' + a.id); if(otherBtn) { otherBtn.innerText = "▶ PLAY"; otherBtn.style.background = ""; } }
+            });
+            if (audio.paused) { audio.play(); btn.innerText = "⏸ PAUSE"; btn.style.background = "#c0392b"; } 
+            else { audio.pause(); btn.innerText = "▶ PLAY"; btn.style.background = originalColor; }
+            audio.onended = function() { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+    </script>
+</body>
+</html>

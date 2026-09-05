@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition: Unit 7 to Unit 8 • Planning the First Trip</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            --font-quote: 'Playfair Display', serif;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #c2410c 100%);
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .transition-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(14px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            max-width: 820px;
+            width: 100%;
+            padding: 50px 45px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge-chapter {
+            display: inline-block;
+            background: linear-gradient(90deg, #ea580c, #f59e0b);
+            color: white;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            padding: 7px 20px;
+            border-radius: 50px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.35);
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin: 0 0 15px 0;
+            background: linear-gradient(135deg, #ffffff 0%, #fed7aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .story-text {
+            font-size: 16.5px;
+            line-height: 1.85;
+            color: #f1f5f9;
+            margin-bottom: 30px;
+            text-align: left;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 18px;
+            padding: 30px;
+            border-left: 5px solid var(--accent-main);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .quote-box {
+            font-family: var(--font-quote);
+            font-style: italic;
+            font-size: 19px;
+            color: #fde047;
+            text-align: center;
+            margin-bottom: 35px;
+            display: block;
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+            color: white;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 18px 42px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(234, 88, 12, 0.45);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-finish:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(234, 88, 12, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="transition-card">
+        <div class="badge-chapter">UNIT 7 COMPLETED • PLANNING THE FIRST TRIP</div>
+        <h1>The Next Adventure • Opening the Map</h1>
+
+        <div class="story-text">
+            <p style="font-size: 20px; font-weight: 700; color: var(--accent-main); text-align: center; margin-bottom: 20px;">
+                "O apartamento está pronto. Eles começam a planejar as férias."
+            </p>
+            <p>
+                A casa nova está linda e totalmente mobiliada. Sentados no sofá novo, Ivete e Alan abrem o mapa e começam a planejar a primeira grande viagem do casal.
+            </p>
+            <p>
+                Depois de conquistarem a estabilidade profissional e montarem um cantinho especial em Londres, agora é hora de sonhar com horizontes mais distantes: explorar paisagens naturais espetaculares, vilarejos acolhedores e viver momentos mágicos nas férias de final de ano.
+            </p>
+        </div>
+
+        <span class="quote-box">
+            "Jobs fill your pocket, but adventures fill your soul."
+        </span>
+
+        <button class="btn-finish" onclick="proceedTo8A()">
+            Start Lesson 8A | Vacations and Trips ➔
+        </button>
+    </div>
+
+    <script>
+        function proceedTo8A() {
+            localStorage.setItem('unit7_done', 'true');
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao8a.html', 'link-8a');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao8a.html', null);
+                return;
+            }
+            window.location.href = "licao8a.html";
+        }
+    </script>
+</body>
+</html>

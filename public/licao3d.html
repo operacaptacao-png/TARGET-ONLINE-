@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D | The Unit Challenge</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Biblioteca para tirar Print/Screenshot da tela -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            /* PALETA FRIA (WINTER/LONDON RAIN) */
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a; 
+            --blue-medium: #1e3a8a; 
+            --blue-light: #3b82f6; 
+            --accent-main: #3b82f6; 
+            --accent-dark: #2563eb;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            /* Paleta Temática das Secções */
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #f5f3ff; --theme-purple-border: #6366f1;
+            --theme-red-bg: #f8fafc; --theme-red-border: #475569; 
+            --theme-green-bg: #f0fdfa; --theme-green-border: #0d9488;
+            --theme-orange-bg: #f0f9ff; --theme-orange-border: #0284c7; 
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #f1f5f9; --theme-yellow-border: #334155;
+        }
+
+        /* FUNDO E CENTRALIZAÇÃO BLINDADA */
+        body {
+            font-family: var(--font-text); color: var(--black); margin: 0; 
+            padding: 40px 15px 120px 15px;
+            display: flex; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #334155 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white); width: 100%; max-width: 900px; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); border-radius: 24px; padding: 50px; 
+            position: relative; z-index: 1; margin: 0 auto; box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            width: 100%; height: 220px;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 40px;
+        }
+
+        .lesson-banner h1 {
+            color: var(--white); font-family: var(--font-title); font-size: 36px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; color: var(--blue-dark); }
+        p.instruction { color: #475569; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .illustrative-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; opacity: 0.85; border: 3px solid #cbd5e1; }
+
+        /* ==== SECÇÕES TEMÁTICAS ==== */
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; box-sizing: border-box;}
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+
+        /* Botões de Navegação */
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        .btn-finish-wrapper { display: flex; justify-content: center; width: 100%; flex-wrap: wrap; gap: 15px; margin-top: 20px;}
+
+        /* ==== GAME 1: FAST SORTER ==== */
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; background: white; padding: 25px; border-radius: 12px; border: 2px dashed var(--theme-purple-border); min-height: 60px; }
+        .draggable-word { background: var(--theme-purple-border); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: grab; user-select: none; transition: 0.2s; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .draggable-word:active { transform: scale(0.95); cursor: grabbing; }
+        
+        .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        @media(max-width: 600px) { .category-grid { grid-template-columns: 1fr; } }
+        .category-box { background: white; padding: 20px; border-radius: 16px; border: 2px dashed #ccc; text-align: center; min-height: 200px; display: flex; flex-direction: column; }
+        .category-box.summer { border-color: #f59e0b; }
+        .category-box.winter { border-color: #0ea5e9; }
+        
+        .category-title { font-weight: bold; margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .summer .category-title { color: #b45309; }
+        .winter .category-title { color: #0369a1; }
+        
+        .drop-zone { flex: 1; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; justify-content: center; min-height: 100px;}
+
+        /* ==== GAME 2: THE QUICK QUIZ ==== */
+        .quiz-question { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
+        .quiz-question p { margin-top: 0; font-weight: bold; font-size: 16px; color: var(--theme-blue-border); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+        .quiz-options label { display: block; cursor: pointer; padding: 12px 15px; border-radius: 8px; background: #f8fafc; border: 1px solid #cbd5e1; transition: 0.2s; font-weight: 500;}
+        .quiz-options label:hover { background: #e0e7ff; border-color: var(--theme-blue-border); }
+        .quiz-options input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+
+        /* ==== GAME 3: TEACHER'S TIME ==== */
+        .teacher-box { background: #fefce8; border: 3px solid #eab308; padding: 25px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .mega-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px 40px; margin-top: 20px; }
+        @media(max-width: 600px) { .mega-menu { grid-template-columns: 1fr; } }
+        .menu-cat-title { grid-column: 1 / -1; color: #854d0e; font-family: var(--font-title); font-size: 18px; border-bottom: 2px dotted #eab308; margin-top: 15px; padding-bottom: 5px; }
+        .mega-item { display: flex; justify-content: space-between; font-size: 15px; font-weight: 500; }
+        .mega-item b { color: var(--blue-medium); }
+        .teacher-instruction { background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #ef4444; font-style: italic; line-height: 1.6; }
+
+        /* ==== CHECKLIST & REPORT CARD ==== */
+        .checklist-container { background: white; border: 2px solid var(--theme-orange-border); border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .checklist-container h3 { color: var(--theme-orange-border); margin-top: 0; font-size: 22px; border-bottom: 2px dashed #fed7aa; padding-bottom: 10px; }
+        
+        .check-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 18px; font-weight: bold; color: #334155; cursor: pointer; transition: 0.3s; padding: 10px; border-radius: 8px; }
+        .check-item:hover { background: #fff7ed; }
+        .check-item input[type="checkbox"] { width: 24px; height: 24px; cursor: pointer; accent-color: var(--theme-orange-border); }
+        .check-item.done { color: var(--theme-orange-border); text-decoration: line-through; opacity: 0.7; }
+
+        .report-card-container { display: none; margin-top: 30px; animation: popIn 0.5s ease; }
+        @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .report-card { background: white; border-radius: 20px; padding: 30px; border: 3px solid #166534; box-shadow: 0 15px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+        .report-card::before { content: '★'; position: absolute; top: 10px; right: 20px; font-size: 60px; color: #fde047; opacity: 0.3; }
+        .rc-header { text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-bottom: 20px; }
+        .rc-header h2 { color: #166534; font-size: 28px; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .rc-header p { color: #64748b; margin: 5px 0 0 0; font-weight: bold; }
+        
+        .rc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        @media(max-width: 500px) { .rc-grid { grid-template-columns: 1fr; } }
+        .rc-item { background: #f8fafc; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
+        .rc-item span { font-weight: bold; color: #334155; }
+        .rc-item strong { color: var(--blue-medium); font-size: 20px; font-family: var(--font-title); }
+        
+        .rc-total { background: #f0fdf4; border: 2px solid #22c55e; padding: 20px; border-radius: 12px; text-align: center; }
+        .rc-total span { display: block; color: #166534; font-weight: bold; font-size: 16px; margin-bottom: 5px; text-transform: uppercase; }
+        .rc-total strong { color: #15803d; font-size: 40px; font-family: var(--font-title); font-weight: 900; }
+
+        /* ==== BOTÃO FLUTUANTE DE GRAMÁTICA ==== */
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+        .grammar-floating-btn { background: var(--blue-light); color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); transition: 0.3s; }
+        .grammar-floating-btn:hover { background: var(--blue-medium); transform: translateY(-5px); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 340px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 2px solid var(--blue-light); transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.5; pointer-events: none; }
+        .grammar-box::after { content: ""; position: absolute; top: 100%; right: 40px; margin-left: -10px; border-width: 10px; border-style: solid; border-color: var(--blue-light) transparent transparent transparent; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        @media (max-width: 500px) { .grammar-floating-btn { padding: 15px; font-size: 0; } .grammar-box { width: 280px; right: -10px; } .grammar-box::after { right: 25px; } }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>3D | The Unit Challenge<br><span style="font-size: 20px; font-weight: 500; text-transform: none; letter-spacing: 1px;">Shopping & Weather Review</span></h1>
+        </div>
+
+        <!-- ================= GAME 1: FAST SORTER ================= -->
+        <div id="sec-1" class="activity-section theme-purple active">
+            <h2>Game 1: Fast Sorter</h2>
+            <p class="instruction">Drag the clothes and items to the correct season: Summer or Winter?</p>
+            
+            <div id="word-pool" class="word-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
+                <div class="draggable-word eval-sort" draggable="true" id="gw1" data-ans="z-summer" ondragstart="drag(event)">Sunglasses</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw2" data-ans="z-winter" ondragstart="drag(event)">Wool Coat</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw3" data-ans="z-summer" ondragstart="drag(event)">Shorts</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw4" data-ans="z-winter" ondragstart="drag(event)">Boots</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw5" data-ans="z-winter" ondragstart="drag(event)">Scarf</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw6" data-ans="z-summer" ondragstart="drag(event)">Tank Top</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw7" data-ans="z-summer" ondragstart="drag(event)">Sandals</div>
+                <div class="draggable-word eval-sort" draggable="true" id="gw8" data-ans="z-winter" ondragstart="drag(event)">Gloves</div>
+            </div>
+            
+            <div class="category-grid">
+                <div class="category-box summer">
+                    <div class="category-title">☀️ Summer / Hot</div>
+                    <div class="drop-zone" id="z-summer" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+                <div class="category-box winter">
+                    <div class="category-title">❄️ Winter / Cold</div>
+                    <div class="drop-zone" id="z-winter" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Challenge ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= GAME 2: THE QUICK QUIZ ================= -->
+        <div id="sec-2" class="activity-section theme-blue">
+            <h2>Game 2: The Quick Quiz</h2>
+            
+            <img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?auto=format&fit=crop&w=1350&q=80" alt="Shop Review" class="illustrative-img">
+
+            <p class="instruction">Read the situations and choose the correct answer based on Unit 3.</p>
+            
+            <div class="quiz-question">
+                <p>1. You are at the clothes shop and you want to put on a shirt to see if it fits. What do you ask?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="wrong"> Can I buy it on?</label>
+                    <label><input type="radio" name="q1" value="correct"> Can I try it on?</label>
+                    <label><input type="radio" name="q1" value="wrong"> I am looking for a shirt.</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. The sales assistant asks: "What size are you?". What do you answer?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="correct"> I am medium, please.</label>
+                    <label><input type="radio" name="q2" value="wrong"> I am looking for a size.</label>
+                    <label><input type="radio" name="q2" value="wrong"> Yes, I have it. Here you are.</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. How do you describe what someone is wearing NOW?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="wrong"> He wear a blue coat.</label>
+                    <label><input type="radio" name="q3" value="wrong"> He is wear a blue coat.</label>
+                    <label><input type="radio" name="q3" value="correct"> He is wearing a blue coat.</label>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Challenge ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= GAME 3: TEACHER'S TIME ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>Game 3: Teacher's Challenge</h2>
+            
+            <img src="https://i.postimg.cc/mDyNbG35/80.png" alt="Ivete Style" class="illustrative-img" style="border-color: var(--theme-green-border); max-width: 300px; display: block; margin: 0 auto 20px auto;">
+
+            <p class="instruction">It's time to test your speaking skills! Your teacher will be a difficult customer or a fast sales assistant. Are you ready?</p>
+            
+            <div class="teacher-instruction">
+                <b>Teacher's Note:</b> Tell the student that a specific item they want is sold out or ask them to find an outfit for a "cold rainy day in London". Let them use "I'm looking for", "Can I try it on", and sizes.
+            </div>
+
+            <div class="teacher-box">
+                <h3 style="text-align: center; color: #854d0e; margin: 0 0 10px 0;">🧥 ARNOLD'S CLOTHES SHOP 👗</h3>
+                <div class="mega-menu">
+                    <div class="menu-cat-title">Tops & Jackets</div>
+                    <div class="mega-item"><span>Wool Coat (Black, Grey)</span> <b>£120.00</b></div>
+                    <div class="mega-item"><span>Leather Jacket (Brown)</span> <b>£85.00</b></div>
+                    <div class="mega-item"><span>Cotton T-shirt (All colors)</span> <b>£15.00</b></div>
+                    <div class="mega-item"><span>Formal Shirt (White, Blue)</span> <b>£40.00</b></div>
+                    
+                    <div class="menu-cat-title">Bottoms & Shoes</div>
+                    <div class="mega-item"><span>Denim Jeans (Blue, Black)</span> <b>£55.00</b></div>
+                    <div class="mega-item"><span>Summer Skirt (Red, Yellow)</span> <b>£30.00</b></div>
+                    <div class="mega-item"><span>Winter Boots (Brown)</span> <b>£90.00</b></div>
+                    <div class="mega-item"><span>Sneakers/Trainers</span> <b>£65.00</b></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Finish Unit ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= FINISH & UNIT REPORT CARD ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>Unit 3 Complete!</h2>
+            <p class="instruction">Great job! You survived the London weather and bought the perfect clothes. Now, check your skills below to unlock your Unit Certificate.</p>
+            
+            <div class="checklist-container">
+                <h3>NOW I CAN...</h3>
+                <label class="check-item"><input type="checkbox" class="now-i-can-check" onclick="verifyChecklist(this)"> Describe the weather</label>
+                <label class="check-item"><input type="checkbox" class="now-i-can-check" onclick="verifyChecklist(this)"> Say colours</label>
+                <label class="check-item"><input type="checkbox" class="now-i-can-check" onclick="verifyChecklist(this)"> Buy clothes</label>
+                <label class="check-item"><input type="checkbox" class="now-i-can-check" onclick="verifyChecklist(this)"> Describe clothes</label>
+                <label class="check-item"><input type="checkbox" class="now-i-can-check" onclick="verifyChecklist(this)"> Shop for clothes</label>
+            </div>
+
+            <!-- THE REPORT CARD (Hidden until checklist is done) -->
+            <div class="report-card-container" id="report-card-area">
+                <div class="report-card" id="report-card-capture">
+                    <div class="rc-header">
+                        <h2>Unit 3 Certificate</h2>
+                        <p>At the Clothes Shop & Weather</p>
+                    </div>
+                    
+                    <div class="rc-grid">
+                        <div class="rc-item"><span>Lesson 3A:</span> <strong id="rc-3a">0%</strong></div>
+                        <div class="rc-item"><span>Lesson 3B:</span> <strong id="rc-3b">0%</strong></div>
+                        <div class="rc-item"><span>Lesson 3C:</span> <strong id="rc-3c">0%</strong></div>
+                        <div class="rc-item"><span>Lesson 3D:</span> <strong id="rc-3d">0%</strong></div>
+                    </div>
+
+                    <div class="rc-total">
+                        <span>Unit 3 Overall Score</span>
+                        <strong id="rc-avg">0%</strong>
+                    </div>
+                </div>
+
+                <div class="btn-finish-wrapper" style="margin-top: 25px;">
+                    <button class="btn-nav" style="background: #166534; color: white; border-color: #166534;" onclick="downloadDiv('report-card-capture', 'Unit3_Certificate.png')">📥 Download My Certificate</button>
+                </div>
+
+                <div class="btn-finish-wrapper" style="margin-top: 30px;">
+                    <button class="btn-nav" style="background: var(--theme-orange-border); color: white; border-color: var(--theme-orange-border); width: 100%; text-transform: uppercase;" onclick="goToNextUnit()">Start Next Journey (Unit 4) ➔</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO FLUTUANTE DE GRAMÁTICA -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Unit 3 Review</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-light); font-weight:bold; margin-bottom:10px; font-size:16px;">📚 Grammar Review</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--blue-light);">LOOKING FOR (Procurando por)</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"What <b>are you looking for</b>?"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"I <b>am looking for</b> a dress."</div>
+            
+            <div style="margin-bottom:5px; margin-top:15px; font-weight: bold; color: var(--blue-light);">PRESENT CONTINUOUS (Wearing)</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"She <b>is wearing</b> a black coat."</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"They <b>are wearing</b> blue jeans."</div>
+
+            <div style="margin-bottom:5px; margin-top:15px; font-weight: bold; color: var(--blue-light);">TRY ON & SIZES</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"Can I <b>try it on</b>?"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"I am <b>Medium</b>."</div>
+        </div>
+    </div>
+
+    <script>
+        // Navegação
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // Drag and Drop Lógica
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            
+            if (target.classList.contains('drop-zone')) {
+                target.appendChild(draggedEl);
+            } else if (target.classList.contains('draggable-word')) {
+                target.parentElement.appendChild(draggedEl);
+            }
+        }
+        function dropBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('word-pool').appendChild(document.getElementById(data));
+        }
+
+        // Download em HD
+        function downloadDiv(divId, filename) { 
+            html2canvas(document.getElementById(divId), { useCORS: true, scale: 2 }).then(canvas => { 
+                let link = document.createElement('a'); 
+                link.download = filename; 
+                link.href = canvas.toDataURL('image/png'); 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                alert("Error downloading image.");
+                console.error(err);
+            }); 
+        }
+
+        // Sistema de Avaliação (XP e Mochila) Integrado à Checklist e ao Report Card
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_3d_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao3d_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaurar Game 1
+                    for(let wordId in respostas.sorter) {
+                        let zoneId = respostas.sorter[wordId];
+                        let zone = document.getElementById(zoneId);
+                        let word = document.getElementById(wordId);
+                        if(zone && word) zone.appendChild(word);
+                    }
+
+                    // Restaurar Game 2
+                    for(let q in respostas.quiz) {
+                        let ansIndex = respostas.quiz[q];
+                        if(ansIndex !== null) {
+                            let radios = document.querySelectorAll(`input[name="${q}"]`);
+                            if(radios[ansIndex]) radios[ansIndex].checked = true;
+                        }
+                    }
+
+                    // Marcar tudo como pronto
+                    let checks = document.querySelectorAll('.now-i-can-check');
+                    checks.forEach(c => { c.checked = true; c.parentElement.classList.add('done'); });
+                    verifyChecklist(checks[0]); 
+                }
+            }
+        });
+
+        function verifyChecklist(checkbox) {
+            const label = checkbox.parentElement;
+            if (checkbox.checked) { label.classList.add('done'); } 
+            else { label.classList.remove('done'); }
+
+            const allCheckboxes = document.querySelectorAll('.now-i-can-check');
+            let allChecked = true;
+            allCheckboxes.forEach(cb => { if (!cb.checked) allChecked = false; });
+
+            const reportArea = document.getElementById('report-card-area');
+            if (allChecked) {
+                calculateXPAndReport(); // Roda a avaliação e gera o boletim!
+                reportArea.style.display = 'block';
+                setTimeout(() => { reportArea.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+            } else {
+                reportArea.style.display = 'none';
+            }
+        }
+
+        function calculateXPAndReport() {
+            let correct = 0;
+            let total = 0;
+            let respostasFotografadas = { sorter: {}, quiz: {} };
+
+            // Validar Game 1 (Fast Sorter)
+            document.querySelectorAll('.eval-sort').forEach(word => {
+                total++;
+                let parentZone = word.parentElement;
+                respostasFotografadas.sorter[word.id] = parentZone.id;
+                if(parentZone.id === word.getAttribute('data-ans')) correct++;
+            });
+
+            // Avaliar Game 2 (The Quick Quiz)
+            for(let i=1; i<=3; i++) {
+                total++;
+                let radios = document.querySelectorAll(`input[name="q${i}"]`);
+                respostasFotografadas.quiz[`q${i}`] = null;
+                
+                radios.forEach((r, index) => {
+                    if(r.checked) {
+                        respostasFotografadas.quiz[`q${i}`] = index;
+                        if(r.value === "correct") correct++;
+                    }
+                });
+            }
+
+            localStorage.setItem('licao3d_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = correct / total;
+            let finalXP = Math.round(percentage * 100); 
+
+            // Guardar no Perfil Global
+            let oldXP = parseInt(localStorage.getItem('licao_3d_xp')) || 0;
+            let xpDifference = finalXP - oldXP; 
+            localStorage.setItem('licao_3d_status', 'concluida');
+            localStorage.setItem('licao_3d_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+            }
+
+            // GERAÇÃO DO REPORT CARD MÁGICO
+            let xp3A = parseInt(localStorage.getItem('licao_3a_xp')) || 0;
+            let xp3B = parseInt(localStorage.getItem('licao_3b_xp')) || 0;
+            let xp3C = parseInt(localStorage.getItem('licao_3c_xp')) || 0;
+            let xp3D = finalXP;
+            
+            // Média de Aproveitamento da Unidade 3
+            let avgXP = Math.round((xp3A + xp3B + xp3C + xp3D) / 4);
+
+            document.getElementById('rc-3a').innerText = xp3A + "%";
+            document.getElementById('rc-3b').innerText = xp3B + "%";
+            document.getElementById('rc-3c').innerText = xp3C + "%";
+            document.getElementById('rc-3d').innerText = xp3D + "%";
+            document.getElementById('rc-avg').innerText = avgXP + "%";
+        }
+
+        function goToNextUnit() {
+            let avgXP = parseInt(document.getElementById('rc-avg').innerText.replace('%', '')) || 90;
+            localStorage.setItem('unit3_done', 'true');
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(3, avgXP);
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('transicao_3_para_4.html', 'link-4a');
+                    return;
+                }
+            }
+            window.location.href = 'transicao_3_para_4.html';
+        }
+    </script>
+</body>
+</html>

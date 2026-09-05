@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4C | Getting Lost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --black: #1A1A1A;
+            --white: #FFFFFF;
+            --blue-dark: #1E3C72;
+            --blue-light: #2A5298;
+            --orange-main: #E67E22;
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 900px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--orange-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--orange-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .audio-wrapper {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background: white;
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            gap: 10px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 9px 20px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+        }
+        .play-btn:hover { background: var(--blue-light); transform: scale(1.03); }
+        .play-btn.playing { background: #ea580c !important; }
+
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 8px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.05); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-ctrl-btn.pause-btn { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .audio-ctrl-btn.pause-btn:hover { background: #fecaca; }
+
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            margin-left: 6px;
+        }
+
+        /* ESTÉTICA GAMIFICADA */
+        .gamified-input, .text-input, textarea, select {
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 10px 14px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gamified-input:focus, .text-input:focus, textarea:focus, select:focus {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(59, 130, 246, 0.12);
+            transform: translateY(-1px);
+        }
+        .gamified-input:hover, .text-input:hover, textarea:hover, select:hover {
+            border-color: #94a3b8;
+            background: #ffffff;
+        }
+
+        /* BOTÕES TRUE / FALSE */
+        .tf-btn-group {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .btn-tf {
+            border: 2px solid #cbd5e1;
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 7px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            user-select: none;
+        }
+        .btn-tf:hover {
+            transform: translateY(-1px);
+            border-color: #94a3b8;
+        }
+        .btn-tf-true.active {
+            background: #22c55e !important;
+            border-color: #16a34a !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+        }
+        .btn-tf-false.active {
+            background: #ef4444 !important;
+            border-color: #dc2626 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .dialogue-display {
+            background: #f8fafc;
+            border-left: 4px solid var(--blue-dark);
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .dialogue-display b { color: var(--blue-dark); }
+
+        .tf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .tf-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            gap: 15px;
+        }
+        .tf-item span { flex: 1; }
+
+        .text-input {
+            padding: 8px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+            background: white;
+        }
+        .text-input:focus {
+            border-color: var(--blue-dark);
+            box-shadow: 0 0 0 3px rgba(30,60,114,0.15);
+        }
+        .text-input.input-tf {
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .text-input.full-width {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 6px;
+        }
+
+        .step-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        @media(max-width: 700px) {
+            .step-container { grid-template-columns: 1fr; }
+        }
+        .step-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .step-card b {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: var(--blue-dark);
+        }
+
+        .map-grid-visual {
+            background: #e2e8f0;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        @media(max-width: 600px) {
+            .map-grid-visual { grid-template-columns: 1fr; }
+        }
+        .map-cell {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .map-cell b { display: block; color: var(--blue-dark); margin-bottom: 4px; }
+        .map-cell span { font-size: 11px; color: #64748b; }
+
+        .has-got-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        @media(max-width: 650px) {
+            .has-got-grid { grid-template-columns: 1fr; }
+        }
+        .has-got-box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+        .has-got-box.positive { border-color: #22c55e; }
+        .has-got-box.negative { border-color: #ef4444; }
+        .has-got-box h3 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-title);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .has-got-box.positive h3 { color: #16a34a; }
+        .has-got-box.negative h3 { color: #dc2626; }
+
+        .story-transition-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--orange-main);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9a3412;
+            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MODAL */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .xp-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 30px;
+            font-weight: 800;
+            margin: 20px auto;
+            border: 4px solid #f59e0b;
+        }
+
+        /* GRAMMAR TIP FLOATING */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--orange-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--orange-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 4 • Round and about</span>
+            <h1>4C | Getting Lost</h1>
+        </div>
+
+        <!-- SEÇÃO 1: TARGET SITUATION (LISTENING & T/F) -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Target Situation • Looking for the Destination</h2>
+            <p class="instruction">Listen to Ivete asking people in London for directions, then answer True (T) or False (F) for each statement.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-1">
+                    <audio id="audio-1" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-1" onclick="cycleSpeed('audio-1', 'spd-audio-1')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 1.25, 'fast-audio-1')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4C.1: Ivete Getting Lost</span>
+                </div>
+            </div>
+
+            <div class="dialogue-display">
+                <b>Ivete:</b> "Excuse me! Where is High Street? I’m looking for the Overseas Corporation building."<br>
+                <b>Person 1 (Asian man):</b> "Sorry, I’m in a hurry and I don’t speak much English. Try that lady over there."<br>
+                <b>Ivete:</b> "Excuse me, madam! Have you got a map? I haven’t got my GPS on my phone because the battery is dead."<br>
+                <b>Person 3 (Local lady):</b> "Don't worry! Yes, I've got a street map right here. Look, you are on Regent Street. Go straight on and turn right at the crossroads. High Street is right there opposite the bank!"<br>
+                <b>Ivete:</b> "Thank you so much! You're a lifesaver!"
+            </div>
+
+            <div class="card-box">
+                <p><b>Finally, answer T or F for the questions below.</b></p>
+                <div class="tf-list">
+                    <div class="tf-item">
+                        <span>a) Ivete is looking for a post office.</span>
+                        <div class="tf-btn-group" id="group-ts-q1">
+                            <input type="hidden" class="eval-input" id="ts-q1" data-ans="F|False" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('ts-q1', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('ts-q1', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>b) She hasn’t got a map.</span>
+                        <div class="tf-btn-group" id="group-ts-q2">
+                            <input type="hidden" class="eval-input" id="ts-q2" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('ts-q2', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('ts-q2', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>c) She hasn’t got a smartphone.</span>
+                        <div class="tf-btn-group" id="group-ts-q3">
+                            <input type="hidden" class="eval-input" id="ts-q3" data-ans="F|False" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('ts-q3', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('ts-q3', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>d) The Asian man doesn’t speak English.</span>
+                        <div class="tf-btn-group" id="group-ts-q4">
+                            <input type="hidden" class="eval-input" id="ts-q4" data-ans="F|False" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('ts-q4', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('ts-q4', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>e) Person 3 helps her. She has got a map.</span>
+                        <div class="tf-btn-group" id="group-ts-q5">
+                            <input type="hidden" class="eval-input" id="ts-q5" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('ts-q5', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('ts-q5', 'F', this)">False</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Language Guide ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: LANGUAGE GUIDE (CORRECT MISTAKES) -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Language Guide • Have got / Has got</h2>
+            <p class="instruction">Now, correct the mistakes in the sentences. Rewrite each sentence correctly.</p>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <div>
+                        <b>a) I hasn’t got a map.</b>
+                        <input type="text" class="text-input full-width eval-input" id="lg-q1" data-ans="I haven't got a map|I haven't got a map.|I have not got a map|I have not got a map." placeholder="Type corrected sentence here...">
+                    </div>
+                    <div>
+                        <b>b) Has you got a smartphone?</b>
+                        <input type="text" class="text-input full-width eval-input" id="lg-q2" data-ans="Have you got a smartphone?|Have you got a smartphone|Have you got a smart phone?|Have you got a smart phone" placeholder="Type corrected sentence here...">
+                    </div>
+                    <div>
+                        <b>c) Ivete haves got a GPS.</b>
+                        <input type="text" class="text-input full-width eval-input" id="lg-q3" data-ans="Ivete has got a GPS|Ivete has got a GPS.|Ivete's got a GPS|Ivete's got a GPS." placeholder="Type corrected sentence here...">
+                    </div>
+                    <div>
+                        <b>d) She doesn’t have got a map with her.</b>
+                        <input type="text" class="text-input full-width eval-input" id="lg-q4" data-ans="She hasn't got a map with her|She hasn't got a map with her.|She has not got a map with her|She has not got a map with her." placeholder="Type corrected sentence here...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Lunchtime Map ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: TARGET SITUATION (LUNCHTIME MAP DIALOGUE) -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Target Situation • Lunchtime Directions</h2>
+            <p class="instruction">It’s lunchtime. Ivete is looking for food. How can you continue the dialogue below in six steps? Follow the map.</p>
+
+            <div class="map-grid-visual">
+                <div class="map-cell">
+                    <b>🍕 Luigi's Italian</b>
+                    <span>King's Road (Left)</span>
+                </div>
+                <div class="map-cell">
+                    <b>☕ City Bakery & Café</b>
+                    <span>Corner of High Street</span>
+                </div>
+                <div class="map-cell">
+                    <b>🥪 Fresh Sandwich Bar</b>
+                    <span>Opposite the tube station</span>
+                </div>
+                <div class="map-cell">
+                    <b>🌳 St. James Park</b>
+                    <span>End of Avenue</span>
+                </div>
+                <div class="map-cell" style="background:#fef3c7; border-color:#f59e0b;">
+                    <b>📍 YOU ARE HERE</b>
+                    <span>High Street / Overseas Corp</span>
+                </div>
+                <div class="map-cell">
+                    <b>🚇 Underground Station</b>
+                    <span>Victoria Line Entrance</span>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <p><b>Write the dialogue continuation in 6 steps:</b></p>
+                <div class="step-container">
+                    <div class="step-card">
+                        <b>Step 1: Ask for a food recommendation</b>
+                        <textarea class="text-input full-width" id="step-1" rows="2" placeholder="e.g. Excuse me, is there a good place to eat near here?"></textarea>
+                    </div>
+                    <div class="step-card">
+                        <b>Step 2: Give first food option and location</b>
+                        <textarea class="text-input full-width" id="step-2" rows="2" placeholder="e.g. Yes, there's a great Italian restaurant on King's Road."></textarea>
+                    </div>
+                    <div class="step-card">
+                        <b>Step 3: Ask for quick food / sandwich</b>
+                        <textarea class="text-input full-width" id="step-3" rows="2" placeholder="e.g. I haven't got much time. Have you got a quick sandwich option?"></textarea>
+                    </div>
+                    <div class="step-card">
+                        <b>Step 4: Direct to the sandwich bar or bakery</b>
+                        <textarea class="text-input full-width" id="step-4" rows="2" placeholder="e.g. Sure, the City Bakery is right on the corner of High Street."></textarea>
+                    </div>
+                    <div class="step-card">
+                        <b>Step 5: Confirm walking directions</b>
+                        <textarea class="text-input full-width" id="step-5" rows="2" placeholder="e.g. Just go straight on for 50 metres, it's on your right."></textarea>
+                    </div>
+                    <div class="step-card">
+                        <b>Step 6: Polite thank you & closing</b>
+                        <textarea class="text-input full-width" id="step-6" rows="2" placeholder="e.g. Thank you so much! Have a wonderful day!"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: CROSS CURRICULAR (MELBOURNE) -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Cross Curricular • Getting Around Melbourne</h2>
+            <p class="instruction">Read the text below. Two people are talking about how to get to places in Melbourne. Are the statements about the dialogue true or false?</p>
+
+            <div class="dialogue-display">
+                <b>Tourist:</b> "G'day! Excuse me, is there a museum near here?"<br>
+                <b>Passer-by:</b> "G'day! Yes, Melbourne Museum is in Carlton Gardens. It's fantastic!"<br>
+                <b>Tourist:</b> "Can I walk there or should I take public transport?"<br>
+                <b>Passer-by:</b> "You can take the free City Circle tram or take the underground. Parliament Station is just around the corner, only two minutes away."<br>
+                <b>Tourist:</b> "Have you got a map of the city?"<br>
+                <b>Passer-by:</b> "No, sorry, I haven't got a physical map on me, but the visitor booth across the road has got free guides. You'll love the museum, it has brilliant Aboriginal cultural displays!"
+            </div>
+
+            <div class="card-box">
+                <div class="tf-list">
+                    <div class="tf-item">
+                        <span>a) The tourist is looking for the museum.</span>
+                        <div class="tf-btn-group" id="group-cc-q1">
+                            <input type="hidden" class="eval-input" id="cc-q1" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('cc-q1', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('cc-q1', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>b) The passer-by hasn’t got a map.</span>
+                        <div class="tf-btn-group" id="group-cc-q2">
+                            <input type="hidden" class="eval-input" id="cc-q2" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('cc-q2', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('cc-q2', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>c) The tourist will walk to the destination.</span>
+                        <div class="tf-btn-group" id="group-cc-q3">
+                            <input type="hidden" class="eval-input" id="cc-q3" data-ans="F|False" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('cc-q3', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('cc-q3', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>d) There is an underground station near the destination.</span>
+                        <div class="tf-btn-group" id="group-cc-q4">
+                            <input type="hidden" class="eval-input" id="cc-q4" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('cc-q4', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('cc-q4', 'F', this)">False</button>
+                        </div>
+                    </div>
+                    <div class="tf-item">
+                        <span>e) The passer-by has a positive opinion about the museum.</span>
+                        <div class="tf-btn-group" id="group-cc-q5">
+                            <input type="hidden" class="eval-input" id="cc-q5" data-ans="T|True" value="">
+                            <button type="button" class="btn-tf btn-tf-true" onclick="setTF('cc-q5', 'T', this)">True</button>
+                            <button type="button" class="btn-tf btn-tf-false" onclick="setTF('cc-q5', 'F', this)">False</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next: Language at Work ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 5: LANGUAGE AT WORK & FINISH -->
+        <div id="sec-5" class="activity-section theme-blue">
+            <h2>5. Language at Work • What Has She Got?</h2>
+            <p class="instruction">Listen to Ivete on “Target Situation” again and write what she has got and what she hasn’t got.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-1">
+                    <audio id="audio-2" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-2" onclick="cycleSpeed('audio-2', 'spd-audio-2')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 1.25, 'fast-audio-2')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4C.1: Ivete Getting Lost (Listen Again)</span>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <div class="has-got-grid">
+                    <div class="has-got-box positive">
+                        <h3>✅ HAS GOT</h3>
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">What items, tools, or documents has Ivete got?</p>
+                        <textarea class="text-input full-width" id="has-got-text" rows="4" placeholder="e.g. She has got her smartphone, her portfolio with her CV, and directions from the lady."></textarea>
+                    </div>
+                    <div class="has-got-box negative">
+                        <h3>❌ HASN’T GOT</h3>
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">What hasn't Ivete got with her?</p>
+                        <textarea class="text-input full-width" id="hasnt-got-text" rows="4" placeholder="e.g. She hasn't got battery on her phone, she hasn't got a physical map, and she hasn't got working GPS."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA EXATA DO COMANDO -->
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Ivete finally found the Overseas Corporation building. She takes a deep breath and prepares for her big interview.
+            </div>
+
+            <button class="btn-finish" id="btn-finish-4c" onclick="calculateXP()">✅ Finish Lesson & Get XP</button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--orange-main); margin-top:0;">Mission Complete!</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 4C • Getting Lost Finished</p>
+            <div class="xp-circle" id="xp-gained-text">+100</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored 14 out of 14.</p>
+            <button class="btn-finish" style="margin-top: 20px;" onclick="proceedToNextLesson()">Collect XP & Next ➔</button>
+        </div>
+    </div>
+
+    <!-- DICA GRAMATICAL FLUTUANTE -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-dark); font-weight:bold; margin-bottom:10px; font-size:15px;">📚 Have got / Has got</div>
+            <div>
+                Use <b>have got / has got</b> for possession and relationships:<br><br>
+                • <b>Affirmative (+):</b><br>
+                I / You / We / They <b>have got ('ve got)</b> a map.<br>
+                He / She / It <b>has got ('s got)</b> a smartphone.<br><br>
+                • <b>Negative (-):</b><br>
+                I / You / We / They <b>haven't got</b> GPS.<br>
+                He / She / It <b>hasn't got</b> battery.<br><br>
+                • <b>Questions (?):</b><br>
+                <b>Have you got</b> a ticket?<br>
+                <b>Has she got</b> a street map?<br><br>
+                • <b>Short Answers:</b><br>
+                Yes, I <b>have</b>. / No, I <b>haven't</b>.<br>
+                Yes, she <b>has</b>. / No, she <b>hasn't</b>.<br>
+                <i>(Note: Never say <s>Yes, I got</s> or <s>No, I haven't got</s>).</i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // BOTÕES TRUE / FALSE (INTERATIVOS)
+        // ==========================================
+        function setTF(inputId, val, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.value = val;
+            const group = btn.closest('.tf-btn-group');
+            if (group) {
+                group.querySelectorAll('.btn-tf').forEach(b => b.classList.remove('active'));
+            }
+            btn.classList.add('active');
+        }
+
+        // ==========================================
+        // ÁUDIO PLAYER PADRONIZADO & TTS FALLBACK
+        // ==========================================
+        const audioScripts = {
+            'audio-1': "Track 4C.1. Ivete: Excuse me! Where is High Street? I am looking for the Overseas Corporation building. Person 1: Sorry, I am in a hurry and I don't speak much English. Try that lady over there. Ivete: Excuse me, madam! Have you got a map? I haven't got my GPS on my phone because the battery is dead. Person 3: Don't worry! Yes, I have got a street map right here. Look, you are on Regent Street. Go straight on and turn right at the crossroads. High Street is right there opposite the bank! Ivete: Thank you so much! You are a lifesaver!"
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--blue-dark)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--blue-dark)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        // ==========================================
+        // AVALIAÇÃO & PERSISTÊNCIA XP
+        // ==========================================
+        let calculatedXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let userAnswers = {
+                inputs: {},
+                dialogueSteps: {
+                    s1: document.getElementById('step-1').value,
+                    s2: document.getElementById('step-2').value,
+                    s3: document.getElementById('step-3').value,
+                    s4: document.getElementById('step-4').value,
+                    s5: document.getElementById('step-5').value,
+                    s6: document.getElementById('step-6').value
+                },
+                hasGot: document.getElementById('has-got-text').value,
+                hasntGot: document.getElementById('hasnt-got-text').value
+            };
+
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                const val = input.value.trim().toLowerCase();
+                userAnswers.inputs[input.id] = input.value;
+                const accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                const isCorrect = accepted.includes(val);
+                if (isCorrect) {
+                    correct++;
+                }
+
+                if (input.type !== 'hidden') {
+                    if (isCorrect) {
+                        input.style.borderColor = "#22c55e";
+                        input.style.backgroundColor = "#f0fdf4";
+                    } else {
+                        input.style.borderColor = "#ef4444";
+                        input.style.backgroundColor = "#fef2f2";
+                    }
+                } else {
+                    const group = input.closest('.tf-btn-group');
+                    if (group) {
+                        group.style.borderRadius = "25px";
+                        group.style.padding = "2px 4px";
+                        if (isCorrect) {
+                            group.style.outline = "2px solid #22c55e";
+                        } else {
+                            group.style.outline = "2px solid #ef4444";
+                        }
+                    }
+                }
+            });
+
+            // Dialogues & texts completion points
+            if (userAnswers.dialogueSteps.s1.trim().length > 3) correct += 0.5;
+            if (userAnswers.dialogueSteps.s2.trim().length > 3) correct += 0.5;
+            if (userAnswers.dialogueSteps.s3.trim().length > 3) correct += 0.5;
+            if (userAnswers.dialogueSteps.s4.trim().length > 3) correct += 0.5;
+            if (userAnswers.dialogueSteps.s5.trim().length > 3) correct += 0.5;
+            if (userAnswers.dialogueSteps.s6.trim().length > 3) correct += 0.5;
+            if (userAnswers.hasGot.trim().length > 5) correct += 1;
+            if (userAnswers.hasntGot.trim().length > 5) correct += 1;
+            total += 5;
+
+            localStorage.setItem('licao4c_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            calculatedXP = Math.min(100, Math.round(percentage * 100));
+
+            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
+            document.getElementById('score-text').innerText = `You scored ${Math.round(correct)} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function proceedToNextLesson() {
+            let oldXP = parseInt(localStorage.getItem('licao_4c_xp')) || 0;
+            let diff = calculatedXP - oldXP;
+
+            localStorage.setItem('licao_4c_status', 'concluida');
+            localStorage.setItem('licao_4c_xp', calculatedXP);
+
+            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalXP += diff;
+            localStorage.setItem('target_on_profile_xp', totalXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, calculatedXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao4d.html', 'link-4d');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao4d.html', null);
+                return;
+            }
+            window.location.href = "licao4d.html";
+        }
+
+        // Restore state on load
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao4c_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.inputs) {
+                        for (let id in data.inputs) {
+                            let el = document.getElementById(id);
+                            if (el) {
+                                el.value = data.inputs[id];
+                                if (el.type === 'hidden') {
+                                    const group = el.closest('.tf-btn-group');
+                                    if (group) {
+                                        const val = String(data.inputs[id]).toUpperCase();
+                                        if (val === 'T' || val === 'TRUE') {
+                                            const tb = group.querySelector('.btn-tf-true');
+                                            if (tb) tb.classList.add('active');
+                                        } else if (val === 'F' || val === 'FALSE') {
+                                            const fb = group.querySelector('.btn-tf-false');
+                                            if (fb) fb.classList.add('active');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (data.dialogueSteps) {
+                        if (data.dialogueSteps.s1) document.getElementById('step-1').value = data.dialogueSteps.s1;
+                        if (data.dialogueSteps.s2) document.getElementById('step-2').value = data.dialogueSteps.s2;
+                        if (data.dialogueSteps.s3) document.getElementById('step-3').value = data.dialogueSteps.s3;
+                        if (data.dialogueSteps.s4) document.getElementById('step-4').value = data.dialogueSteps.s4;
+                        if (data.dialogueSteps.s5) document.getElementById('step-5').value = data.dialogueSteps.s5;
+                        if (data.dialogueSteps.s6) document.getElementById('step-6').value = data.dialogueSteps.s6;
+                    }
+                    if (data.hasGot) document.getElementById('has-got-text').value = data.hasGot;
+                    if (data.hasntGot) document.getElementById('hasnt-got-text').value = data.hasntGot;
+                } catch(e) {}
+            }
+
+            if (localStorage.getItem('licao_4c_status') === 'concluida') {
+                let btnFinish = document.getElementById('btn-finish-4c');
+                if (btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

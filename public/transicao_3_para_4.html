@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition | The Bus Station</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #450a0a;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            color: #ffffff;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .bg-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(69, 10, 10, 0.85), rgba(185, 28, 28, 0.7)), url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            z-index: 0; 
+            animation: slowZoom 20s linear infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        .cinematic-container {
+            position: relative; z-index: 1; text-align: center; max-width: 800px; padding: 20px;
+        }
+
+        .dialogue-line {
+            font-size: 32px; font-weight: 300; line-height: 1.6; letter-spacing: 1px;
+            margin-bottom: 35px; opacity: 0; transform: translateY(20px);
+            transition: opacity 2s ease, transform 2s ease; 
+            text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+        }
+
+        .dialogue-line.show { opacity: 1; transform: translateY(0); }
+        .dialogue-line b { font-weight: 600; color: #fca5a5; }
+
+        .btn-proceed {
+            opacity: 0; transform: translateY(20px); transition: all 1s ease;
+            margin-top: 50px; display: inline-block; padding: 18px 50px;
+            border-radius: 50px; background: #ef4444; color: white;
+            text-transform: uppercase; font-weight: 800; letter-spacing: 2px;
+            border: 2px solid #ef4444; cursor: pointer; text-decoration: none;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5); font-size: 16px;
+        }
+
+        .btn-proceed.show { opacity: 1; transform: translateY(0); }
+        .btn-proceed:hover { background: transparent; color: #ef4444; }
+
+        .start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #450a0a; z-index: 50; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: opacity 1s ease;
+        }
+        
+        .start-overlay h2 { margin-bottom: 30px; font-weight: 300; letter-spacing: 5px; text-transform: uppercase; color: #fca5a5;}
+        
+        .btn-start {
+            padding: 15px 40px; font-size: 16px; font-family: 'Montserrat', sans-serif;
+            background: transparent; color: white; border: 2px solid white; border-radius: 50px;
+            cursor: pointer; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { background: white; color: #450a0a; }
+    </style>
+</head>
+<body>
+
+    <div class="start-overlay" id="start-overlay">
+        <h2>Journey to the Museum</h2>
+        <button class="btn-start" onclick="startCinematic()">Start Journey ➔</button>
+    </div>
+
+    <div class="bg-image"></div>
+
+    <audio id="station-audio" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/01/18/audio_8f448b11eb.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="cinematic-container">
+        <div class="dialogue-line" id="line-1">
+            "I really want to visit the <b>British Museum</b>..."
+        </div>
+        
+        <div class="dialogue-line" id="line-2">
+            "But it's so far away..."
+        </div>
+        
+        <div class="dialogue-line" id="line-3">
+            "I'm going to be brave and <b>take a bus</b>."
+        </div>
+
+        <a href="licao4a.html" class="btn-proceed" id="btn-proceed">Board the Bus ➔</a>
+    </div>
+
+    <script>
+        function startCinematic() {
+            const audio = document.getElementById('station-audio');
+            if(audio) {
+                audio.volume = 0.4;
+                audio.play().catch(e => console.log(e));
+            }
+
+            const overlay = document.getElementById('start-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 1000);
+
+            setTimeout(() => { document.getElementById('line-1').classList.add('show'); }, 1500);
+            setTimeout(() => { document.getElementById('line-2').classList.add('show'); }, 4500);
+            setTimeout(() => { document.getElementById('line-3').classList.add('show'); }, 7500);
+            setTimeout(() => { document.getElementById('btn-proceed').classList.add('show'); }, 10000);
+        }
+    </script>
+</body>
+</html>

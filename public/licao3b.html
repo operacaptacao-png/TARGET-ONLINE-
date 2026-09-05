@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3B | At the Clothes Shop (Describing clothes)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Biblioteca para tirar Print/Screenshot da tela -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            /* PALETA FRIA (WINTER/LONDON RAIN) */
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a; 
+            --blue-medium: #1e3a8a; 
+            --blue-light: #3b82f6; 
+            --accent-main: #3b82f6; 
+            --accent-dark: #2563eb;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            /* Paleta Temática das Secções */
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #f5f3ff; --theme-purple-border: #6366f1;
+            --theme-red-bg: #f8fafc; --theme-red-border: #475569; 
+            --theme-green-bg: #f0fdfa; --theme-green-border: #0d9488;
+            --theme-orange-bg: #f0f9ff; --theme-orange-border: #0284c7; 
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #f1f5f9; --theme-yellow-border: #334155;
+        }
+
+        /* FUNDO E CENTRALIZAÇÃO */
+        body {
+            font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px 120px 15px;
+            display: flex; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #334155 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white); width: 100%; max-width: 900px; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4); border-radius: 24px; padding: 50px; position: relative; z-index: 1;
+            margin: 0 auto;
+        }
+
+        .lesson-banner {
+            width: 100%; height: 220px;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 40px;
+        }
+
+        .lesson-banner h1 {
+            color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; color: var(--blue-dark); }
+        h3 { font-family: var(--font-title); font-weight: 700; font-size: 18px; margin-bottom: 15px; color: var(--blue-dark); }
+        p.instruction { color: #475569; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        /* ==== SECÇÕES TEMÁTICAS ==== */
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        /* Botões de Navegação */
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: var(--theme-yellow-border); border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .btn-finish-wrapper { display: flex; justify-content: center; width: 100%; flex-wrap: wrap; gap: 15px; margin-top: 20px;}
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%; text-align: center;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+
+        /* GERAL ÁUDIO E MÍDIA */
+        .text-input { width: 100%; border: none; border-bottom: 2px solid #ccc; background: transparent; font-family: var(--font-text); font-size: 16px; padding: 10px 5px; outline: none; transition: 0.3s; color: var(--black); font-weight: bold; margin-bottom: 15px; box-sizing: border-box; }
+        .text-input:focus { border-color: var(--accent-main); }
+        .audio-wrapper { display: flex; justify-content: center; width: 100%; }
+        .audio-player { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; font-weight: 600; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .play-btn { background: var(--accent-main); border: none; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 800; font-family: var(--font-title); font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .play-btn:hover { background: var(--accent-dark); transform: scale(1.05); }
+        .speed-btn { background: #e2e8f0; border: 1px solid #cbd5e1; color: #1e293b; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        /* ==== 0. WARM UP (BINGO) ==== */
+        .bingo-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .bingo-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; padding: 20px; border-radius: 12px; border: 2px dashed var(--theme-blue-border); width: 100%; box-sizing: border-box;}
+        .bingo-item { background: var(--theme-blue-border); color: white; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: grab; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .bingo-board { background: #1e3a8a; padding: 20px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .bingo-title { color: white; font-family: var(--font-title); font-size: 32px; font-weight: 900; text-align: center; letter-spacing: 15px; margin-bottom: 15px; }
+        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .bingo-cell { background: white; aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; padding: 5px; font-size: 13px; color: var(--blue-dark); border: 2px dashed #cbd5e1; transition: 0.3s; }
+        .bingo-cell.drag-over { background: #e0e7ff; border-color: var(--blue-light); }
+
+        /* ==== 1. WORDS AND IDEAS (GROUPS & COLORS) ==== */
+        .color-palette { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; background: white; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 25px; }
+        .color-dot { width: 35px; height: 35px; border-radius: 50%; cursor: grab; box-shadow: 0 3px 6px rgba(0,0,0,0.2); border: 2px solid white; transition: 0.2s; }
+        .color-dot:active { transform: scale(0.9); }
+        .c-blue { background: #3b82f6; } .c-black { background: #0f172a; } .c-green { background: #22c55e; }
+        .c-grey { background: #94a3b8; } .c-purple { background: #a855f7; } .c-brown { background: #78350f; }
+        .c-white { background: #ffffff; border: 2px solid #ccc; } .c-orange { background: #f97316; } 
+        .c-red { background: #ef4444; } .c-pink { background: #ec4899; } .c-yellow { background: #eab308; }
+
+        .vocab-pool { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 2px dashed var(--theme-purple-border); margin-bottom: 25px; min-height: 50px; }
+        .vocab-word { background: white; border: 2px solid var(--theme-purple-border); color: var(--theme-purple-border); padding: 8px 15px; border-radius: 50px; font-weight: bold; cursor: grab; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .group-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media (max-width: 768px) { .group-boxes { grid-template-columns: 1fr; } }
+        
+        .group-box { background: white; border: 2px solid #cbd5e1; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; min-height: 250px; }
+        .group-header { display: flex; align-items: center; gap: 10px; padding: 15px; background: #f1f5f9; transition: background 0.3s; }
+        .group-color-drop { width: 45px; height: 45px; border-radius: 50%; border: 2px dashed #94a3b8; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; color: #64748b; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.2; padding: 2px; box-sizing: border-box; transition: 0.3s; }
+        .group-name-input { border: none; background: transparent; font-weight: bold; font-family: var(--font-title); font-size: 16px; outline: none; width: 100%; color: #334155; text-transform: capitalize; }
+        .group-name-input::placeholder { color: inherit; opacity: 0.6; }
+        .group-drop-zone { flex: 1; padding: 15px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; background: #fafafa; }
+        .group-drop-zone.drag-over { background: #e0e7ff; }
+
+        /* ==== 2. TARGET SITUATION ==== */
+        .ts-list-area { background: white; border: 2px dashed var(--theme-red-border); border-radius: 16px; padding: 30px; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .ts-list-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .ts-num { background: var(--theme-red-border); color: white; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-weight: bold; font-family: var(--font-title); flex-shrink: 0;}
+
+        /* ==== 3. LANGUAGE GUIDE ==== */
+        .gap-fill-box { background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; line-height: 2.5; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .gap-input { border: none; border-bottom: 2px dashed var(--theme-green-border); background: #f0fdf4; outline: none; font-size: 16px; font-family: var(--font-text); padding: 5px 10px; font-weight: bold; color: #166534; width: 250px; transition: 0.3s; }
+        .gap-input:focus { border-style: solid; }
+        .gap-fill-box b { color: var(--blue-dark); }
+
+        /* ==== 4. UP TO YOU ==== */
+        .large-textarea { width: 100%; height: 300px; padding: 25px; border: 2px solid var(--theme-orange-border); border-radius: 12px; font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 16px; resize: vertical; box-sizing: border-box; outline: none; background: #fffcf2; line-height: 1.8; box-shadow: inset 0 4px 10px rgba(0,0,0,0.05); }
+        .large-textarea:focus { border-color: #c2410c; }
+
+        /* ==== 5. CROSS CURRICULAR (HOMEWORK) ==== */
+        .video-container { width: 100%; max-width: 700px; margin: 0 auto 30px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 3px solid #cbd5e1; }
+        .video-container video { width: 100%; display: block; outline: none; }
+        .cc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media(max-width: 768px) { .cc-grid { grid-template-columns: 1fr; } }
+        .cc-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .cc-card p { margin-top: 0; font-weight: bold; color: var(--blue-dark); border-bottom: 2px dotted #ccc; padding-bottom: 10px; }
+
+        /* ==== 6. LANGUAGE AT WORK ==== */
+        .green-tip-balloon { background: #dcfce7; border: 2px solid #22c55e; color: #166534; padding: 20px 25px; border-radius: 20px 20px 20px 0; font-weight: 500; font-size: 15px; line-height: 1.6; margin-bottom: 30px; position: relative; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.1); }
+        .green-tip-balloon::before { content: '💡'; font-size: 24px; position: absolute; top: -15px; left: -10px; background: white; border-radius: 50%; padding: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .builder-block { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .answer-area { min-height: 50px; background: var(--theme-yellow-bg); border: 2px dashed #eab308; border-radius: 8px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: center; justify-content: center; }
+        .word-btn { background: white; border: 1px solid #ccc; font-weight: bold; padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; color: #854d0e; }
+        .word-btn:hover { border-color: var(--theme-yellow-border); color: var(--theme-yellow-border); transform: scale(1.05); }
+        .btn-clear { background: white; color: var(--theme-yellow-border); border: 2px solid var(--theme-yellow-border); padding: 8px 25px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.3s; display: block; margin: 15px auto 0 auto; }
+
+        /* ==== 7. NOW IT'S YOUR TURN ==== */
+        .comics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .comics-grid { grid-template-columns: 1fr; } }
+        
+        .comic-panel { background: white; border: 2px solid var(--theme-blue-border); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; position: relative; }
+        .comic-img { width: 100%; height: 180px; background: #e2e8f0; border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden; margin-bottom: 10px; }
+        .comic-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        
+        .comic-bubbles { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        .bubble-textarea { width: 90%; height: 80px; padding: 15px; font-family: var(--font-text); font-size: 14px; resize: none; outline: none; border: 2px solid #cbd5e1; box-sizing: border-box; }
+        
+        .bubble-left { align-self: flex-start; border-radius: 15px 15px 15px 0; background: #f0f9ff; border-color: #7dd3fc; }
+        .bubble-left:focus { border-color: #0284c7; }
+        .bubble-right { align-self: flex-end; border-radius: 15px 15px 0 15px; background: #f8fafc; border-color: #cbd5e1; }
+        .bubble-right:focus { border-color: #64748b; }
+
+        /* ==== BOTÃO FLUTUANTE DE GRAMÁTICA ==== */
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+        .grammar-floating-btn { background: var(--blue-light); color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); transition: 0.3s; }
+        .grammar-floating-btn:hover { background: var(--blue-medium); transform: translateY(-5px); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 340px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 2px solid var(--blue-light); transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.5; pointer-events: none; }
+        .grammar-box::after { content: ""; position: absolute; top: 100%; right: 40px; margin-left: -10px; border-width: 10px; border-style: solid; border-color: var(--blue-light) transparent transparent transparent; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        @media (max-width: 500px) { .grammar-floating-btn { padding: 15px; font-size: 0; } .grammar-box { width: 280px; right: -10px; } .grammar-box::after { right: 25px; } }
+
+        /* MODAL DE RESULTADO */
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
+        .modal-content h2 { color: #f97316; font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>3B | At the Clothes Shop<br><span style="font-size: 20px; font-weight: 500; text-transform: none; letter-spacing: 1px;">Describing clothes</span></h1>
+        </div>
+
+        <!-- ================= SEC 0: WARM UP ================= -->
+        <div id="sec-0" class="activity-section theme-blue active">
+            <h2>Warm Up: Personal Style & Bingo!</h2>
+            
+            <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--theme-blue-border);">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--blue-dark);">Teacher's Time:</p>
+                <i>What is your favorite kind of clothes? What is your personal style for outfits?</i>
+            </div>
+
+            <p class="instruction">BINGO! Select 9 items from the list and drag them to your bingo chart. Then, wait for the teacher to call them out!</p>
+            
+            <div class="bingo-container">
+                <div class="bingo-pool" id="b-pool" ondrop="dropBingoBack(event)" ondragover="allowDrop(event)">
+                    <div class="bingo-item" draggable="true" id="bi1" ondragstart="drag(event)">A Black hat</div>
+                    <div class="bingo-item" draggable="true" id="bi2" ondragstart="drag(event)">A White coat</div>
+                    <div class="bingo-item" draggable="true" id="bi3" ondragstart="drag(event)">A Red jumper</div>
+                    <div class="bingo-item" draggable="true" id="bi4" ondragstart="drag(event)">A Grey shirt</div>
+                    <div class="bingo-item" draggable="true" id="bi5" ondragstart="drag(event)">A Blue T-shirt</div>
+                    <div class="bingo-item" draggable="true" id="bi6" ondragstart="drag(event)">An Orange dress</div>
+                    <div class="bingo-item" draggable="true" id="bi7" ondragstart="drag(event)">A Yellow skirt</div>
+                    <div class="bingo-item" draggable="true" id="bi8" ondragstart="drag(event)">A brown jacket</div>
+                    <div class="bingo-item" draggable="true" id="bi9" ondragstart="drag(event)">Green Shorts</div>
+                    <div class="bingo-item" draggable="true" id="bi10" ondragstart="drag(event)">Red Jeans</div>
+                    <div class="bingo-item" draggable="true" id="bi11" ondragstart="drag(event)">Blue Shoes</div>
+                </div>
+
+                <div class="bingo-board">
+                    <div class="bingo-title">BINGO</div>
+                    <div class="bingo-grid">
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                        <div class="bingo-cell" ondrop="dropBingo(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-0', 'sec-1')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 1: WORDS AND IDEAS ================= -->
+        <div id="sec-1" class="activity-section theme-purple">
+            <h2>Words and Ideas</h2>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-purple-border);">
+                    <audio id="audio-wi" src="https://files.catbox.moe/aqsgn0.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-wi" style="background: var(--theme-purple-border);" onclick="toggleAudio('audio-wi', 'btn-audio-wi', 'var(--theme-purple-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-wi" onclick="changeSpeed('audio-wi', 'spd-audio-wi')">⚡ 1.0x</button>
+                    <span>Words and Ideas Audio</span>
+                </div>
+            </div>
+
+            <p class="instruction">1. Select three different colours from the palette and drag them to the group circles to paint them.<br>2. Group the words according to their meanings (Styles, Size, Clothes) by dragging them into the boxes.</p>
+            
+            <div class="color-palette">
+                <div class="color-dot c-blue" draggable="true" id="c1" ondragstart="dragColor(event)" data-color="#3b82f6"></div>
+                <div class="color-dot c-black" draggable="true" id="c2" ondragstart="dragColor(event)" data-color="#0f172a"></div>
+                <div class="color-dot c-green" draggable="true" id="c3" ondragstart="dragColor(event)" data-color="#22c55e"></div>
+                <div class="color-dot c-grey" draggable="true" id="c4" ondragstart="dragColor(event)" data-color="#94a3b8"></div>
+                <div class="color-dot c-purple" draggable="true" id="c5" ondragstart="dragColor(event)" data-color="#a855f7"></div>
+                <div class="color-dot c-brown" draggable="true" id="c6" ondragstart="dragColor(event)" data-color="#78350f"></div>
+                <div class="color-dot c-white" draggable="true" id="c7" ondragstart="dragColor(event)" data-color="#ffffff"></div>
+                <div class="color-dot c-orange" draggable="true" id="c8" ondragstart="dragColor(event)" data-color="#f97316"></div>
+                <div class="color-dot c-red" draggable="true" id="c9" ondragstart="dragColor(event)" data-color="#ef4444"></div>
+                <div class="color-dot c-pink" draggable="true" id="c10" ondragstart="dragColor(event)" data-color="#ec4899"></div>
+                <div class="color-dot c-yellow" draggable="true" id="c11" ondragstart="dragColor(event)" data-color="#eab308"></div>
+            </div>
+
+            <div class="vocab-pool" id="v-pool" ondrop="dropVocabBack(event)" ondragover="allowDrop(event)">
+                <!-- Styles (Group 1) -->
+                <div class="vocab-word eval-sort" draggable="true" id="vw1" data-ans="group-styles" ondragstart="drag(event)">Formal</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw4" data-ans="group-styles" ondragstart="drag(event)">Elegant</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw5" data-ans="group-styles" ondragstart="drag(event)">Old fashioned</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw6" data-ans="group-styles" ondragstart="drag(event)">Modern</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw16" data-ans="group-styles" ondragstart="drag(event)">Beautiful</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw17" data-ans="group-styles" ondragstart="drag(event)">Casual</div>
+                
+                <!-- Size (Group 2) -->
+                <div class="vocab-word eval-sort" draggable="true" id="vw2" data-ans="group-size" ondragstart="drag(event)">Medium</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw8" data-ans="group-size" ondragstart="drag(event)">Large</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw14" data-ans="group-size" ondragstart="drag(event)">Extra Large</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw15" data-ans="group-size" ondragstart="drag(event)">Small</div>
+
+                <!-- Clothes (Group 3) -->
+                <div class="vocab-word eval-sort" draggable="true" id="vw3" data-ans="group-clothes" ondragstart="drag(event)">Shirt</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw7" data-ans="group-clothes" ondragstart="drag(event)">Dress</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw9" data-ans="group-clothes" ondragstart="drag(event)">Jeans</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw10" data-ans="group-clothes" ondragstart="drag(event)">Coat</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw11" data-ans="group-clothes" ondragstart="drag(event)">Hat</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw12" data-ans="group-clothes" ondragstart="drag(event)">Jacket</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw13" data-ans="group-clothes" ondragstart="drag(event)">Skirt</div>
+                <div class="vocab-word eval-sort" draggable="true" id="vw18" data-ans="group-clothes" ondragstart="drag(event)">Blouse</div>
+            </div>
+
+            <div class="group-boxes">
+                <div class="group-box">
+                    <div class="group-header" id="gh1">
+                        <div class="group-color-drop" ondrop="dropColor(event, 'gh1')" ondragover="allowDrop(event)">Drop Color</div>
+                        <input type="text" class="group-name-input eval-group-name" id="gn-1" data-ans="styles" placeholder="Group 1 Name...">
+                    </div>
+                    <div class="group-drop-zone" id="group-styles" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
+                </div>
+                
+                <div class="group-box">
+                    <div class="group-header" id="gh2">
+                        <div class="group-color-drop" ondrop="dropColor(event, 'gh2')" ondragover="allowDrop(event)">Drop Color</div>
+                        <input type="text" class="group-name-input eval-group-name" id="gn-2" data-ans="size" placeholder="Group 2 Name...">
+                    </div>
+                    <div class="group-drop-zone" id="group-size" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
+                </div>
+                
+                <div class="group-box">
+                    <div class="group-header" id="gh3">
+                        <div class="group-color-drop" ondrop="dropColor(event, 'gh3')" ondragover="allowDrop(event)">Drop Color</div>
+                        <input type="text" class="group-name-input eval-group-name" id="gn-3" data-ans="clothes" placeholder="Group 3 Name...">
+                    </div>
+                    <div class="group-drop-zone" id="group-clothes" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-0')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 2: TARGET SITUATION ================= -->
+        <div id="sec-2" class="activity-section theme-red">
+            <h2>Target Situation</h2>
+            
+            <p class="instruction">Listen to Ivete at the grocery store. What items does she buy?</p>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-red-border);">
+                    <audio id="audio-ts" src="https://files.catbox.moe/3k1osu.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-ts" style="background: var(--theme-red-border);" onclick="toggleAudio('audio-ts', 'btn-audio-ts', 'var(--theme-red-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-ts" onclick="changeSpeed('audio-ts', 'spd-audio-ts')">⚡ 1.0x</button>
+                    <span>Target Situation Audio</span>
+                </div>
+            </div>
+
+            <div class="ts-list-area">
+                <div class="ts-list-item">
+                    <div class="ts-num">1</div>
+                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i1" data-ans="medium green shirt" placeholder="Write the item and details...">
+                </div>
+                <div class="ts-list-item">
+                    <div class="ts-num">2</div>
+                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i2" data-ans="black medium jeans" placeholder="Write the item and details...">
+                </div>
+                <div class="ts-list-item">
+                    <div class="ts-num">3</div>
+                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i3" data-ans="small brown shoes" placeholder="Write the item and details...">
+                </div>
+                <div class="ts-list-item">
+                    <div class="ts-num">4</div>
+                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i4" data-ans="red medium skirt" placeholder="Write the item and details...">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 3: LANGUAGE GUIDE ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>Language Guide</h2>
+            
+            <div class="green-tip-balloon" style="border-color: var(--theme-blue-border); background: var(--theme-blue-bg); color: var(--theme-blue-border); margin-bottom: 20px;">
+                You can use the sentences below to help you learn how to talk about buying clothes.<br><br>
+                <b>“What size are you looking for?”</b><br>
+                This is how you ask about the size of the clothes you want. You can practice saying sizes like “Extra Large,” “Large,” “Medium,” and “Small.”<br><br>
+                <b>“What color would you like to buy?”</b><br>
+                Use this question to talk about the color of the clothes you want. Try saying colors like “red,” “blue,” “black,” and “green.”<br><br>
+                <b>“What are you looking for?”</b><br>
+                This question helps you find the type of clothing you want. Practice saying what you’re looking for, like “a blue skirt,” “a red blouse,” “a pair of red shoes,” or “a pair of jeans.”
+            </div>
+
+            <p class="instruction">Now, fill the gaps with the appropriate information based on the grammar rules.</p>
+            
+            <div class="gap-fill-box">
+                <b>A:</b> Excuse me, madam.<br>
+                <div style="margin-left: 20px; color: #64748b; font-style: italic;">What are you looking for?</div>
+                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-1" data-ans="i am looking for a dress" placeholder="Write here..."><br>
+                <br>
+                <b>A:</b> May I Help you, sir? What size are you?<br>
+                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-2" data-ans="i am a medium" placeholder="Write here..."><br>
+                <br>
+                <b>A:</b> A blouse? Certainly!<br>
+                <div style="margin-left: 20px; color: #64748b; font-style: italic;">What colour would you like to buy?</div>
+                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-3" data-ans="i'd like it in black" placeholder="Write here..."><br>
+                <br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-4" data-ans="what color would you like" placeholder="Write here..."><br>
+                <b>B:</b> I would like it in green, please.<br>
+                <br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-5" data-ans="what size are you" placeholder="Write here..."><br>
+                <b>B:</b> I am Extra large.<br>
+                <br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-6" data-ans="what are you looking for" placeholder="Write here..."><br>
+                <b>B:</b> I am looking for a pair of jeans, please.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 4: UP TO YOU ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>Up To You</h2>
+            <p class="instruction">Write your own dialogue in a clothes shop. Use Sizes, Colours, Clothes and Opinions.</p>
+            
+            <div id="uptoyou-capture-area">
+                <textarea id="uptoyou-dialogue" class="large-textarea" placeholder="Start your script here..."></textarea>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 15px;">
+                <button class="btn-nav" style="background: var(--theme-orange-border); color: white;" onclick="downloadDiv('uptoyou-capture-area', 'My_UpToYou_Dialogue.png')">📤 Download Script</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 5: CROSS CURRICULAR ================= -->
+        <div id="sec-5" class="activity-section theme-gray">
+            <h2>Homework (Cross Curricular)</h2>
+            <p class="instruction">Watch the video and answer the questions in the boxes.</p>
+            
+            <div class="video-container">
+                <video controls>
+                    <source src="https://files.catbox.moe/ymvsoi.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="cc-grid">
+                <div class="cc-card">
+                    <p>1. What is she looking for?</p>
+                    <input type="text" class="text-input eval-cc" id="cc-1" data-ans="black medium jacket" placeholder="Type here...">
+                </div>
+                <div class="cc-card">
+                    <p>2. What is she looking for?</p>
+                    <input type="text" class="text-input eval-cc" id="cc-2" data-ans="brown large pants" placeholder="Type here...">
+                </div>
+                <div class="cc-card">
+                    <p>3. What is he looking for?</p>
+                    <input type="text" class="text-input eval-cc" id="cc-3" data-ans="blue shoes size 36" placeholder="Type here...">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 6: LANGUAGE AT WORK ================= -->
+        <div id="sec-6" class="activity-section theme-yellow">
+            <h2>Language at Work</h2>
+            
+            <div class="green-tip-balloon">
+                We use <b>looking for</b> to say the things we want.<br>
+                • <i>What are you looking for?</i> I am looking for a dress.<br>
+                • <i>What is she looking for?</i> She is looking for a black coat.<br>
+                • <i>May I help you, madam and sir?</i> Yes, We are looking for two hats.
+            </div>
+
+            <p class="instruction">Unscramble the words to make sentences.</p>
+            <div id="builders-container"></div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 7: NOW IT'S YOUR TURN ================= -->
+        <div id="sec-7" class="activity-section theme-blue">
+            <h2>Now It's Your Turn!</h2>
+            <p class="instruction">Create a dialogue of a person shopping for clothes. Use SIZES, COLOURS, CLOTHES and OPINIONS.</p>
+            
+            <div id="nowturn-capture-area" style="background: #eff6ff; padding: 15px; border-radius: 16px;">
+                <div class="comics-grid">
+                    <div class="comic-panel">
+                        <div class="comic-img"><img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 1"></div>
+                        <div class="comic-bubbles">
+                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                        </div>
+                    </div>
+                    <div class="comic-panel">
+                        <div class="comic-img"><img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 2"></div>
+                        <div class="comic-bubbles">
+                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                        </div>
+                    </div>
+                    <div class="comic-panel">
+                        <div class="comic-img"><img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 3"></div>
+                        <div class="comic-bubbles">
+                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                        </div>
+                    </div>
+                    <div class="comic-panel">
+                        <div class="comic-img"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 4"></div>
+                        <div class="comic-bubbles">
+                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 15px;">
+                <button class="btn-nav" style="background: var(--theme-blue-border); color: white;" onclick="downloadDiv('nowturn-capture-area', 'My_Comic_NowTurn.png')">📤 Download Comic</button>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 30px;">
+                <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 3B & Get XP</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO FLUTUANTE GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-light); font-weight:bold; margin-bottom:10px; font-size:16px;">❓ Sizes & Try on</div>
+            <div style="margin-bottom:8px;">Vocabulário útil na loja de roupas:</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--blue-light);">Tamanhos (Sizes)</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"S = <b>Small</b> (Pequeno)"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"M = <b>Medium</b> (Médio)"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"L = <b>Large</b> (Grande)"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"XL = <b>Extra Large</b> (Extra Grande)"</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--blue-light);">Provador</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"Can I <b>try it on</b>?" (Posso provar?)</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"Where is the <b>changing room</b>?"</div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 3B.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555; text-align: center;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Go to Lesson 3C ➔</button>
+        </div>
+    </div>
+
+    <script>
+        // ==== O PINCEL MÁGICO / CORES / DRAG DROP ====
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        
+        // Cores -> Headers
+        function dragColor(ev) {
+            ev.dataTransfer.setData("color", ev.target.getAttribute('data-color'));
+        }
+        function dropColor(ev, headerId) {
+            ev.preventDefault();
+            var color = ev.dataTransfer.getData("color");
+            if(color) {
+                let header = document.getElementById(headerId);
+                header.style.backgroundColor = color;
+                let dropZone = header.querySelector('.group-color-drop');
+                if(dropZone) dropZone.style.display = 'none';
+                if(color === '#0f172a' || color === '#78350f' || color === '#a855f7' || color === '#ef4444' || color === '#3b82f6') {
+                    header.querySelector('input').style.color = "white";
+                } else {
+                    header.querySelector('input').style.color = "#334155";
+                }
+            }
+        }
+
+        // Palavras -> Grupos
+        function dropVocab(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if (target.classList.contains('group-drop-zone')) {
+                target.appendChild(draggedEl);
+            }
+            target.classList.remove('drag-over');
+        }
+        function dropVocabBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('v-pool').appendChild(document.getElementById(data));
+        }
+
+        document.querySelectorAll('.group-drop-zone').forEach(zone => {
+            zone.addEventListener('dragenter', () => zone.classList.add('drag-over'));
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        });
+
+        // ==== BINGO ====
+        function dropBingo(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var target = ev.target;
+            if(target.classList.contains('bingo-cell') && target.children.length === 0) {
+                target.appendChild(document.getElementById(data));
+                target.classList.remove('drag-over');
+            }
+        }
+        function dropBingoBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('b-pool').appendChild(document.getElementById(data));
+        }
+        document.querySelectorAll('.bingo-cell').forEach(cell => {
+            cell.addEventListener('dragenter', () => cell.classList.add('drag-over'));
+            cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+            cell.addEventListener('drop', () => cell.classList.remove('drag-over'));
+        });
+
+        // ==== DOWNLOAD EM HD ====
+        function downloadDiv(divId, filename) { 
+            html2canvas(document.getElementById(divId), { useCORS: true, scale: 2 }).then(canvas => { 
+                let link = document.createElement('a'); 
+                link.download = filename; 
+                link.href = canvas.toDataURL('image/png'); 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                alert("Error downloading image.");
+                console.error(err);
+            }); 
+        }
+
+        // ==== NAVEGAÇÃO BÁSICA ====
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) { a.pause(); const otherBtn = document.getElementById('btn-' + a.id); if(otherBtn) { otherBtn.innerText = "▶ PLAY"; otherBtn.style.background = ""; } }
+            });
+            if (audio.paused) { audio.play(); btn.innerText = "⏸ PAUSE"; btn.style.background = "#c0392b"; } 
+            else { audio.pause(); btn.innerText = "▶ PLAY"; btn.style.background = originalColor; }
+            audio.onended = function() { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        // ==== LANGUAGE AT WORK (BUILDERS) ====
+        const sentencesData = [
+            { id: 1, text: "Excuse me, Sir. What are you looking for?", expected: "excuse me, sir. what are you looking for?" },
+            { id: 2, text: "What size are you, Madam?", expected: "what size are you, madam?" },
+            { id: 3, text: "What colour would you like?", expected: "what colour would you like?" },
+            { id: 4, text: "What size are your shoes?", expected: "what size are your shoes?" },
+            { id: 5, text: "I am looking for a pair of jeans, please.", expected: "i am looking for a pair of jeans, please." },
+            { id: 6, text: "I am large.", expected: "i am large." },
+            { id: 7, text: "I would like it in yellow, please.", expected: "i would like it in yellow, please." }
+        ];
+
+        function createBuilders() {
+            const container = document.getElementById('builders-container');
+            sentencesData.forEach((item, index) => {
+                let words = item.text.split(" ").sort(() => Math.random() - 0.5);
+                const block = document.createElement('div');
+                block.className = 'builder-block';
+                let letter = String.fromCharCode(97 + index); 
+                block.innerHTML = `<div style="font-weight:bold; margin-bottom:10px;">${letter}) Assemble the sentence:</div>
+                                   <div class="answer-area" id="ans-${item.id}" data-ans="${item.expected}"></div>
+                                   <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;" id="bank-${item.id}"></div>
+                                   <button class="btn-clear" onclick="clearBuilder(${item.id})">↻ Clear Area</button>`;
+                container.appendChild(block);
+
+                const bankEl = document.getElementById(`bank-${item.id}`);
+                words.forEach(word => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn'; btn.innerText = word;
+                    btn.onclick = () => moveWord(btn, item.id);
+                    bankEl.appendChild(btn);
+                });
+            });
+        }
+
+        function moveWord(btn, id) {
+            const answerEl = document.getElementById(`ans-${id}`);
+            btn.style.display = 'none';
+            const clone = document.createElement('button');
+            clone.className = 'word-btn'; 
+            clone.style.borderColor = 'var(--theme-yellow-border)'; 
+            clone.style.color = 'var(--theme-yellow-border)'; 
+            clone.innerText = btn.innerText;
+            clone.onclick = () => { clone.remove(); btn.style.display = 'inline-block'; };
+            answerEl.appendChild(clone);
+        }
+
+        function clearBuilder(id) {
+            document.getElementById(`ans-${id}`).innerHTML = '';
+            Array.from(document.getElementById(`bank-${id}`).children).forEach(btn => btn.style.display = 'inline-block');
+        }
+        createBuilders();
+
+        // ==== LÓGICA XP E MOCHILA ====
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_3b_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao3b_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaurar Group Names
+                    for(let id in respostas.groupNames) {
+                        let el = document.getElementById(id);
+                        if(el) el.value = respostas.groupNames[id];
+                    }
+
+                    // Restaurar Palavras nos Grupos
+                    for(let wordId in respostas.groups) {
+                        let zoneId = respostas.groups[wordId];
+                        let zone = document.getElementById(zoneId);
+                        let word = document.getElementById(wordId);
+                        if(zone && word) zone.appendChild(word);
+                    }
+
+                    // Restaurar Textos (TS, LG, CC, UpToYou, NowTurn)
+                    for(let id in respostas.texts) {
+                        let el = document.getElementById(id);
+                        if(el) el.value = respostas.texts[id];
+                    }
+
+                    // Restaurar Textareas das Bolhas (Comics)
+                    let bubbles = document.querySelectorAll('.bubble-textarea');
+                    if(respostas.comics) {
+                        bubbles.forEach((b, index) => {
+                            b.value = respostas.comics[index] || "";
+                        });
+                    }
+
+                    // Restaurar Builders
+                    for(let ansId in respostas.builders) {
+                        let words = respostas.builders[ansId];
+                        let ansArea = document.getElementById(ansId);
+                        let idNum = ansId.split('-')[1];
+                        let bank = document.getElementById('bank-'+idNum);
+                        if(ansArea && bank && words.length > 0) {
+                            words.forEach(wText => {
+                                let btn = Array.from(bank.children).find(b => b.innerText === wText && b.style.display !== 'none');
+                                if(btn) {
+                                    btn.style.display = 'none';
+                                    let clone = document.createElement('button');
+                                    clone.className = 'word-btn'; clone.style.borderColor = 'var(--theme-yellow-border)'; clone.style.color = 'var(--theme-yellow-border)'; clone.innerText = btn.innerText;
+                                    clone.onclick = () => { clone.remove(); btn.style.display = 'inline-block'; };
+                                    ansArea.appendChild(clone);
+                                }
+                            });
+                        }
+                    }
+                }
+                let btnFinish = document.querySelector('.btn-finish');
+                if(btnFinish) { btnFinish.innerText = "🔄 Update Answers & Get XP"; }
+            }
+        });
+
+        let finalXP = 0;
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+            let respostasFotografadas = { groupNames: {}, groups: {}, texts: {}, builders: {}, comics: [] };
+
+            // 1. Group Names & Group Words
+            document.querySelectorAll('.eval-group-name').forEach(input => {
+                total++;
+                respostasFotografadas.groupNames[input.id] = input.value;
+                if(input.value.toLowerCase().trim() === input.getAttribute('data-ans').toLowerCase()) correct++;
+            });
+
+            document.querySelectorAll('.eval-sort').forEach(word => {
+                total++;
+                let parentZone = word.parentElement;
+                respostasFotografadas.groups[word.id] = parentZone.id;
+                if(parentZone.id === word.getAttribute('data-ans')) correct++;
+            });
+
+            // 2. Textos (Target Situation Inputs, Language Guide, Cross Curricular)
+            document.querySelectorAll('.eval-ts, .eval-lg, .eval-cc').forEach(input => {
+                total++;
+                respostasFotografadas.texts[input.id] = input.value;
+                let userAns = input.value.toLowerCase().trim().replace(/[.,!?()]/g, '');
+                let realAns = input.getAttribute('data-ans').toLowerCase().trim().replace(/[.,!?()]/g, '');
+                
+                // Flexible match logic
+                if(userAns === realAns || (userAns.length > 3 && realAns.includes(userAns) && userAns.includes(realAns.split(' ')[0]))) {
+                    correct++;
+                } else if (input.classList.contains('eval-cc') && userAns.length > 5 && userAns.includes(realAns.split(' ')[0])) {
+                    correct++;
+                } else if (input.classList.contains('eval-lg') && userAns.length > 2 && realAns.includes(userAns)) {
+                     correct++;
+                }
+            });
+
+            // 3. Builders (Language at Work)
+            for(let i=1; i<=7; i++) {
+                let ansArea = document.getElementById('ans-' + i);
+                if(ansArea) {
+                    total++;
+                    let userArray = Array.from(ansArea.children).map(btn => btn.innerText);
+                    respostasFotografadas.builders['ans-' + i] = userArray;
+                    
+                    let userSentence = userArray.join(" ").toLowerCase();
+                    let expectedSentence = ansArea.getAttribute('data-ans').toLowerCase();
+                    if(userSentence === expectedSentence) correct++;
+                }
+            }
+
+            // Salvar Dialogos Livres
+            let upBox = document.getElementById('uptoyou-dialogue');
+            if(upBox) respostasFotografadas.texts[upBox.id] = upBox.value;
+
+            // Salvar Comic Bubbles
+            let bubbles = document.querySelectorAll('.bubble-textarea');
+            bubbles.forEach(b => respostasFotografadas.comics.push(b.value));
+
+            localStorage.setItem('licao3b_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // FLUXO DE NAVEGAÇÃO 3B -> 3C
+        function returnToMap() {
+            let oldXP = parseInt(localStorage.getItem('licao_3b_xp')) || 0;
+            let xpDifference = finalXP - oldXP; 
+
+            localStorage.setItem('licao_3b_status', 'concluida');
+            localStorage.setItem('licao_3b_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('licao3c.html', 'link-3c');
+                    return;
+                }
+            }
+            window.location.href = "licao3c.html"; 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3C | At the Clothes Shop (What to wear)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Biblioteca para tirar Print/Screenshot da tela -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            /* PALETA FRIA (WINTER/LONDON RAIN) */
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a; 
+            --blue-medium: #1e3a8a; 
+            --blue-light: #3b82f6; 
+            --accent-main: #3b82f6; 
+            --accent-dark: #2563eb;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            /* Paleta Temática das Secções */
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #f5f3ff; --theme-purple-border: #6366f1;
+            --theme-red-bg: #f8fafc; --theme-red-border: #475569; 
+            --theme-green-bg: #f0fdfa; --theme-green-border: #0d9488;
+            --theme-orange-bg: #f0f9ff; --theme-orange-border: #0284c7; 
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #f1f5f9; --theme-yellow-border: #334155;
+        }
+
+        body {
+            font-family: var(--font-text); color: var(--black); margin: 0; 
+            padding: 40px 15px 120px 15px; 
+            display: flex; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #334155 100%);
+            background-attachment: fixed;
+        }
+
+        .book-page {
+            background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); border-radius: 24px; padding: 50px; position: relative; z-index: 1;
+        }
+
+        .lesson-banner {
+            width: 100%; height: 220px;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 40px;
+        }
+
+        .lesson-banner h1 {
+            color: var(--white); font-family: var(--font-title); font-size: 36px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; color: var(--blue-dark); }
+        h3 { font-family: var(--font-title); font-weight: 700; font-size: 18px; margin-bottom: 15px; color: var(--blue-dark); }
+        p.instruction { color: #475569; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        /* ==== SECÇÕES TEMÁTICAS ==== */
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; box-sizing: border-box;}
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: var(--theme-yellow-border); border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .btn-finish-wrapper { display: flex; justify-content: center; width: 100%; flex-wrap: gap: 15px; margin-top: 20px;}
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%; text-align: center;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+        .btn-finish:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* GERAL ÁUDIO E MÍDIA */
+        .text-input { width: 100%; border: none; border-bottom: 2px solid #ccc; background: transparent; font-family: var(--font-text); font-size: 16px; padding: 10px 5px; outline: none; transition: 0.3s; color: var(--black); font-weight: 500; margin-bottom: 15px; box-sizing: border-box; }
+        .text-input:focus { border-color: var(--accent-main); }
+        .audio-wrapper { display: flex; justify-content: center; width: 100%; }
+        .audio-player { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; font-weight: 600; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .play-btn { background: var(--accent-main); border: none; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 800; font-family: var(--font-title); font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .play-btn:hover { background: var(--accent-dark); transform: scale(1.05); }
+        .speed-btn { background: #e2e8f0; border: 1px solid #cbd5e1; color: #1e293b; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        /* ==== 0. WARM UP (SILHOUETTES) ==== */
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: white; padding: 20px; border-radius: 12px; border: 2px dashed var(--theme-blue-border); margin-bottom: 30px; }
+        .drag-word { background: var(--theme-blue-border); color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: grab; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        .silhouettes-container { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .silhouette-col { flex: 1; min-width: 250px; display: flex; flex-direction: column; align-items: center; }
+        .silhouette-img { width: 150px; height: 350px; background: #e2e8f0; border-radius: 12px; margin-bottom: 15px; border: 2px solid #cbd5e1; display: flex; justify-content: center; align-items: center; overflow: hidden;}
+        .silhouette-img img { width: 100%; height: 100%; object-fit: cover; }
+        .zone-title { font-family: var(--font-title); font-weight: 800; font-size: 18px; color: var(--blue-dark); text-transform: uppercase; margin-bottom: 10px; }
+        .drop-zone { width: 100%; min-height: 150px; border: 2px dashed #94a3b8; border-radius: 12px; background: #f8fafc; padding: 15px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; transition: 0.3s; }
+        .drop-zone.drag-over { background: #e0e7ff; border-color: var(--blue-light); }
+
+        /* ==== 1. WORDS AND IDEAS (GROUPS) ==== */
+        .wi-pool { background: #f8fafc; padding: 15px; border-radius: 8px; font-weight: 500; text-align: center; margin-bottom: 25px; line-height: 1.8; color: var(--theme-purple-border); border: 1px dashed var(--theme-purple-border); }
+        .venn-container { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+        .venn-top { width: 100%; max-width: 400px; }
+        .venn-bottom { display: flex; width: 100%; gap: 15px; }
+        @media(max-width: 600px) { .venn-bottom { flex-direction: column; } }
+        .venn-box { background: white; border: 2px solid var(--theme-purple-border); border-radius: 16px; padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .venn-box h3 { text-align: center; margin-top: 0; color: var(--theme-purple-border); border-bottom: 1px dashed var(--theme-purple-border); padding-bottom: 10px; }
+        .venn-textarea { width: 100%; flex: 1; min-height: 100px; border: none; resize: none; font-family: var(--font-text); font-size: 15px; outline: none; line-height: 1.6; }
+
+        /* ==== 2. TARGET SITUATION ==== */
+        .notebook-wrapper { width: 100%; position: relative; margin-bottom: 30px; }
+        .notebook-paper { width: 100%; height: 250px; padding: 40px 20px 20px 50px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; box-shadow: 3px 5px 15px rgba(0,0,0,0.1); background-color: #fff; background-image: linear-gradient(#e5e7eb 1px, transparent 1px); background-size: 100% 2em; line-height: 2em; font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 18px; outline: none; resize: none; }
+        .notebook-paper::before { content: ''; position: absolute; top: 0; bottom: 0; left: 35px; width: 2px; background: rgba(239, 68, 68, 0.4); }
+
+        .frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 600px) { .frame-grid { grid-template-columns: 1fr; } }
+        .drawing-frame { background: white; border: 4px solid var(--theme-red-border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
+        .frame-title { text-align: center; font-family: var(--font-title); font-weight: 800; font-size: 20px; color: var(--theme-red-border); margin-bottom: 15px; text-transform: uppercase; }
+        .frame-textarea { width: 100%; height: 150px; border: 1px dashed #ccc; padding: 10px; font-family: var(--font-text); resize: none; outline: none; box-sizing: border-box; background: #f8fafc; font-weight: bold; color: var(--theme-red-border); }
+
+        /* ==== 3. LANGUAGE GUIDE ==== */
+        .green-tip-balloon { background: #dcfce7; border: 2px solid #22c55e; color: #166534; padding: 20px 25px; border-radius: 20px 20px 20px 0; font-weight: 500; font-size: 15px; line-height: 1.6; margin-bottom: 30px; position: relative; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.1); }
+        .green-tip-balloon::before { content: '💡'; font-size: 24px; position: absolute; top: -15px; left: -10px; background: white; border-radius: 50%; padding: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        .inline-drop { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; height: 35px; border-bottom: 2px dashed #94a3b8; vertical-align: middle; margin: 0 5px; background: #f1f5f9; border-radius: 4px 4px 0 0; transition: 0.2s; box-sizing: border-box; }
+        .inline-drop.drag-over { background: #dcfce7; border-color: #22c55e; }
+        .dialogue-text { background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; line-height: 3.2; font-size: 16px; margin-bottom: 30px;}
+
+        /* ==== 4. UP TO YOU (COLORING) ==== */
+        .color-palette { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; background: white; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 25px; }
+        .color-dot { width: 35px; height: 35px; border-radius: 50%; cursor: grab; box-shadow: 0 3px 6px rgba(0,0,0,0.2); border: 2px solid white; transition: 0.2s; }
+        .color-dot:active { transform: scale(0.9); }
+        .c-blue { background: #3b82f6; } .c-black { background: #0f172a; } .c-green { background: #22c55e; }
+        .c-grey { background: #94a3b8; } .c-purple { background: #a855f7; } .c-brown { background: #78350f; }
+        .c-white { background: #ffffff; border: 2px solid #ccc; } .c-orange { background: #f97316; } 
+        .c-red { background: #ef4444; } .c-pink { background: #ec4899; } .c-yellow { background: #eab308; }
+
+        .clothes-color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media(max-width: 600px) { .clothes-color-grid { grid-template-columns: repeat(2, 1fr); } }
+        
+        .cloth-paint-card { background: white; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: 0.3s; }
+        .cloth-paint-card.drag-over { background: #f1f5f9; border-color: var(--theme-orange-border); }
+        .cloth-icon { width: 60px; height: 60px; border-radius: 8px; background: #e2e8f0; display: flex; justify-content: center; align-items: center; font-size: 30px; transition: 0.3s; border: 2px solid rgba(0,0,0,0.1); }
+        .cloth-label { font-weight: bold; font-size: 14px; text-align: center; color: #475569; }
+
+        /* ==== 5. CROSS CURRICULAR ==== */
+        .video-container { width: 100%; max-width: 700px; margin: 0 auto 30px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 3px solid #cbd5e1; }
+        .video-container video { width: 100%; display: block; outline: none; }
+        
+        .cc-question-list { display: flex; flex-direction: column; gap: 15px; }
+        .cc-item { display: flex; flex-direction: column; background: white; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .cc-item p { margin: 0 0 10px 0; font-weight: bold; color: var(--blue-dark); font-style: italic;}
+        .cc-item input { border: none; border-bottom: 2px solid #ccc; outline: none; padding: 5px; font-family: var(--font-text); font-size: 15px; color: var(--theme-gray-border); font-weight: bold;}
+        .cc-item input:focus { border-color: var(--theme-gray-border); }
+
+        /* ==== 6. LANGUAGE AT WORK ==== */
+        .grammar-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; border: 2px solid var(--theme-yellow-border); font-size: 15px; margin-bottom: 30px; }
+        .grammar-table th, .grammar-table td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; }
+        .grammar-table th { background: var(--theme-yellow-border); color: white; font-family: var(--font-title); }
+        .grammar-table td:nth-child(1) { font-weight: bold; background: #fffbeb; color: #ca8a04; }
+        .grammar-table td:nth-child(2) { font-weight: bold; color: var(--theme-yellow-border); }
+
+        .hw-frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 600px) { .hw-frame-grid { grid-template-columns: 1fr; } }
+        .hw-person-card { background: white; border: 2px solid var(--theme-yellow-border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px;}
+        .hw-photo-ph { width: 140px; height: 140px; border-radius: 12px; background: #e2e8f0; border: 2px dashed #94a3b8; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .hw-photo-ph img { width: 100%; height: 100%; object-fit: cover; }
+        .hw-person-title { font-family: var(--font-title); font-weight: 800; font-size: 18px; color: var(--theme-yellow-border); }
+
+        /* ==== 7. NOW IT'S YOUR TURN (PHOTO BOOK) ==== */
+        .upload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        .photo-upload-box { background: white; border: 2px dashed var(--theme-blue-border); border-radius: 12px; height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; color: var(--theme-blue-border); position: relative; overflow: hidden; background-color: #f8fafc;}
+        .photo-upload-box:hover { background: #eff6ff; }
+        .photo-upload-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .photo-icon { font-size: 30px; margin-bottom: 10px; }
+        .photo-label { font-weight: bold; font-size: 12px; text-align: center; padding: 0 10px; }
+
+        /* ==== BOTÃO FLUTUANTE DE GRAMÁTICA ==== */
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+        .grammar-floating-btn { background: var(--blue-light); color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); transition: 0.3s; }
+        .grammar-floating-btn:hover { background: var(--blue-medium); transform: translateY(-5px); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 340px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 2px solid var(--blue-light); transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.5; pointer-events: none; }
+        .grammar-box::after { content: ""; position: absolute; top: 100%; right: 40px; margin-left: -10px; border-width: 10px; border-style: solid; border-color: var(--blue-light) transparent transparent transparent; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        @media (max-width: 500px) { .grammar-floating-btn { padding: 15px; font-size: 0; } .grammar-box { width: 280px; right: -10px; } .grammar-box::after { right: 25px; } }
+
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
+        .modal-content h2 { color: #f97316; font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>3C | At the Clothes Shop<br><span style="font-size: 20px; font-weight: 500; text-transform: none; letter-spacing: 1px;">What to wear when weather is...?</span></h1>
+        </div>
+
+        <!-- ================= SEC 0: WARM UP ================= -->
+        <div id="sec-0" class="activity-section theme-blue active">
+            <h2>Warm Up: Formal or Informal?</h2>
+            
+            <div class="word-bank" id="wb-warmup" ondrop="dropWuBack(event)" ondragover="allowDrop(event)">
+                <div class="drag-word" draggable="true" id="w1" ondragstart="drag(event)">Dress</div>
+                <div class="drag-word" draggable="true" id="w2" ondragstart="drag(event)">Shirt</div>
+                <div class="drag-word" draggable="true" id="w3" ondragstart="drag(event)">Skirt</div>
+                <div class="drag-word" draggable="true" id="w4" ondragstart="drag(event)">Jeans</div>
+                <div class="drag-word" draggable="true" id="w5" ondragstart="drag(event)">Button-down shirt</div>
+                <div class="drag-word" draggable="true" id="w6" ondragstart="drag(event)">Wool coat</div>
+                <div class="drag-word" draggable="true" id="w7" ondragstart="drag(event)">Blazer</div>
+                <div class="drag-word" draggable="true" id="w8" ondragstart="drag(event)">Shoes</div>
+                <div class="drag-word" draggable="true" id="w9" ondragstart="drag(event)">Sandals</div>
+                <div class="drag-word" draggable="true" id="w10" ondragstart="drag(event)">Hat</div>
+                <div class="drag-word" draggable="true" id="w11" ondragstart="drag(event)">Shorts</div>
+                <div class="drag-word" draggable="true" id="w12" ondragstart="drag(event)">Suit</div>
+            </div>
+
+            <div class="silhouettes-container">
+                <div class="silhouette-col">
+                    <div class="silhouette-img">
+                        <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80" alt="Formal Silhouette">
+                    </div>
+                    <div class="zone-title">FORMAL</div>
+                    <div class="drop-zone" id="dz-formal" ondrop="dropWu(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="silhouette-col">
+                    <div class="silhouette-img">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Informal Silhouette">
+                    </div>
+                    <div class="zone-title">INFORMAL</div>
+                    <div class="drop-zone" id="dz-informal" ondrop="dropWu(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-0', 'sec-1')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 1: WORDS AND IDEAS ================= -->
+        <div id="sec-1" class="activity-section theme-purple">
+            <h2>Words and Ideas</h2>
+            <p class="instruction">Group the words below into the correct categories.</p>
+            
+            <div class="wi-pool">
+                Summer • Tie • Hot • Briefcase • Gloves • Sunglasses • Uniform • Socks • Boots • Suit • Spring • Winter • Cold • Autumn
+            </div>
+
+            <div class="venn-container">
+                <div class="venn-top">
+                    <div class="venn-box" style="border-color: #0ea5e9;">
+                        <h3 style="color: #0ea5e9;">WEATHER / SEASONS</h3>
+                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                    </div>
+                </div>
+                <div class="venn-bottom">
+                    <div class="venn-box">
+                        <h3>FORMAL</h3>
+                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="venn-box" style="border-color: #a855f7;">
+                        <h3 style="color: #a855f7;">BOTH</h3>
+                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="venn-box" style="border-color: #ec4899;">
+                        <h3 style="color: #ec4899;">INFORMAL</h3>
+                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-0')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 2: TARGET SITUATION ================= -->
+        <div id="sec-2" class="activity-section theme-red">
+            <h2>Target Situation</h2>
+            <p class="instruction">Ivete is at Arnold’s clothes store. A TV team is there for an interview. Listen. USE THE NOTES AREA TO KEEP THE LOG OF YOUR LISTENING COMPREHENSION.</p>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player" style="border-color: var(--theme-red-border);">
+                    <audio id="audio-ts" src="https://files.catbox.moe/m29e25.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-ts" style="background: var(--theme-red-border);" onclick="toggleAudio('audio-ts', 'btn-audio-ts', 'var(--theme-red-border)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-ts" onclick="changeSpeed('audio-ts', 'spd-audio-ts')">⚡ 1.0x</button>
+                    <span>Ivete Interview Audio</span>
+                </div>
+            </div>
+
+            <div class="notebook-wrapper">
+                <textarea class="notebook-paper" placeholder="Notes:"></textarea>
+            </div>
+
+            <p class="instruction">Now, write information you understand in the correct frame. What is Ivete wearing? Draw and write the names of the clothes.</p>
+            
+            <div class="frame-grid">
+                <div class="drawing-frame">
+                    <div class="frame-title" style="color: #ef4444;">HOT</div>
+                    <textarea class="frame-textarea eval-ts" id="ts-hot" data-ans="blouses hats shoes sunglasses shorts skirts" placeholder="Draw / Write clothes for hot weather here..."></textarea>
+                </div>
+                <div class="drawing-frame" style="border-color: #3b82f6;">
+                    <div class="frame-title" style="color: #3b82f6;">COLD</div>
+                    <textarea class="frame-textarea eval-ts" id="ts-cold" data-ans="coats boots socks gloves" style="color: #3b82f6;" placeholder="Draw / Write clothes for cold weather here..."></textarea>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 3: LANGUAGE GUIDE ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>Language Guide</h2>
+            
+            <div class="green-tip-balloon">
+                <b>What to wear when it's cold?</b><br>
+                This is for general situations, like when you're talking about clothing for cold days in general.<br><br>
+                <b>What to wear in summer?</b><br>
+                This is also for general situations, such as discussing what to wear during the summer season.<br><br>
+                <b>What are you wearing?</b><br>
+                This is for now, when you want to know what someone is wearing at this moment.
+            </div>
+
+            <p class="instruction">Fill in the blanks with the appropriate words to complete each sentence. Choose from the provided word bank.</p>
+            
+            <div class="word-bank" id="wb-grammar" ondrop="dropInlineBack(event)" ondragover="allowDrop(event)" style="border-color: var(--theme-green-border);">
+                <div class="drag-word eval-sort" draggable="true" id="g1" data-ans="lg-d3" ondragstart="drag(event)" style="background: var(--theme-green-border);">Hats</div>
+                <div class="drag-word eval-sort" draggable="true" id="g2" data-ans="lg-d4" ondragstart="drag(event)" style="background: var(--theme-green-border);">Scarf</div>
+                <div class="drag-word eval-sort" draggable="true" id="g3" data-ans="lg-d1" ondragstart="drag(event)" style="background: var(--theme-green-border);">Jacket</div>
+                <div class="drag-word eval-sort" draggable="true" id="g4" data-ans="lg-d2" ondragstart="drag(event)" style="background: var(--theme-green-border);">Shorts</div>
+            </div>
+
+            <div class="dialogue-text">
+                1. In winter, it's important to wear a warm <div class="inline-drop eval-inline" id="lg-d1" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> to stay cozy.<br>
+                2. In spring, you can often see flowers and people wearing light jackets and colorful <div class="inline-drop eval-inline" id="lg-d2" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div>.<br>
+                3. Winter is the season when people wear <div class="inline-drop eval-inline" id="lg-d3" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> to keep their heads warm.<br>
+                4. When it's cold, a <div class="inline-drop eval-inline" id="lg-d4" ondrop="dropInline(event)" ondragover="allowDrop(event)"></div> is perfect for keeping your neck and chest warm.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 4: UP TO YOU ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>Up To You</h2>
+            <p class="instruction">Colour the pictures according to the instructions. Drag the color to the clothing item!</p>
+            
+            <div class="color-palette">
+                <div class="color-dot c-blue" draggable="true" id="col1" ondragstart="dragColor(event)" data-color="#3b82f6"></div>
+                <div class="color-dot c-black" draggable="true" id="col2" ondragstart="dragColor(event)" data-color="#0f172a"></div>
+                <div class="color-dot c-green" draggable="true" id="col3" ondragstart="dragColor(event)" data-color="#22c55e"></div>
+                <div class="color-dot c-grey" draggable="true" id="col4" ondragstart="dragColor(event)" data-color="#94a3b8"></div>
+                <div class="color-dot c-purple" draggable="true" id="col5" ondragstart="dragColor(event)" data-color="#a855f7"></div>
+                <div class="color-dot c-brown" draggable="true" id="col6" ondragstart="dragColor(event)" data-color="#78350f"></div>
+                <div class="color-dot c-white" draggable="true" id="col7" ondragstart="dragColor(event)" data-color="#ffffff"></div>
+                <div class="color-dot c-orange" draggable="true" id="col8" ondragstart="dragColor(event)" data-color="#f97316"></div>
+                <div class="color-dot c-red" draggable="true" id="col9" ondragstart="dragColor(event)" data-color="#ef4444"></div>
+                <div class="color-dot c-pink" draggable="true" id="col10" ondragstart="dragColor(event)" data-color="#ec4899"></div>
+                <div class="color-dot c-yellow" draggable="true" id="col11" ondragstart="dragColor(event)" data-color="#eab308"></div>
+            </div>
+
+            <div class="clothes-color-grid">
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🧢</div><div class="cloth-label">An orange hat</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🕶️</div><div class="cloth-label">Purple glasses</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👗</div><div class="cloth-label">A green dress</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👡</div><div class="cloth-label">Brown sandals</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🎽</div><div class="cloth-label">A blue tank top</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🩳</div><div class="cloth-label">Black shorts</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👟</div><div class="cloth-label">Red trainers</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👔</div><div class="cloth-label">A Red shirt</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👖</div><div class="cloth-label">Blue trousers</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👞</div><div class="cloth-label">Yellow shoes</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🧦</div><div class="cloth-label">Gray socks</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">👕</div><div class="cloth-label">Pink T-shirt</div>
+                </div>
+                <div class="cloth-paint-card" ondrop="dropPaint(event)" ondragover="allowDrop(event)">
+                    <div class="cloth-icon">🩳</div><div class="cloth-label">Yellow shorts</div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 5: CROSS CURRICULAR ================= -->
+        <div id="sec-5" class="activity-section theme-gray">
+            <h2>Homework (Cross Curricular)</h2>
+            <p class="instruction">Watch the video and answer the questions.</p>
+            
+            <div class="video-container">
+                <video controls>
+                    <source src="https://files.catbox.moe/s57721.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="cc-question-list">
+                <div class="cc-item">
+                    <p>a) What season is it in New England?</p>
+                    <input type="text" class="eval-cc" id="cc-1" data-ans="fall autumn" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>b) What is the weather like?</p>
+                    <input type="text" class="eval-cc" id="cc-2" data-ans="cool sunny" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>c) What is the man wearing?</p>
+                    <input type="text" class="eval-cc" id="cc-3" data-ans="suit tie shoes" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>d) What are the school girls wearing?</p>
+                    <input type="text" class="eval-cc" id="cc-4" data-ans="uniforms" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>e) What are the school girls’ names?</p>
+                    <input type="text" class="eval-cc" id="cc-5" data-ans="megan jasmine" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>f) Describe the school girls’ uniforms.</p>
+                    <input type="text" class="eval-cc" id="cc-6" data-ans="blue shirt tie blouse socks sweter" placeholder="Type your answer...">
+                </div>
+                <div class="cc-item">
+                    <p>g) What is Julie’s mother wearing?</p>
+                    <input type="text" class="eval-cc" id="cc-7" data-ans="scarf boots jeans blouse sunglasses jacket" placeholder="Type your answer...">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 6: LANGUAGE AT WORK ================= -->
+        <div id="sec-6" class="activity-section theme-yellow">
+            <h2>Language at Work</h2>
+            
+            <h3 style="margin-top: 0; margin-bottom: 20px;">Verb to be + Wearing</h3>
+            <table class="grammar-table">
+                <tr>
+                    <th>Subject</th>
+                    <th>Verb to be</th>
+                    <th>Verb (ing)</th>
+                    <th>Complement</th>
+                </tr>
+                <tr>
+                    <td>I</td>
+                    <td>Am</td>
+                    <td rowspan="3" style="vertical-align: middle;">wearing</td>
+                    <td style="text-align: left; background: white;">a shirt, shorts and shoes.</td>
+                </tr>
+                <tr>
+                    <td>Ivete / Ralph / She / He</td>
+                    <td>Is</td>
+                    <td style="text-align: left; background: white;">a coat, a dress and boots.<br>jeans, shoes and a shirt.</td>
+                </tr>
+                <tr>
+                    <td>We / You / They<br>(Ralph and Cristine)</td>
+                    <td>Are</td>
+                    <td style="text-align: left; background: white;">shoes, socks, jeans and blouses.<br>A dress and boots.<br>Jeans, T-shirts and jackets.</td>
+                </tr>
+            </table>
+
+            <p class="instruction" style="margin-top: 30px;">Look at the pictures and describe the outfits:</p>
+            <div class="hw-frame-grid">
+                <div class="hw-person-card">
+                    <div class="hw-photo-ph"><img src="https://i.postimg.cc/mDyNbG35/80.png" alt="Ivete"></div>
+                    <div class="hw-person-title">IVETE</div>
+                    <textarea class="text-input eval-law" id="law-1" data-ans="ivete is wearing a coat a scarf and gloves" style="height:100px; resize:none;" placeholder="What is she wearing?"></textarea>
+                </div>
+                <div class="hw-person-card">
+                    <div class="hw-photo-ph"><img src="https://i.postimg.cc/X7zKNLFG/81.png" alt="Ralph"></div>
+                    <div class="hw-person-title">RALPH</div>
+                    <textarea class="text-input eval-law" id="law-2" data-ans="he is wearing jeans a jacket shoes and a t-shirt" style="height:100px; resize:none;" placeholder="What is he wearing?"></textarea>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEC 7: NOW IT'S YOUR TURN (PHOTO BOOK) ================= -->
+        <div id="sec-7" class="activity-section theme-blue">
+            <h2>Now It's Your Turn!</h2>
+            
+            <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; line-height: 1.8;">
+                <h3 style="margin-top: 0; color: var(--theme-blue-border);">Creating Your Photo Book</h3>
+                <b>Capture the Moment:</b> a) Take selfies on different days of the week.<br>
+                <b>Share the Experience:</b> b) Share your photos with your teacher. Describe the weather and the clothes you’re wearing.<br>
+                <b>Daily Updates:</b> c) Keep the project going by sending a picture every day.
+            </div>
+
+            <p class="instruction">Click the boxes below to upload your selfies from your device!</p>
+
+            <div class="upload-grid" id="photobook-area">
+                <div class="photo-upload-box">
+                    <input type="file" accept="image/*" class="file-uploader">
+                    <div class="photo-icon">📷</div>
+                    <div class="photo-label">Upload Day 1</div>
+                </div>
+                <div class="photo-upload-box">
+                    <input type="file" accept="image/*" class="file-uploader">
+                    <div class="photo-icon">📷</div>
+                    <div class="photo-label">Upload Day 2</div>
+                </div>
+                <div class="photo-upload-box">
+                    <input type="file" accept="image/*" class="file-uploader">
+                    <div class="photo-icon">📷</div>
+                    <div class="photo-label">Upload Day 3</div>
+                </div>
+                <div class="photo-upload-box">
+                    <input type="file" accept="image/*" class="file-uploader">
+                    <div class="photo-icon">📷</div>
+                    <div class="photo-label">Upload Day 4</div>
+                </div>
+                <div class="photo-upload-box">
+                    <input type="file" accept="image/*" class="file-uploader">
+                    <div class="photo-icon">📷</div>
+                    <div class="photo-label">Upload Day 5</div>
+                </div>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 25px;">
+                <button class="btn-nav" style="background: var(--theme-blue-border); color: white;" onclick="downloadDiv('photobook-area', 'My_Photo_Book.png')">📤 Download Photo Book</button>
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 30px;">
+                <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 3C & Get XP</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTÃO FLUTUANTE DE GRAMÁTICA -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-light); font-weight:bold; margin-bottom:10px; font-size:16px;">❓ What are you wearing?</div>
+            <div style="margin-bottom:8px;">Usamos o <b>Present Continuous</b> para falar do que estamos a usar AGORA:</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--blue-light);">Verbo to be + wearing</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"I <b>am wearing</b> a coat."</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"She <b>is wearing</b> a skirt."</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"They <b>are wearing</b> uniforms."</div>
+            
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: var(--blue-light);">Seasons / General</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light);">"What to wear when it's cold?"</div>
+            <div style="color:#333; font-style:italic; background:var(--theme-blue-bg); padding:5px; border-left:3px solid var(--blue-light); margin-top: 2px;">"What to wear in summer?"</div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 3C.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555; text-align: center;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Go to Challenge ➔</button>
+        </div>
+    </div>
+
+    <script>
+        // ==== NAVEGAÇÃO E ÁUDIO ====
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) { a.pause(); const otherBtn = document.getElementById('btn-' + a.id); if(otherBtn) { otherBtn.innerText = "▶ PLAY"; otherBtn.style.background = ""; } }
+            });
+            if (audio.paused) { audio.play(); btn.innerText = "⏸ PAUSE"; btn.style.background = "#c0392b"; } 
+            else { audio.pause(); btn.innerText = "▶ PLAY"; btn.style.background = originalColor; }
+            audio.onended = function() { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        // ==== DRAG AND DROP GLOBAL ====
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        // WARM UP (SILHOUETTES)
+        function dropWu(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var target = ev.target;
+            if(target.classList.contains('drop-zone')) {
+                target.appendChild(document.getElementById(data));
+                target.classList.remove('drag-over');
+            }
+        }
+        function dropWuBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('wb-warmup').appendChild(document.getElementById(data));
+        }
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragenter', () => zone.classList.add('drag-over'));
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
+        });
+
+        // LANGUAGE GUIDE (INLINE)
+        function dropInline(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if (target.classList.contains('drag-word')) target = target.parentElement;
+            if (target.classList.contains('inline-drop')) {
+                if(target.children.length > 0) document.getElementById('wb-grammar').appendChild(target.children[0]);
+                target.appendChild(draggedEl);
+                target.classList.remove('drag-over');
+            }
+        }
+        function dropInlineBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('wb-grammar').appendChild(document.getElementById(data));
+        }
+        document.querySelectorAll('.inline-drop').forEach(zone => {
+            zone.addEventListener('dragenter', () => zone.classList.add('drag-over'));
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
+        });
+
+        // COLORS (UP TO YOU)
+        function dragColor(ev) {
+            ev.dataTransfer.setData("color", ev.target.getAttribute('data-color'));
+        }
+        function dropPaint(ev) {
+            ev.preventDefault();
+            var color = ev.dataTransfer.getData("color");
+            var target = ev.target.closest('.cloth-paint-card'); 
+            if(color && target) {
+                let iconBox = target.querySelector('.cloth-icon');
+                iconBox.style.backgroundColor = color;
+                iconBox.style.borderColor = color;
+                target.classList.remove('drag-over');
+            }
+        }
+        document.querySelectorAll('.cloth-paint-card').forEach(card => {
+            card.addEventListener('dragenter', () => card.classList.add('drag-over'));
+            card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+            card.addEventListener('drop', () => card.classList.remove('drag-over'));
+        });
+
+        // ==== LÓGICA DE UPLOAD DE FOTOS ====
+        document.querySelectorAll('.file-uploader').forEach(input => {
+            input.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    var box = this.parentElement;
+                    reader.onload = function(e) {
+                        box.style.backgroundImage = 'url(' + e.target.result + ')';
+                        box.style.backgroundSize = 'cover';
+                        box.style.backgroundPosition = 'center';
+                        box.querySelector('.photo-icon').style.display = 'none';
+                        box.querySelector('.photo-label').style.display = 'none';
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+
+        // ==== DOWNLOAD EM HD ====
+        function downloadDiv(divId, filename) { 
+            html2canvas(document.getElementById(divId), { useCORS: true, scale: 2 }).then(canvas => { 
+                let link = document.createElement('a'); 
+                link.download = filename; 
+                link.href = canvas.toDataURL('image/png'); 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                alert("Error downloading image.");
+                console.error(err);
+            }); 
+        }
+
+        // ==== LÓGICA XP E MOCHILA ====
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_3c_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao3c_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaurar Textos (TS, CC, LAW)
+                    for(let id in respostas.texts) {
+                        let el = document.getElementById(id);
+                        if(el) el.value = respostas.texts[id];
+                    }
+
+                    // Restaurar Inline Drop
+                    for(let zoneId in respostas.inline) {
+                        let wordId = respostas.inline[zoneId];
+                        let zone = document.getElementById(zoneId);
+                        let word = document.getElementById(wordId);
+                        if(zone && word) zone.appendChild(word);
+                    }
+                }
+                let btnFinish = document.querySelector('.btn-finish');
+                if(btnFinish) { btnFinish.innerText = "🔄 Update Answers & Get XP"; }
+            }
+        });
+
+        let finalXP = 0;
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+            let respostasFotografadas = { texts: {}, inline: {} };
+
+            // 1. Textos (Target Situation, Cross Curricular, Language At Work)
+            document.querySelectorAll('.eval-ts, .eval-cc, .eval-law').forEach(input => {
+                total++;
+                respostasFotografadas.texts[input.id] = input.value;
+                let userAns = input.value.toLowerCase().trim().replace(/[.,!?()]/g, '');
+                let expectedAns = input.getAttribute('data-ans').toLowerCase().trim().replace(/[.,!?()]/g, '');
+                let expectedKeywords = expectedAns.split(" ");
+                
+                let matches = 0;
+                expectedKeywords.forEach(kw => {
+                    if(kw.length > 2 && userAns.includes(kw)) matches++;
+                });
+
+                if(matches >= expectedKeywords.length / 2 || userAns === expectedAns) {
+                    correct++;
+                }
+            });
+
+            // 2. Inline Drop (Language Guide)
+            document.querySelectorAll('.eval-inline').forEach(zone => {
+                total++;
+                if(zone.children.length > 0) {
+                    let childWord = zone.children[0];
+                    respostasFotografadas.inline[zone.id] = childWord.id;
+                    if(childWord.id === zone.getAttribute('data-ans')) correct++;
+                }
+            });
+
+            localStorage.setItem('licao3c_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // FLUXO DE NAVEGAÇÃO 3C -> 3D
+        function returnToMap() {
+            let oldXP = parseInt(localStorage.getItem('licao_3c_xp')) || 0;
+            let xpDifference = finalXP - oldXP; 
+
+            localStorage.setItem('licao_3c_status', 'concluida');
+            localStorage.setItem('licao_3c_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('licao3d.html', 'link-3d');
+                    return;
+                }
+            }
+            window.location.href = "licao3d.html"; 
+        }
+    </script>
+</body>
+</html>

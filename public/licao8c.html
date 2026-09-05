@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8C | Unit Challenge - What Comes Next?</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 30px 15px 100px 15px;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #c2410c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 920px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .textarea-styled {
+            width: 100%;
+            min-height: 220px;
+            padding: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            font-family: var(--font-text);
+            font-size: 14.5px;
+            line-height: 1.65;
+            outline: none;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: 0.2s;
+        }
+        .textarea-styled:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.15);
+        }
+
+        .word-counter-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .prompt-ideas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .prompt-chip {
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            color: #1e40af;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* REPORT CARD */
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid var(--accent-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 25px;
+        }
+        .rc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        @media(max-width: 600px) { .rc-grid { grid-template-columns: 1fr; } }
+        .rc-item {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .rc-item span { display: block; font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 4px; }
+        .rc-item strong { font-size: 22px; color: var(--blue-dark); font-family: var(--font-title); }
+        .rc-total {
+            background: #fff7ed;
+            padding: 20px;
+            border-radius: 14px;
+            border: 2px dashed var(--accent-main);
+            margin-bottom: 20px;
+        }
+        .rc-total span { display: block; font-size: 13px; color: #9a3412; font-weight: bold; }
+        .rc-total strong { font-size: 36px; color: var(--accent-main); font-family: var(--font-title); }
+
+        .btn-finish {
+            background: linear-gradient(135deg, #ea580c 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 17px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+            transition: 0.2s;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+        .btn-finish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.55);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 8 • Vacations and Trips</span>
+            <h1>8C | Unit Challenge • What Comes Next?</h1>
+        </div>
+
+        <!-- ================= 1. WHAT COMES NEXT? ================= -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. WHAT COMES NEXT? • Essay on Ivete & Alan’s Future</h2>
+            <p class="instruction">
+                It is Ivete’s and Alan’s last day of vacation in the Lake District. What are they going to do next? 
+                Write an essay describing their future using the prompt ideas below or your own:
+            </p>
+
+            <div class="prompt-ideas">
+                <span class="prompt-chip">✨ Visit new countries (France, Italy, Scotland)</span>
+                <span class="prompt-chip">🏡 Buy a country cottage house</span>
+                <span class="prompt-chip">🐕 Adopt a golden retriever dog</span>
+                <span class="prompt-chip">💼 Get promoted at Overseas Corporation</span>
+                <span class="prompt-chip">✈️ Invite family from Brazil to London</span>
+            </div>
+
+            <div class="card-box">
+                <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 6px;">
+                    Final Course Essay:
+                </label>
+                <textarea class="textarea-styled" id="essay-text" oninput="updateWordCount()" placeholder="After this unforgettable vacation in the Lake District, Ivete and Alan have big plans for the future. First, they are going to return to London with renewed energy. Ivete is going to lead a new international campaign at Overseas Corporation..."></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="word-counter-badge" id="word-count-display">0 words (Target: 50+ words)</span>
+                    <span style="font-size: 12px; color: #64748b; font-style: italic;">Use 'be going to' and future expressions.</span>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Unit 8 Report Card ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= 2. REPORT CARD ================= -->
+        <div id="sec-2" class="activity-section theme-orange">
+            <h2>2. UNIT 8 • DETAILED REPORT CARD & GRADUATION</h2>
+            <p class="instruction">Review your final unit scores. Completing this step records your course graduation across all 8 Units!</p>
+
+            <div class="report-card">
+                <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--blue-dark); margin: 0 0 6px 0;">
+                    Target On Course Completion
+                </h3>
+                <p style="font-size: 13.5px; color: #64748b; margin: 0 0 15px 0;">Official Academic Transcript • Overseas Corporation Curriculum</p>
+
+                <div class="rc-grid">
+                    <div class="rc-item"><span>8A: Vacations & Trips</span> <strong id="rc-8a">0%</strong></div>
+                    <div class="rc-item"><span>8B: Timetables</span> <strong id="rc-8b">0%</strong></div>
+                    <div class="rc-item"><span>8C: What Comes Next?</span> <strong id="rc-8c">0%</strong></div>
+                </div>
+
+                <div class="rc-total">
+                    <span>UNIT 8 FINAL XP</span>
+                    <strong id="rc-total-xp">0 XP</strong>
+                </div>
+
+                <p style="font-size: 14px; color: #475569; margin: 0 0 20px 0;">
+                    🎉 Congratulations! You have journeyed with Ivete from Heathrow Airport all the way through English proficiency.
+                </p>
+
+                <button class="btn-finish" id="btn-graduate" onclick="graduateAndProceed()">
+                    🎬 Complete Course & Watch Grand Finale ➔
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateWordCount() {
+            let text = document.getElementById('essay-text').value.trim();
+            let words = text ? text.split(/\s+/).length : 0;
+            let display = document.getElementById('word-count-display');
+            display.innerText = words + " words (Target: 50+ words)";
+            if (words >= 50) {
+                display.style.background = "#dcfce7";
+                display.style.color = "#15803d";
+            } else {
+                display.style.background = "#f1f5f9";
+                display.style.color = "#475569";
+            }
+        }
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+            if (showId === 'sec-2') {
+                updateReportCard();
+            }
+        }
+
+        let current8cXP = 0;
+
+        function updateReportCard() {
+            let essay = document.getElementById('essay-text').value.trim();
+            let words = essay ? essay.split(/\s+/).length : 0;
+
+            if (words >= 50) current8cXP = 100;
+            else if (words >= 30) current8cXP = 85;
+            else if (words >= 15) current8cXP = 70;
+            else current8cXP = 50;
+
+            localStorage.setItem('licao8c_essay', essay);
+
+            let xp8a = parseInt(localStorage.getItem('licao_8a_xp')) || 90;
+            let xp8b = parseInt(localStorage.getItem('licao_8b_xp')) || 95;
+            let xp8c = current8cXP;
+
+            document.getElementById('rc-8a').innerText = xp8a + "%";
+            document.getElementById('rc-8b').innerText = xp8b + "%";
+            document.getElementById('rc-8c').innerText = xp8c + "%";
+
+            let avgXP = Math.round((xp8a + xp8b + xp8c) / 3);
+            document.getElementById('rc-total-xp').innerText = "+" + avgXP + " XP";
+        }
+
+        function graduateAndProceed() {
+            updateReportCard();
+
+            let oldXP = parseInt(localStorage.getItem('licao_8c_xp')) || 0;
+            let diff = current8cXP - oldXP;
+
+            localStorage.setItem('licao_8c_status', 'concluida');
+            localStorage.setItem('licao_8c_xp', current8cXP);
+            localStorage.setItem('unit8_completed', 'true');
+            localStorage.setItem('curso_concluido', 'true');
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            let btn = document.getElementById('btn-graduate');
+            btn.innerText = "⏳ Recording Graduation & Launching Finale...";
+            btn.disabled = true;
+
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPnScrpyBKJxI3hvG1S7u2s2COsH7vLDnf1AvTWDdLNTvL88kTmLVR4CGyv_nZtcaXZw/exec";
+            const userCode = localStorage.getItem('userCode') || 'TARGET1ONT1-DEMO';
+            const userName = localStorage.getItem('userName') || 'Ivete Silva';
+
+            const payload = {
+                code: userCode,
+                name: userName,
+                turma: "Turma 1",
+                xp: studentXP,
+                unit1: true,
+                unit2: true,
+                unit3: true,
+                unit4: true,
+                unit5: true,
+                unit6: true,
+                unit7: true,
+                unit8: true,
+                graduated: true
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).catch(e => console.log('Cloud sync fallback: cached locally', e))
+            .finally(() => {
+                setTimeout(() => {
+                    if (window.parent && window.parent.completeUnit) {
+                        window.parent.completeUnit(8, current8cXP);
+                    }
+                    if (window.parent && window.parent.avancarPara) {
+                        window.parent.avancarPara('encerramento.html', 'encerramento');
+                        return;
+                    }
+                    window.location.href = "encerramento.html";
+                }, 800);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao8c_essay');
+            if (saved) {
+                document.getElementById('essay-text').value = saved;
+                updateWordCount();
+            }
+        });
+    </script>
+</body>
+</html>

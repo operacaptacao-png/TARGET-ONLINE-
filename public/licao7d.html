@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7D | Unit Challenge - Home Sweet Home</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 30px 15px 100px 15px;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #c2410c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 920px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+        .text-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.15);
+        }
+
+        /* FLOOR PLAN VISUAL */
+        .floor-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            background: #f1f5f9;
+            border: 3px solid #64748b;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+        @media(max-width: 700px) { .floor-plan-grid { grid-template-columns: 1fr; } }
+        .floor-room-card {
+            background: white;
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+        }
+        .floor-room-badge {
+            display: inline-block;
+            background: var(--blue-dark);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        /* REPORT CARD */
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid var(--accent-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 25px;
+        }
+        .rc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        @media(max-width: 600px) { .rc-grid { grid-template-columns: repeat(2, 1fr); } }
+        .rc-item {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .rc-item span { display: block; font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 4px; }
+        .rc-item strong { font-size: 20px; color: var(--blue-dark); font-family: var(--font-title); }
+        .rc-total {
+            background: #fff7ed;
+            padding: 18px;
+            border-radius: 14px;
+            border: 2px dashed var(--accent-main);
+            margin-bottom: 20px;
+        }
+        .rc-total span { display: block; font-size: 13px; color: #9a3412; font-weight: bold; }
+        .rc-total strong { font-size: 34px; color: var(--accent-main); font-family: var(--font-title); }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 15px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* FLOATING GRAMMAR TIP */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s;
+            border: none;
+        }
+        .grammar-floating-btn:hover { transform: scale(1.05); }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 7 • Home Sweet Home</span>
+            <h1>7D | Unit Challenge</h1>
+        </div>
+
+        <!-- ================= 1. FURNISH THE HOUSE ================= -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. FURNISH THE HOUSE • Floor Plan Rooms</h2>
+            <p class="instruction">
+                Label the 6 rooms in the floor plan below and describe what furniture belongs in each space.
+            </p>
+
+            <div class="floor-plan-grid">
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 1 (Front Entrance)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-1" data-ans="living room|hallway|sofa" placeholder="e.g. Living Room - Velvet sofa and coffee table">
+                </div>
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 2 (Cooking & Meals)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-2" data-ans="kitchen|dining room|dining table" placeholder="e.g. Kitchen - Fridge, oven, and dining table">
+                </div>
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 3 (Master Suite)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-3" data-ans="bedroom|master bedroom|double bed" placeholder="e.g. Master Bedroom - Double bed and wardrobe">
+                </div>
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 4 (Personal Hygiene)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-4" data-ans="bathroom|bathtub|shower" placeholder="e.g. Bathroom - Bathtub, mirror, and sink">
+                </div>
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 5 (Study / Work)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-5" data-ans="office|study|desk|bookcase" placeholder="e.g. Home Office - Desk, computer, and bookcase">
+                </div>
+                <div class="floor-room-card">
+                    <span class="floor-room-badge">ROOM 6 (Outdoor View)</span>
+                    <label style="font-size: 12px; font-weight: bold; color: #475569; display: block;">Room Name & Furniture:</label>
+                    <input type="text" class="text-input eval-input" id="room-6" data-ans="balcony|terrace|garden|patio" placeholder="e.g. Balcony - Small table, two chairs, and plants">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Unit 7 Report Card ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= 2. REPORT CARD ================= -->
+        <div id="sec-2" class="activity-section theme-orange">
+            <h2>2. UNIT 7 • DETAILED REPORT CARD</h2>
+            <p class="instruction">Review your scores across Unit 7 and record your official progress in the Overseas Corporation language system.</p>
+
+            <div class="report-card">
+                <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--blue-dark); margin: 0 0 6px 0;">
+                    Unit 7 Summary: Home Sweet Home
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Official Record • Overseas Corporation Language Training</p>
+
+                <div class="rc-grid">
+                    <div class="rc-item"><span>7A: Renting a Flat</span> <strong id="rc-7a">0%</strong></div>
+                    <div class="rc-item"><span>7B: Furnishing</span> <strong id="rc-7b">0%</strong></div>
+                    <div class="rc-item"><span>7C: Housewarming Party</span> <strong id="rc-7c">0%</strong></div>
+                    <div class="rc-item"><span>7D: Unit Challenge</span> <strong id="rc-7d">0%</strong></div>
+                </div>
+
+                <div class="rc-total">
+                    <span>UNIT 7 OVERALL SCORE</span>
+                    <strong id="rc-total-xp">0 XP</strong>
+                </div>
+
+                <button class="btn-finish" id="btn-save-cloud" onclick="finishUnit7AndProceed()">
+                    Save to Cloud & Continue Journey ➔
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 8px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 14px;">
+                Unit 7 Core Grammar
+            </h4>
+            <p style="margin: 0 0 6px 0;">
+                • <b>Present Continuous:</b> <i>Subject + be + verb-ing</i> (We are decorating the flat).<br>
+                • <b>Quantities:</b> <i>How many</i> + countable plural / <i>How much</i> + uncountable / price.<br>
+                • <b>Prepositions:</b> in, on, under, behind, next to, between, in front of.<br>
+                • <b>There was / There were:</b> Past description of spaces and neighbourhood.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+            if (showId === 'sec-2') {
+                updateReportCard();
+            }
+        }
+
+        let current7dXP = 0;
+
+        function updateReportCard() {
+            let correct = 0;
+            let total = 0;
+            let userAnswers = {};
+
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            localStorage.setItem('licao7d_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            current7dXP = Math.min(100, Math.round(percentage * 100));
+
+            let xp7a = parseInt(localStorage.getItem('licao_7a_xp')) || 90;
+            let xp7b = parseInt(localStorage.getItem('licao_7b_xp')) || 85;
+            let xp7c = parseInt(localStorage.getItem('licao_7c_xp')) || 90;
+            let xp7d = current7dXP;
+
+            document.getElementById('rc-7a').innerText = xp7a + "%";
+            document.getElementById('rc-7b').innerText = xp7b + "%";
+            document.getElementById('rc-7c').innerText = xp7c + "%";
+            document.getElementById('rc-7d').innerText = xp7d + "%";
+
+            let avgXP = Math.round((xp7a + xp7b + xp7c + xp7d) / 4);
+            document.getElementById('rc-total-xp').innerText = "+" + avgXP + " XP";
+        }
+
+        function finishUnit7AndProceed() {
+            updateReportCard();
+
+            let oldXP = parseInt(localStorage.getItem('licao_7d_xp')) || 0;
+            let diff = current7dXP - oldXP;
+
+            localStorage.setItem('licao_7d_status', 'concluida');
+            localStorage.setItem('licao_7d_xp', current7dXP);
+            localStorage.setItem('unit7_completed', 'true');
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            let btn = document.getElementById('btn-save-cloud');
+            btn.innerText = "⏳ Saving to Cloud...";
+            btn.disabled = true;
+
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPnScrpyBKJxI3hvG1S7u2s2COsH7vLDnf1AvTWDdLNTvL88kTmLVR4CGyv_nZtcaXZw/exec";
+            const userCode = localStorage.getItem('userCode') || 'TARGET1ONT1-DEMO';
+            const userName = localStorage.getItem('userName') || 'Ivete Silva';
+
+            const payload = {
+                code: userCode,
+                name: userName,
+                turma: "Turma 1",
+                xp: studentXP,
+                unit1: true,
+                unit2: true,
+                unit3: true,
+                unit4: true,
+                unit5: true,
+                unit6: true,
+                unit7: true,
+                unit8: false
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).catch(e => console.log('Cloud sync fallback: cached locally', e))
+            .finally(() => {
+                setTimeout(() => {
+                    if (window.parent && window.parent.completeUnit) {
+                        window.parent.completeUnit(7, current7dXP);
+                    }
+                    if (window.parent && window.parent.avancarPara) {
+                        window.parent.avancarPara('transicao_7_para_8.html', 'transicao-7-8');
+                        return;
+                    }
+                    window.location.href = "transicao_7_para_8.html";
+                }, 800);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao7d_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    for (let id in data) {
+                        let el = document.getElementById(id);
+                        if (el) el.value = data[id];
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>

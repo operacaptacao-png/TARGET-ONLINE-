@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey to Lesson 2</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --orange-dark: #d35400;
+            --orange-light: #e67e22;
+            --yellow-leaf: #f1c40f;
+            --font-main: 'Montserrat', sans-serif;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #1a0a00; font-family: var(--font-main);
+            overflow: hidden;
+        }
+
+        .autumn-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1507006085698-3286b24f5cbe?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            box-shadow: inset 0 0 0 2000px rgba(211, 84, 0, 0.45); 
+            z-index: 1; transition: opacity 2s;
+        }
+
+        .leaf {
+            position: absolute; width: 18px; height: 18px;
+            background: var(--yellow-leaf); border-radius: 0 50% 0 50%;
+            opacity: 0.8; z-index: 2; pointer-events: none;
+            animation: fall linear infinite;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
+        }
+        .leaf:nth-child(2n) { background: var(--orange-light); }
+        .leaf:nth-child(3n) { background: #e74c3c; }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(110vh) translateX(150px) rotate(720deg); opacity: 0; }
+        }
+
+        .cinematic-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; text-align: center; padding: 20px; box-sizing: border-box;
+        }
+
+        .narrative-text {
+            font-size: 42px; font-weight: 300; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            opacity: 0; transform: scale(0.95); transition: all 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: absolute; width: 90%; max-width: 800px;
+        }
+        .narrative-text.show { opacity: 1; transform: scale(1); }
+
+        .title-container {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transform: scale(0.8); transition: all 2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            pointer-events: none; position: absolute; width: 100%;
+        }
+        .title-container.show { opacity: 1; transform: scale(1); pointer-events: auto; }
+
+        .main-title {
+            font-size: 7vw; font-weight: 900; color: var(--yellow-leaf);
+            text-transform: uppercase; letter-spacing: 10px; margin: 0;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8); line-height: 1.1;
+        }
+        .sub-title {
+            font-size: 3.5vw; font-weight: 300; color: white;
+            text-transform: uppercase; letter-spacing: 12px; margin: 10px 0 40px 0;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        }
+        .lesson-badge {
+            background: var(--orange-dark); color: white; font-size: 22px; font-weight: 700;
+            padding: 12px 35px; border-radius: 50px; letter-spacing: 4px; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 20px;
+        }
+
+        .btn-start {
+            background: rgba(255,255,255,0.2); border: 2px solid white; color: white;
+            padding: 18px 50px; font-family: var(--font-main); font-weight: 700; font-size: 20px;
+            border-radius: 50px; cursor: pointer; transition: 0.3s; backdrop-filter: blur(8px);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-start:hover { background: white; color: var(--orange-dark); transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+        .btn-proceed {
+            background: var(--orange-light); color: white; border: none;
+            padding: 20px 60px; font-family: var(--font-main); font-weight: 900; font-size: 22px;
+            border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 30px;
+            text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+        }
+        .btn-proceed:hover { background: var(--orange-dark); transform: translateY(-5px); }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 10vw; }
+            .sub-title { font-size: 5vw; }
+            .narrative-text { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="autumn-bg"></div>
+
+    <div id="leaves-container"></div>
+
+    <div class="cinematic-container">
+        
+        <div id="intro-screen" style="z-index: 20;">
+            <button class="btn-start" onclick="startCinematic()">Next Day in London ➔</button>
+        </div>
+
+        <div id="text-1" class="narrative-text">Welcome to London!</div>
+        <div id="text-2" class="narrative-text">I don't know about you...</div>
+        <div id="text-3" class="narrative-text">Aren't you hungry...</div>
+        <div id="text-4" class="narrative-text" style="font-size: 55px; font-weight: 700; color: var(--yellow-leaf);">Let's eat?</div>
+
+        <div id="final-title" class="title-container">
+            <div class="lesson-badge">Lesson - 2A</div>
+            <h1 class="main-title">SHOPPING FOR FOOD</h1>
+            <h2 class="sub-title">Having Dinner</h2>
+            
+            <button class="btn-proceed" onclick="window.location.href='licao2a.html'">Enter Lesson ➔</button>
+        </div>
+
+    </div>
+
+    <script>
+        function createLeaves() {
+            const container = document.getElementById('leaves-container');
+            const numLeaves = window.innerWidth < 768 ? 15 : 35;
+            
+            for(let i = 0; i < numLeaves; i++) {
+                let leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                
+                let size = Math.random() * 15 + 10; 
+                leaf.style.width = size + 'px';
+                leaf.style.height = size + 'px';
+                
+                container.appendChild(leaf);
+            }
+        }
+
+        async function startCinematic() {
+            document.getElementById('intro-screen').style.display = 'none';
+            createLeaves();
+
+            const texts = ['text-1', 'text-2', 'text-3', 'text-4'];
+            
+            for (let i = 0; i < texts.length; i++) {
+                let el = document.getElementById(texts[i]);
+                el.classList.add('show');
+                
+                let waitTime = (i === 3) ? 3000 : 2200; 
+                await new Promise(r => setTimeout(r, waitTime));
+                
+                el.classList.remove('show');
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            document.getElementById('final-title').classList.add('show');
+        }
+    </script>
+</body>
+</html>

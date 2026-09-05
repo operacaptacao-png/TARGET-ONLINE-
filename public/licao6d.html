@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6D | Unit Challenge - Having a Date</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #8b5cf6;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 30px 15px 100px 15px;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #c2410c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 920px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+        .text-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.15);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+        }
+        .word-chip {
+            background: white;
+            border: 1px solid #94a3b8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--blue-dark);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* REPORT CARD */
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid var(--accent-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 25px;
+        }
+        .rc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        @media(max-width: 600px) { .rc-grid { grid-template-columns: repeat(2, 1fr); } }
+        .rc-item {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .rc-item span { display: block; font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 4px; }
+        .rc-item strong { font-size: 20px; color: var(--blue-dark); font-family: var(--font-title); }
+        .rc-total {
+            background: #fff7ed;
+            padding: 18px;
+            border-radius: 14px;
+            border: 2px dashed var(--accent-main);
+            margin-bottom: 20px;
+        }
+        .rc-total span { display: block; font-size: 13px; color: #9a3412; font-weight: bold; }
+        .rc-total strong { font-size: 34px; color: var(--accent-main); font-family: var(--font-title); }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 15px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* FLOATING GRAMMAR TIP */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s;
+            border: none;
+        }
+        .grammar-floating-btn:hover { transform: scale(1.05); }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 6 • Having a Date</span>
+            <h1>6D | Unit Challenge</h1>
+        </div>
+
+        <!-- ================= SEÇÃO 1: STRIKE A POSE! ================= -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. STRIKE A POSE!</h2>
+            <p class="instruction">
+                This picture was taken yesterday. What did the people do? Use the past of the actions in the box to make sentences. Use all the words.
+            </p>
+
+            <div class="word-bank">
+                <span class="word-chip">DRANK</span>
+                <span class="word-chip">LOVED</span>
+                <span class="word-chip">ATE</span>
+                <span class="word-chip">TALKED</span>
+                <span class="word-chip">TOOK</span>
+                <span class="word-chip">ORDERED</span>
+            </div>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">1. Action (DRANK):</span>
+                        <input type="text" class="text-input eval-input" id="sap-1" data-ans="drank" placeholder="e.g. Ivete drank sparkling water. / They drank wine.">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">2. Action (LOVED):</span>
+                        <input type="text" class="text-input eval-input" id="sap-2" data-ans="loved" placeholder="e.g. They loved the Italian dinner. / She loved the romantic atmosphere.">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">3. Action (ATE):</span>
+                        <input type="text" class="text-input eval-input" id="sap-3" data-ans="ate" placeholder="e.g. Alan ate mushroom risotto. / They ate tiramisu for dessert.">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">4. Action (TALKED):</span>
+                        <input type="text" class="text-input eval-input" id="sap-4" data-ans="talked" placeholder="e.g. They talked for three hours. / Alan and Ivete talked about life.">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">5. Action (TOOK):</span>
+                        <input type="text" class="text-input eval-input" id="sap-5" data-ans="took" placeholder="e.g. Alan took a photo of Covent Garden. / They took a walk together.">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">6. Action (ORDERED):</span>
+                        <input type="text" class="text-input eval-input" id="sap-6" data-ans="ordered" placeholder="e.g. Ivete ordered tomato bruschetta. / They ordered fresh pasta.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Snakes and Ladders ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEÇÃO 2: SNAKES AND LADDERS ================= -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. SNAKES AND LADDERS — WRITTEN CHALLENGES</h2>
+            <p class="instruction">Solve each of the grammar challenges below to climb the ladders and complete your mission.</p>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">1. Order the words: kind / do / food / you / what / like / of?</span>
+                        <input type="text" class="text-input eval-input" id="sal-1" data-ans="what kind of food do you like|what kind of food do you like?" placeholder="Write the correct question...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">2. Correct it: "I not talked to my teacher."</span>
+                        <input type="text" class="text-input eval-input" id="sal-2" data-ans="i didn't talk to my teacher|i did not talk to my teacher" placeholder="Write the corrected sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">3. Correct it: "He called her?"</span>
+                        <input type="text" class="text-input eval-input" id="sal-3" data-ans="did he call her|did he call her?" placeholder="Write the proper past question...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">4. Change the form to negative: "I met her opposite the grocery shop."</span>
+                        <input type="text" class="text-input eval-input" id="sal-4" data-ans="i didn't meet her opposite the grocery shop|i did not meet her opposite the grocery shop" placeholder="Write the negative sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">5. Fill in the gap using the past: "She __________________ (eat) out with her friends."</span>
+                        <input type="text" class="text-input eval-input" id="sal-5" data-ans="ate|she ate out with her friends" placeholder="Past form of eat...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">6. Correct it: "I didn’t enjoyed the meal."</span>
+                        <input type="text" class="text-input eval-input" id="sal-6" data-ans="i didn't enjoy the meal|i did not enjoy the meal" placeholder="Write the corrected sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">7. Order the sentence: love / I / dinner / romantic.</span>
+                        <input type="text" class="text-input eval-input" id="sal-7" data-ans="i love romantic dinner|i love romantic dinners|i love a romantic dinner" placeholder="Write the ordered sentence...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Unit 6 Report Card ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SEÇÃO 3: REPORT CARD ================= -->
+        <div id="sec-3" class="activity-section theme-orange">
+            <h2>3. UNIT 6 • DETAILED REPORT CARD</h2>
+            <p class="instruction">Review your performance across Unit 6 and finalize your results to proceed to the next chapter.</p>
+
+            <div class="report-card">
+                <h3 style="font-family: var(--font-title); font-size: 22px; color: var(--blue-dark); margin: 0 0 6px 0;">
+                    Unit 6 Summary: Having a Date
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 15px 0;">Official Record • Overseas Corporation Language Training</p>
+
+                <div class="rc-grid">
+                    <div class="rc-item"><span>6A: Inviting</span> <strong id="rc-6a">0%</strong></div>
+                    <div class="rc-item"><span>6B: Dinner</span> <strong id="rc-6b">0%</strong></div>
+                    <div class="rc-item"><span>6C: The Day After</span> <strong id="rc-6c">0%</strong></div>
+                    <div class="rc-item"><span>6D: Challenge</span> <strong id="rc-6d">0%</strong></div>
+                </div>
+
+                <div class="rc-total">
+                    <span>UNIT 6 OVERALL SCORE</span>
+                    <strong id="rc-total-xp">0 XP</strong>
+                </div>
+
+                <button class="btn-finish" id="btn-save-cloud" onclick="finishUnit6AndProceed()">
+                    Save to Cloud & Continue Journey ➔
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 8px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 14px;">
+                Unit 6 Key Grammar
+            </h4>
+            <p style="margin: 0 0 8px 0;">
+                • <b>Past of Regular Verbs:</b> add <i>-ed</i> (talked, loved, ordered).<br>
+                • <b>Irregular Past:</b> eat ➔ <i>ate</i>, drink ➔ <i>drank</i>, take ➔ <i>took</i>.<br>
+                • <b>Past Negatives:</b> <i>didn't + base verb</i> (didn't talk, didn't enjoy).<br>
+                • <b>Past Questions:</b> <i>Did + subject + base verb?</i> (Did he call her?)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+            if (showId === 'sec-3') {
+                updateReportCard();
+            }
+        }
+
+        let current6dXP = 0;
+
+        function updateReportCard() {
+            // Check 6D answers
+            let correct = 0;
+            let total = 0;
+            let userAnswers = {};
+
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase().replace(/[.?!,']/g, '');
+                userAnswers[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|').map(a => a.replace(/[.?!,']/g, ''));
+                if (accepted.some(a => val === a || val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            localStorage.setItem('licao6d_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            current6dXP = Math.min(100, Math.round(percentage * 100));
+
+            let xp6a = parseInt(localStorage.getItem('licao_6a_xp')) || 85;
+            let xp6b = parseInt(localStorage.getItem('licao_6b_xp')) || 90;
+            let xp6c = parseInt(localStorage.getItem('licao_6c_xp')) || 90;
+            let xp6d = current6dXP;
+
+            document.getElementById('rc-6a').innerText = xp6a + "%";
+            document.getElementById('rc-6b').innerText = xp6b + "%";
+            document.getElementById('rc-6c').innerText = xp6c + "%";
+            document.getElementById('rc-6d').innerText = xp6d + "%";
+
+            let avgXP = Math.round((xp6a + xp6b + xp6c + xp6d) / 4);
+            document.getElementById('rc-total-xp').innerText = "+" + avgXP + " XP";
+        }
+
+        function finishUnit6AndProceed() {
+            updateReportCard();
+
+            let oldXP = parseInt(localStorage.getItem('licao_6d_xp')) || 0;
+            let diff = current6dXP - oldXP;
+
+            localStorage.setItem('licao_6d_status', 'concluida');
+            localStorage.setItem('licao_6d_xp', current6dXP);
+            localStorage.setItem('unit6_completed', 'true');
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            let btn = document.getElementById('btn-save-cloud');
+            btn.innerText = "⏳ Saving to Cloud...";
+            btn.disabled = true;
+
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPnScrpyBKJxI3hvG1S7u2s2COsH7vLDnf1AvTWDdLNTvL88kTmLVR4CGyv_nZtcaXZw/exec";
+            const userCode = localStorage.getItem('userCode') || 'TARGET1ONT1-DEMO';
+            const userName = localStorage.getItem('userName') || 'Ivete Silva';
+
+            const payload = {
+                code: userCode,
+                name: userName,
+                turma: "Turma 1",
+                xp: studentXP,
+                unit1: true,
+                unit2: true,
+                unit3: true,
+                unit4: true,
+                unit5: true,
+                unit6: true,
+                unit7: false,
+                unit8: false
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).catch(e => console.log('Cloud sync fallback: cached locally', e))
+            .finally(() => {
+                setTimeout(() => {
+                    if (window.parent && window.parent.completeUnit) {
+                        window.parent.completeUnit(6, current6dXP);
+                    }
+                    if (window.parent && window.parent.avancarPara) {
+                        window.parent.avancarPara('transicao_6_para_7.html', 'transicao-6-7');
+                        return;
+                    }
+                    window.location.href = "transicao_6_para_7.html";
+                }, 800);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao6d_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    for (let id in data) {
+                        let el = document.getElementById(id);
+                        if (el) el.value = data[id];
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>

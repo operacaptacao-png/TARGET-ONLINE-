@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6A | Inviting to Dinner</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 920px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+        }
+        .text-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .textarea-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            resize: vertical;
+        }
+        .textarea-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        /* AUDIO PLAYER */
+        .audio-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            gap: 8px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .play-btn:hover { background: var(--blue-medium); }
+        .play-btn.playing { background: #ea580c !important; }
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.04); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--blue-dark);
+            margin-left: 4px;
+        }
+
+        /* STANLEY MENU BOARD */
+        .stanley-board {
+            background: #fffbeb;
+            border: 2px solid #fde68a;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+        .stanley-header {
+            text-align: center;
+            font-family: var(--font-title);
+            color: #b45309;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #fde68a;
+            padding-bottom: 10px;
+        }
+        .stanley-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        @media(max-width: 650px) { .stanley-grid { grid-template-columns: 1fr; } }
+        .stanley-day-card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stanley-day-card b {
+            color: var(--blue-dark);
+            font-size: 13.5px;
+        }
+        .stanley-day-card span {
+            color: #d97706;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* PREFERENCE GROUPS */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+        @media(max-width: 650px) { .groups-grid { grid-template-columns: 1fr; } }
+        .group-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .group-card h4 {
+            margin: 0 0 8px 0;
+            font-family: var(--font-title);
+            font-size: 14px;
+        }
+
+        /* STORY TRANSITION BOX */
+        .story-transition-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--accent-main);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9a3412;
+            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MODAL */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .xp-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 30px;
+            font-weight: 800;
+            margin: 20px auto;
+            border: 4px solid #f59e0b;
+        }
+
+        /* GRAMMAR TIP FLOATING */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 340px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 6 • Having a Date</span>
+            <h1>6A | Inviting to Dinner</h1>
+        </div>
+
+        <!-- SEÇÃO 1: LANGUAGE GUIDE -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Language Guide • Personal Preferences</h2>
+            <p class="instruction">Listen to Alan's dinner invitation, then write five true sentences about your personal preferences.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-6a">
+                    <audio id="audio-6a" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-6a" onclick="handleAudioPlay('audio-6a', 'btn-audio-6a', 'script-6a', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-6a" onclick="handleAudioPause('audio-6a', 'btn-audio-6a', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-6a" onclick="changeSpeedDirect('audio-6a', 'spd-audio-6a', 0.75, 'slow-audio-6a')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-6a" onclick="cycleSpeed('audio-6a', 'spd-audio-6a')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-6a" onclick="changeSpeedDirect('audio-6a', 'spd-audio-6a', 1.25, 'fast-audio-6a')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 6A.1: Alan's Dinner Invitation</span>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <p style="font-weight: bold; color: var(--blue-dark); margin-top: 0; margin-bottom: 12px;">
+                    Now, write five true sentences about your preferences:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>
+                        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Sentence 1:</span>
+                        <input type="text" class="text-input eval-free" id="pref-sent-1" placeholder="e.g. I love trying exotic international foods with friends.">
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Sentence 2:</span>
+                        <input type="text" class="text-input eval-free" id="pref-sent-2" placeholder="e.g. I like having dinner in quiet Italian bistros.">
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Sentence 3:</span>
+                        <input type="text" class="text-input eval-free" id="pref-sent-3" placeholder="e.g. I really like drinking sparkling water with lime.">
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Sentence 4:</span>
+                        <input type="text" class="text-input eval-free" id="pref-sent-4" placeholder="e.g. I don't like crowded noisy fast-food places.">
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Sentence 5:</span>
+                        <input type="text" class="text-input eval-free" id="pref-sent-5" placeholder="e.g. I hate spicy chili peppers and waiting in long lines.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <p style="font-weight: bold; color: var(--blue-dark); margin-top: 0; margin-bottom: 12px;">
+                    What are your preferences? Write them in the correct line:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>
+                        <label style="font-weight: bold; color: #16a34a; font-size: 13.5px; display: block; margin-bottom: 4px;">I LOVE:</label>
+                        <input type="text" class="text-input eval-free" id="pref-line-love" placeholder="e.g. Italian pasta, fresh gelato, romantic candlelit dinners">
+                    </div>
+                    <div>
+                        <label style="font-weight: bold; color: #2563eb; font-size: 13.5px; display: block; margin-bottom: 4px;">I LIKE:</label>
+                        <input type="text" class="text-input eval-free" id="pref-line-like" placeholder="e.g. trying new dishes, fruit juices, jazz music in the background">
+                    </div>
+                    <div>
+                        <label style="font-weight: bold; color: #ea580c; font-size: 13.5px; display: block; margin-bottom: 4px;">I DON’T LIKE:</label>
+                        <input type="text" class="text-input eval-free" id="pref-line-dontlike" placeholder="e.g. cold coffee, noisy restaurants, overcooked meat">
+                    </div>
+                    <div>
+                        <label style="font-weight: bold; color: #dc2626; font-size: 13.5px; display: block; margin-bottom: 4px;">I HATE:</label>
+                        <input type="text" class="text-input eval-free" id="pref-line-hate" placeholder="e.g. rude service, spicy peppers, being late for dinner reservations">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: CROSS CURRICULAR -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Cross Curricular • Stanley’s International Restaurant</h2>
+            <p class="instruction">This is Stanley’s international restaurant. Every day he cooks a different kind of food. Fill in the weekly schedule according to the menu.</p>
+
+            <div class="stanley-board">
+                <div class="stanley-header">🍽️ Stanley's International Culinary Calendar</div>
+                <div class="stanley-grid">
+                    <div class="stanley-day-card">
+                        <b>Monday</b>
+                        <span>Italian (Pasta & Pizza) 🇮🇹</span>
+                    </div>
+                    <div class="stanley-day-card">
+                        <b>Tuesday</b>
+                        <span>Mexican (Tacos & Burritos) 🇲🇽</span>
+                    </div>
+                    <div class="stanley-day-card">
+                        <b>Wednesday</b>
+                        <span>Japanese (Sushi & Ramen) 🇯🇵</span>
+                    </div>
+                    <div class="stanley-day-card">
+                        <b>Thursday</b>
+                        <span>Indian (Curry & Naan Bread) 🇮🇳</span>
+                    </div>
+                    <div class="stanley-day-card">
+                        <b>Friday</b>
+                        <span>French (Steak & Quiche) 🇫🇷</span>
+                    </div>
+                    <div class="stanley-day-card">
+                        <b>Saturday</b>
+                        <span>Brazilian (Feijoada & Pão de Queijo) 🇧🇷</span>
+                    </div>
+                    <div class="stanley-day-card" style="grid-column: 1 / -1;">
+                        <b>Sunday</b>
+                        <span>British (Sunday Roast & Yorkshire Pudding) 🇬🇧</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <p style="font-weight: bold; color: var(--blue-dark); margin-top: 0; margin-bottom: 12px;">
+                    Fill in the weekly schedule according to the menu (type the food/cuisine served):
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Monday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-mon" data-ans="italian|pasta|pizza" placeholder="e.g. Italian (Pasta & Pizza)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Tuesday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-tue" data-ans="mexican|tacos|burritos" placeholder="e.g. Mexican (Tacos & Burritos)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Wednesday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-wed" data-ans="japanese|sushi|ramen" placeholder="e.g. Japanese (Sushi & Ramen)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Thursday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-thu" data-ans="indian|curry|naan" placeholder="e.g. Indian (Curry & Naan)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Friday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-fri" data-ans="french|steak|quiche" placeholder="e.g. French (Steak & Quiche)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Saturday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-sat" data-ans="brazilian|feijoada|pao de queijo" placeholder="e.g. Brazilian (Feijoada)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 10px;">
+                        <b>Sunday:</b>
+                        <input type="text" class="text-input eval-menu" id="menu-sun" data-ans="british|sunday roast|roast" placeholder="e.g. British (Sunday Roast)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language at Work ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: LANGUAGE AT WORK -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Language at Work • Expressing Food Opinions</h2>
+            <p class="instruction">Now, talk about your list of preferences about Stanley’s weekly menu. Write full sentences in the boxes.</p>
+
+            <div class="card-box">
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: #16a34a; display: block; margin-bottom: 6px;">
+                        I love...
+                    </label>
+                    <input type="text" class="text-input eval-free" id="law-love" placeholder="e.g. I love Saturday's menu because authentic Brazilian feijoada reminds me of home.">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: #2563eb; display: block; margin-bottom: 6px;">
+                        I like...
+                    </label>
+                    <input type="text" class="text-input eval-free" id="law-like" placeholder="e.g. I like Wednesday's sushi and Japanese ramen on cold London evenings.">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: #ea580c; display: block; margin-bottom: 6px;">
+                        I don’t like...
+                    </label>
+                    <input type="text" class="text-input eval-free" id="law-dontlike" placeholder="e.g. I don't like very spicy curry on Thursdays because it hurts my throat.">
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: #dc2626; display: block; margin-bottom: 6px;">
+                        I hate...
+                    </label>
+                    <input type="text" class="text-input eval-free" id="law-hate" placeholder="e.g. I hate eating heavy roast beef late on Sunday nights before work.">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Now, It's Your Turn ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: NOW, IT'S YOUR TURN & SUMMARY -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Now, It’s Your Turn • Categorizing & Inviting</h2>
+            <p class="instruction">Think about the things you love, like, don’t like and hate. List them in the groups below.</p>
+
+            <div class="groups-grid">
+                <div class="group-card">
+                    <h4 style="color: #16a34a;">THINGS I LOVE</h4>
+                    <textarea class="textarea-input eval-free" id="grp-love" rows="3" placeholder="List dishes, drinks, activities, places you adore..."></textarea>
+                </div>
+
+                <div class="group-card">
+                    <h4 style="color: #2563eb;">THINGS I LIKE</h4>
+                    <textarea class="textarea-input eval-free" id="grp-like" rows="3" placeholder="List things you enjoy moderately..."></textarea>
+                </div>
+
+                <div class="group-card">
+                    <h4 style="color: #ea580c;">THINGS I DON'T LIKE</h4>
+                    <textarea class="textarea-input eval-free" id="grp-dontlike" rows="3" placeholder="List things you prefer to avoid..."></textarea>
+                </div>
+
+                <div class="group-card">
+                    <h4 style="color: #dc2626;">THINGS I HATE</h4>
+                    <textarea class="textarea-input eval-free" id="grp-hate" rows="3" placeholder="List things you strongly dislike..."></textarea>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <p style="font-weight: bold; color: var(--blue-dark); margin-top: 0; margin-bottom: 12px;">
+                    Using the ideas in the boxes, invite, ask for an opinion and ask about preferences (using Would like / Do you like):
+                </p>
+                
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 4px;">
+                        Brazilian food:
+                    </label>
+                    <input type="text" class="text-input eval-free" id="invite-brazilian" placeholder="e.g. Would you like to try authentic Brazilian feijoada with me this Saturday?">
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 4px;">
+                        Romantic dinner:
+                    </label>
+                    <input type="text" class="text-input eval-free" id="invite-romantic" placeholder="e.g. Would you like to have a romantic dinner by the Thames tonight?">
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 4px;">
+                        Drink:
+                    </label>
+                    <input type="text" class="text-input eval-free" id="invite-drink" placeholder="e.g. What would you like to drink? Would you like a glass of sparkling wine?">
+                </div>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA EXATA -->
+            <div class="story-transition-box">
+                <b>Story Update:</b>
+                "O convite foi feito e Ivete aceitou! Agora, eles precisam decidir o que vão fazer e onde vão comer."
+            </div>
+
+            <button class="btn-finish" id="btn-finish-6a" onclick="calculateXP()">
+                Finish Lesson 6A & Calculate XP ➔
+            </button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 6A Completed!</h2>
+            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
+            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
+            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
+                You mastered dinner invitations, polite requests with would like, and food preferences!
+            </p>
+            <button class="btn-finish" onclick="proceedToNextLesson()">Continue to 6B (A Romantic Dinner) ➔</button>
+        </div>
+    </div>
+
+    <!-- FLOATING GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 10px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 15px;">
+                WOULD LIKE (Convites e Pedidos)
+            </h4>
+            
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">1. Convites Formais e Corteses:</p>
+            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
+                Use <b>Would you like to + verb</b> para convidar:<br>
+                • <i>Would you like to have dinner tonight?</i> (Gostaria de jantar hoje à noite?)<br>
+                • Respostas: <i>Yes, I'd love to! / I'd like that very much!</i>
+            </p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">2. Pedidos em Restaurantes:</p>
+            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
+                Use <b>I would like / I'd like</b> em vez de "I want":<br>
+                • <i>I'd like the Italian pasta, please.</i><br>
+                • <i>We would like a table for two.</i>
+            </p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">3. Would like vs. Like:</p>
+            <p style="margin: 0; font-size: 12.5px; color: #475569;">
+                • <b>Do you like wine?</b> = Você gosta de vinho em geral?<br>
+                • <b>Would you like some wine?</b> = Você gostaria de um vinho agora? (Oferta/Convite).
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // STANDARDIZED AUDIO & SPEECH PLAYER SYSTEM
+        // ==========================================
+        const audioScripts = {
+            'script-6a': "Hi Ivete! Huge congratulations on the job offer! Would you like to have dinner with me tonight to celebrate? There's a wonderful international bistro near Covent Garden, and I'd love to invite you. What kind of food would you like to eat?"
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "var(--blue-dark)";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--blue-dark)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--blue-dark)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        function playInvitationAudio() {
+            handleAudioPlay('audio-6a', 'btn-audio-6a', 'script-6a', 'var(--blue-dark)');
+        }
+
+        let calculatedXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let userAnswers = {
+                menu: {},
+                free: {}
+            };
+
+            // 1. Menu answers (7 days)
+            document.querySelectorAll('.eval-menu').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers.menu[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            // 2. Free sentences and preference fields
+            document.querySelectorAll('.eval-free').forEach(input => {
+                total++;
+                let val = input.value.trim();
+                userAnswers.free[input.id] = val;
+                if (val.length >= 6) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                }
+            });
+
+            localStorage.setItem('licao6a_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            calculatedXP = Math.min(100, Math.round(percentage * 100));
+
+            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function proceedToNextLesson() {
+            let oldXP = parseInt(localStorage.getItem('licao_6a_xp')) || 0;
+            let diff = calculatedXP - oldXP;
+
+            localStorage.setItem('licao_6a_status', 'concluida');
+            localStorage.setItem('licao_6a_xp', calculatedXP);
+
+            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalXP += diff;
+            localStorage.setItem('target_on_profile_xp', totalXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, calculatedXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao6b.html', 'link-6b');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao6b.html', null);
+                return;
+            }
+            window.location.href = "licao6b.html";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao6a_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.menu) {
+                        for (let id in data.menu) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.menu[id];
+                        }
+                    }
+                    if (data.free) {
+                        for (let id in data.free) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.free[id];
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            if (localStorage.getItem('licao_6a_status') === 'concluida') {
+                let btnFinish = document.getElementById('btn-finish-6a');
+                if (btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5B | Talking to the Director</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 900px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .audio-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            gap: 10px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        .play-btn:hover { background: var(--blue-medium); }
+        .speed-btn { background: #e2e8f0; border: 1px solid #cbd5e1; color: #1e293b; padding: 6px 12px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 12px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        .card-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13.5px;
+        }
+        .schedule-table th {
+            background: #f1f5f9;
+            font-family: var(--font-title);
+            color: var(--blue-dark);
+            font-weight: 700;
+        }
+
+        .dialogue-display {
+            background: #f8fafc;
+            border-left: 4px solid var(--blue-medium);
+            padding: 16px;
+            border-radius: 0 10px 10px 0;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .dialogue-display b { color: var(--blue-medium); }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+        }
+        .text-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .qa-item {
+            background: white;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .qa-item b {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--blue-dark);
+        }
+        .qa-item .answer-prompt {
+            font-size: 13px;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .story-transition-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--accent-main);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9a3412;
+            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MODAL */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .xp-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 30px;
+            font-weight: 800;
+            margin: 20px auto;
+            border: 4px solid #f59e0b;
+        }
+
+        /* GRAMMAR TIP FLOATING */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 330px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 5 • The Job Interview</span>
+            <h1>5B | Talking to the Director</h1>
+        </div>
+
+        <!-- SEÇÃO 1: TARGET SITUATION (SCHEDULE QUESTIONS) -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Target Situation • The Corporate Schedule</h2>
+            <p class="instruction">Read the conversation between Ivete and Mr. Jenkins and answer the questions about the schedule.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player">
+                    <audio id="audio-1" src="https://files.catbox.moe/k3w40s.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-1" onclick="toggleAudio('audio-1', 'btn-audio-1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-1" onclick="changeSpeed('audio-1', 'spd-audio-1')">⚡ 1.0x</button>
+                    <span>Track 5B.1: Daily Schedule Dialogue</span>
+                </div>
+            </div>
+
+            <div class="dialogue-display">
+                <b>Mr. Jenkins:</b> "Welcome to Overseas Corporation, Ivete. Let's discuss our daily routine and schedule. The company opens at 8:00 AM every morning."<br>
+                <b>Ivete:</b> "Good morning, Mr. Jenkins. Thank you for receiving me. What time is the interview today?"<br>
+                <b>Mr. Jenkins:</b> "Our official interview is scheduled for 10:30 AM. After our talk, I usually have lunch at 1:00 PM in the executive dining room."<br>
+                <b>Ivete:</b> "And what happens in the afternoon?"<br>
+                <b>Mr. Jenkins:</b> "At 3:00 PM, you will shadow our department coordinator for the practical orientation test. We usually finish work at 5:30 PM."
+            </div>
+
+            <div class="card-box">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Corporate Activity / Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>08:00 AM</b></td>
+                            <td>Company doors open & security check-in</td>
+                        </tr>
+                        <tr>
+                            <td><b>10:30 AM</b></td>
+                            <td>Executive Job Interview with Mr. Jenkins</td>
+                        </tr>
+                        <tr>
+                            <td><b>01:00 PM</b></td>
+                            <td>Mr. Jenkins' Lunch (Executive Lounge)</td>
+                        </tr>
+                        <tr>
+                            <td><b>03:00 PM</b></td>
+                            <td>Ivete shadows department coordinator (Practical Test)</td>
+                        </tr>
+                        <tr>
+                            <td><b>05:30 PM</b></td>
+                            <td>End of regular business day</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-box">
+                <p><b>Answer the questions about the schedule:</b></p>
+                <div class="qa-list">
+                    <div class="qa-item">
+                        <b>a) What time is the interview?</b>
+                        <input type="text" class="text-input eval-input" id="sched-q1" data-ans="10:30|10:30 am|at 10:30|at 10:30 am|ten thirty|at ten thirty" placeholder="e.g. 10:30 AM">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>b) What time does the company open?</b>
+                        <input type="text" class="text-input eval-input" id="sched-q2" data-ans="8:00|8:00 am|at 8:00|at 8:00 am|8 am|eight o'clock|at eight o'clock" placeholder="e.g. 8:00 AM">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>c) When does Mr. Jenkins have lunch?</b>
+                        <input type="text" class="text-input eval-input" id="sched-q3" data-ans="1:00|1:00 pm|at 1:00|at 1:00 pm|1 pm|one o'clock|at one o'clock" placeholder="e.g. 1:00 PM">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>d) What does Ivete do at 3:00 PM?</b>
+                        <input type="text" class="text-input eval-input" id="sched-q4" data-ans="she shadows the department coordinator|shadows department coordinator|shadow the department coordinator|shadow the coordinator|practical orientation test|orientation test|practical test" placeholder="e.g. She shadows the department coordinator">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Language Guide ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: LANGUAGE GUIDE (WRITE QUESTIONS FOR ANSWERS) -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Language Guide • Write Questions for the Answers</h2>
+            <p class="instruction">Now write grammatically correct questions for each answer below using the Simple Present (Do / Does).</p>
+
+            <div class="card-box">
+                <div class="qa-list">
+                    <div class="qa-item">
+                        <div class="answer-prompt">Answer: "I start work at 8:30 AM."</div>
+                        <b>a) Question:</b>
+                        <input type="text" class="text-input eval-input" id="quest-q1" data-ans="what time do you start work?|what time do you start work|when do you start work?|when do you start work" placeholder="Type the question here...">
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="answer-prompt">Answer: "Mr. Jenkins has meetings on Mondays."</div>
+                        <b>b) Question:</b>
+                        <input type="text" class="text-input eval-input" id="quest-q2" data-ans="when does mr. jenkins have meetings?|when does mr jenkins have meetings?|when does he have meetings?|what does mr. jenkins have on mondays?|what does mr jenkins have on mondays?" placeholder="Type the question here...">
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="answer-prompt">Answer: "She finishes work at 5:00 PM."</div>
+                        <b>c) Question:</b>
+                        <input type="text" class="text-input eval-input" id="quest-q3" data-ans="what time does she finish work?|what time does she finish work|when does she finish work?|when does she finish work" placeholder="Type the question here...">
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="answer-prompt">Answer: "They have lunch at the company cafeteria."</div>
+                        <b>d) Question:</b>
+                        <input type="text" class="text-input eval-input" id="quest-q4" data-ans="where do they have lunch?|where do they have lunch|where do they eat lunch?|where do they eat lunch" placeholder="Type the question here...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Your Routine ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: TALK ABOUT YOUR ROUTINE & FINISH -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Talk About Your Routine • Frequency Adverbs</h2>
+            <p class="instruction">Write 5 sentences about your daily routine using frequency adverbs (<b>always, usually, sometimes, never</b>).</p>
+
+            <div class="card-box">
+                <div class="qa-list">
+                    <div class="qa-item">
+                        <b>1. Morning wake-up or breakfast routine:</b>
+                        <input type="text" class="text-input eval-routine" id="rout-1" placeholder="e.g. I always wake up at 7:00 AM and have a cup of coffee.">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>2. Work, study, or commuting routine:</b>
+                        <input type="text" class="text-input eval-routine" id="rout-2" placeholder="e.g. I usually take the subway or bus to commute to work.">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>3. Lunch or afternoon habit:</b>
+                        <input type="text" class="text-input eval-routine" id="rout-3" placeholder="e.g. I sometimes eat lunch with my colleagues at the café.">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>4. Activity you never do during the week:</b>
+                        <input type="text" class="text-input eval-routine" id="rout-4" placeholder="e.g. I never arrive late for my morning meetings.">
+                    </div>
+
+                    <div class="qa-item">
+                        <b>5. Evening or weekend habit:</b>
+                        <input type="text" class="text-input eval-routine" id="rout-5" placeholder="e.g. I usually read books or study English before sleeping.">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA EXATA DO COMANDO -->
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                The director was very impressed by Ivete's discipline and organization! Now, he challenges her to a hands-on practical test in Lesson 5C.
+            </div>
+
+            <button class="btn-finish" id="btn-finish-5b" onclick="calculateXP()">✅ Finish Lesson & Get XP</button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent-main); margin-top:0;">Mission Complete!</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 5B • Talking to the Director Finished</p>
+            <div class="xp-circle" id="xp-gained-text">+100</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored 13 out of 13.</p>
+            <button class="btn-finish" style="margin-top: 20px;" onclick="proceedToNextLesson()">Collect XP & Next ➔</button>
+        </div>
+    </div>
+
+    <!-- DICA GRAMATICAL FLUTUANTE -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-dark); font-weight:bold; margin-bottom:10px; font-size:15px;">📚 Simple Present & Frequency Adverbs</div>
+            <div>
+                Use the <b>Simple Present</b> for daily routines and schedules:<br><br>
+                • <b>Affirmative (+):</b><br>
+                I / You / We / They <b>start</b> work at 8:30.<br>
+                He / She / It <b>starts</b> work at 8:30. (add -s / -es)<br>
+                He <b>has</b> lunch at 1:00 PM.<br><br>
+                • <b>Questions (?):</b><br>
+                What time <b>do you</b> start work?<br>
+                When <b>does he</b> have lunch?<br><br>
+                • <b>Frequency Adverbs:</b><br>
+                always (100%), usually (80%), sometimes (50%), never (0%)<br>
+                <i>Place adverb <b>before the main verb</b>:</i><br>
+                I <b>always wake up</b> early.<br>
+                <i>(Exception: place after verb to be: He is <b>never</b> late).</i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // AUDIO PLAYER & TTS FALLBACK
+        // ==========================================
+        const audioScript5B = "Track 5B point 1: Mr. Jenkins: Welcome to Overseas Corporation, Ivete. Let's discuss our daily routine and schedule. The company opens at 8:00 AM every morning. Ivete: Good morning, Mr. Jenkins. Thank you for receiving me. What time is the interview today? Mr. Jenkins: Our official interview is scheduled for 10:30 AM. After our talk, I usually have lunch at 1:00 PM in the executive dining room. Ivete: And what happens in the afternoon? Mr. Jenkins: At 3:00 PM, you will shadow our department coordinator for the practical orientation test. We usually finish work at 5:30 PM.";
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio || !btn) return;
+
+            const isPlaying = (!audio.paused && audio.currentTime > 0) || btn.innerText.includes('PAUSE');
+            if (isPlaying) {
+                audio.pause();
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                btn.innerText = "▶ PLAY";
+                btn.style.background = originalColor;
+                return;
+            }
+
+            document.querySelectorAll('audio').forEach(a => { a.pause(); a.currentTime = 0; });
+            if ('speechSynthesis' in window && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    btn.innerText = "⏸ PAUSE";
+                    btn.style.background = "#b71c1c";
+                }).catch(() => {
+                    speakFallback(btn, originalColor);
+                });
+            } else {
+                btn.innerText = "⏸ PAUSE";
+                btn.style.background = "#b71c1c";
+            }
+
+            audio.onended = () => {
+                btn.innerText = "▶ PLAY";
+                btn.style.background = originalColor;
+            };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        function speakFallback(btn, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(audioScript5B);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.95;
+            btn.innerText = "⏸ PAUSE";
+            btn.style.background = "#b71c1c";
+            utterance.onend = () => { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+            utterance.onerror = () => { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ==========================================
+        // AVALIAÇÃO & XP
+        // ==========================================
+        let calculatedXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let userAnswers = {
+                inputs: {},
+                routines: {}
+            };
+
+            // 1. Evaluated inputs (Schedule & Questions)
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers.inputs[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            // 2. Evaluated Routine sentences (5 items)
+            document.querySelectorAll('.eval-routine').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers.routines[input.id] = input.value;
+                // Checks if sentence has reasonable length and uses one of the frequency adverbs
+                let hasAdverb = val.includes('always') || val.includes('usually') || val.includes('sometimes') || val.includes('never');
+                if (val.length >= 10 && hasAdverb) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            localStorage.setItem('licao5b_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            calculatedXP = Math.min(100, Math.round(percentage * 100));
+
+            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function proceedToNextLesson() {
+            let oldXP = parseInt(localStorage.getItem('licao_5b_xp')) || 0;
+            let diff = calculatedXP - oldXP;
+
+            localStorage.setItem('licao_5b_status', 'concluida');
+            localStorage.setItem('licao_5b_xp', calculatedXP);
+
+            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalXP += diff;
+            localStorage.setItem('target_on_profile_xp', totalXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, calculatedXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao5c.html', 'link-5c');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao5c.html', null);
+                return;
+            }
+            window.location.href = "licao5c.html";
+        }
+
+        // Restore state on load
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao5b_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.inputs) {
+                        for (let id in data.inputs) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.inputs[id];
+                        }
+                    }
+                    if (data.routines) {
+                        for (let id in data.routines) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.routines[id];
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            if (localStorage.getItem('licao_5b_status') === 'concluida') {
+                let btnFinish = document.getElementById('btn-finish-5b');
+                if (btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

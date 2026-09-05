@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1A | At the Airport</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* AS VARIÁVEIS FORAM CORRIGIDAS E PADRONIZADAS AQUI */
+            --black: #1A1A1A; 
+            --white: #FFFFFF; 
+            --blue-dark: #1E3C72; 
+            --blue-light: #2A5298; 
+            --orange-main: #E67E22; 
+            --blue-accent: #1E3C72;
+            --font-title: 'Montserrat', sans-serif; 
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #eab308;
+        }
+
+        body { font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px; display: flex; justify-content: center; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 40%, var(--orange-main) 100%); background-attachment: fixed; padding-bottom: 120px;}
+        
+        .book-page { background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 24px; padding: 50px; position: relative; z-index: 1; }
+        
+        .lesson-banner { width: 100%; height: 220px; background: linear-gradient(rgba(230, 126, 34, 0.7), rgba(30, 60, 114, 0.8)), url('https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        .lesson-banner h1 { color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+        h3 { font-family: var(--font-title); font-size: 18px; margin-top: 25px; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: #b45309; border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; margin: 30px auto 0 auto; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+
+        /* PLAYERS & AUDIO */
+        .audio-player { background: var(--black); color: white; padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; display: inline-flex;}
+        .play-btn { background: var(--theme-purple-border); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s;}
+        .speed-btn { background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: rgba(255, 255, 255, 0.35); transform: scale(1.05); }
+
+        /* DRAG AND DROP */
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; background: white; padding: 25px; border-radius: 12px; border: 2px dashed var(--theme-blue-border); min-height: 60px; }
+        .draggable-word { background: var(--theme-blue-border); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: grab; user-select: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s; }
+        .drop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .drop-card { background: white; padding: 25px 15px; border-radius: 16px; text-align: center; border: 1px solid #ccc; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .drop-zone { width: 100%; min-height: 50px; background: #f8fafc; border-radius: 8px; margin-top: 15px; display: flex; align-items: center; justify-content: center; border: 2px dashed transparent; }
+        .sign-img { height: 60px; object-fit: contain; margin-bottom: 10px; display: block; }
+
+        /* TARGET SITUATION */
+        .profile-box { display: flex; gap: 20px; margin-bottom: 30px; align-items: center; background: white; padding: 20px; border-radius: 16px; border: 1px solid #eee; flex-wrap: wrap;}
+        .match-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; background: white; padding: 10px 15px; border-radius: 10px; border: 1px solid #eee; }
+        .match-select { width: 60px; font-weight: bold; text-align: center; padding: 5px; outline: none;}
+        .tf-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #ccc; font-size: 14px; }
+        .tf-btns { display: flex; gap: 5px; }
+        .tf-btn { padding: 6px 15px; border: 1px solid #ccc; background: white; cursor: pointer; border-radius: 50px; font-weight: bold; transition: 0.2s;}
+        .tf-btn.selected-t { background: #27ae60; color: white; border-color: #27ae60; }
+        .tf-btn.selected-f { background: #c0392b; color: white; border-color: #c0392b; }
+
+        /* LANGUAGE GUIDE */
+        .builder-block { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .answer-area { min-height: 50px; background: var(--theme-red-bg); border: 2px dashed #fca5a5; border-radius: 8px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: center; justify-content: center; }
+        .word-btn { background: white; border: 1px solid #ccc; font-weight: 500; padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .btn-clear { background: white; color: var(--theme-red-border); border: 2px solid var(--theme-red-border); padding: 8px 25px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: bold; display: block; margin: 15px auto 0 auto; }
+
+        /* UP TO YOU & LANGUAGE AT WORK */
+        .vocab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .keanu-card { display: flex; align-items: center; gap: 20px; background: white; padding: 20px; border-radius: 16px; margin-bottom: 30px; border-left: 5px solid var(--theme-gray-border); flex-wrap: wrap;}
+        .flags-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; margin-bottom: 30px; }
+        .flag-card { background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; }
+        .flag-card input { width: 90%; padding: 8px; text-align: center; border: 1px solid #ccc; border-radius: 4px; text-transform: capitalize; outline: none; font-family: var(--font-text); font-weight: 500;}
+
+        /* HOMEWORK */
+        .hw-question { margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+        .hw-question select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-top: 10px; outline: none; font-family: var(--font-text);}
+
+        /* ÁREA DE DIÁLOGO AMPLIADA */
+        .dialogue-area { 
+            width: 100%; height: 250px; padding: 25px; border-radius: 12px; 
+            border: 1px solid #eab308; font-family: 'Comic Sans MS', cursive, sans-serif; 
+            font-size: 16px; line-height: 1.8; resize: vertical; 
+            background: #fdf8e4; box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+            box-sizing: border-box; outline: none; 
+        }
+        .dialogue-area:focus { border-color: var(--theme-yellow-border); }
+
+        /* GRAMMAR TIP */
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .grammar-floating-btn { background: var(--blue-accent); color: var(--white); padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 300px; background: white; color: var(--black); border-radius: 16px; padding: 20px; position: absolute; bottom: 60px; right: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid var(--orange-main); transition: 0.3s; pointer-events: none;}
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; pointer-events: auto;}
+
+        /* MODAL DE RESULTADO */
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; }
+        .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner"><h1>1A | At the Airport</h1></div>
+
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>Words and Ideas</h2>
+            <p class="instruction">Drag the words and drop them in the correct signs below.</p>
+            
+            <div class="audio-player" style="background: var(--theme-blue-bg); border: 1px solid var(--theme-blue-border); color: var(--theme-blue-border);">
+                <audio id="audio-1" src="https://files.catbox.moe/tzcgnr.mp3"></audio>
+                <button type="button" class="play-btn" id="btn-audio-1" style="background: var(--theme-blue-border);" onclick="toggleAudio('audio-1', 'btn-audio-1', 'var(--theme-blue-border)')">▶ PLAY</button>
+                <button type="button" class="speed-btn" id="spd-audio-1" style="background: #e2e8f0; color: #1e293b; border-color: #cbd5e1;" onclick="changeSpeed('audio-1', 'spd-audio-1')">⚡ 1.0x</button>
+                <span>Listen to the signs</span>
+            </div>
+
+            <div id="word-pool" class="word-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
+                <div class="draggable-word" draggable="true" id="w1" ondragstart="drag(event)">1. Departures</div>
+                <div class="draggable-word" draggable="true" id="w2" ondragstart="drag(event)">2. Arrivals</div>
+                <div class="draggable-word" draggable="true" id="w3" ondragstart="drag(event)">3. Baggage Claim</div>
+                <div class="draggable-word" draggable="true" id="w4" ondragstart="drag(event)">4. Security</div>
+                <div class="draggable-word" draggable="true" id="w5" ondragstart="drag(event)">5. Immigration</div>
+                <div class="draggable-word" draggable="true" id="w6" ondragstart="drag(event)">6. Restrooms</div>
+                <div class="draggable-word" draggable="true" id="w7" ondragstart="drag(event)">7. Food and dining</div>
+                <div class="draggable-word" draggable="true" id="w8" ondragstart="drag(event)">8. Information Desk</div>
+            </div>
+            
+            <div class="drop-grid">
+                <div class="drop-card"><img src="https://i.postimg.cc/QxWY9gVm/departures.png" class="sign-img"><div class="drop-zone" id="dz-1" data-answer="w1" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/wv0Z26dj/2.png" class="sign-img"><div class="drop-zone" id="dz-2" data-answer="w2" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/YS7Pw4rt/3.png" class="sign-img"><div class="drop-zone" id="dz-3" data-answer="w3" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/CLkTTpG9/5.png" class="sign-img"><div class="drop-zone" id="dz-4" data-answer="w5" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/c1KGhn6p/4.png" class="sign-img"><div class="drop-zone" id="dz-5" data-answer="w4" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/j5m9mMCk/6.png" class="sign-img"><div class="drop-zone" id="dz-6" data-answer="w6" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/4NCq12DV/7.png" class="sign-img"><div class="drop-zone" id="dz-7" data-answer="w7" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><img src="https://i.postimg.cc/x15ZnfcR/8.png" class="sign-img"><div class="drop-zone" id="dz-8" data-answer="w8" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>
+            </div>
+
+            <div class="nav-buttons"><div></div><button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>Target Situation</h2>
+            
+            <div class="profile-box">
+                <img src="https://i.postimg.cc/XN9QnjPC/imagem-de-ivete.png" alt="Ivete Silva" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--theme-purple-border);">
+                <div>
+                    <p style="margin: 0 0 15px 0; font-size: 20px; font-weight: bold; color: var(--theme-purple-border);">Ivete Silva is from Brazil. She's 25 years old.</p>
+                    <div class="audio-player">
+                        <audio id="audio-2" src="https://files.catbox.moe/jq2iit.mpeg"></audio>
+                        <button type="button" class="play-btn" id="btn-audio-2" onclick="toggleAudio('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
+                        <button type="button" class="speed-btn" id="spd-audio-2" onclick="changeSpeed('audio-2', 'spd-audio-2')">⚡ 1.0x</button>
+                        <span>Conversation between Ivete and the Agent</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Activity 1: Match the questions and answers.</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; font-weight: 500; line-height: 2;">
+                    1. What’s your full name?<br>2. Where are you from?<br>3. What do you do in Brazil?<br>4. What are you doing in the UK?<br>5. Where are you going to stay?<br>6. How long are you going to stay?<br>7. Welcome to the UK.
+                </div>
+                <div style="flex: 1.2;">
+                    <div class="match-row"><select class="match-select" id="match-1" data-ans="2"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>I’m from Brazil.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-2" data-ans="6"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>I’m going to stay for 1 month.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-3" data-ans="4"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>I’m having a job interview.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-4" data-ans="1"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>My name is Ivete Silva.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-5" data-ans="5"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>I’m going to stay in this hotel.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-6" data-ans="3"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>I am a sales manager.</span></div>
+                    <div class="match-row"><select class="match-select" id="match-7" data-ans="7"><option>-</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> <span>Thank you!</span></div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;">Activity 2: True (T) or False (F)?</h3>
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 2;">
+                    <div class="tf-row"><span>1. Ivete provides her passport.</span> <div class="tf-btns" id="tf-1" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>2. Her full name is mentioned.</span> <div class="tf-btns" id="tf-2" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>3. She is from Argentina.</span> <div class="tf-btns" id="tf-3" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>4. She works as a sales manager.</span> <div class="tf-btns" id="tf-4" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>5. Visiting for a job interview.</span> <div class="tf-btns" id="tf-5" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>6. She is staying in a hotel.</span> <div class="tf-btns" id="tf-6" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>7. She plans to stay for 3 months.</span> <div class="tf-btns" id="tf-7" data-ans="F"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                    <div class="tf-row"><span>8. The officer welcomes her.</span> <div class="tf-btns" id="tf-8" data-ans="T"><button class="tf-btn" onclick="setTF(this, 'T')">T</button><button class="tf-btn" onclick="setTF(this, 'F')">F</button></div></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-3" class="activity-section theme-red">
+            <h2>Language Guide</h2>
+            <p class="instruction">Organize the words to make the immigration agent's questions.</p>
+            <div id="builders-container"></div>
+            
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-4" class="activity-section theme-green">
+            <h2>Up To You</h2>
+            <p class="instruction">Role play the situation (Oral Practice - No points needed).</p>
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-5" class="activity-section theme-gray">
+            <h2>Language at Work</h2>
+            <p class="instruction">Complete the gaps with the nationalities.</p>
+            
+            <div class="keanu-card">
+                <img src="https://i.postimg.cc/FFbg2PfS/imagem-keanu-reeves.png" alt="Keanu Reeves" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--theme-gray-border);">
+                <div>
+                    <p style="margin:0; font-weight: bold; font-size: 18px;">THIS IS KEANU REEVES.</p>
+                    <p style="margin:5px 0;">HE IS FROM CANADA.</p>
+                    <p style="margin:5px 0;">HE IS CANADIAN AND AMERICAN.</p>
+                    <p style="margin:10px 0 0 0; font-weight: bold; color: var(--theme-gray-border);">WHAT ABOUT YOU? WHERE ARE YOU FROM?</p>
+                </div>
+            </div>
+            
+            <div class="flags-grid">
+                <div class="flag-card"><img src="https://i.postimg.cc/9019znZj/11.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-1" data-ans="brazilian"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/YCvFq8SX/12.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-2" data-ans="canadian"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/j54wkF8N/13.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-3" data-ans="south korean"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/tRDn38n4/14.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-4" data-ans="american"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/9MCzTBWX/15.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-5" data-ans="spanish"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/RVyFGmMQ/16.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-6" data-ans="vietnamese"></div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-6" class="activity-section theme-orange">
+            <h2>Cross Curricular</h2>
+            <p class="instruction">Watch the video and choose the correct response for each question.</p>
+            
+            <video controls style="width: 100%; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <source src="https://files.catbox.moe/fu1l3l.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <div class="hw-question"><p>1. Where is the passenger staying in San Francisco?</p><select id="hw-1" data-ans="b"><option value="-">-</option><option value="a">a) At a friend's house.</option><option value="b">b) At the Pacific View Hotel.</option><option value="c">c) At the airport.</option></select></div>
+            <div class="hw-question"><p>2. Who does the passenger know in San Francisco?</p><select id="hw-2" data-ans="b"><option value="-">-</option><option value="a) No one.">a) No one.</option><option value="b">b) Mark Ryder.</option><option value="c">c) The immigration officer.</option></select></div>
+            <div class="hw-question"><p>3. What is the relationship between the passenger and Mark Ryder?</p><select id="hw-3" data-ans="b"><option value="-">-</option><option value="a">a) Family.</option><option value="b">b) Colleague and friend.</option><option value="c">c) Neighbors.</option></select></div>
+            <div class="hw-question"><p>4. Does the passenger have Mark Ryder's phone number?</p><select id="hw-4" data-ans="a"><option value="-">-</option><option value="a">a) Yes.</option><option value="b">b) No.</option><option value="c">c) Maybe.</option></select></div>
+            <div class="hw-question"><p>5. What is Mark Ryder's mobile number?</p><select id="hw-5" data-ans="b"><option value="-">-</option><option value="a">a) 4056 00 57182.</option><option value="b">b) 405-657-182.</option><option value="c">c) 415-621-8479.</option></select></div>
+            <div class="hw-question"><p>6. Is this the passenger's first visit to the US?</p><select id="hw-6" data-ans="b"><option value="-">-</option><option value="a">a) No, it's not.</option><option value="b">b) Yes, it is.</option><option value="c">c) The dialogue doesn't mention it.</option></select></div>
+            <div class="hw-question"><p>7. What does the immigration officer say at the end?</p><select id="hw-7" data-ans="b"><option value="-">-</option><option value="a">a) "Do you have his phone number?"</option><option value="b">b) "Enjoy your stay in San Francisco."</option><option value="c">c) "Thank you."</option></select></div>
+            <div class="hw-question"><p>8. Where is the passenger arriving from?</p><select id="hw-8" data-ans="c"><option value="-">-</option><option value="a">a) San Francisco</option><option value="b">b) New York</option><option value="c">c) London</option></select></div>
+            <div class="hw-question"><p>9. What is the purpose of her visit?</p><select id="hw-9" data-ans="a"><option value="-">-</option><option value="a">a) Business</option><option value="b">b) Visiting friends</option><option value="c">c) Studying</option></select></div>
+            <div class="hw-question"><p>10. How long is she staying in the US?</p><select id="hw-10" data-ans="a"><option value="-">-</option><option value="a">a) A week</option><option value="b">b) A year</option><option value="c">c) A month</option></select></div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button></div>
+        </div>
+
+        <div id="sec-7" class="activity-section theme-yellow">
+            <h2>Now It's Your Turn</h2>
+            <p class="instruction">You are at the airport now. Produce a dialogue simulating the situation.</p>
+            
+            <textarea id="final-dialogue" class="dialogue-area" placeholder="Write your dialogue script here... Example:
+Agent: Good morning, passport please.
+Me: Here it is."></textarea>
+            
+            <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 1A & Get XP</button>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button><div></div></div>
+        </div>
+    </div>
+
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 1A.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Return to Map</button>
+        </div>
+    </div>
+
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color: var(--orange-main); font-weight: bold; margin-bottom: 10px;">❓ Wh- Questions</div>
+            <div style="margin-bottom: 10px;"><b>WHAT</b> (O quê/Qual) -> Para coisas ou nomes.</div>
+            <div style="margin-bottom: 10px;"><b>WHERE</b> (Onde) -> Para lugares.</div>
+            <div style="margin-bottom: 10px;"><b>HOW LONG</b> (Quanto tempo) -> Para duração.</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // MODO LEITURA / TRAVA DE SEGURANÇA
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_1a_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao1a_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaura Texto do Diálogo
+                    let diagEl = document.getElementById('final-dialogue');
+                    if(diagEl) { diagEl.value = respostas.dialogue; diagEl.disabled = true; }
+
+                    // Restaura Drag & Drop
+                    for(let zoneId in respostas.dragDrop) {
+                        let wordId = respostas.dragDrop[zoneId];
+                        let zone = document.getElementById(zoneId);
+                        let word = document.getElementById(wordId);
+                        if(zone && word) zone.appendChild(word);
+                    }
+                    // Desativa arrastar palavras
+                    document.querySelectorAll('.draggable-word').forEach(w => {
+                        w.draggable = false; w.style.cursor = 'not-allowed';
+                    });
+
+                    // Restaura Match (Selects)
+                    for(let matchId in respostas.match) {
+                        let el = document.getElementById(matchId);
+                        if(el) { el.value = respostas.match[matchId]; el.disabled = true; }
+                    }
+
+                    // Restaura True/False
+                    for(let tfId in respostas.tf) {
+                        let val = respostas.tf[tfId];
+                        let tfDiv = document.getElementById(tfId);
+                        if(tfDiv && val) {
+                            tfDiv.setAttribute('data-user-ans', val);
+                            let btns = tfDiv.querySelectorAll('.tf-btn');
+                            btns.forEach(b => {
+                                if(b.innerText === val) b.classList.add(val === 'T' ? 'selected-t' : 'selected-f');
+                                b.disabled = true; b.style.cursor = 'not-allowed';
+                            });
+                        }
+                    }
+
+                    // Restaura Construtor de Frases
+                    for(let ansId in respostas.builders) {
+                        let words = respostas.builders[ansId];
+                        let ansArea = document.getElementById(ansId);
+                        let idNum = ansId.split('-')[1];
+                        let bank = document.getElementById('bank-'+idNum);
+                        if(ansArea && bank && words.length > 0) {
+                            words.forEach(wText => {
+                                let btn = Array.from(bank.children).find(b => b.innerText === wText && b.style.display !== 'none');
+                                if(btn) {
+                                    btn.style.display = 'none';
+                                    let clone = document.createElement('button');
+                                    clone.className = 'word-btn'; clone.style.borderColor = 'var(--theme-red-border)'; clone.style.color = 'var(--theme-red-border)'; clone.innerText = btn.innerText;
+                                    clone.disabled = true; 
+                                    ansArea.appendChild(clone);
+                                }
+                            });
+                        }
+                        // Ocultar botões Clear
+                        let clearBtn = ansArea.parentElement.querySelector('.btn-clear');
+                        if(clearBtn) clearBtn.style.display = 'none';
+                    }
+
+                    // Restaura Nacionalidades
+                    for(let natId in respostas.nat) {
+                        let el = document.getElementById(natId);
+                        if(el) { el.value = respostas.nat[natId]; el.disabled = true; }
+                    }
+
+                    // Restaura Homework
+                    for(let hwId in respostas.hw) {
+                        let el = document.getElementById(hwId);
+                        if(el) { el.value = respostas.hw[hwId]; el.disabled = true; }
+                    }
+                }
+
+                // Tranca o Botão de Finalizar
+                let btnFinish = document.querySelector('.btn-finish');
+                if(btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
+                    btnFinish.disabled = true;
+                    btnFinish.style.background = "#64748b"; 
+                    btnFinish.style.cursor = "not-allowed";
+                    btnFinish.onclick = null;
+                }
+            }
+        });
+
+        // ==========================================
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) {
+                    a.pause();
+                    const otherBtn = document.getElementById('btn-' + a.id);
+                    if(otherBtn) {
+                        otherBtn.innerText = "▶ PLAY";
+                        otherBtn.style.background = ""; 
+                    }
+                }
+            });
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = "⏸ PAUSE";
+                btn.style.background = "#c0392b";
+            } else {
+                audio.pause();
+                btn.innerText = "▶ PLAY";
+                btn.style.background = originalColor;
+            }
+
+            audio.onended = function() {
+                btn.innerText = "▶ PLAY";
+                btn.style.background = originalColor;
+            };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if (target.classList.contains('drop-zone')) {
+                if(target.children.length > 0) document.getElementById('word-pool').appendChild(target.children[0]);
+                target.appendChild(draggedEl);
+            } else if (target.classList.contains('draggable-word')) {
+                let parentZone = target.parentElement;
+                if(parentZone.classList.contains('drop-zone')) {
+                    document.getElementById('word-pool').appendChild(target);
+                    parentZone.appendChild(draggedEl);
+                }
+            }
+        }
+        function dropBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('word-pool').appendChild(document.getElementById(data));
+        }
+
+        function setTF(btn, val) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.tf-btn').forEach(b => { b.classList.remove('selected-t', 'selected-f'); });
+            btn.classList.add(val === 'T' ? 'selected-t' : 'selected-f');
+            parent.setAttribute('data-user-ans', val);
+        }
+
+        const sentencesData = [
+            { id: 1, text: "welcome to the UK", expected: "welcome to the UK" },
+            { id: 2, text: "Where are you from", expected: "Where are you from" },
+            { id: 3, text: "Where are you going to stay", expected: "Where are you going to stay" },
+            { id: 4, text: "What are you doing in the UK", expected: "What are you doing in the UK" },
+            { id: 5, text: "How long are you going to stay", expected: "How long are you going to stay" },
+            { id: 6, text: "Whats your full name", expected: "Whats your full name" }
+        ];
+
+        function createBuilders() {
+            const container = document.getElementById('builders-container');
+            sentencesData.forEach((item, index) => {
+                let words = item.text.split(" ").sort(() => Math.random() - 0.5);
+                const block = document.createElement('div');
+                block.className = 'builder-block';
+                block.innerHTML = `<div style="font-weight:bold; margin-bottom:10px;">${index + 1}. Assemble the sentence:</div>
+                                   <div class="answer-area" id="ans-${item.id}" data-expected="${item.expected}"></div>
+                                   <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;" id="bank-${item.id}"></div>
+                                   <button class="btn-clear" onclick="clearBuilder(${item.id})">↻ Clear Area</button>`;
+                container.appendChild(block);
+
+                const bankEl = document.getElementById(`bank-${item.id}`);
+                words.forEach(word => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn'; btn.innerText = word;
+                    btn.onclick = () => moveWord(btn, item.id);
+                    bankEl.appendChild(btn);
+                });
+            });
+        }
+
+        function moveWord(btn, id) {
+            const answerEl = document.getElementById(`ans-${id}`);
+            btn.style.display = 'none';
+            const clone = document.createElement('button');
+            clone.className = 'word-btn'; clone.style.borderColor = 'var(--theme-red-border)'; clone.style.color = 'var(--theme-red-border)'; clone.innerText = btn.innerText;
+            clone.onclick = () => { clone.remove(); btn.style.display = 'inline-block'; };
+            answerEl.appendChild(clone);
+        }
+
+        function clearBuilder(id) {
+            document.getElementById(`ans-${id}`).innerHTML = '';
+            Array.from(document.getElementById(`bank-${id}`).children).forEach(btn => btn.style.display = 'inline-block');
+        }
+        createBuilders();
+
+        // ==========================================
+        // CÁLCULO DE XP E FOTOGRAFIA DAS RESPOSTAS
+        // ==========================================
+        let finalXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+            
+            // Objeto que vai "fotografar" a página
+            let respostasFotografadas = {
+                dragDrop: {},
+                match: {},
+                tf: {},
+                builders: {},
+                nat: {},
+                hw: {},
+                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : ""
+            };
+
+            // 1. Drag and Drop
+            for(let i=1; i<=8; i++) {
+                let zone = document.getElementById('dz-' + i);
+                if(zone) {
+                    total++;
+                    let expected = zone.getAttribute('data-answer');
+                    if(zone.children.length > 0) {
+                        respostasFotografadas.dragDrop['dz-' + i] = zone.children[0].id;
+                        if(zone.children[0].id === expected) correct++;
+                    }
+                }
+            }
+
+            // 2. Selects
+            for(let i=1; i<=7; i++) {
+                let select = document.getElementById('match-' + i);
+                if(select) {
+                    total++;
+                    respostasFotografadas.match['match-' + i] = select.value;
+                    if(select.value === select.getAttribute('data-ans')) correct++;
+                }
+            }
+
+            // 3. True/False
+            for(let i=1; i<=8; i++) {
+                let tfDiv = document.getElementById('tf-' + i);
+                if(tfDiv) {
+                    total++;
+                    respostasFotografadas.tf['tf-' + i] = tfDiv.getAttribute('data-user-ans');
+                    if(tfDiv.getAttribute('data-user-ans') === tfDiv.getAttribute('data-ans')) correct++;
+                }
+            }
+
+            // 4. Builders
+            for(let i=1; i<=6; i++) {
+                let ansArea = document.getElementById('ans-' + i);
+                if(ansArea) {
+                    total++;
+                    let userArray = Array.from(ansArea.children).map(btn => btn.innerText);
+                    respostasFotografadas.builders['ans-' + i] = userArray;
+                    
+                    let expectedStr = ansArea.getAttribute('data-expected').toLowerCase();
+                    let userStr = userArray.join(" ").toLowerCase();
+                    if(userStr === expectedStr) correct++;
+                }
+            }
+
+            // 5. Nationalities
+            for(let i=1; i<=6; i++) {
+                let input = document.getElementById('nat-' + i);
+                if(input) {
+                    total++;
+                    respostasFotografadas.nat['nat-' + i] = input.value;
+                    let expected = input.getAttribute('data-ans').toLowerCase();
+                    if(input.value.trim().toLowerCase() === expected) correct++;
+                }
+            }
+
+            // 6. Homework
+            for(let i=1; i<=10; i++) {
+                let hwSelect = document.getElementById('hw-' + i);
+                if(hwSelect) {
+                    total++;
+                    respostasFotografadas.hw['hw-' + i] = hwSelect.value;
+                    if(hwSelect.value === hwSelect.getAttribute('data-ans')) correct++;
+                }
+            }
+
+            // Guarda as respostas na Mochila antes de fechar a lição!
+            localStorage.setItem('licao1a_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // ==========================================
+        // ENVIAR XP PARA O CÉREBRO E NUVEM
+        // ==========================================
+        function returnToMap() {
+            // Guarda o status da lição na mochila
+            localStorage.setItem('licao_1a_status', 'concluida');
+            localStorage.setItem('licao_1a_xp', finalXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(1, finalXP); 
+            }
+            window.location.href = "about:blank"; 
+        }
+    </script>
+</body>
+</html>

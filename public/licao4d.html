@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4D | Unit Challenge - Round and About</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a; 
+            --blue-medium: #1e3a8a; 
+            --blue-light: #3b82f6; 
+            --accent-main: #e67e22; 
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #f5f3ff; --theme-purple-border: #8b5cf6;
+            --theme-red-bg: #fef2f2; --theme-red-border: #dc2626; 
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c; 
+        }
+
+        body {
+            font-family: var(--font-text); color: var(--black); margin: 0; 
+            padding: 40px 15px 120px 15px;
+            display: flex; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #ea580c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white); width: 100%; max-width: 920px; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); border-radius: 24px; padding: 45px; 
+            position: relative; z-index: 1; margin: 0 auto; box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            width: 100%; height: 210px;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(234, 88, 12, 0.8)), url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 35px;
+        }
+        .banner-tag {
+            font-family: var(--font-title); font-size: 13px; font-weight: 800;
+            color: #fdba74; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .lesson-banner h1 {
+            color: var(--white); font-family: var(--font-title); font-size: 32px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 22px; margin-top: 0; margin-bottom: 8px; }
+        p.instruction { color: #475569; font-size: 14px; margin-bottom: 22px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(15px); transition: all 0.4s ease; margin-bottom: 25px; padding: 30px; border-radius: 18px; border: 2px solid transparent; box-sizing: border-box; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 35px; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 20px; }
+        .btn-nav { padding: 12px 28px; font-family: var(--font-title); font-weight: 700; font-size: 14px; border-radius: 50px; cursor: pointer; transition: 0.2s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* ESTÉTICA GAMIFICADA */
+        .gamified-input, .text-input, select, .q-row select {
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 10px 14px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .gamified-input:focus, .text-input:focus, select:focus, .q-row select:focus {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(59, 130, 246, 0.12);
+            transform: translateY(-1px);
+        }
+        .gamified-input:hover, .text-input:hover, select:hover, .q-row select:hover {
+            border-color: #94a3b8;
+            background: #ffffff;
+        }
+
+        .starter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media(max-width: 650px) { .starter-grid { grid-template-columns: 1fr; } }
+        .starter-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .starter-card b {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--blue-dark);
+            font-size: 14px;
+        }
+
+        /* GAME 1: SORTER */
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px; background: white; padding: 20px; border-radius: 14px; border: 2px dashed var(--theme-purple-border); min-height: 50px; }
+        .draggable-word { background: var(--theme-purple-border); color: white; padding: 9px 16px; border-radius: 8px; font-weight: bold; cursor: grab; user-select: none; transition: 0.2s; display: inline-block; box-shadow: 0 3px 6px rgba(0,0,0,0.1); font-size: 13px; }
+        .draggable-word:active { transform: scale(0.95); cursor: grabbing; }
+        
+        .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        @media(max-width: 750px) { .category-grid { grid-template-columns: 1fr; } }
+        .category-box { background: white; padding: 18px; border-radius: 14px; border: 2px dashed #cbd5e1; min-height: 180px; display: flex; flex-direction: column; text-align: center; }
+        .category-box.transit { border-color: #dc2626; }
+        .category-box.directions { border-color: #3b82f6; }
+        .category-box.possessions { border-color: #16a34a; }
+
+        /* GAME 2: MAP READER CHALLENGE */
+        .map-container {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .map-visual {
+            background: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #94a3b8;
+        }
+        @media(max-width: 700px) { .map-visual { grid-template-columns: 1fr; } }
+        .map-block {
+            background: white;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid #cbd5e1;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .map-block .badge { font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-bottom: 4px; }
+        .map-block b { display: block; font-family: var(--font-title); font-size: 14px; color: var(--blue-dark); }
+        .map-block span { font-size: 11px; color: #64748b; }
+
+        .challenge-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .q-row {
+            background: white;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .q-row select {
+            width: auto;
+            min-width: 240px;
+            font-family: var(--font-title);
+            font-size: 13px;
+        }
+
+        /* GAME 3: SPEED QUIZ */
+        .quiz-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 15px;
+        }
+        .quiz-card p {
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin: 0 0 12px 0;
+            font-size: 15px;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media(max-width: 600px) { .quiz-options { grid-template-columns: 1fr; } }
+        .quiz-option {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            transition: 0.15s;
+        }
+        .quiz-option:hover { background: #e0f2fe; border-color: var(--blue-light); }
+
+        /* CHECKLIST */
+        .checklist-container { background: white; padding: 25px; border-radius: 16px; border: 1px solid #cbd5e1; margin-bottom: 30px; }
+        .checklist-item { display: flex; align-items: center; gap: 14px; padding: 14px; border-bottom: 1px dashed #e2e8f0; font-size: 14.5px; cursor: pointer; transition: 0.15s; }
+        .checklist-item:hover { background: #f8fafc; }
+        .checklist-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #16a34a; cursor: pointer; }
+        .checklist-item.done { color: #16a34a; font-weight: bold; text-decoration: line-through; }
+
+        /* DETAILED REPORT CARD */
+        .report-card-container {
+            background: white;
+            border: 2px solid var(--accent-main);
+            border-radius: 20px;
+            padding: 35px;
+            margin-top: 30px;
+            box-shadow: 0 15px 35px rgba(230,126,34,0.15);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .report-card-header {
+            text-align: center;
+            border-bottom: 2px dashed #cbd5e1;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .report-card-header h3 {
+            font-family: var(--font-title);
+            font-size: 24px;
+            color: var(--blue-dark);
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+        .report-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        @media(max-width: 700px) {
+            .report-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .metric-cell {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 8px;
+        }
+        .metric-cell .val {
+            font-family: var(--font-title);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-main);
+        }
+        .metric-cell .lbl {
+            font-size: 11px;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .metric-cell.total {
+            background: #fff7ed;
+            border-color: var(--accent-main);
+        }
+        .metric-cell.total .val {
+            color: #c2410c;
+        }
+
+        .answers-review-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .answers-review-box h4 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-title);
+            color: var(--blue-dark);
+            font-size: 15px;
+        }
+
+        .btn-cloud-save {
+            background: linear-gradient(135deg, var(--accent-main), var(--accent-dark));
+            color: white;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        .btn-cloud-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(230, 126, 34, 0.55);
+            background: linear-gradient(135deg, #d35400, #9a3412);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <div class="banner-tag">Unit 4 • Comprehensive Review</div>
+            <h1>4D | Unit Challenge</h1>
+        </div>
+
+        <!-- SEÇÃO 1: STARTER (6 INSTRUÇÕES) -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Starter • What Are the Instructions?</h2>
+            <p class="instruction">Write the 6 street and transport instructions you learned throughout Unit 4.</p>
+
+            <div class="starter-grid">
+                <div class="starter-card">
+                    <b>Instruction 1: Making a left turn</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-1" data-ans="turn left|turn to the left" placeholder="e.g. Turn left">
+                </div>
+                <div class="starter-card">
+                    <b>Instruction 2: Making a right turn</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-2" data-ans="turn right|turn to the right" placeholder="e.g. Turn right">
+                </div>
+                <div class="starter-card">
+                    <b>Instruction 3: Continuing forward</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-3" data-ans="go straight on|go straight ahead|continue straight" placeholder="e.g. Go straight on">
+                </div>
+                <div class="starter-card">
+                    <b>Instruction 4: Full vehicle halt</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-4" data-ans="stop|halt|stop sign" placeholder="e.g. Stop">
+                </div>
+                <div class="starter-card">
+                    <b>Instruction 5: Pedestrian crossing</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-5" data-ans="cross the street|cross the road|use zebra crossing|zebra crossing" placeholder="e.g. Cross the road">
+                </div>
+                <div class="starter-card">
+                    <b>Instruction 6: Selecting an avenue turn</b>
+                    <input type="text" class="text-input gamified-input eval-starter" id="st-6" data-ans="take the second turning|take the first turning|take the second turning on the left|take the second turning on the right" placeholder="e.g. Take the second turning">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Game 1 (Fast Sorter) ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: GAME 1 • VOCABULARY SORTER -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Game 1 • Fast Vocabulary Sorter</h2>
+            <p class="instruction">Drag and drop each term into its correct pedagogical category from Unit 4.</p>
+
+            <div class="word-pool drop-zone" id="word-pool" ondrop="dropToPool(event)" ondragover="allowDrop(event)">
+                <div class="draggable-word eval-sort" id="w1" draggable="true" ondragstart="drag(event)" data-ans="box-transit">🚏 Bus Stop</div>
+                <div class="draggable-word eval-sort" id="w2" draggable="true" ondragstart="drag(event)" data-ans="box-directions">⬅️ Turn Left</div>
+                <div class="draggable-word eval-sort" id="w3" draggable="true" ondragstart="drag(event)" data-ans="box-possessions">📱 Smartphone</div>
+                <div class="draggable-word eval-sort" id="w4" draggable="true" ondragstart="drag(event)" data-ans="box-transit">🚇 The Underground</div>
+                <div class="draggable-word eval-sort" id="w5" draggable="true" ondragstart="drag(event)" data-ans="box-directions">⬆️ Go Straight On</div>
+                <div class="draggable-word eval-sort" id="w6" draggable="true" ondragstart="drag(event)" data-ans="box-possessions">🗺️ Street Map</div>
+                <div class="draggable-word eval-sort" id="w7" draggable="true" ondragstart="drag(event)" data-ans="box-transit">🎫 Oyster Card</div>
+                <div class="draggable-word eval-sort" id="w8" draggable="true" ondragstart="drag(event)" data-ans="box-directions">🔄 Roundabout</div>
+                <div class="draggable-word eval-sort" id="w9" draggable="true" ondragstart="drag(event)" data-ans="box-possessions">🔋 Battery Charger</div>
+            </div>
+
+            <div class="category-grid">
+                <div class="category-box transit drop-zone" id="box-transit" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3 style="color: #dc2626; margin: 0 0 10px 0; font-size: 15px;">🚌 Public Transit (4A)</h3>
+                    <div class="sorted-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
+
+                <div class="category-box directions drop-zone" id="box-directions" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 15px;">🧭 Street Directions (4B)</h3>
+                    <div class="sorted-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
+
+                <div class="category-box possessions drop-zone" id="box-possessions" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3 style="color: #16a34a; margin: 0 0 10px 0; font-size: 15px;">🎒 Possessions: Have got (4C)</h3>
+                    <div class="sorted-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Game 2 (Map Reader) ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: GAME 2 • MAP READER CHALLENGE -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Game 2 • Map Reader Challenge</h2>
+            <p class="instruction">Read the urban map below and select the correct spatial answers.</p>
+
+            <div class="map-container">
+                <div class="map-visual">
+                    <div class="map-block">
+                        <span class="badge" style="background:#fef3c7; color:#b45309;">Block 1</span>
+                        <b>Bank of London</b>
+                        <span>Opposite Chemist</span>
+                    </div>
+                    <div class="map-block">
+                        <span class="badge" style="background:#ede9fe; color:#6d28d9;">Crossroads</span>
+                        <b>Regent Street & High St</b>
+                        <span>Traffic Lights 🚦</span>
+                    </div>
+                    <div class="map-block">
+                        <span class="badge" style="background:#dcfce7; color:#15803d;">Block 3</span>
+                        <b>Overseas Corporation</b>
+                        <span>Main Goal 🏢</span>
+                    </div>
+                    <div class="map-block">
+                        <span class="badge" style="background:#fee2e2; color:#b91c1c;">Transit</span>
+                        <b>Tube Station</b>
+                        <span>Piccadilly Line</span>
+                    </div>
+                    <div class="map-block" style="background: #fff7ed; border-color: #ea580c;">
+                        <span class="badge" style="background:#ea580c; color:white;">Start</span>
+                        <b>📍 You Are Here</b>
+                        <span>Bus Stop #14</span>
+                    </div>
+                    <div class="map-block">
+                        <span class="badge" style="background:#e0f2fe; color:#0369a1;">Food</span>
+                        <b>City Café</b>
+                        <span>Corner Bakery</span>
+                    </div>
+                </div>
+
+                <div class="challenge-questions">
+                    <div class="q-row">
+                        <span>1. The Overseas Corporation building is situated...</span>
+                        <select class="eval-map gamified-input" id="map-q1" data-ans="opposite-chemist">
+                            <option value="">-- select --</option>
+                            <option value="behind-station">behind the tube station</option>
+                            <option value="opposite-chemist">at Block 3 along High Street</option>
+                            <option value="inside-cafe">inside City Café</option>
+                        </select>
+                    </div>
+
+                    <div class="q-row">
+                        <span>2. To go from 'You Are Here' to Overseas Corporation, you must...</span>
+                        <select class="eval-map gamified-input" id="map-q2" data-ans="go-straight">
+                            <option value="">-- select --</option>
+                            <option value="go-straight">go straight ahead through the crossroads</option>
+                            <option value="turn-left-river">turn left towards the river</option>
+                            <option value="take-bus-south">take a taxi to the airport</option>
+                        </select>
+                    </div>
+
+                    <div class="q-row">
+                        <span>3. At the Regent Street crossroads, there are...</span>
+                        <select class="eval-map gamified-input" id="map-q3" data-ans="traffic-lights">
+                            <option value="">-- select --</option>
+                            <option value="traffic-lights">automatic traffic lights</option>
+                            <option value="police-barrier">a police barrier</option>
+                            <option value="dead-end">a dead end</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Game 3 (Speed Quiz) ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: GAME 3 • UNIT 4 SPEED QUIZ -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Game 3 • Unit 4 Speed Quiz</h2>
+            <p class="instruction">Choose the grammatically accurate option for each question.</p>
+
+            <div class="quiz-card">
+                <p>1. Which sentence expresses having a smartphone correctly?</p>
+                <div class="quiz-options">
+                    <label class="quiz-option"><input type="radio" name="q1" value="wrong"> I haves got a smartphone.</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="correct"> I've got a smartphone.</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="wrong"> I got having a smartphone.</label>
+                    <label class="quiz-option"><input type="radio" name="q1" value="wrong"> I have got not a phone.</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>2. "Excuse me, _____ you got a street map with you?"</p>
+                <div class="quiz-options">
+                    <label class="quiz-option"><input type="radio" name="q2" value="wrong"> Has</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="correct"> Have</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="wrong"> Do</label>
+                    <label class="quiz-option"><input type="radio" name="q2" value="wrong"> Are</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>3. How do you give a direct street instruction?</p>
+                <div class="quiz-options">
+                    <label class="quiz-option"><input type="radio" name="q3" value="wrong"> You turning left here.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="correct"> Turn left at the crossroads.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="wrong"> To turn left please.</label>
+                    <label class="quiz-option"><input type="radio" name="q3" value="wrong"> Turned left now.</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>4. On London red buses, commuters pay the £1.75 fare using...</p>
+                <div class="quiz-options">
+                    <label class="quiz-option"><input type="radio" name="q4" value="wrong"> Cash paper notes only.</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="correct"> An Oyster or contactless card.</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="wrong"> Bank cheques.</label>
+                    <label class="quiz-option"><input type="radio" name="q4" value="wrong"> Gold coins.</label>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next: Report Card ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 5: CHECKLIST & DETAILED REPORT CARD (SEM TRANSIÇÃO NARRATIVA) -->
+        <div id="sec-5" class="activity-section theme-blue">
+            <h2>5. Self-Evaluation & Unit 4 Report Card</h2>
+            <p class="instruction">Check all skills you have mastered in Unit 4 to generate your Detailed Pedagogical Report Card.</p>
+
+            <div class="checklist-container">
+                <label class="checklist-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can identify London public transport symbols, bus stops, and underground stations (4A).</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can ask for and understand street directions using imperatives (4B).</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can use Have got / Has got in affirmative, negative, and question forms (4C).</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can navigate an urban map and find key destinations under pressure (4D).</span>
+                </label>
+            </div>
+
+            <!-- DETAILED REPORT CARD AREA (REVELADO AUTOMATICAMENTE QUANDO CHECKLIST É CONCLUÍDO) -->
+            <div class="report-card-container" id="report-card-area">
+                <div class="report-card-header">
+                    <span class="banner-tag" style="color:var(--accent-main);">OFFICIAL ACADEMIC AUDIT</span>
+                    <h3>Unit 4 Detailed Report Card</h3>
+                    <p style="margin: 0; color: #64748b; font-size: 14px;">Student Performance & Learning Analytics across Unit 4: Round and About</p>
+                </div>
+
+                <div class="report-metrics-grid">
+                    <div class="metric-cell">
+                        <div class="val" id="rc-4a">--%</div>
+                        <div class="lbl">4A: Transit</div>
+                    </div>
+                    <div class="metric-cell">
+                        <div class="val" id="rc-4b">--%</div>
+                        <div class="lbl">4B: Directions</div>
+                    </div>
+                    <div class="metric-cell">
+                        <div class="val" id="rc-4c">--%</div>
+                        <div class="lbl">4C: Getting Lost</div>
+                    </div>
+                    <div class="metric-cell">
+                        <div class="val" id="rc-4d">--%</div>
+                        <div class="lbl">4D: Challenge</div>
+                    </div>
+                    <div class="metric-cell total">
+                        <div class="val" id="rc-avg">--%</div>
+                        <div class="lbl">UNIT 4 AVERAGE</div>
+                    </div>
+                </div>
+
+                <div class="answers-review-box">
+                    <h4>📋 Learning Evidence & Student Responses Record:</h4>
+                    <div id="answers-history-display">Loading Unit 4 answers from local storage...</div>
+                </div>
+
+                <p id="report-score-summary" style="font-size: 13px; color: #64748b; text-align: center; font-weight: bold;"></p>
+
+                <!-- BOTÃO FINAL: SAVE TO CLOUD & START UNIT 5 -->
+                <button class="btn-cloud-save" id="btn-cloud-save" onclick="saveToCloudAndStartUnit5()">
+                    ☁️ Save to Cloud & Start Unit 5 ➔
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // DRAG AND DROP
+        // ==========================================
+        function allowDrop(ev) { 
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (ev.dataTransfer) {
+                ev.dataTransfer.dropEffect = "move";
+            }
+        }
+
+        function drag(ev) { 
+            ev.stopPropagation();
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.dataTransfer.effectAllowed = "move";
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var data = ev.dataTransfer.getData("text");
+            var el = document.getElementById(data);
+            var target = ev.target;
+            if (!target.classList.contains('category-box')) target = target.closest('.category-box');
+            if (target && el) {
+                var list = target.querySelector('.sorted-list') || target;
+                list.appendChild(el);
+            }
+        }
+
+        function dropToPool(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var data = ev.dataTransfer.getData("text");
+            var el = document.getElementById(data);
+            if (el) document.getElementById('word-pool').appendChild(el);
+        }
+
+        // ==========================================
+        // CHECKLIST & REPORT CARD CALCULATION
+        // ==========================================
+        function verifyChecklist(checkbox) {
+            const label = checkbox.parentElement;
+            if (checkbox.checked) { label.classList.add('done'); } 
+            else { label.classList.remove('done'); }
+
+            const allCheckboxes = document.querySelectorAll('.now-i-can-check');
+            let allChecked = true;
+            allCheckboxes.forEach(cb => { if (!cb.checked) allChecked = false; });
+
+            const reportArea = document.getElementById('report-card-area');
+            if (allChecked) {
+                calculateXPAndReport();
+                reportArea.style.display = 'block';
+                setTimeout(() => { reportArea.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+            } else {
+                reportArea.style.display = 'none';
+            }
+        }
+
+        function calculateXPAndReport() {
+            let correct = 0;
+            let total = 0;
+            let recordedAnswers = { starter: {}, sorter: {}, map: {}, quiz: {} };
+
+            // 1. Starter inputs
+            document.querySelectorAll('.eval-starter').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                recordedAnswers.starter[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                }
+            });
+
+            // 2. Sorter
+            document.querySelectorAll('.eval-sort').forEach(word => {
+                total++;
+                let parentZone = word.closest('.category-box');
+                let parentId = parentZone ? parentZone.id : "";
+                recordedAnswers.sorter[word.id] = parentId;
+                if (parentId === word.getAttribute('data-ans')) correct++;
+            });
+
+            // 3. Map Reader
+            document.querySelectorAll('.eval-map').forEach(sel => {
+                total++;
+                recordedAnswers.map[sel.id] = sel.value;
+                if (sel.value === sel.getAttribute('data-ans')) correct++;
+            });
+
+            // 4. Quiz
+            for (let i = 1; i <= 4; i++) {
+                total++;
+                let radios = document.querySelectorAll(`input[name="q${i}"]`);
+                recordedAnswers.quiz[`q${i}`] = null;
+                radios.forEach((r, index) => {
+                    if (r.checked) {
+                        recordedAnswers.quiz[`q${i}`] = index;
+                        if (r.value === "correct") correct++;
+                    }
+                });
+            }
+
+            localStorage.setItem('licao4d_respostas', JSON.stringify(recordedAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            let finalXP = Math.round(percentage * 100);
+
+            let oldXP = parseInt(localStorage.getItem('licao_4d_xp')) || 0;
+            let xpDifference = finalXP - oldXP;
+            localStorage.setItem('licao_4d_status', 'concluida');
+            localStorage.setItem('licao_4d_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += xpDifference;
+            localStorage.setItem('studentXP', studentXP);
+
+            // Fetch previous lessons in Unit 4
+            let xp4A = parseInt(localStorage.getItem('licao_4a_xp')) || 90;
+            let xp4B = parseInt(localStorage.getItem('licao_4b_xp')) || 85;
+            let xp4C = parseInt(localStorage.getItem('licao_4c_xp')) || 95;
+            let xp4D = finalXP;
+            let avgXP = Math.round((xp4A + xp4B + xp4C + xp4D) / 4);
+
+            document.getElementById('rc-4a').innerText = xp4A + "%";
+            document.getElementById('rc-4b').innerText = xp4B + "%";
+            document.getElementById('rc-4c').innerText = xp4C + "%";
+            document.getElementById('rc-4d').innerText = xp4D + "%";
+            document.getElementById('rc-avg').innerText = avgXP + "%";
+
+            document.getElementById('report-score-summary').innerText = `Unit 4 Scores: 4A (${xp4A}%) | 4B (${xp4B}%) | 4C (${xp4C}%) | 4D (${xp4D}%) → FINAL UNIT 4: ${avgXP}%`;
+
+            // Recuperar e exibir respostas anteriores
+            let saved4A = localStorage.getItem('licao4a_respostas');
+            let saved4B = localStorage.getItem('licao4b_respostas');
+            let saved4C = localStorage.getItem('licao4c_respostas');
+
+            let historyHTML = `
+                <p>• <b>Lesson 4A (London Bus & Tube):</b> ${saved4A ? 'Traffic Signs drag & drop validated and saved.' : 'Completed with excellence.'}</p>
+                <p>• <b>Lesson 4B (Giving Directions):</b> ${saved4B ? 'Directions production and road dialogue validated.' : 'Route directions saved.'}</p>
+                <p>• <b>Lesson 4C (Getting Lost - Have got):</b> ${saved4C ? 'Grammar fixes, Melbourne reading, and lunchtime dialogue recorded.' : 'Possession structures validated.'}</p>
+                <p>• <b>Lesson 4D (Mastery Challenge):</b> ${correct} / ${total} challenge questions correct (${finalXP}%).</p>
+            `;
+            document.getElementById('answers-history-display').innerHTML = historyHTML;
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(4, avgXP);
+            }
+        }
+
+        function saveToCloudAndStartUnit5() {
+            let btn = document.getElementById('btn-cloud-save');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "Saving Unit 4 to Cloud ☁️...";
+            }
+
+            localStorage.setItem('unit4_done', 'true');
+
+            let playerName = localStorage.getItem('userName') || "Student";
+            let userCode = localStorage.getItem('userCode') || "NO-CODE";
+            let scoreText = document.getElementById('report-score-summary') ? document.getElementById('report-score-summary').innerText : "Unit 4 Completed";
+
+            const payload = {
+                action: "save_report",
+                name: playerName,
+                turma: userCode,
+                lesson: "Unit 4 Pedagogical Report (Round and About)",
+                scoreText: scoreText,
+                postcardText: "Unit 4 London Navigation and Transport Challenge completed successfully.",
+                imageBase64: null, imageMimeType: null, imageName: null
+            };
+
+            let redirected = false;
+            function doRedirect() {
+                if (redirected) return;
+                redirected = true;
+                redirectToUnit5();
+            }
+
+            // Fallback de segurança caso a requisição demore muito ou oscile
+            const fallbackTimeout = setTimeout(() => {
+                doRedirect();
+            }, 3500);
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                clearTimeout(fallbackTimeout);
+                setTimeout(doRedirect, 1000);
+            }).catch(() => {
+                clearTimeout(fallbackTimeout);
+                setTimeout(doRedirect, 1000);
+            });
+        }
+
+        // Roteamento Obrigatório para transição da Unidade 4 para 5
+        function redirectToUnit5() {
+            let avgXP = parseInt(document.getElementById('rc-avg').innerText.replace('%', '')) || 90;
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(4, avgXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('transicao_4_para_5.html', 'link-transicao4');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('transicao_4_para_5.html', null);
+                return;
+            }
+            window.location.href = 'transicao_4_para_5.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao4d_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.starter) {
+                        for (let id in data.starter) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.starter[id];
+                        }
+                    }
+                    if (data.map) {
+                        for (let id in data.map) {
+                            let sel = document.getElementById(id);
+                            if (sel) sel.value = data.map[id];
+                        }
+                    }
+                    if (data.quiz) {
+                        for (let q in data.quiz) {
+                            let idx = data.quiz[q];
+                            if (idx !== null) {
+                                let radios = document.querySelectorAll(`input[name="${q}"]`);
+                                if (radios[idx]) radios[idx].checked = true;
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target On</title>
+    <meta name="description" content="A gamified, interactive English learning journey set in London, featuring beautifully styled lessons, cinematic transitions, and real-time XP progress tracking.">
+    <meta property="og:title" content="Target On">
+    <meta property="og:description" content="A gamified, interactive English learning journey set in London, featuring beautifully styled lessons, cinematic transitions, and real-time XP progress tracking.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-grad: #E67E22; --orange-glow: #FF9F43;
+            --font-main: 'Montserrat', sans-serif; --font-sec: 'Roboto', sans-serif;
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; font-family: var(--font-sec); overflow: hidden; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 40%, var(--orange-grad) 100%); }
+        .btn-top-teacher { position: fixed; top: 30px; right: 30px; z-index: 100; background: #dc2626; color: white; border: 2px solid white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-family: var(--font-main); font-weight: 800; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
+        .btn-top-teacher:hover { background: white; color: #dc2626; transform: scale(1.05); }
+        .bg-dark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%); z-index: 10; transition: opacity 2s ease-in-out; opacity: 1; pointer-events: none; }
+        .airplane-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; opacity: 0; z-index: 1; transition: opacity 2s ease-in-out; mix-blend-mode: overlay; pointer-events: none; }
+        .game-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 20; transition: opacity 0.8s ease-in-out; }
+        .hidden { opacity: 0; pointer-events: none; visibility: hidden; display: none !important; }
+        .glass-panel { background: rgba(10,10,10,0.85); backdrop-filter: blur(15px); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); text-align: center; width: 95%; max-width: 650px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+        .glass-panel::-webkit-scrollbar { width: 6px; } .glass-panel::-webkit-scrollbar-thumb { background: var(--orange-grad); border-radius: 10px; }
+        .avatar-title { font-family: var(--font-main); font-size: clamp(20px, 4vw, 28px); font-weight: 800; color: white; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 4px; }
+        .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 10px; }
+        @media (max-width: 480px) { .avatar-grid { grid-template-columns: repeat(2, 1fr); } }
+        .avatar-card { background: #000; border: 2px solid #333; border-radius: 12px; aspect-ratio: 4 / 5; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; overflow: hidden; position: relative; }
+        .avatar-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) grayscale(20%); transition: 0.4s; pointer-events: none; }
+        .avatar-card:hover { border-color: var(--orange-glow); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 159, 67, 0.6); z-index: 5; } .avatar-card:hover img { transform: scale(1.08); filter: brightness(1.1) grayscale(0%); }
+        .avatar-card.selected { border-color: var(--orange-grad); box-shadow: 0 0 30px var(--orange-grad); transform: scale(1.05); z-index: 10; } .avatar-card.selected img { filter: brightness(1.1) grayscale(0%); }
+        .btn-action { background: var(--orange-grad); color: white; border: none; padding: 15px 40px; font-family: var(--font-main); font-weight: 800; font-size: 16px; border-radius: 50px; margin-top: 20px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-action:hover { background: #d35400; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(230,126,34,0.4); }
+        .btn-action:disabled { background: #555; cursor: not-allowed; box-shadow: none; transform: none; }
+        .narrative-text { font-family: var(--font-main); font-size: 32px; font-weight: 300; color: white; text-align: center; max-width: 800px; opacity: 0; transition: opacity 1.5s; line-height: 1.5; padding: 20px; }
+        .dialog-box { background: rgba(20,20,20,0.9); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--orange-grad); border-radius: 20px; padding: 40px; width: 90%; max-width: 500px; text-align: center; opacity: 0; transform: translateY(20px); transition: 0.8s; }
+        .dialog-box.show { opacity: 1; transform: translateY(0); }
+        .agent-label { font-family: var(--font-main); font-weight: 800; color: var(--orange-grad); font-size: 14px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .agent-question { font-size: 22px; color: white; margin-bottom: 25px; font-weight: 300; line-height: 1.4; }
+        .dialog-input { width: 100%; border: none; border-bottom: 2px solid #555; padding: 10px 0; font-size: 20px; text-align: center; outline: none; margin-bottom: 20px; font-family: var(--font-main); background: transparent; color: var(--blue-light); transition: 0.3s; text-transform: uppercase; }
+        .dialog-input:focus { border-color: var(--orange-grad); color: white; }
+        .cinematic-title { font-family: var(--font-main); font-size: 4vw; font-weight: 300; color: white; text-align: center; text-transform: uppercase; letter-spacing: 8px; opacity: 0; transform: scale(0.9); transition: all 2s; margin: 0; padding: 20px; }
+        .cinematic-title .target-on { display: block; font-size: 8vw; font-weight: 800; color: var(--orange-grad); margin-top: 10px; letter-spacing: 5px; }
+        .cinematic-title.show { opacity: 1; transform: scale(1); }
+        #dashboard { display: flex; height: 100vh; width: 100vw; opacity: 0; transition: opacity 1.5s; pointer-events: none; position: relative; z-index: 10; }
+        #dashboard.active { opacity: 1; pointer-events: auto; }
+        .sidebar { width: 340px; background: rgba(30, 60, 114, 0.4); backdrop-filter: blur(25px); border-right: 1px solid rgba(255,255,255,0.2); display: flex; flex-direction: column; color: white; box-shadow: 5px 0 25px rgba(0,0,0,0.3); }
+        .profile-section { padding: 30px 20px; display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--blue-dark); border: 2px solid var(--orange-grad); overflow: hidden; display: flex; justify-content: center; align-items: center; font-size: 30px; flex-shrink: 0; }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-info { flex: 1; }
+        .xp-bar-container { width: 100%; height: 8px; background: rgba(0,0,0,0.5); border-radius: 4px; margin-top: 8px; overflow: hidden; display: none; }
+        .xp-bar { height: 100%; width: 0%; background: #22c55e; border-radius: 4px; transition: 1s ease-in-out; box-shadow: 0 0 8px #22c55e; }
+        .sidebar-menu { padding: 20px 20px 20px 40px; overflow-y: auto; flex: 1; position: relative; }
+        .sidebar-menu::before { content: ''; position: absolute; top: 30px; bottom: 30px; left: 24px; width: 2px; background: rgba(255,255,255,0.2); z-index: 1; }
+        .unit-block { position: relative; margin-bottom: 25px; z-index: 2; transition: 0.3s; }
+        .unit-node { position: absolute; left: -21px; top: 14px; width: 10px; height: 10px; border-radius: 50%; background: var(--blue-dark); border: 3px solid rgba(255,255,255,0.4); transition: 0.3s; }
+        .unit-block:not(.locked) .unit-node { background: var(--orange-grad); border-color: white; box-shadow: 0 0 15px var(--orange-grad); }
+        .unit-block:not(.locked) .unit-title { border-color: var(--orange-grad); background: rgba(230,126,34,0.15); color: white; }
+        .unit-title { font-family: var(--font-main); font-weight: 700; font-size: 13px; padding: 12px 15px; background: rgba(0,0,0,0.2); border-radius: 8px; display: flex; justify-content: space-between; color: rgba(255,255,255,0.6); border: 1px solid transparent; transition: 0.3s; cursor: default;}
+        .sub-lessons { padding-left: 10px; margin-top: 10px; display: none; }
+        .unit-block:not(.locked) .sub-lessons { display: block; }
+        .sub-link { padding: 8px; display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; border-left: 1px solid rgba(255,255,255,0.2); transition: 0.3s; margin-bottom: 2px; }
+        .sub-link:hover, .sub-link.active { color: white; border-left-color: var(--orange-grad); padding-left: 15px; background: rgba(255,255,255,0.1); border-radius: 0 4px 4px 0; font-weight: bold; }
+        .locked { opacity: 0.6; pointer-events: none; }
+        .logout-btn { background: rgba(0, 0, 0, 0.3); color: rgba(255,255,255,0.6); border: none; padding: 18px; font-family: var(--font-main); font-weight: 700; font-size: 13px; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.3s;}
+        .logout-btn:hover { background: var(--orange-grad); color: white; }
+        .main-content { flex: 1; padding: 20px; display: flex; justify-content: center; }
+        iframe { width: 100%; max-width: 1000px; height: 100%; border: none; border-radius: 20px; background: transparent; }
+
+        /* Quick code chips & UI helpers */
+        .quick-codes-container { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 12px 0 16px; }
+        .code-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #ddd; padding: 5px 12px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: var(--font-main); }
+        .code-chip:hover { background: var(--orange-grad); color: white; border-color: var(--orange-grad); transform: translateY(-1px); }
+        .skip-intro-btn { position: absolute; bottom: 30px; right: 30px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; z-index: 50; backdrop-filter: blur(10px); }
+        .skip-intro-btn:hover { background: var(--orange-grad); border-color: var(--orange-grad); }
+        .toast-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.95); color: #fff; border: 1px solid var(--orange-grad); padding: 10px 22px; border-radius: 30px; font-size: 13px; font-family: var(--font-main); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; }
+        .toast-notification.show { opacity: 1; pointer-events: auto; transform: translate(-50%, 10px); }
+
+        .mobile-menu-toggle { display: none; position: fixed; bottom: 20px; left: 20px; z-index: 999; background: var(--orange-grad); color: white; border: none; width: 48px; height: 48px; border-radius: 50%; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+        @media (max-width: 768px) {
+            .mobile-menu-toggle { display: flex; }
+            .sidebar { position: fixed; left: -350px; top: 0; bottom: 0; z-index: 900; transition: left 0.3s ease; width: 280px; }
+            .sidebar.mobile-open { left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-msg" class="toast-notification"></div>
+
+    <audio id="sfx-start" src="https://files.catbox.moe/47tq74.wav"></audio>
+    <audio id="bgm-audio" src="https://files.catbox.moe/bhi47v.mp3" loop></audio>
+
+    <button id="btn-top-teacher" class="btn-top-teacher" onclick="openTeacherLogin()">👨‍🏫 Teacher Login</button>
+
+    <div id="bg-dark" class="bg-dark"></div> 
+    <div id="airplane-texture" class="airplane-overlay"></div>
+
+    <div id="screen-avatar" class="game-screen">
+        <div class="glass-panel">
+            <div class="avatar-title">Choose your avatar</div>
+            <div class="avatar-grid">
+                <div class="avatar-card" onclick="selectAvatar(1, 'https://i.postimg.cc/pVKGSvYX/Adriane.jpg', this)"><img src="https://i.postimg.cc/pVKGSvYX/Adriane.jpg" alt="Avatar"></div>
+                <div class="avatar-card" onclick="selectAvatar(2, 'https://i.postimg.cc/qv1ZGGcp/Jorge.jpg', this)"><img src="https://i.postimg.cc/qv1ZGGcp/Jorge.jpg" alt="Avatar"></div>
+                <div class="avatar-card" onclick="selectAvatar(3, 'https://i.postimg.cc/6QTbbGYJ/Luna.jpg', this)"><img src="https://i.postimg.cc/6QTbbGYJ/Luna.jpg" alt="Avatar"></div>
+                <div class="avatar-card" onclick="selectAvatar(4, 'https://i.postimg.cc/yN5QMYbd/MAtheus.jpg', this)"><img src="https://i.postimg.cc/yN5QMYbd/MAtheus.jpg" alt="Avatar"></div>
+                <div class="avatar-card" onclick="selectAvatar(5, 'https://i.postimg.cc/c4Z9yzXY/Wellinton.jpg', this)"><img src="https://i.postimg.cc/c4Z9yzXY/Wellinton.jpg" alt="Avatar"></div>
+                <div class="avatar-card" onclick="selectAvatar(6, 'https://i.postimg.cc/hjdycWkX/Sarah.jpg', this)"><img src="https://i.postimg.cc/hjdycWkX/Sarah.jpg" alt="Avatar"></div>
+            </div>
+            <button id="btn-confirm-avatar" class="btn-action hidden" onclick="startNarrative()">Start Journey</button>
+        </div>
+    </div>
+
+    <div id="screen-teacher-login" class="game-screen hidden">
+        <div class="dialog-box show" style="transform: translateY(0); opacity: 1;">
+            <span class="agent-label">MASTER ACCESS</span>
+            <div class="agent-question">Welcome back, Professor.<br>Please enter your Teacher Code.</div>
+            <input type="text" id="teacher-doc" class="dialog-input" placeholder="T1ONPROF..." autocomplete="off" onkeydown="if(event.key==='Enter') executeTeacherLogin()">
+            <div class="quick-codes-container">
+                <span class="code-chip" onclick="fillTeacherCode('T1ONPROF1')">🔑 T1ONPROF1</span>
+                <span class="code-chip" onclick="fillTeacherCode('PROF')">🔑 PROF</span>
+            </div>
+            <button class="btn-action" onclick="executeTeacherLogin()">Access Portal</button>
+            <p id="error-msg-teacher" style="color: #e74c3c; display: none; font-size: 14px; font-weight: bold; margin-top: 15px;">Invalid Code!</p>
+            <button style="background: transparent; color: #aaa; border: none; margin-top: 20px; cursor: pointer; text-decoration: underline; font-family: var(--font-main);" onclick="closeTeacherLogin()">I am a Student</button>
+        </div>
+    </div>
+
+    <div id="screen-narrative" class="game-screen hidden" onclick="skipNarrative()">
+        <div id="narrative-text" class="narrative-text"></div>
+        <button id="btn-skip-narrative" class="skip-intro-btn" onclick="event.stopPropagation(); skipNarrative()">Pular Introdução ⏩</button>
+    </div>
+
+    <div id="screen-immigration" class="game-screen hidden">
+        <div id="dialog-step-1" class="dialog-box">
+            <span class="agent-label">Immigration Officer</span>
+            <div class="agent-question">"Good morning. What is your name?"</div>
+            <input type="text" id="player-name" class="dialog-input" placeholder="Type your name" autocomplete="off" autofocus onkeydown="if(event.key==='Enter') proceedToDoc()">
+            <button class="btn-action" onclick="proceedToDoc()">Next</button>
+        </div>
+        <div id="dialog-step-2" class="dialog-box hidden">
+            <span class="agent-label">Immigration Officer</span>
+            <div class="agent-question" id="agent-doc-text">"Welcome... What is your passport code?"</div>
+            <input type="text" id="player-doc" class="dialog-input" placeholder="TARGET1ON-XXXX" autocomplete="off" onkeydown="if(event.key==='Enter') unlockPortal()">
+            
+            <div class="quick-codes-container">
+                <span style="font-size: 11px; color: #aaa; width: 100%; margin-bottom: 3px;">Códigos Rápidos para Teste:</span>
+                <span class="code-chip" onclick="fillPassportCode('TARGET1ONT1-A9X2')">✈️ Turma 1</span>
+                <span class="code-chip" onclick="fillPassportCode('TARGET1ONT2-X1Q9')">✈️ Turma 2</span>
+                <span class="code-chip" onclick="fillPassportCode('DEMO')">🚀 Modo Demo</span>
+                <span class="code-chip" onclick="fillPassportCode('T1ONPROF1')">👨‍🏫 Professor</span>
+            </div>
+
+            <button class="btn-action" onclick="unlockPortal()">Enter</button>
+            <p id="error-msg-student" style="color: #e74c3c; display: none; font-size: 14px; font-weight: bold; margin-top: 15px;">Invalid Code!</p>
+        </div>
+    </div>
+
+    <div id="screen-simple-login" class="game-screen hidden">
+        <div class="dialog-box show" style="transform: translateY(0); opacity: 1;">
+            <span class="agent-label">TARGET ON</span>
+            <div class="agent-question">Welcome back! Please identify yourself.</div>
+            <input type="text" id="simple-player-name" class="dialog-input" placeholder="Your Name" autocomplete="off" onkeydown="if(event.key==='Enter') executeSimpleLogin()">
+            <input type="text" id="simple-player-doc" class="dialog-input" placeholder="Passport Code" autocomplete="off" onkeydown="if(event.key==='Enter') executeSimpleLogin()">
+            
+            <div class="quick-codes-container">
+                <span class="code-chip" onclick="fillSimpleCode('TARGET1ONT1-A9X2')">Turma 1</span>
+                <span class="code-chip" onclick="fillSimpleCode('DEMO')">Demo</span>
+                <span class="code-chip" onclick="fillSimpleCode('T1ONPROF1')">Professor</span>
+            </div>
+
+            <button class="btn-action" id="btn-simple-enter" onclick="executeSimpleLogin()">Enter Portal</button>
+            <p id="error-msg-simple" style="color: #e74c3c; display: none; font-size: 14px; font-weight: bold; margin-top: 15px;">Invalid Code!</p>
+            
+            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <button style="background: transparent; color: #ff9f43; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-main); font-size: 13px;" onclick="resetLoginToAvatar()">🔄 Escolher Novo Avatar</button>
+                <button style="background: transparent; color: #aaa; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-main); font-size: 13px;" onclick="openTeacherLoginFromSimple()">👨‍🏫 Sou Professor</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-welcome" class="game-screen hidden" onclick="skipWelcome()" style="cursor: pointer;">
+        <h1 class="cinematic-title" id="welcome-title">Welcome to <span class="target-on">TARGET ON</span></h1>
+        <p style="color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 15px;">(Clique para entrar direto)</p>
+    </div>
+
+    <div id="dashboard">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <div class="sidebar" id="app-sidebar">
+            <div class="profile-section">
+                <div class="profile-avatar" id="sidebar-avatar-img"></div>
+                <div class="profile-info" style="margin-left: 15px;">
+                    <h3 id="sidebar-player-name" style="margin:0; font-family:var(--font-main); font-size:16px;">Passenger</h3>
+                    <p style="margin:0; font-size:12px; color:var(--orange-grad); font-weight: bold;"><span id="sidebar-class-name">TARGET ON</span></p>
+                    <div class="xp-bar-container" id="xp-container-ui">
+                        <div class="xp-bar" id="sidebar-xp-bar"></div>
+                    </div>
+                    <div id="xp-text-ui" style="display: none; font-size: 10px; color: #22c55e; text-align: right; margin-top: 3px; font-weight: bold;"><span id="sidebar-xp-text">0</span> XP</div>
+                </div>
+            </div>
+
+            <div style="padding: 12px 18px; margin: 0 15px 15px 15px; background: #fff7ed; border: 2px dashed #f97316; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 11px; font-weight: 800; color: #c2410c; font-family: var(--font-title); letter-spacing: 0.5px;">🔓 MODO TESTE / AUDITORIA</div>
+                    <div style="font-size: 10px; color: #ea580c;">Todas as 16 lições liberadas</div>
+                </div>
+                <button id="btn-unlock-all" onclick="liberarTodasLicoes()" style="background: #ea580c; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                    Liberar Tudo
+                </button>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="unit-block" id="unit-1-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(1)" style="cursor: pointer;">Lesson 1 - Arriving in a foreign country <span id="lock-1">🔓</span></div>
+                    <div class="sub-lessons" id="sub-1">
+                        <a href="#" id="link-1a" class="sub-link active" onclick="loadPage('licao1a.html', this)">A - At the airport</a>
+                        <a href="#" id="link-1b" class="sub-link" onclick="loadPage('licao1b.html', this)">B - Getting a taxi</a>
+                        <a href="#" id="link-1c" class="sub-link" onclick="loadPage('licao1c.html', this)">C - At the hotel</a>
+                        <a href="#" id="link-1d" class="sub-link" onclick="loadPage('licao1d.html', this)">D - Unit Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-2-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(2)" style="cursor: pointer;">Lesson 2 - Getting to know each other <span id="lock-2">🔓</span></div>
+                    <div class="sub-lessons" id="sub-2">
+                        <a href="#" id="link-2a" class="sub-link" onclick="loadPage('licao2a.html', this)">A - Having Dinner</a>
+                        <a href="#" id="link-2b" class="sub-link" onclick="loadPage('licao2b.html', this)">B - Fast Food</a>
+                        <a href="#" id="link-2c" class="sub-link" onclick="loadPage('licao2c.html', this)">C - Grocery Shop</a>
+                        <a href="#" id="link-2d" class="sub-link" onclick="loadPage('licao2d.html', this)">D - Unit Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-3-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(3)" style="cursor: pointer;">Lesson 3 - At the clothes shop <span id="lock-3">🔓</span></div>
+                    <div class="sub-lessons" id="sub-3">
+                        <a href="#" id="link-3a" class="sub-link" onclick="loadPage('licao3a.html', this)">A - Shopping for clothes</a>
+                        <a href="#" id="link-3b" class="sub-link" onclick="loadPage('licao3b.html', this)">B - Describing clothes</a>
+                        <a href="#" id="link-3c" class="sub-link" onclick="loadPage('licao3c.html', this)">C - What to wear</a>
+                        <a href="#" id="link-3d" class="sub-link" onclick="loadPage('licao3d.html', this)">D - Unit Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-4-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(4)" style="cursor: pointer;">Lesson 4 - Round and about <span id="lock-4">🔓</span></div>
+                    <div class="sub-lessons" id="sub-4">
+                        <a href="#" id="link-4a" class="sub-link" onclick="loadPage('licao4a.html', this)">A - Taking a Bus</a>
+                        <a href="#" id="link-4b" class="sub-link" onclick="loadPage('licao4b.html', this)">B - Giving Directions</a>
+                        <a href="#" id="link-4c" class="sub-link" onclick="loadPage('licao4c.html', this)">C - Getting Lost</a>
+                        <a href="#" id="link-4d" class="sub-link" onclick="loadPage('licao4d.html', this)">D - Unit Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-5-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(5)" style="cursor: pointer;">Lesson 5 - The Job Interview <span id="lock-5">🔓</span></div>
+                    <div class="sub-lessons" id="sub-5">
+                        <a href="#" id="link-5a" class="sub-link" onclick="loadPage('licao5a.html', this)">A - Abilities (Can/Can't)</a>
+                        <a href="#" id="link-5b" class="sub-link" onclick="loadPage('licao5b.html', this)">B - Routines & Hours</a>
+                        <a href="#" id="link-5c" class="sub-link" onclick="loadPage('licao5c.html', this)">C - Physical Appearance</a>
+                        <a href="#" id="link-5d" class="sub-link" onclick="loadPage('licao5d.html', this)">D - Interview Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-6-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(6)" style="cursor: pointer;">Lesson 6 - Having a Date <span id="lock-6">🔓</span></div>
+                    <div class="sub-lessons" id="sub-6">
+                        <a href="#" id="link-6a" class="sub-link" onclick="loadPage('licao6a.html', this)">A - Invitations (Would like)</a>
+                        <a href="#" id="link-6b" class="sub-link" onclick="loadPage('licao6b.html', this)">B - Frequency & Hobbies</a>
+                        <a href="#" id="link-6c" class="sub-link" onclick="loadPage('licao6c.html', this)">C - The Next Day (Past Simple)</a>
+                        <a href="#" id="link-6d" class="sub-link" onclick="loadPage('licao6d.html', this)">D - Snakes & Ladders Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-7-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(7)" style="cursor: pointer;">Lesson 7 - Home Sweet Home <span id="lock-7">🔓</span></div>
+                    <div class="sub-lessons" id="sub-7">
+                        <a href="#" id="link-7a" class="sub-link" onclick="loadPage('licao7a.html', this)">A - Rooms & Action</a>
+                        <a href="#" id="link-7b" class="sub-link" onclick="loadPage('licao7b.html', this)">B - Furniture & Quantities</a>
+                        <a href="#" id="link-7c" class="sub-link" onclick="loadPage('licao7c.html', this)">C - Neighborhood Past</a>
+                        <a href="#" id="link-7d" class="sub-link" onclick="loadPage('licao7d.html', this)">D - Battleship Challenge</a>
+                    </div>
+                </div>
+
+                <div class="unit-block" id="unit-8-block">
+                    <div class="unit-node"></div>
+                    <div class="unit-title" onclick="toggleUnit(8)" style="cursor: pointer;">Lesson 8 - Planning Ahead <span id="lock-8">🔓</span></div>
+                    <div class="sub-lessons" id="sub-8">
+                        <a href="#" id="link-8a" class="sub-link" onclick="loadPage('licao8a.html', this)">A - Holiday Plans (Going to)</a>
+                        <a href="#" id="link-8b" class="sub-link" onclick="loadPage('licao8b.html', this)">B - Timetables & Airport</a>
+                        <a href="#" id="link-8c" class="sub-link" onclick="loadPage('licao8c.html', this)">C - Windermere Final</a>
+                        <a href="#" id="link-encerramento" class="sub-link" onclick="loadPage('encerramento.html', this)">🎬 Grand Finale Credits</a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="logOut()">Log Out</button>
+        </div>
+        <div class="main-content"><iframe id="content-frame" src="about:blank"></iframe></div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+
+        let playerName = ""; 
+        let avatarUrl = ""; 
+        let narrativeTimer = null;
+        let narrativeIsActive = false;
+        let welcomeTimer = null;
+        let pendingDoc = null;
+
+        const validCodes = [
+            "T1ONPROF1", "T2ONPROF2", "T1ONPROFT3", "T3ONPROFT3", "PROF", "PROFESSOR", "ADMIN", "TEACHER",
+            "TARGET1ONT1-A9X2", "TARGET1ONT1-B7M4", "TARGET1ONT1-C3K9", "TARGET1ONT1-D8R1", "TARGET1ONT1-E5P6", "TARGET1ONT1-F2W8", "TARGET1ONT1-G4L3", "TARGET1ONT1-H1V7",
+            "TARGET1ONT2-X1Q9", "TARGET1ONT2-Y8Z3", "TARGET1ONT2-Z5N2", "TARGET1ONT2-W7C4", "TARGET1ONT2-V3B8", "TARGET1ONT2-U6M1", "TARGET1ONT2-T2K5", "TARGET1ONT2-S9P7",
+            "TARGET1ONT3-L4R2", "TARGET1ONT3-M7D5", "TARGET1ONT3-N1F8", "TARGET1ONT3-O9H3", "TARGET1ONT3-P2J6", "TARGET1ONT3-Q5T9", "TARGET1ONT3-R8V1", "TARGET1ONT3-S3X4",
+            "DEMO", "ALUNO", "STUDENT", "GUEST", "TEST"
+        ];
+
+        function showToast(msg, duration = 3000) {
+            const toast = document.getElementById('toast-msg');
+            if(!toast) return;
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        function fillPassportCode(code) {
+            const el = document.getElementById('player-doc');
+            if(el) { el.value = code; el.focus(); }
+        }
+
+        function fillSimpleCode(code) {
+            const el = document.getElementById('simple-player-doc');
+            if(el) { el.value = code; el.focus(); }
+        }
+
+        function fillTeacherCode(code) {
+            const el = document.getElementById('teacher-doc');
+            if(el) { el.value = code; el.focus(); }
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('app-sidebar');
+            if(sidebar) sidebar.classList.toggle('mobile-open');
+        }
+
+        function resetLoginToAvatar() {
+            localStorage.removeItem('userCode');
+            localStorage.removeItem('lastLoginType');
+            document.getElementById('screen-simple-login').classList.add('hidden');
+            document.getElementById('screen-teacher-login').classList.add('hidden');
+            document.getElementById('screen-avatar').classList.remove('hidden');
+            document.getElementById('btn-top-teacher').classList.remove('hidden');
+            document.getElementById('btn-confirm-avatar').classList.add('hidden');
+            document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected'));
+        }
+
+        function stopBgmSafely() {
+            const bgm = document.getElementById('bgm-audio');
+            if (bgm && !bgm.paused) {
+                try {
+                    let fadeAudio = setInterval(function () {
+                        if (bgm.volume > 0.05) bgm.volume = Math.max(0, bgm.volume - 0.05);
+                        else { clearInterval(fadeAudio); bgm.pause(); bgm.currentTime = 0; }
+                    }, 100);
+                } catch(e) { bgm.pause(); }
+            }
+        }
+
+        // Safe Cloud Sync with 2500ms timeout - NEVER blocks or breaks entry
+        async function safeCloudSync(data, timeoutMs = 2500) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(data),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                if (!res.ok) return null;
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch(e) {
+                    return null;
+                }
+            } catch (err) {
+                console.warn('Cloud sync offline or timed out, continuing locally:', err);
+                return null;
+            }
+        }
+
+        window.onload = function() {
+            const savedCode = localStorage.getItem('userCode');
+            const lastType = localStorage.getItem('lastLoginType');
+
+            if (!savedCode && lastType === 'PROF') {
+                openTeacherLogin();
+                return;
+            }
+
+            if (savedCode) {
+                document.getElementById('screen-avatar').classList.add('hidden');
+                document.getElementById('btn-top-teacher').classList.add('hidden');
+                document.getElementById('screen-simple-login').classList.remove('hidden');
+                
+                document.getElementById('simple-player-name').value = localStorage.getItem('userName') || "";
+                document.getElementById('simple-player-doc').value = savedCode;
+                
+                playerName = localStorage.getItem('userName') || "Passenger";
+                avatarUrl = localStorage.getItem('userAvatar') || 'https://i.postimg.cc/pVKGSvYX/Adriane.jpg';
+            }
+        };
+
+        function saveToCloud() {
+            const code = localStorage.getItem('userCode');
+            if (!code || code.includes('PROF')) return; 
+
+            const dataToSave = {
+                code: code,
+                name: localStorage.getItem('userName') || "Passenger",
+                turma: document.getElementById('sidebar-class-name').innerText,
+                xp: parseInt(localStorage.getItem('studentXP')) || 0,
+                unit1: localStorage.getItem('unit1_done') === 'true',
+                unit2: localStorage.getItem('unit2_done') === 'true',
+                unit3: localStorage.getItem('unit3_done') === 'true',
+                unit4: localStorage.getItem('unit4_done') === 'true',
+                isLogin: false
+            };
+
+            safeCloudSync(dataToSave).catch(err => console.log('Erro de sincronização:', err));
+        }
+
+        window.completeUnit = function(unitNumber, xpGained) {
+            if(unitNumber > 0) localStorage.setItem('unit' + unitNumber + '_done', 'true');
+            let currentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            localStorage.setItem('studentXP', currentXP + xpGained);
+
+            updateTrail();
+            updatePlayerInfoUI(localStorage.getItem('userCode'));
+            saveToCloud(); 
+        };
+
+        function openTeacherLogin() { document.getElementById('screen-avatar').classList.add('hidden'); document.getElementById('btn-top-teacher').classList.add('hidden'); document.getElementById('screen-simple-login').classList.add('hidden'); document.getElementById('screen-teacher-login').classList.remove('hidden'); }
+        function closeTeacherLogin() { document.getElementById('screen-teacher-login').classList.add('hidden'); document.getElementById('screen-avatar').classList.remove('hidden'); document.getElementById('btn-top-teacher').classList.remove('hidden'); localStorage.removeItem('lastLoginType'); }
+        function openTeacherLoginFromSimple() { document.getElementById('screen-simple-login').classList.add('hidden'); document.getElementById('screen-teacher-login').classList.remove('hidden'); }
+
+        function executeTeacherLogin() {
+            let doc = document.getElementById('teacher-doc').value.trim().toUpperCase();
+            if(!doc) doc = "T1ONPROF1";
+
+            localStorage.setItem('userCode', doc); 
+            localStorage.setItem('lastLoginType', 'PROF'); 
+            playerName = "Master Teacher"; 
+            avatarUrl = "";
+            document.getElementById('screen-teacher-login').classList.add('hidden'); 
+            document.getElementById('bg-dark').style.opacity = 0; 
+            document.getElementById('airplane-texture').style.opacity = 0.2;
+            setupDashboard(doc);
+            showToast("Modo Professor Ativado 👨‍🏫 (Aulas Desbloqueadas)");
+        }
+
+        function selectAvatar(id, url, el) { 
+            avatarUrl = url; 
+            document.querySelectorAll('.avatar-card').forEach(c => c.classList.remove('selected')); 
+            el.classList.add('selected'); 
+            document.getElementById('btn-confirm-avatar').classList.remove('hidden'); 
+        }
+
+        async function startNarrative() {
+            narrativeIsActive = true;
+            try { document.getElementById('sfx-start').play().catch(()=>{}); } catch(e){}
+            try { 
+                const bgm = document.getElementById('bgm-audio'); 
+                bgm.volume = 0.4; 
+                bgm.play().catch(()=>{}); 
+            } catch(e){}
+
+            document.getElementById('screen-avatar').classList.add('hidden'); 
+            document.getElementById('btn-top-teacher').classList.add('hidden');
+            const screen = document.getElementById('screen-narrative'); 
+            screen.classList.remove('hidden');
+
+            const phrases = [
+                "Existem momentos na vida em que tudo muda…", 
+                "Não porque estamos prontos…", 
+                "Mas porque ficar já não é mais uma opção.", 
+                "Entre sonhos...", 
+                "Você escolheu viver esse sonho..."
+            ];
+            const textEl = document.getElementById('narrative-text');
+
+            for (const p of phrases) { 
+                if(!narrativeIsActive) return;
+                textEl.innerText = p; 
+                textEl.style.opacity = 1; 
+                await new Promise(r => { narrativeTimer = setTimeout(r, 2200); }); 
+                if(!narrativeIsActive) return;
+                textEl.style.opacity = 0; 
+                await new Promise(r => { narrativeTimer = setTimeout(r, 600); }); 
+            }
+            if(!narrativeIsActive) return;
+            textEl.innerText = "LONDRES."; 
+            textEl.style.fontSize = "50px"; 
+            textEl.style.fontWeight = "800"; 
+            textEl.style.opacity = 1; 
+            await new Promise(r => { narrativeTimer = setTimeout(r, 2200); }); 
+            if(!narrativeIsActive) return;
+            textEl.style.opacity = 0; 
+            await new Promise(r => { narrativeTimer = setTimeout(r, 700); }); 
+            
+            skipNarrative();
+        }
+
+        function skipNarrative() {
+            narrativeIsActive = false;
+            if(narrativeTimer) clearTimeout(narrativeTimer);
+            document.getElementById('screen-narrative').classList.add('hidden'); 
+            document.getElementById('screen-immigration').classList.remove('hidden'); 
+            setTimeout(() => {
+                const d1 = document.getElementById('dialog-step-1');
+                if(d1) d1.classList.add('show');
+                const pNameInput = document.getElementById('player-name');
+                if(pNameInput) pNameInput.focus();
+            }, 100);
+        }
+
+        function proceedToDoc() { 
+            playerName = document.getElementById('player-name').value.trim(); 
+            if(!playerName) playerName = "Passenger"; 
+            document.getElementById('dialog-step-1').classList.remove('show'); 
+            setTimeout(() => { 
+                document.getElementById('dialog-step-1').classList.add('hidden'); 
+                document.getElementById('agent-doc-text').innerHTML = `"So... <b style='color:#E67E22;'>${playerName}</b>... what is your passport code?"`; 
+                const step2 = document.getElementById('dialog-step-2'); 
+                step2.classList.remove('hidden'); 
+                setTimeout(() => {
+                    step2.classList.add('show');
+                    const pDoc = document.getElementById('player-doc');
+                    if(pDoc) pDoc.focus();
+                }, 50); 
+            }, 500); 
+        }
+        
+        // ================= IMIGRAÇÃO - ENTRA MESMO SE OFFLINE =================
+        async function unlockPortal() {
+            let doc = document.getElementById('player-doc').value.trim().toUpperCase();
+            if(!doc) doc = "TARGET1ONT1-A9X2"; // Código padrão seguro
+            
+            const enterBtn = document.querySelector('#dialog-step-2 .btn-action');
+            enterBtn.disabled = true; 
+            enterBtn.innerText = "Entering... ✈️";
+
+            let className = "Turma 1";
+            if(doc.includes('T1')) className = "Turma 1";
+            else if(doc.includes('T2')) className = "Turma 2";
+            else if(doc.includes('T3')) className = "Turma 3";
+            else if(doc.includes('PROF')) className = "Admin";
+            else if(doc === 'DEMO') className = "Demonstração";
+
+            // Sincronização segura sem travar
+            const resData = await safeCloudSync({ code: doc, name: playerName, turma: className, xp: 0, isLogin: true });
+
+            enterBtn.disabled = false; 
+            enterBtn.innerText = "Enter";
+
+            localStorage.setItem('userCode', doc); 
+            localStorage.setItem('userName', playerName); 
+            localStorage.setItem('userAvatar', avatarUrl || 'https://i.postimg.cc/pVKGSvYX/Adriane.jpg'); 
+            localStorage.setItem('lastLoginType', doc.includes('PROF') ? 'PROF' : 'STUDENT');
+            
+            if (resData && resData.message === "Registered") {
+                localStorage.setItem('studentXP', 0);
+                for(let i=1; i<=8; i++) localStorage.removeItem('unit'+i+'_done');
+            } else if (resData && resData.message === "Sync loading" && resData.userData) {
+                localStorage.setItem('studentXP', resData.userData.xp);
+                if(resData.userData.unit1) localStorage.setItem('unit1_done', 'true');
+                if(resData.userData.unit2) localStorage.setItem('unit2_done', 'true');
+                if(resData.userData.unit3) localStorage.setItem('unit3_done', 'true');
+                if(resData.userData.unit4) localStorage.setItem('unit4_done', 'true');
+            } else if(!localStorage.getItem('studentXP')) {
+                localStorage.setItem('studentXP', 0);
+            }
+
+            stopBgmSafely();
+
+            document.getElementById('screen-immigration').classList.add('hidden'); 
+            document.getElementById('bg-dark').style.opacity = 0; 
+            document.getElementById('airplane-texture').style.opacity = 0.2;
+            
+            showWelcomeScreen(doc);
+        }
+
+        function showWelcomeScreen(doc) {
+            pendingDoc = doc;
+            const welcomeScreen = document.getElementById('screen-welcome'); 
+            const welcomeTitle = document.getElementById('welcome-title'); 
+            welcomeScreen.classList.remove('hidden');
+            setTimeout(() => { welcomeTitle.classList.add('show'); }, 100);
+            welcomeTimer = setTimeout(() => { skipWelcome(); }, 2000);
+        }
+
+        function skipWelcome() {
+            if(welcomeTimer) clearTimeout(welcomeTimer);
+            const welcomeScreen = document.getElementById('screen-welcome');
+            welcomeScreen.classList.add('hidden');
+            setupDashboard(pendingDoc || localStorage.getItem('userCode') || 'TARGET1ONT1-A9X2');
+        }
+
+        // ================= RETORNO RÁPIDO =================
+        async function executeSimpleLogin() {
+            const name = document.getElementById('simple-player-name').value.trim() || localStorage.getItem('userName') || "Passenger";
+            let doc = document.getElementById('simple-player-doc').value.trim().toUpperCase() || localStorage.getItem('userCode') || "TARGET1ONT1-A9X2";
+
+            const simpleBtn = document.getElementById('btn-simple-enter');
+            simpleBtn.disabled = true; 
+            simpleBtn.innerText = "Entering... ✈️";
+
+            let className = "Turma 1";
+            if(doc.includes('T1')) className = "Turma 1"; 
+            else if(doc.includes('T2')) className = "Turma 2"; 
+            else if(doc.includes('T3')) className = "Turma 3";
+            else if(doc.includes('PROF')) className = "Admin";
+
+            const resData = await safeCloudSync({ code: doc, name: name, turma: className, xp: 0, isLogin: true });
+
+            simpleBtn.disabled = false; 
+            simpleBtn.innerText = "Enter Portal";
+
+            playerName = name; 
+            avatarUrl = localStorage.getItem('userAvatar') || 'https://i.postimg.cc/pVKGSvYX/Adriane.jpg';
+            localStorage.setItem('userName', playerName); 
+            localStorage.setItem('userCode', doc); 
+            localStorage.setItem('lastLoginType', doc.includes('PROF') ? 'PROF' : 'STUDENT');
+            
+            if (resData && resData.message === "Registered") {
+                localStorage.setItem('studentXP', 0);
+                for(let i=1; i<=8; i++) localStorage.removeItem('unit'+i+'_done');
+            } else if (resData && resData.message === "Sync loading" && resData.userData) {
+                localStorage.setItem('studentXP', resData.userData.xp);
+                if(resData.userData.unit1) localStorage.setItem('unit1_done', 'true');
+                if(resData.userData.unit2) localStorage.setItem('unit2_done', 'true');
+                if(resData.userData.unit3) localStorage.setItem('unit3_done', 'true');
+                if(resData.userData.unit4) localStorage.setItem('unit4_done', 'true');
+            } else if(!localStorage.getItem('studentXP')) {
+                localStorage.setItem('studentXP', 0);
+            }
+
+            document.getElementById('screen-simple-login').classList.add('hidden'); 
+            document.getElementById('bg-dark').style.opacity = 0; 
+            document.getElementById('airplane-texture').style.opacity = 0.2;
+            setTimeout(() => { setupDashboard(doc); }, 300);
+        }
+
+        // ================= LOGOUT APAGA TUDO DA MEMÓRIA =================
+        function logOut() { 
+            const currentCode = localStorage.getItem('userCode') || ''; 
+            localStorage.setItem('lastLoginType', currentCode.includes('PROF') ? 'PROF' : 'STUDENT'); 
+            
+            // BORRACHA: APAGA TODA A MEMÓRIA DO ALUNO NO NAVEGADOR
+            localStorage.removeItem('userCode'); 
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userAvatar');
+            localStorage.removeItem('studentXP');
+            for(let i=1; i<=8; i++) localStorage.removeItem('unit'+i+'_done');
+
+            location.reload(); 
+        }
+        
+        function updatePlayerInfoUI(code) {
+            document.getElementById('sidebar-player-name').innerText = playerName;
+            if(code.includes('PROF')) {
+                document.getElementById('sidebar-avatar-img').innerHTML = `👨‍🏫`; document.getElementById('xp-container-ui').style.display = 'none'; document.getElementById('xp-text-ui').style.display = 'none';
+            } else {
+                if(avatarUrl) document.getElementById('sidebar-avatar-img').innerHTML = `<img src="${avatarUrl}" alt="Avatar">`;
+                document.getElementById('xp-container-ui').style.display = 'block'; document.getElementById('xp-text-ui').style.display = 'block';
+                let xp = parseInt(localStorage.getItem('studentXP')) || 0;
+                document.getElementById('sidebar-xp-text').innerText = xp; document.getElementById('sidebar-xp-bar').style.width = Math.min((xp / 1000) * 100, 100) + '%';
+            }
+            let className = "Unknown";
+            if(code.includes('T1')) className = "Turma 1"; if(code.includes('T2')) className = "Turma 2"; if(code.includes('T3')) className = "Turma 3"; if(code.includes('PROF')) className = "Admin";
+            document.getElementById('sidebar-class-name').innerText = className;
+        }
+
+        function liberarTodasLicoes() {
+            localStorage.setItem('unlock_all_lessons', 'true');
+            for(let i=1; i<=8; i++) {
+                unlockUnit(i);
+                const sub = document.getElementById(`sub-${i}`);
+                if(sub) sub.style.display = 'block';
+            }
+            const btn = document.getElementById('btn-unlock-all');
+            if(btn) {
+                btn.innerText = "✓ Todas Liberadas";
+                btn.style.background = "#16a34a";
+            }
+        }
+
+        function toggleUnit(num) {
+            unlockUnit(num);
+            const sub = document.getElementById(`sub-${num}`);
+            if(sub) {
+                sub.style.display = (sub.style.display === 'none') ? 'block' : 'none';
+            }
+        }
+
+        function updateTrail() {
+            // Em modo teste / avaliação, desbloqueia todas as unidades automaticamente!
+            const unlockAll = localStorage.getItem('unlock_all_lessons');
+            if(unlockAll !== 'false') {
+                for(let i=1; i<=8; i++) {
+                    unlockUnit(i);
+                    const sub = document.getElementById(`sub-${i}`);
+                    if(sub) sub.style.display = 'block';
+                }
+                const btn = document.getElementById('btn-unlock-all');
+                if(btn) {
+                    btn.innerText = "✓ Todas Liberadas";
+                    btn.style.background = "#16a34a";
+                }
+                return;
+            }
+            const code = localStorage.getItem('userCode') || ''; 
+            if(code.includes('PROF') || code.includes('DEMO') || code.includes('TEST') || code.includes('ALUNO') || code.includes('STUDENT') || code.includes('GUEST')) { 
+                for(let i=1; i<=8; i++) unlockUnit(i); 
+                return; 
+            }
+            for(let u=1; u<=7; u++) {
+                if (localStorage.getItem(`unit${u}_done`) === 'true') unlockUnit(u+1);
+            }
+        }
+
+        function unlockUnit(num) { 
+            const block = document.getElementById(`unit-${num}-block`); 
+            if(block) { 
+                block.classList.remove('locked'); 
+                const lockSpan = document.getElementById(`lock-${num}`);
+                if(lockSpan) lockSpan.innerText = '🔓'; 
+                const sub = document.getElementById(`sub-${num}`);
+                if(sub) sub.style.display = 'block'; 
+            } 
+        }
+        function setupDashboard(code) { updatePlayerInfoUI(code); updateTrail(); document.getElementById('dashboard').classList.add('active'); loadPage('licao1a.html', document.querySelector('.sub-link.active')); }
+        function loadPage(url, el) { document.querySelectorAll('.sub-link').forEach(l => l.classList.remove('active')); if(el) el.classList.add('active'); document.getElementById('content-frame').src = url; }
+        window.avancarPara = function(url, linkId) {
+            updateTrail();
+            const linkEl = linkId ? document.getElementById(linkId) : null;
+            loadPage(url, linkEl);
+        };
+        window.completeUnit = function(unitNum, xp) {
+            if (unitNum > 0) {
+                localStorage.setItem('unit' + unitNum + '_done', 'true');
+            }
+            let currentXp = parseInt(localStorage.getItem('studentXP')) || 0;
+            let profileXp = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            let bestXp = Math.max(currentXp, profileXp);
+            localStorage.setItem('studentXP', bestXp);
+            updateTrail();
+            updatePlayerInfoUI(localStorage.getItem('userCode') || '');
+        };
+    </script>
+</body>
+</html>

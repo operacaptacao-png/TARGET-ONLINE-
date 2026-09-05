@@ -1,0 +1,6 @@
+{
+  "name": "Target On",
+  "description": "A gamified, interactive English learning journey set in London, featuring beautifully styled lessons, cinematic transitions, and real-time XP progress tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

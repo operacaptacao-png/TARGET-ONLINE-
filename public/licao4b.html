@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4B | Giving Directions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --black: #1A1A1A;
+            --white: #FFFFFF;
+            --blue-dark: #1E3C72;
+            --blue-light: #2A5298;
+            --orange-main: #E67E22;
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 900px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--orange-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--orange-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .audio-wrapper {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background: white;
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            gap: 10px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 9px 20px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+        }
+        .play-btn:hover { background: var(--blue-light); transform: scale(1.03); }
+        .play-btn.playing { background: #ea580c !important; }
+
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 8px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.05); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-ctrl-btn.pause-btn { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .audio-ctrl-btn.pause-btn:hover { background: #fecaca; }
+
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            margin-left: 6px;
+        }
+
+        /* ESTÉTICA GAMIFICADA */
+        .gamified-input, .text-blank, select.balloon-select, select, input[type="text"], textarea {
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 10px 14px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gamified-input:focus, .text-blank:focus, select.balloon-select:focus, select:focus, input[type="text"]:focus, textarea:focus {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(59, 130, 246, 0.12);
+            transform: translateY(-1px);
+        }
+        .gamified-input:hover, .text-blank:hover, select.balloon-select:hover, select:hover, input[type="text"]:hover, textarea:hover {
+            border-color: #94a3b8;
+            background: #ffffff;
+        }
+
+        .draggable-sign * {
+            pointer-events: none;
+        }
+
+        .signs-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            min-height: 60px;
+            border: 2px dashed #cbd5e1;
+        }
+        .draggable-sign {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 14px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: transform 0.15s, border-color 0.15s;
+            user-select: none;
+        }
+        .draggable-sign:hover { border-color: var(--theme-blue-border); transform: translateY(-2px); }
+        .draggable-sign.sign-tapped {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.35);
+            transform: scale(1.05);
+        }
+
+        .directions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media(max-width: 650px) { .directions-grid { grid-template-columns: 1fr; } }
+
+        .dir-slot-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dir-slot-desc { flex: 1; }
+        .dir-slot-desc b { display: block; color: var(--theme-blue-border); font-size: 14px; margin-bottom: 3px; }
+        .dir-slot-desc p { margin: 0; font-size: 12px; color: #64748b; }
+        .dir-target-slot {
+            width: 140px;
+            height: 52px;
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+        .dir-target-slot.drag-over { background: #e0e7ff; border-color: var(--theme-blue-border); }
+
+        .dialogue-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid var(--theme-purple-border);
+            margin-bottom: 20px;
+        }
+        .dialogue-row { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+        .dialogue-row.local { flex-direction: row-reverse; }
+        .dialogue-bubble {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 80%;
+        }
+        .dialogue-row.local .dialogue-bubble { background: #fdf4ff; border-color: #f0abfc; color: #701a75; }
+
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 12px;
+        }
+        .exercise-card p { margin: 0 0 10px 0; font-weight: 600; font-size: 14px; }
+
+        .balloon-select {
+            background: #f8fafc;
+            border: 2px solid var(--theme-green-border);
+            color: var(--theme-green-border);
+            border-radius: 50px;
+            padding: 5px 28px 5px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="%2322c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            margin: 0 4px;
+        }
+
+        .text-blank {
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            font-size: 14px;
+            color: var(--blue-dark);
+            padding: 2px 6px;
+            outline: none;
+            background: #fffbeb;
+            border-radius: 4px;
+            width: 130px;
+            text-align: center;
+        }
+
+        .notepad-container {
+            background: #fffbeb;
+            border: 2px solid #fcd34d;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .notepad-title {
+            font-family: var(--font-title);
+            font-weight: 800;
+            color: #92400e;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .notepad-area {
+            width: 100%;
+            height: 140px;
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 28px;
+            outline: none;
+            resize: vertical;
+            color: #451a03;
+            background-image: repeating-linear-gradient(transparent, transparent 27px, #fcd34d 27px, #fcd34d 28px);
+            box-sizing: border-box;
+        }
+
+        .story-transition-box {
+            background: #fdf2f8;
+            border: 2px dashed #f472b6;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 25px;
+            color: #831843;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-family: var(--font-title);
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0 auto;
+            transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(34,197,94,0.3);
+            width: 100%;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .btn-finish:hover { background: #16a34a; transform: translateY(-2px); }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        .btn-nav {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-nav:hover { background: var(--blue-light); }
+
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .xp-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #22c55e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 900;
+            margin: 20px auto;
+            border: 6px solid #bbf7d0;
+        }
+
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .grammar-floating-btn {
+            background: var(--orange-main);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 300px;
+            background: white;
+            color: var(--black);
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--orange-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 4 • Round and about</span>
+            <h1>4B | Giving Directions</h1>
+        </div>
+
+        <!-- SEÇÃO 1: WORDS & IDEAS -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Words and Ideas • Street Directions & Signs</h2>
+            <p class="instruction">Listen to the direction phrases, then drag each expression to its correct definition.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-1">
+                    <audio id="audio-1" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-1" onclick="cycleSpeed('audio-1', 'spd-audio-1')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 1.25, 'fast-audio-1')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4B.1: Direction Expressions</span>
+                </div>
+            </div>
+
+            <div id="signs-pool" class="signs-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
+                <div class="draggable-sign" id="s1" draggable="true" ondragstart="drag(event)">⬅️ Turn Left</div>
+                <div class="draggable-sign" id="s2" draggable="true" ondragstart="drag(event)">➡️ Turn Right</div>
+                <div class="draggable-sign" id="s3" draggable="true" ondragstart="drag(event)">⬆️ Go Straight On</div>
+                <div class="draggable-sign" id="s4" draggable="true" ondragstart="drag(event)">🚦 Traffic Lights</div>
+                <div class="draggable-sign" id="s5" draggable="true" ondragstart="drag(event)">🔄 Roundabout</div>
+                <div class="draggable-sign" id="s6" draggable="true" ondragstart="drag(event)">➕ Crossroads</div>
+            </div>
+
+            <div class="directions-grid">
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>A. Continue along the road</b>
+                        <p>Keep moving forward without turning into any side street.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-1" data-ans="s3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>B. Make a left turn</b>
+                        <p>Change your direction towards the west or left sidewalk.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-2" data-ans="s1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>C. Make a right turn</b>
+                        <p>Direct your movement into the right-hand corner road.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-3" data-ans="s2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>D. Signal-controlled intersection</b>
+                        <p>Red, amber, and green automatic street lights.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-4" data-ans="s4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>E. Circular junction</b>
+                        <p>Vehicles move clockwise around a circular central point.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-5" data-ans="s5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="dir-slot-card">
+                    <div class="dir-slot-desc">
+                        <b>F. Road intersection</b>
+                        <p>A point where two streets cross each other forming a plus sign.</p>
+                    </div>
+                    <div class="dir-target-slot eval-drop" id="slot-6" data-ans="s6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: TARGET SITUATION -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Target Situation • Asking for the British Museum</h2>
+            <p class="instruction">Ivete has stepped off the bus and needs directions to reach the British Museum entrance.</p>
+
+            <div class="dialogue-box">
+                <div class="dialogue-row">
+                    <div class="dialogue-bubble">
+                        <b>Ivete:</b> "Excuse me! Could you tell me the way to the <b>British Museum</b>, please?"
+                    </div>
+                </div>
+                <div class="dialogue-row local">
+                    <div class="dialogue-bubble">
+                        <b>Local Pedestrian:</b> "Yes, of course! Go straight on down this avenue until you see the traffic lights."
+                    </div>
+                </div>
+                <div class="dialogue-row">
+                    <div class="dialogue-bubble">
+                        <b>Ivete:</b> "And what do I do at the traffic lights?"
+                    </div>
+                </div>
+                <div class="dialogue-row local">
+                    <div class="dialogue-bubble">
+                        <b>Local Pedestrian:</b> "Turn right into Great Russell Street. Walk past the bookshop, and the museum will be directly on your left."
+                    </div>
+                </div>
+                <div class="dialogue-row">
+                    <div class="dialogue-bubble">
+                        <b>Ivete:</b> "Is it far from here?"
+                    </div>
+                </div>
+                <div class="dialogue-row local">
+                    <div class="dialogue-bubble">
+                        <b>Local Pedestrian:</b> "Not at all, only about five minutes on foot. You can't miss it!"
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <p>1. What should Ivete do at the traffic lights?</p>
+                <select class="balloon-select eval-select" id="sit-1" data-ans="right">
+                    <option value="">-- Choose direction --</option>
+                    <option value="right">Turn right into Great Russell Street.</option>
+                    <option value="left">Turn left towards the river.</option>
+                    <option value="stop">Wait for another bus.</option>
+                </select>
+            </div>
+
+            <div class="exercise-card">
+                <p>2. Where is the British Museum located?</p>
+                <select class="balloon-select eval-select" id="sit-2" data-ans="left">
+                    <option value="">-- Choose location --</option>
+                    <option value="left">Directly on her left, past the bookshop.</option>
+                    <option value="behind">Behind the Underground station.</option>
+                    <option value="across">Across the River Thames.</option>
+                </select>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language Guide ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: LANGUAGE GUIDE -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Language Guide • Giving & Understanding Directions</h2>
+            <p class="instruction">Choose the correct words to complete the instructions.</p>
+
+            <div class="exercise-card">
+                <p><b>Exercise A: Prepositions of Position & Movement</b></p>
+                <div style="line-height: 2.2; font-size: 14px;">
+                    1. Go 
+                    <select class="balloon-select eval-select" id="prep-1" data-ans="straight">
+                        <option value="">-- select --</option>
+                        <option value="straight">straight on</option>
+                        <option value="up">straight up</option>
+                    </select> until the roundabout.<br>
+                    2. Take the second turning 
+                    <select class="balloon-select eval-select" id="prep-2" data-ans="on">
+                        <option value="">-- select --</option>
+                        <option value="on">on the left</option>
+                        <option value="at">at the left</option>
+                    </select>.<br>
+                    3. The museum is 
+                    <select class="balloon-select eval-select" id="prep-3" data-ans="opposite">
+                        <option value="">-- select --</option>
+                        <option value="opposite">opposite</option>
+                        <option value="facing">facing</option>
+                    </select> the café across the street.<br>
+                    4. Walk 
+                    <select class="balloon-select eval-select" id="prep-4" data-ans="past">
+                        <option value="">-- select --</option>
+                        <option value="past">past</option>
+                        <option value="pass">pass</option>
+                    </select> the post office and you will see the park.
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <p><b>Exercise B: Key Questions</b></p>
+                <div style="line-height: 2.2; font-size: 14px;">
+                    1. "Excuse me, <input type="text" class="text-blank eval-text" id="q-1" data-ans="how do i get" placeholder="..."> to Covent Garden?"<br>
+                    2. "Could you <input type="text" class="text-blank eval-text" id="q-2" data-ans="tell me" placeholder="..."> the way to the station?"<br>
+                    3. "Is there a cash machine <input type="text" class="text-blank eval-text" id="q-3" data-ans="near here" placeholder="...">?"
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Homework ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: HOMEWORK & PRODUCTION -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Homework & Production • My London Walking Tour</h2>
+            <p class="instruction">Write directions from your hotel to a nearby landmark, using at least 3 direction phrases.</p>
+
+            <div class="notepad-container" id="notepad-capture">
+                <div class="notepad-title">
+                    <span>📝 Autonomous Production • Walking Route Directions</span>
+                    <button class="btn-nav" style="padding: 4px 12px; font-size: 11px;" onclick="downloadNotepad()">📷 Save Note</button>
+                </div>
+                <textarea id="final-dialogue" class="notepad-area" placeholder="To reach Trafalgar Square from the hotel: First, turn left out of the hotel. Go straight on along Strand. Walk past Charing Cross station. Trafalgar Square will be right in front of you."></textarea>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA -->
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Ivete chegou perfeitamente ao destino! Agora é hora de explorar a cidade a fundo na Lição 4C. Continue sua jornada em Londres!
+            </div>
+
+            <button class="btn-finish" id="btn-finish-4b" onclick="calculateXP()">✅ Finish Lesson & Get XP</button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL (A, B, C) -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--orange-main);">Mission Complete!</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 4B • Giving Directions Finished</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored 0 out of 0.</p>
+            <p id="score-details" style="font-size: 14px; color: #64748b; margin-top: 5px;"></p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px; font-weight: 800; font-size: 16px; padding: 14px 28px; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 20px rgba(34,197,94,0.35);" onclick="returnToMap()">Collect XP & Next ➔</button>
+        </div>
+    </div>
+
+    <!-- DICA GRAMATICAL -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-dark); font-weight:bold; margin-bottom:10px; font-size:15px;">📚 Giving Directions (Imperatives)</div>
+            <div>
+                Use the base form of the verb for direct instructions:<br>
+                • <b>Go straight on</b> (Siga em frente)<br>
+                • <b>Turn left / right</b> (Vire à esquerda / direita)<br>
+                • <b>Take the second turning</b> (Pegue a segunda entrada)<br>
+                • <b>Cross the street</b> (Atravesse a rua)<br>
+                • <b>It's on your left / right</b> (Fica à sua esquerda / direita)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_4b_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao4b_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+                    let diagEl = document.getElementById('final-dialogue');
+                    if(diagEl && respostas.dialogue) { diagEl.value = respostas.dialogue; diagEl.disabled = true; }
+                    if(respostas.dragDrop) {
+                        for(let slotId in respostas.dragDrop) {
+                            let signId = respostas.dragDrop[slotId];
+                            let slot = document.getElementById(slotId);
+                            let sign = document.getElementById(signId);
+                            if(slot && sign) slot.appendChild(sign);
+                        }
+                    }
+                    if(respostas.selects) {
+                        for(let selId in respostas.selects) {
+                            let el = document.getElementById(selId);
+                            if(el) { el.value = respostas.selects[selId]; el.disabled = true; }
+                        }
+                    }
+                    if(respostas.texts) {
+                        for(let txtId in respostas.texts) {
+                            let el = document.getElementById(txtId);
+                            if(el) { el.value = respostas.texts[txtId]; el.disabled = true; }
+                        }
+                    }
+                }
+                let btnFinish = document.getElementById('btn-finish-4b');
+                if(btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
+                    btnFinish.disabled = true;
+                    btnFinish.style.background = "#64748b";
+                    btnFinish.style.cursor = "not-allowed";
+                }
+            }
+        });
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        const audioScripts = {
+            'audio-1': "Track 4B point 1: Direction Expressions. Turn Left. Turn Right. Go Straight On. Traffic Lights. Roundabout. Crossroads."
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--blue-dark)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--blue-dark)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        let selectedSignId = null;
+
+        function allowDrop(ev) { 
+            ev.preventDefault(); 
+            ev.stopPropagation();
+            if (ev.dataTransfer) {
+                ev.dataTransfer.dropEffect = "move";
+            }
+        }
+
+        function drag(ev) { 
+            const target = ev.target.closest('.draggable-sign') || ev.target;
+            if (ev.dataTransfer) {
+                ev.dataTransfer.effectAllowed = "move";
+                ev.dataTransfer.setData("text/plain", target.id);
+                ev.dataTransfer.setData("text", target.id);
+            }
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var data = ev.dataTransfer ? (ev.dataTransfer.getData("text/plain") || ev.dataTransfer.getData("text")) : selectedSignId;
+            var draggedEl = document.getElementById(data);
+            if (!draggedEl) return;
+            var target = ev.target.closest('.dir-target-slot') || ev.target.closest('.signs-pool');
+            if (!target) return;
+            
+            if (target.classList.contains('dir-target-slot')) {
+                if (target.children.length > 0) {
+                    document.getElementById('signs-pool').appendChild(target.children[0]);
+                }
+                target.appendChild(draggedEl);
+                target.classList.remove('drag-over');
+            }
+        }
+
+        function dropBack(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var data = ev.dataTransfer ? (ev.dataTransfer.getData("text/plain") || ev.dataTransfer.getData("text")) : selectedSignId;
+            var el = document.getElementById(data);
+            if (el) document.getElementById('signs-pool').appendChild(el);
+        }
+
+        document.querySelectorAll('.dir-target-slot').forEach(slot => {
+            slot.addEventListener('dragenter', () => slot.classList.add('drag-over'));
+            slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+            slot.addEventListener('drop', () => slot.classList.remove('drag-over'));
+
+            slot.addEventListener('click', () => {
+                if(localStorage.getItem('licao_4b_status') === 'concluida') return;
+                if(selectedSignId) {
+                    const signEl = document.getElementById(selectedSignId);
+                    if(signEl) {
+                        if(slot.children.length > 0) {
+                            document.getElementById('signs-pool').appendChild(slot.children[0]);
+                        }
+                        slot.appendChild(signEl);
+                        signEl.classList.remove('sign-tapped');
+                        selectedSignId = null;
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.draggable-sign').forEach(sign => {
+            sign.addEventListener('click', (e) => {
+                if(localStorage.getItem('licao_4b_status') === 'concluida') return;
+                e.stopPropagation();
+                if(sign.parentElement && sign.parentElement.classList.contains('dir-target-slot')) {
+                    document.getElementById('signs-pool').appendChild(sign);
+                    sign.classList.remove('sign-tapped');
+                    if(selectedSignId === sign.id) selectedSignId = null;
+                    return;
+                }
+                if(selectedSignId === sign.id) {
+                    sign.classList.remove('sign-tapped');
+                    selectedSignId = null;
+                } else {
+                    document.querySelectorAll('.draggable-sign').forEach(s => s.classList.remove('sign-tapped'));
+                    sign.classList.add('sign-tapped');
+                    selectedSignId = sign.id;
+                }
+            });
+        });
+
+        function downloadNotepad() {
+            html2canvas(document.querySelector("#notepad-capture")).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'Lesson_4B_Directions.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        let finalXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let respostasFotografadas = {
+                dragDrop: {},
+                selects: {},
+                texts: {},
+                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : ""
+            };
+
+            document.querySelectorAll('.eval-drop').forEach(slot => {
+                total++;
+                let expected = slot.getAttribute('data-ans');
+                if(slot.children.length > 0) {
+                    let childId = slot.children[0].id;
+                    respostasFotografadas.dragDrop[slot.id] = childId;
+                    if(childId === expected) correct++;
+                }
+            });
+
+            document.querySelectorAll('.eval-select').forEach(sel => {
+                total++;
+                respostasFotografadas.selects[sel.id] = sel.value;
+                if(sel.value === sel.getAttribute('data-ans')) correct++;
+            });
+
+            document.querySelectorAll('.eval-text').forEach(input => {
+                total++;
+                respostasFotografadas.texts[input.id] = input.value;
+                let userVal = input.value.trim().toLowerCase();
+                let expected = input.getAttribute('data-ans').toLowerCase();
+                if(expected.split('|').includes(userVal)) correct++;
+            });
+
+            localStorage.setItem('licao4b_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100);
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} (${finalXP}%).`;
+            document.getElementById('score-details').innerText = `${correct} correct answers out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function returnToMap() {
+            let oldXP = parseInt(localStorage.getItem('licao_4b_xp')) || 0;
+            let xpDifference = finalXP - oldXP;
+
+            localStorage.setItem('licao_4b_status', 'concluida');
+            localStorage.setItem('licao_4b_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += xpDifference;
+            localStorage.setItem('studentXP', studentXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP);
+            }
+            if(window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao4c.html', 'link-4c');
+                return;
+            }
+            window.location.href = "licao4c.html";
+        }
+    </script>
+</body>
+</html>

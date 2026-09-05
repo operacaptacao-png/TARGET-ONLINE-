@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4A | Taking a Bus</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --black: #1A1A1A;
+            --white: #FFFFFF;
+            --red-bus: #d32f2f;
+            --red-dark: #9a0007;
+            --blue-navy: #1a237e;
+            --blue-light: #283593;
+            --blue-dark: #1a237e;
+            --orange-main: #E67E22;
+            --yellow-accent: #fbc02d;
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #3949ab;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #8e24aa;
+            --theme-red-bg: #fef2f2; --theme-red-border: #d32f2f;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #2e7d32;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #475569;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #d97706;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 40px 15px 120px 15px;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #b71c1c 0%, #c62828 40%, #1a237e 100%);
+            background-attachment: fixed;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 900px;
+            min-height: 100vh;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+            border-radius: 24px;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        @media(max-width: 768px) {
+            .book-page { padding: 25px 20px; }
+        }
+
+        /* BANNER PRINCIPAL */
+        .lesson-banner {
+            width: 100%;
+            height: 230px;
+            background: linear-gradient(rgba(183, 28, 28, 0.75), rgba(26, 35, 126, 0.85)), url('https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .lesson-banner .unit-tag {
+            background: var(--yellow-accent);
+            color: var(--black);
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 5px 16px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .lesson-banner h1 {
+            color: var(--white);
+            font-family: var(--font-title);
+            font-size: 38px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; text-align: center; }
+        h3 { font-family: var(--font-title); font-size: 18px; margin-top: 20px; text-align: center; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; text-align: center; }
+
+        /* ACTIVITY SECTIONS */
+        .activity-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            margin-bottom: 30px;
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            box-sizing: border-box;
+        }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        /* NARRATIVE TRANSITION BOX */
+        .story-transition-box {
+            background: #fffcf2;
+            border-left: 5px solid #eab308;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #854d0e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        /* NAVIGATION BUTTONS */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            border-top: 1px dashed rgba(0,0,0,0.15);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 12px 28px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: white;
+            border: 2px solid;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); }
+        .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); }
+        .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+
+        /* AUDIO PLAYER & CONTROLS */
+        .audio-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 25px; }
+        .audio-player {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .play-btn {
+            background: var(--red-bus);
+            border: none;
+            color: white;
+            padding: 9px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-family: var(--font-title);
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.25);
+        }
+        .play-btn:hover { background: var(--red-dark); transform: scale(1.03); }
+        .play-btn.playing { background: #ea580c !important; }
+
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 8px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.05); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-ctrl-btn.pause-btn { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .audio-ctrl-btn.pause-btn:hover { background: #fecaca; }
+
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            margin-left: 6px;
+        }
+
+        /* 3. INPUTS MAIS BONITOS (.fancy-input) */
+        .fancy-input {
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 3px solid #e2e8f0;
+            background-color: #f8fafc;
+            color: var(--blue-dark);
+            font-weight: bold;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+        }
+        .fancy-input:focus {
+            border-color: var(--orange-main);
+            background-color: #fff7ed;
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
+        }
+        .fancy-input-inline {
+            display: inline-block;
+            width: auto;
+            min-width: 130px;
+            padding: 6px 14px;
+            font-size: 15px;
+            margin: 4px 6px;
+        }
+
+        /* 2. BOTÕES TRUE / FALSE GAMIFICADOS */
+        .tf-group { display: inline-flex; gap: 10px; margin-left: 15px; vertical-align: middle; }
+        .btn-tf { padding: 8px 20px; border-radius: 30px; border: 2px solid #ccc; background: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-tf.true-selected { background: #22c55e; color: white; border-color: #22c55e; }
+        .btn-tf.false-selected { background: #ef4444; color: white; border-color: #ef4444; }
+
+        /* DINÂMICA INTERATIVA: ARRASTAR PLACAS DE TRÂNSITO */
+        .signs-pool {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px dashed var(--theme-blue-border);
+            margin-bottom: 25px;
+            min-height: 90px;
+        }
+        @media(max-width: 768px) { .signs-pool { grid-template-columns: repeat(2, 1fr); } }
+
+        .draggable-sign {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            cursor: grab;
+            user-select: none;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+        .draggable-sign * {
+            pointer-events: none;
+        }
+        .draggable-sign:active { cursor: grabbing; transform: scale(0.95); }
+        .draggable-sign .sign-icon { font-size: 32px; margin-bottom: 5px; }
+        .draggable-sign .sign-name { font-weight: 800; font-family: var(--font-title); font-size: 13px; color: #1e293b; }
+        .draggable-sign .sign-badge { font-size: 10px; font-weight: bold; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
+        .draggable-sign.sign-tapped {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.35);
+            transform: scale(1.05);
+        }
+
+        .signs-target-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media(max-width: 650px) { .signs-target-grid { grid-template-columns: 1fr; } }
+
+        .sign-post-box {
+            background: white;
+            border-radius: 14px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .sign-post-desc { flex: 1; text-align: left; }
+        .sign-post-desc b { display: block; color: var(--theme-blue-border); font-size: 14px; margin-bottom: 4px; }
+        .sign-post-desc p { margin: 0; font-size: 12px; color: #64748b; line-height: 1.4; }
+        
+        .sign-drop-slot {
+            width: 110px;
+            height: 95px;
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .sign-drop-slot.drag-over { background: #e0e7ff; border-color: var(--theme-blue-border); }
+
+        /* TARGET SITUATION / DIALOGUE STYLES */
+        .bus-situation-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            border: 2px solid var(--theme-purple-border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+        .bus-header-badge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fdf4ff;
+            border: 1px solid #f0abfc;
+            padding: 10px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #86198f;
+        }
+
+        .comic-bubbles-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+        .bubble-row { display: flex; gap: 15px; align-items: flex-start; }
+        .bubble-row.passenger { flex-direction: row-reverse; }
+        
+        .bubble-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid #cbd5e1;
+            flex-shrink: 0;
+        }
+        .speech-bubble {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px 18px;
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 75%;
+            position: relative;
+        }
+        .bubble-row.driver .speech-bubble { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+        .bubble-row.passenger .speech-bubble { background: #fdf2f8; border-color: #fbcfe8; color: #831843; }
+
+        /* OYSTER CARD TAP SIMULATOR */
+        .oyster-simulator {
+            background: #0f172a;
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .oyster-screen {
+            background: #0284c7;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .tap-btn {
+            background: #eab308;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-family: var(--font-title);
+            font-weight: 900;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+        .tap-btn:hover { background: #facc15; transform: scale(1.04); }
+
+        /* LANGUAGE GUIDE / EXERCISES */
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .exercise-card p { margin: 0 0 12px 0; font-size: 15px; font-weight: 600; color: #1e293b; }
+
+        /* NOTEPAD ESCRITA AUTÔNOMA */
+        .notepad-container {
+            background: #fffbeb;
+            border: 2px solid #fcd34d;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            text-align: left;
+            position: relative;
+        }
+        .notepad-title {
+            font-family: var(--font-title);
+            font-weight: 800;
+            color: #92400e;
+            font-size: 16px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #fde68a;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notepad-area {
+            width: 100%;
+            height: 180px;
+            background: transparent;
+            border: none;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 16px;
+            line-height: 32px;
+            outline: none;
+            resize: vertical;
+            color: #451a03;
+            background-image: repeating-linear-gradient(transparent, transparent 31px, #fcd34d 31px, #fcd34d 32px);
+            box-sizing: border-box;
+        }
+
+        .btn-download-note {
+            background: white;
+            border: 2px solid #d97706;
+            color: #d97706;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-download-note:hover { background: #d97706; color: white; }
+
+        /* BOTÃO DE FINALIZAR A LIÇÃO */
+        .btn-finish {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-family: var(--font-title);
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0 auto;
+            transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+            width: 100%;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-finish:hover { background: #1b5e20; transform: translateY(-3px); }
+        .btn-finish:disabled { background: #64748b; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* MODAL DE RESULTADO XP */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .modal-content h2 { color: var(--red-bus); font-size: 30px; margin-bottom: 5px; font-family: var(--font-title); font-weight: 900; }
+        .xp-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #2e7d32;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            margin: 20px auto;
+            border: 8px solid #bbf7d0;
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.35);
+        }
+
+        /* DICA GRAMATICAL FLUTUANTE (GRAMMAR TIP) */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .grammar-floating-btn {
+            background: var(--red-bus);
+            color: var(--white);
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(211, 47, 47, 0.45);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .grammar-floating-btn:hover { background: var(--red-dark); transform: scale(1.05); }
+        
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 320px;
+            background: white;
+            color: var(--black);
+            border-radius: 16px;
+            padding: 22px;
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 2px solid var(--red-bus);
+            transition: 0.3s;
+            pointer-events: none;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- HEADER BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 4 • Round and about</span>
+            <h1>4A | Taking a Bus</h1>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SEÇÃO 1: WORDS & IDEAS (TRAFFIC SIGNS)     -->
+        <!-- ========================================== -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Words and Ideas • London Transit & Signs</h2>
+            <p class="instruction">Listen to the transit terms, then drag each sign to its matching definition or street situation.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-1">
+                    <audio id="audio-1" src="https://files.catbox.moe/tzcgnr.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--red-bus)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--red-bus)')" title="Pausar áudio">⏸ PAUSE</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-1" onclick="cycleSpeed('audio-1', 'spd-audio-1')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 1.25, 'fast-audio-1')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4A.1: Public Transport & Traffic Signs</span>
+                </div>
+            </div>
+
+            <!-- WORD/SIGN POOL (DROP ZONE COM PROTOCOLO PADRÃO) -->
+            <div id="signs-pool" class="signs-pool drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="draggable-sign" id="s1" draggable="true" ondragstart="drag(event)" data-cat="bus-stop">
+                    <span class="sign-icon">🚏</span>
+                    <span class="sign-name">Bus Stop</span>
+                    <span class="sign-badge">Sign #1</span>
+                </div>
+                <div class="draggable-sign" id="s2" draggable="true" ondragstart="drag(event)" data-cat="bus-lane">
+                    <span class="sign-icon">🚌</span>
+                    <span class="sign-name">Bus Lane</span>
+                    <span class="sign-badge">Sign #2</span>
+                </div>
+                <div class="draggable-sign" id="s3" draggable="true" ondragstart="drag(event)" data-cat="no-entry">
+                    <span class="sign-icon">⛔</span>
+                    <span class="sign-name">No Entry</span>
+                    <span class="sign-badge">Sign #3</span>
+                </div>
+                <div class="draggable-sign" id="s4" draggable="true" ondragstart="drag(event)" data-cat="stop-sign">
+                    <span class="sign-icon">🛑</span>
+                    <span class="sign-name">Stop Sign</span>
+                    <span class="sign-badge">Sign #4</span>
+                </div>
+                <div class="draggable-sign" id="s5" draggable="true" ondragstart="drag(event)" data-cat="zebra-cross">
+                    <span class="sign-icon">🦓</span>
+                    <span class="sign-name">Zebra Crossing</span>
+                    <span class="sign-badge">Sign #5</span>
+                </div>
+                <div class="draggable-sign" id="s6" draggable="true" ondragstart="drag(event)" data-cat="roundabout">
+                    <span class="sign-icon">🔄</span>
+                    <span class="sign-name">Roundabout</span>
+                    <span class="sign-badge">Sign #6</span>
+                </div>
+                <div class="draggable-sign" id="s7" draggable="true" ondragstart="drag(event)" data-cat="tube-station">
+                    <span class="sign-icon">🚇</span>
+                    <span class="sign-name">The Underground</span>
+                    <span class="sign-badge">Sign #7</span>
+                </div>
+                <div class="draggable-sign" id="s8" draggable="true" ondragstart="drag(event)" data-cat="ticket-kiosk">
+                    <span class="sign-icon">🎫</span>
+                    <span class="sign-name">Pay / Oyster Here</span>
+                    <span class="sign-badge">Sign #8</span>
+                </div>
+            </div>
+
+            <!-- TARGET SLOTS GRID (DROP ZONES COM PROTOCOLO PADRÃO) -->
+            <div class="signs-target-grid">
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>A. Bus Passenger Waiting Point</b>
+                        <p>A designated shelter or pole along the street where commuters queue to board.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-1" data-ans="s1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>B. Exclusive Transport Lane</b>
+                        <p>Marked lane on the avenue reserved specifically for public double-decker buses.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-2" data-ans="s2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>C. Prohibited Street Access</b>
+                        <p>Red circular symbol warning vehicles they cannot enter this one-way road.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-3" data-ans="s3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>D. Compulsory Vehicle Halt</b>
+                        <p>Octagonal red sign demanding full halt before proceeding at junctions.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-4" data-ans="s4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>E. Pedestrian Road Crossing</b>
+                        <p>Striped street zone where people walking always have legal priority over traffic.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-5" data-ans="s5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>F. Circular Traffic Junction</b>
+                        <p>Round road junction where cars travel clockwise around a central island.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-6" data-ans="s6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>G. Subterranean Rail Network</b>
+                        <p>London's famous iconic subway line for rapid transit across boroughs.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-7" data-ans="s7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+
+                <div class="sign-post-box">
+                    <div class="sign-post-desc">
+                        <b>H. Fare Payment / Oyster Reader</b>
+                        <p>Electronic point where commuters tap contactless cards or recharge travel passes.</p>
+                    </div>
+                    <div class="sign-drop-slot eval-drop drop-zone" id="slot-8" data-ans="s8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SEÇÃO 2: TARGET SITUATION (BOARDING BUS)   -->
+        <!-- ========================================== -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Target Situation • Boarding Route 14</h2>
+            <p class="instruction">Ivete is at Piccadilly Circus and needs to catch a red bus to Oxford Street. Listen to the exchange with the driver.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-2">
+                    <audio id="audio-2" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')" title="Pausar áudio">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-2" onclick="cycleSpeed('audio-2', 'spd-audio-2')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 1.25, 'fast-audio-2')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4A.2: Ivete & London Bus Driver</span>
+                </div>
+            </div>
+
+            <div class="bus-situation-card">
+                <div class="bus-header-badge">
+                    <span>🚍 London Bus Line: Route 14</span>
+                    <span>Destination: Oxford Circus via Piccadilly</span>
+                </div>
+
+                <div class="comic-bubbles-grid">
+                    <div class="bubble-row driver">
+                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="speech-bubble">
+                            <b>Driver:</b> "Morning! Where are you heading today, love?"
+                        </div>
+                    </div>
+
+                    <div class="bubble-row passenger">
+                        <div class="bubble-avatar">👩</div>
+                        <div class="speech-bubble">
+                            <b>Ivete:</b> "Good morning! <b>Does this bus go to</b> Oxford Street?"
+                        </div>
+                    </div>
+
+                    <div class="bubble-row driver">
+                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="speech-bubble">
+                            <b>Driver:</b> "Yes, it does! Straight along Regent Street to Oxford Circus."
+                        </div>
+                    </div>
+
+                    <div class="bubble-row passenger">
+                        <div class="bubble-avatar">👩</div>
+                        <div class="speech-bubble">
+                            <b>Ivete:</b> "Wonderful. <b>How much is the fare</b>, please?"
+                        </div>
+                    </div>
+
+                    <div class="bubble-row driver">
+                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="speech-bubble">
+                            <b>Driver:</b> "It's <b>£1.75</b>. Just tap your Oyster or contactless card on the yellow reader. Remember, we don't accept cash on London buses!"
+                        </div>
+                    </div>
+
+                    <div class="bubble-row passenger">
+                        <div class="bubble-avatar">👩</div>
+                        <div class="speech-bubble">
+                            <b>Ivete:</b> "Understood. Could you please let me know when we arrive at my stop?"
+                        </div>
+                    </div>
+
+                    <div class="bubble-row driver">
+                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="speech-bubble">
+                            <b>Driver:</b> "Sure thing. It's about five stops ahead. Take a seat upstairs if you want the best view!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OYSTER TAP SIMULATOR -->
+                <div class="oyster-simulator">
+                    <div class="oyster-screen" id="oyster-display">READY TO TAP: FARE £1.75</div>
+                    <button class="tap-btn" id="oyster-btn" onclick="simulateOysterTap()">💳 Tap Oyster / Contactless Card Here</button>
+                </div>
+            </div>
+
+            <!-- SITUATION COMPREHENSION CHECKS -->
+            <div class="exercise-card">
+                <p>1. Does Route 14 go to Oxford Street?</p>
+                <select class="fancy-input eval-select" id="sit-q1" data-ans="yes">
+                    <option value="">-- Choose answer --</option>
+                    <option value="yes">Yes, it goes straight to Oxford Circus.</option>
+                    <option value="no">No, it terminates at Heathrow Airport.</option>
+                    <option value="maybe">Only on Sunday mornings.</option>
+                </select>
+            </div>
+
+            <div class="exercise-card">
+                <p>2. How much does a single bus fare cost in London?</p>
+                <select class="fancy-input eval-select" id="sit-q2" data-ans="175">
+                    <option value="">-- Choose price --</option>
+                    <option value="500">£5.00</option>
+                    <option value="175">£1.75</option>
+                    <option value="200">£2.00</option>
+                    <option value="free">It is free for all tourists.</option>
+                </select>
+            </div>
+
+            <div class="exercise-card">
+                <p>3. Can Ivete pay the driver using cash or coins?</p>
+                <select class="fancy-input eval-select" id="sit-q3" data-ans="nocash">
+                    <option value="">-- Choose payment rule --</option>
+                    <option value="cashonly">Yes, exact coins only.</option>
+                    <option value="nocash">No, London buses are cashless (Contactless or Oyster only).</option>
+                    <option value="cheque">Yes, with a personal check.</option>
+                </select>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language Guide ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SEÇÃO 3: LANGUAGE GUIDE (PREPOSITIONS & Qs)-->
+        <!-- ========================================== -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Language Guide • Getting Round Town</h2>
+            <p class="instruction">Fill in the blanks with the correct prepositions and common transit expressions.</p>
+
+            <div class="exercise-card">
+                <p><b>Exercise A: Transport Prepositions (IN, ON, BY, OFF)</b></p>
+                <div style="font-size: 15px; line-height: 2.5;">
+                    1. Ivete prefers to travel around London 
+                    <select class="fancy-input fancy-input-inline eval-select" id="prep-1" data-ans="by">
+                        <option value="">-- select --</option>
+                        <option value="in">in</option>
+                        <option value="on">on</option>
+                        <option value="by">by</option>
+                    </select> bus because she enjoys the views.<br>
+
+                    2. She waited at the stop and got 
+                    <select class="fancy-input fancy-input-inline eval-select" id="prep-2" data-ans="on">
+                        <option value="">-- select --</option>
+                        <option value="on">on</option>
+                        <option value="in">in</option>
+                        <option value="into">into</option>
+                    </select> the red double-decker bus.<br>
+
+                    3. While travelling, she was sitting 
+                    <select class="fancy-input fancy-input-inline eval-select" id="prep-3" data-ans="on">
+                        <option value="">-- select --</option>
+                        <option value="at">at</option>
+                        <option value="in">in</option>
+                        <option value="on">on</option>
+                    </select> the top deck of the bus.<br>
+
+                    4. When she took a black cab yesterday, she sat 
+                    <select class="fancy-input fancy-input-inline eval-select" id="prep-4" data-ans="in">
+                        <option value="">-- select --</option>
+                        <option value="on">on</option>
+                        <option value="in">in</option>
+                        <option value="by">by</option>
+                    </select> the taxi.<br>
+
+                    5. When she reached Oxford Street, she had to get 
+                    <select class="fancy-input fancy-input-inline eval-select" id="prep-5" data-ans="off">
+                        <option value="">-- select --</option>
+                        <option value="off">off</option>
+                        <option value="out">out</option>
+                        <option value="down">down</option>
+                    </select> the bus.
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <p><b>Exercise B: Asking for Travel Information</b></p>
+                <div style="font-size: 15px; line-height: 2.6;">
+                    1. "Excuse me, <input type="text" class="fancy-input fancy-input-inline eval-text" id="ask-1" data-ans="does" placeholder="e.g. does"> this bus go to Westminster Abbey?"<br>
+                    2. "<input type="text" class="fancy-input fancy-input-inline eval-text" id="ask-2" data-ans="how much" placeholder="e.g. how much"> is a single ticket to Zone 1?"<br>
+                    3. "<input type="text" class="fancy-input fancy-input-inline eval-text" id="ask-3" data-ans="which" placeholder="e.g. which"> bus goes to the British Museum?"<br>
+                    4. "<input type="text" class="fancy-input fancy-input-inline eval-text" id="ask-4" data-ans="how many" placeholder="e.g. how many"> stops is it until Trafalgar Square?"
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Homework & Production ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SEÇÃO 4: HOMEWORK & AUTONOMOUS WRITING     -->
+        <!-- ========================================== -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Language at Work & Homework</h2>
+            <p class="instruction">Complete the situational review and write your autonomous travel dialogue.</p>
+
+            <div class="exercise-card">
+                <p><b>Situational Review 1:</b> What must you do before your bus stop arrives in the UK?</p>
+                <select class="fancy-input eval-select" id="hw-1" data-ans="bell">
+                    <option value="">-- Choose action --</option>
+                    <option value="scream">Shout loudly to the bus driver.</option>
+                    <option value="bell">Press the red 'STOP' bell button once to alert the driver.</option>
+                    <option value="jump">Jump off while the bus is turning.</option>
+                </select>
+            </div>
+
+            <div class="exercise-card">
+                <p><b>Situational Review 2:</b> If you want unlimited bus travel all day in London, what is the best pass?</p>
+                <select class="fancy-input eval-select" id="hw-2" data-ans="cap">
+                    <option value="">-- Choose card system --</option>
+                    <option value="cap">Daily Hopper / Contactless Cap (automatic daily fare limit).</option>
+                    <option value="single">Buy 20 single paper tickets.</option>
+                    <option value="passport">Show your passport to every inspector.</option>
+                </select>
+            </div>
+
+            <div class="exercise-card">
+                <p><b>Situational Review 3:</b> What do locals say to the driver when getting off the bus?</p>
+                <select class="fancy-input eval-select" id="hw-3" data-ans="thanks">
+                    <option value="">-- Choose polite phrase --</option>
+                    <option value="thanks">"Thank you!" or "Cheers, drive!"</option>
+                    <option value="silence">Nothing, looking down.</option>
+                    <option value="complaint">"You drive too fast!"</option>
+                </select>
+            </div>
+
+            <!-- AUTONOMOUS NOTEPAD -->
+            <div class="notepad-container" id="notepad-capture">
+                <div class="notepad-title">
+                    <span>📝 Autonomous Production • My London Bus Travel Script</span>
+                    <button class="btn-download-note" onclick="downloadNotepad()">📷 Save Ticket Note</button>
+                </div>
+                <p style="font-size: 13px; color: #78350f; margin: 0 0 10px 0; font-style: italic;">
+                    Write a short dialogue where you board a London bus, ask if it goes to your landmark, inquire about the fare, and ask where to get off.
+                </p>
+                <textarea id="final-dialogue" class="notepad-area" placeholder="You: Good morning! Does this bus go to the British Museum?&#10;Driver: Yes, it stops right outside on Great Russell Street.&#10;You: How much is the fare?&#10;Driver: It's £1.75 with your Oyster card.&#10;You: Thank you! Please let me know when we arrive."></textarea>
+            </div>
+
+            <!-- CAIXA DE TRANSIÇÃO NARRATIVA -->
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Ivete desceu no ponto com sucesso no coração de Londres! Agora ela está a pé nas ruas movimentadas de Westminster e precisa chegar ao British Museum. Como ela vai pedir informações e seguir direções corretas nas esquinas londrinas? Prepare-se para a Lição 4B | Giving Directions!
+            </div>
+
+            <!-- BOTÃO DE FINALIZAÇÃO -->
+            <button class="btn-finish" id="btn-finish-4a" onclick="calculateXP()">✅ Finish Lesson & Get XP</button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL (A, B, C) -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--orange-main);">Mission Complete!</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 4A • Taking a Bus Finished</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <div id="xp-gained-circle" style="display:none;"></div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored 0 out of 0.</p>
+            <p id="score-details" style="font-size: 14px; color: #64748b; margin-top: 5px;"></p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px; font-weight: 800; font-size: 16px; padding: 14px 28px; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 20px rgba(34,197,94,0.35);" onclick="returnToMap()">Collect XP & Next ➔</button>
+        </div>
+    </div>
+
+    <!-- DICA GRAMATICAL FLUTUANTE (GRAMMAR TIP) -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color: var(--red-bus); font-weight: 800; margin-bottom: 12px; font-size: 15px; font-family: var(--font-title); border-bottom: 2px solid var(--red-bus); padding-bottom: 5px;">
+                🚌 Prepositions: Transport
+            </div>
+            <div style="margin-bottom: 8px;">
+                <b>ON</b> the bus / train / plane / bike <br>
+                <span style="font-size: 12px; color: #64748b;">(Use quando puder ficar de pé ou caminhar dentro).</span>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <b>IN</b> the car / taxi / cab <br>
+                <span style="font-size: 12px; color: #64748b;">(Veículos pequenos onde você senta direto).</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <b>BY</b> bus / train / car / plane <br>
+                <span style="font-size: 12px; color: #64748b;">(Quando se refere ao meio de transporte em geral).</span>
+            </div>
+            <div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 12px; color: #334155;">
+                <b>Essential Phrasal Verbs:</b><br>
+                • <b>Get ON</b> = Entrar no ônibus/trem<br>
+                • <b>Get OFF</b> = Desembarcar / Sair
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE LÓGICA E ESTADO -->
+    <script>
+        // ==========================================
+        // MODO LEITURA / TRAVA DE SEGURANÇA
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_4a_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao4a_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaura Texto do Diálogo
+                    let diagEl = document.getElementById('final-dialogue');
+                    if(diagEl && respostas.dialogue) { diagEl.value = respostas.dialogue; diagEl.disabled = true; }
+
+                    // Restaura Drag & Drop das placas
+                    if(respostas.dragDrop) {
+                        for(let slotId in respostas.dragDrop) {
+                            let signId = respostas.dragDrop[slotId];
+                            let slot = document.getElementById(slotId);
+                            let sign = document.getElementById(signId);
+                            if(slot && sign) {
+                                slot.appendChild(sign);
+                                slot.setAttribute('data-user-ans', signId);
+                            }
+                        }
+                    }
+                    document.querySelectorAll('.draggable-sign').forEach(s => {
+                        s.draggable = false; s.style.cursor = 'not-allowed';
+                    });
+
+                    // Restaura Selects
+                    if(respostas.selects) {
+                        for(let selId in respostas.selects) {
+                            let el = document.getElementById(selId);
+                            if(el) { el.value = respostas.selects[selId]; el.disabled = true; }
+                        }
+                    }
+
+                    // Restaura Texts
+                    if(respostas.texts) {
+                        for(let txtId in respostas.texts) {
+                            let el = document.getElementById(txtId);
+                            if(el) { el.value = respostas.texts[txtId]; el.disabled = true; }
+                        }
+                    }
+
+                    // Restaura Hidden Inputs (T/F se houver)
+                    if(respostas.inputs) {
+                        for(let inId in respostas.inputs) {
+                            let el = document.getElementById(inId);
+                            if(el) { el.value = respostas.inputs[inId]; }
+                        }
+                    }
+                }
+
+                let btnFinish = document.getElementById('btn-finish-4a');
+                if(btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
+                    btnFinish.disabled = true;
+                    btnFinish.style.background = "#64748b";
+                    btnFinish.style.cursor = "not-allowed";
+                    btnFinish.onclick = null;
+                }
+            }
+        });
+
+        // ==========================================
+        // CONTROLE DE NAVEGAÇÃO ENTRE SEÇÕES
+        // ==========================================
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // ÁUDIO PLAYERS COM TTS FALLBACK & CONTROLES
+        // ==========================================
+        const audioScripts = {
+            'audio-1': "Track 4A point 1: Public Transport and Traffic Signs. Bus Stop. Bus Lane. No Entry. Stop Sign. Zebra Crossing. Roundabout. The Underground. Pay and Oyster Reader.",
+            'audio-2': "Track 4A point 2. Driver: Morning! Where are you heading today, love? Ivete: Good morning! Does this bus go to Oxford Street? Driver: Yes, it does! Straight along Regent Street to Oxford Circus. Ivete: Wonderful. How much is the fare, please? Driver: It's one pound seventy-five. Just tap your Oyster or contactless card on the yellow reader. Remember, we don't accept cash on London buses! Ivete: Understood. Could you please let me know when we arrive at my stop? Driver: Sure thing. It's about five stops ahead. Take a seat upstairs if you want the best view!"
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--red-bus)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--red-bus)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--red-bus)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--red-bus)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--red-bus)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--red-bus)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(1) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--red-bus)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        // ==========================================
+        // 1. CORREÇÃO DEFINITIVA DO DRAG AND DROP (SEM TRAVAMENTOS)
+        // ==========================================
+        let selectedSignId = null;
+
+        function allowDrop(ev) { 
+            ev.preventDefault(); 
+        }
+
+        function drag(ev) { 
+            ev.dataTransfer.setData("text", ev.target.id); 
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedElement = document.getElementById(data);
+            if (!draggedElement) return;
+
+            var target = ev.target.classList.contains('drop-zone') ? ev.target : ev.target.closest('.drop-zone');
+            if (target && target.classList.contains('drop-zone')) {
+                // Se um slot já tiver elemento e não for o pool de volta, devolve o anterior ao pool
+                if (target.id !== 'signs-pool' && target.children.length > 0) {
+                    var existing = target.children[0];
+                    if (existing && existing !== draggedElement) {
+                        document.getElementById('signs-pool').appendChild(existing);
+                    }
+                }
+                target.appendChild(draggedElement);
+                target.setAttribute('data-user-ans', draggedElement.id);
+                target.classList.remove('drag-over');
+            }
+        }
+
+        // Suporte a toque / clique em dispositivos móveis e desktops
+        document.querySelectorAll('.drop-zone').forEach(slot => {
+            slot.addEventListener('dragenter', () => slot.classList.add('drag-over'));
+            slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+
+            slot.addEventListener('click', () => {
+                if(localStorage.getItem('licao_4a_status') === 'concluida') return;
+                if(selectedSignId) {
+                    const signEl = document.getElementById(selectedSignId);
+                    if(signEl) {
+                        if(slot.id !== 'signs-pool' && slot.children.length > 0) {
+                            document.getElementById('signs-pool').appendChild(slot.children[0]);
+                        }
+                        slot.appendChild(signEl);
+                        slot.setAttribute('data-user-ans', signEl.id);
+                        signEl.classList.remove('sign-tapped');
+                        selectedSignId = null;
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.draggable-sign').forEach(sign => {
+            sign.addEventListener('click', (e) => {
+                if(localStorage.getItem('licao_4a_status') === 'concluida') return;
+                e.stopPropagation();
+
+                // Se já estiver em um slot e clicar nele, devolve para o pool
+                if(sign.parentElement && sign.parentElement.classList.contains('sign-drop-slot')) {
+                    sign.parentElement.removeAttribute('data-user-ans');
+                    document.getElementById('signs-pool').appendChild(sign);
+                    sign.classList.remove('sign-tapped');
+                    if(selectedSignId === sign.id) selectedSignId = null;
+                    return;
+                }
+
+                if(selectedSignId === sign.id) {
+                    sign.classList.remove('sign-tapped');
+                    selectedSignId = null;
+                } else {
+                    document.querySelectorAll('.draggable-sign').forEach(s => s.classList.remove('sign-tapped'));
+                    sign.classList.add('sign-tapped');
+                    selectedSignId = sign.id;
+                }
+            });
+        });
+
+        // ==========================================
+        // 2. FUNÇÃO AUXILIAR DE BOTÕES TRUE / FALSE
+        // ==========================================
+        function selectTF(button, value, inputId) {
+            let parent = button.parentElement;
+            parent.querySelectorAll('.btn-tf').forEach(btn => btn.classList.remove('true-selected', 'false-selected'));
+            if (value === 'True') button.classList.add('true-selected'); else button.classList.add('false-selected');
+            const hiddenInput = document.getElementById(inputId);
+            if (hiddenInput) hiddenInput.value = value;
+        }
+
+        // ==========================================
+        // SIMULADOR DO OYSTER TAP
+        // ==========================================
+        function simulateOysterTap() {
+            const screen = document.getElementById('oyster-display');
+            const btn = document.getElementById('oyster-btn');
+            screen.style.background = "#15803d";
+            screen.innerText = "✅ BEEP! ACCEPTED - FARE PAID: £1.75";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            btn.innerText = "Card Tapped Successfully";
+        }
+
+        // ==========================================
+        // DOWNLOAD DO NOTEPAD (HTML2CANVAS)
+        // ==========================================
+        function downloadNotepad() {
+            html2canvas(document.querySelector("#notepad-capture")).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'Lesson_4A_Bus_Script.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // ==========================================
+        // CÁLCULO DE XP E FOTOGRAFIA DAS RESPOSTAS
+        // ==========================================
+        let finalXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let respostasFotografadas = {
+                dragDrop: {},
+                selects: {},
+                texts: {},
+                inputs: {},
+                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : ""
+            };
+
+            // 1. Avalia Drag and Drop (Placas de trânsito)
+            document.querySelectorAll('.eval-drop').forEach(slot => {
+                total++;
+                let expected = slot.getAttribute('data-ans');
+                let userAns = slot.getAttribute('data-user-ans') || (slot.children.length > 0 ? slot.children[0].id : '');
+                if(userAns) {
+                    respostasFotografadas.dragDrop[slot.id] = userAns;
+                    if(userAns === expected) correct++;
+                }
+            });
+
+            // 2. Avalia Selects (Compreensão, preposições, homework)
+            document.querySelectorAll('.eval-select').forEach(sel => {
+                total++;
+                respostasFotografadas.selects[sel.id] = sel.value;
+                if(sel.value === sel.getAttribute('data-ans')) correct++;
+            });
+
+            // 3. Avalia Texts (Perguntas de viagem)
+            document.querySelectorAll('.eval-text').forEach(input => {
+                total++;
+                respostasFotografadas.texts[input.id] = input.value;
+                let userVal = input.value.trim().toLowerCase();
+                let expected = input.getAttribute('data-ans').toLowerCase();
+                let acceptedList = expected.split('|');
+                if(acceptedList.includes(userVal)) correct++;
+            });
+
+            // 4. Avalia Inputs Hidden (True/False se houver)
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                let userVal = input.value;
+                respostasFotografadas.inputs[input.id] = userVal;
+                if(userVal && userVal.toLowerCase() === input.getAttribute('data-ans').toLowerCase()) correct++;
+            });
+
+            localStorage.setItem('licao4a_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100);
+
+            const xpGainedText = document.getElementById('xp-gained-text');
+            if (xpGainedText) xpGainedText.innerText = "+" + finalXP;
+            const xpCircle = document.getElementById('xp-gained-circle');
+            if (xpCircle) xpCircle.innerText = "+" + finalXP;
+
+            const scoreText = document.getElementById('score-text');
+            if (scoreText) scoreText.innerText = `You scored ${correct} out of ${total} (${finalXP}%).`;
+            const scoreDetails = document.getElementById('score-details');
+            if (scoreDetails) scoreDetails.innerText = `${correct} correct answers out of ${total}.`;
+
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // ==========================================
+        // RETORNAR AO MAPA E AVANÇAR PARA 4B
+        // ==========================================
+        function returnToMap() {
+            let oldXP = parseInt(localStorage.getItem('licao_4a_xp')) || 0;
+            let xpDifference = finalXP - oldXP;
+
+            localStorage.setItem('licao_4a_status', 'concluida');
+            localStorage.setItem('licao_4a_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += xpDifference;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += xpDifference;
+            localStorage.setItem('studentXP', studentXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP);
+            }
+            if(window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao4b.html', 'link-4b');
+                return;
+            }
+            window.location.href = "licao4b.html";
+        }
+    </script>
+</body>
+</html>

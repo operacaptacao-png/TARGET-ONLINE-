@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1B | Getting a Taxi</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === VARIÁVEIS DE COR E TIPOGRAFIA === */
+        :root {
+            --black: #1A1A1A; --white: #FFFFFF; --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-main: #E67E22;
+            --font-title: 'Montserrat', sans-serif; --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #eab308;
+        }
+
+        /* === ESTILOS GLOBAIS === */
+        body { font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px; display: flex; justify-content: center; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 40%, var(--orange-main) 100%); background-attachment: fixed; padding-bottom: 120px; }
+        .book-page { background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh; box-shadow: 0 25px 60px rgba(0,0,0,0.5); border-radius: 24px; padding: 50px; position: relative; z-index: 1; }
+        .lesson-banner { width: 100%; height: 220px; background: linear-gradient(rgba(230, 126, 34, 0.7), rgba(30, 60, 114, 0.8)), url('https://images.unsplash.com/photo-1549316719-f55bc81204d8?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        .lesson-banner h1 { color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: #b45309; border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; margin: 30px auto 0 auto; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); }
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+
+        .text-input { border: none; border-bottom: 2px solid #ccc; background: transparent; font-family: var(--font-text); font-size: 16px; padding: 5px; outline: none; transition: 0.3s; color: var(--black); font-weight: 500; }
+        .text-input:focus { border-color: var(--orange-main); }
+        .audio-player { background: var(--black); color: white; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .play-btn { background: var(--theme-purple-border); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .speed-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: rgba(255,255,255,0.35); transform: scale(1.05); }
+
+        .ws-container { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; justify-content: center;}
+        .ws-grid { display: grid; grid-template-columns: repeat(17, 28px); gap: 3px; background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--theme-blue-border); user-select: none; touch-action: none; }
+        @media (max-width: 600px) { .ws-grid { grid-template-columns: repeat(17, 18px); gap: 2px; padding: 10px; } }
+        .ws-cell { width: 100%; aspect-ratio: 1; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: clamp(12px, 2vw, 16px); border-radius: 4px; cursor: pointer; background: #0ea5e9; color: white; transition: 0.2s; }
+        .ws-cell.selecting { background: #fde047; color: #854d0e; }
+        .ws-cell.found { background: #22c55e; color: white; }
+        .ws-words { flex: 1; min-width: 200px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #ccc; }
+        .word-item { padding: 8px 12px; margin-bottom: 8px; background: #f1f5f9; border-radius: 6px; font-weight: 500; transition: 0.3s; text-align: center; font-size: 14px;}
+        .word-item.found { background: #dcfce7; color: #166534; text-decoration: line-through; border-left: 4px solid #166534; }
+
+        .tick-cross-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        @media (max-width: 600px) { .tick-cross-grid { grid-template-columns: repeat(2, 1fr); } }
+        .tick-cross-card { background: white; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #ccc; display: flex; flex-direction: column; align-items: center; }
+        .image-placeholder { width: 100%; height: 110px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; }
+        .image-placeholder img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .choice-container { display: flex; gap: 10px; justify-content: center; }
+        .choice-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ccc; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .choice-btn.yes.active { background: #dcfce7; border-color: #22c55e; color: #166534; }
+        .choice-btn.no.active { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+
+        .balloon-select { background: #f8fafc; border: 2px solid var(--theme-gray-border); color: var(--blue-dark); border-radius: 50px; padding: 5px 30px 5px 15px; font-family: var(--font-text); font-size: 15px; font-weight: bold; cursor: pointer; outline: none; transition: 0.3s; margin: 0 5px; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 10px center; }
+        .balloon-select:focus { border-color: var(--orange-main); color: var(--orange-main); }
+
+        .postcard { background: #fdf8e4; padding: 30px; border-radius: 12px; border: 1px solid #d6d3c4; box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; gap: 30px; margin-bottom: 30px; font-family: 'Comic Sans MS', cursive, sans-serif; }
+        @media (max-width: 768px) { .postcard { flex-direction: column; } .postcard-divider { display: none; } }
+        .postcard-left { flex: 1; line-height: 1.8; font-size: 16px; color: #333; }
+        .postcard-divider { width: 2px; background: #d6d3c4; }
+        .postcard-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+        .stamp { position: absolute; top: 0; right: 0; width: 60px; height: 80px; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 12px; transform: rotate(10deg); }
+        .address-line { border-bottom: 1px solid #999; margin-bottom: 15px; padding-bottom: 5px; color: #333; font-size: 16px; }
+
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; }
+        .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+        
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .grammar-floating-btn { background: var(--blue-dark); color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .grammar-box { visibility: hidden; opacity: 0; width: 300px; background: white; color: var(--black); border-radius: 16px; padding: 20px; position: absolute; bottom: 60px; right: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid var(--blue-dark); transition: 0.3s; pointer-events: none;}
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; pointer-events: auto;}
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner"><h1>1B | Getting a Taxi</h1></div>
+
+        <!-- SEC 0: WARM UP -->
+        <div id="sec-0" class="activity-section theme-blue active">
+            <h2>Warm Up</h2>
+            <div style="background: white; padding: 40px; border-radius: 16px; text-align: center; border: 2px dashed var(--theme-blue-border);">
+                <p style="font-size: 18px; font-weight: 500;">• What is your favorite city?</p>
+                <p style="font-size: 18px; font-weight: 500;">• Describe it to your classmates.</p>
+                <button class="btn-nav" style="margin-top: 20px; background: var(--theme-blue-border); color: white;" onclick="navigateSection('sec-0', 'sec-1');">
+                    Get in the Taxi & Start 1B ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- SEC 1: WORDS AND IDEAS -->
+        <div id="sec-1" class="activity-section theme-blue">
+            <h2>Words and Ideas</h2>
+            <p class="instruction">Find the places in the town in the wordsearch below. Click and drag across the letters.</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--theme-blue-border); color: white; padding: 15px 25px; border-radius: 12px; margin-bottom: 20px; font-family: var(--font-title); font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 18px;">Score: <span id="ws-score" style="color: #fde047; font-size: 24px;">0</span></div>
+                <div style="font-size: 18px;">Time: <span id="ws-timer" style="background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 8px;">02:00</span></div>
+            </div>
+
+            <div id="ws-congrats" style="display: none; background: #dcfce7; color: #166534; padding: 15px; border-radius: 12px; text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 20px; border: 2px solid #22c55e;">
+                🎉 CONGRATULATIONS! You found all the words! 🎉
+            </div>
+
+            <div class="ws-container">
+                <div class="ws-grid" id="ws-grid" onmouseleave="endSelection()"></div>
+                <div class="ws-words">
+                    <h4 style="margin-top: 0; text-align: center; color: var(--theme-blue-border);">Words to Find:</h4>
+                    <div id="word-list">
+                        <div class="word-item" id="word-BUILDING">BUILDING</div>
+                        <div class="word-item" id="word-SQUARE">SQUARE</div>
+                        <div class="word-item" id="word-STREET">STREET</div>
+                        <div class="word-item" id="word-STATION">STATION</div>
+                        <div class="word-item" id="word-TOWER">TOWER</div>
+                        <div class="word-item" id="word-CITY">CITY</div>
+                        <div class="word-item" id="word-BRIDGE">BRIDGE</div>
+                        <div class="word-item" id="word-HOTEL">HOTEL</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons"><div></div><button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 2: TARGET SITUATION -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>Target Situation</h2>
+            
+            <div style="display: flex; gap: 20px; align-items: center; background: white; padding: 20px; border-radius: 16px; margin-bottom: 30px; border: 1px solid #eee; flex-wrap: wrap;">
+                <img src="https://i.postimg.cc/t4VdpP9X/Ivete-pede-taxi-1B.png" alt="Ivete in Taxi" style="width: 250px; border-radius: 12px; border: 3px solid var(--theme-purple-border); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div>
+                    <p style="margin: 0 0 15px 0; font-size: 18px; font-weight: bold; color: var(--theme-purple-border);">Ivete is taking a taxi in London.</p>
+                    <div class="audio-player" style="background: var(--theme-purple-bg); border: 1px solid var(--theme-purple-border); color: var(--theme-purple-border);">
+                        <audio id="audio-ts" src="https://files.catbox.moe/jq2iit.mpeg"></audio>
+                        <button type="button" class="play-btn" id="btn-ts" style="background: var(--theme-purple-border);" onclick="toggleAudio('audio-ts', 'btn-ts', 'var(--theme-purple-border)')">▶ PLAY</button>
+                        <button type="button" class="speed-btn" id="spd-ts" style="background: #e2e8f0; color: #1e293b; border-color: #cbd5e1;" onclick="changeSpeed('audio-ts', 'spd-ts')">⚡ 1.0x</button>
+                        <span>Listen to Ivete</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction">Listen to the audio. Which places does she see?</p>
+            <div style="font-size: 18px; line-height: 2.5; background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
+                <div><b>a)</b> A beautiful <input type="text" id="ts-1" data-ans="square" class="text-input" style="width: 150px;"> . Its name is Trafalgar.</div>
+                <div><b>b)</b> A long <input type="text" id="ts-2" data-ans="bridge" class="text-input" style="width: 150px;"> . The London <input type="text" id="ts-3" data-ans="bridge" class="text-input" style="width: 150px;">.</div>
+                <div><b>c)</b> In London there are <input type="text" id="ts-4" data-ans="tower and church" class="text-input" style="width: 250px;" placeholder="... and ...">.</div>
+                <div><b>d)</b> Ivete is going to Churchill's <input type="text" id="ts-5" data-ans="hotel" class="text-input" style="width: 150px;">.</div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 3: LANGUAGE GUIDE -->
+        <div id="sec-3" class="activity-section theme-red">
+            <h2>Language Guide</h2>
+            <p class="instruction">Read the rules and fill the gaps about your place.</p>
+            
+            <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid var(--theme-red-border); margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: var(--theme-red-border);">A: CHECK IT OUT!</h4>
+                <div style="margin-bottom: 10px; font-style: italic;">Is there a Station nearby? ➔ Yes, there is.</div>
+                <div style="margin-bottom: 10px; font-style: italic;">Is there a bank in the street? ➔ No, there isn't.</div>
+                <div style="margin-bottom: 10px; font-style: italic;">Are there Churches in London? ➔ Yes, there are.</div>
+                <div style="margin-bottom: 10px; font-style: italic;">Are there Towers nearby? ➔ No, there aren't.</div>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                <div style="line-height: 2.2;">
+                    When we ask a question, we use <input type="text" id="lg-1" data-ans="is there" class="text-input" style="width: 150px;"> for singular form,<br>
+                    and we use <input type="text" id="lg-2" data-ans="are there" class="text-input" style="width: 150px;"> for things in the plural form.
+                </div>
+            </div>
+
+            <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #ccc; line-height: 2.2;">
+                <h4 style="color: var(--theme-red-border); margin-top: 0;">C: FILL THE GAPS ABOUT YOUR PLACE (Free Text):</h4>
+                Hello, I am <input type="text" id="lg-free-1" class="text-input" style="width: 150px;">. I'm from <input type="text" id="lg-free-2" class="text-input" style="width: 150px;">.<br>
+                In my town, <input type="text" id="lg-free-3" class="text-input" style="width: 100px;"> <input type="text" id="lg-free-4" class="text-input" style="width: 100px;"> Towers.<br>
+                There are <input type="text" id="lg-free-5" class="text-input" style="width: 150px;">, but there aren't <input type="text" id="lg-free-6" class="text-input" style="width: 200px;">.<br>
+                There is a <input type="text" id="lg-free-7" class="text-input" style="width: 180px;"> and there isn't any <input type="text" id="lg-free-8" class="text-input" style="width: 180px;">.
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 4: UP TO YOU -->
+        <div id="sec-4" class="activity-section theme-green">
+            <h2>Up To You</h2>
+            <p class="instruction">What is there in your City? Draw a simple map of your town, including your house and other places. Use <span style="color: var(--theme-green-border); font-weight: 800; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">there is / there are</span>.</p>
+            
+            <div style="width: 100%; box-sizing: border-box; border: 3px dashed var(--theme-green-border); border-radius: 16px; padding: 40px; text-align: center; background: #f0fdf4;">
+                <div style="font-size: 40px; margin-bottom: 10px;">🗺️</div>
+                <p style="font-weight: bold; color: var(--theme-green-border); font-size: 18px;">Draw a map and send it to your teacher!</p>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 5: CROSS CURRICULAR -->
+        <div id="sec-5" class="activity-section theme-orange">
+            <h2>Cross Curricular</h2>
+            <p class="instruction">Read Ivete's postcard. Then tick (✔️) what Ivete saw in the city and cross (❌) what you don't see.</p>
+            
+            <div class="postcard">
+                <div class="postcard-left">
+                    Dear, Jonatas.<br><br>
+                    I am in London! The city is amazing! There are very nice places to visit here.<br>
+                    There is a long and beautiful bridge near my hotel: the London Bridge. There is a church in my street and there are incredible buildings too. But there aren't train stations here.<br>
+                    There is a big and incredible Square. The Trafalgar Square.<br>
+                    Come and visit me!<br><br>
+                    Kisses, Ivete!
+                </div>
+                <div class="postcard-divider"></div>
+                <div class="postcard-right">
+                    <div class="stamp">STAMP</div>
+                    <div style="margin-top: 60px;">
+                        <div class="address-line">To: Jonatas</div>
+                        <div class="address-line">Address: Arnold Silva, 55</div>
+                        <div class="address-line">Kalilandia</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tick-cross-grid">
+                <div class="tick-cross-card" id="cc-1" data-ans="yes"><div class="image-placeholder"><img src="https://i.postimg.cc/tC580FHb/25.png" alt="Building"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-2" data-ans="yes"><div class="image-placeholder"><img src="https://i.postimg.cc/t4DbzLgF/19.png" alt="Church"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-3" data-ans="yes"><div class="image-placeholder"><img src="https://i.postimg.cc/Hx8Cdn9M/20.png" alt="Bridge"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-4" data-ans="yes"><div class="image-placeholder"><img src="https://i.postimg.cc/2y4RLtJ3/21.png" alt="Park"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-5" data-ans="no"><div class="image-placeholder"><img src="https://i.postimg.cc/P5fsN2M5/22.png" alt="Bank"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-6" data-ans="no"><div class="image-placeholder"><img src="https://i.postimg.cc/8cgxGHCx/23.png" alt="Tower"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-7" data-ans="no"><div class="image-placeholder"><img src="https://i.postimg.cc/gc3fDfSr/24.png" alt="Hospital"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-8" data-ans="yes"><div class="image-placeholder"><img src="https://i.postimg.cc/MZjW8P9C/18.png" alt="Hotel"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+                <div class="tick-cross-card" id="cc-9" data-ans="no"><div class="image-placeholder"><img src="https://i.postimg.cc/PqL78cp7/26.png" alt="Train Station"></div><div class="choice-container"><button class="choice-btn yes btn-yes" onclick="selectChoice(this, 'yes')">✔️</button><button class="choice-btn no btn-no" onclick="selectChoice(this, 'no')">❌</button></div></div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 6: LANGUAGE AT WORK -->
+        <div id="sec-6" class="activity-section theme-gray">
+            <h2>Language at Work</h2>
+            
+            <div style="background: white; padding: 20px; border-radius: 12px; border-left: 5px solid var(--theme-gray-border); margin-bottom: 25px;">
+                <p style="margin-top: 0; font-weight: bold; color: var(--theme-gray-border);">💡 Grammar Tip</p>
+                In English, when we need to talk about the existence of something we can say <b>there is / there are</b>.<br><br>
+                <i>In Lancaster, there is one Church. There are streets.<br>
+                There isn't a Hotel. There aren't Towers in Lancaster.</i>
+            </div>
+
+            <p class="instruction" style="font-weight: bold; color: var(--black);">Now, it's your turn! Complete the sentences using There is / There are / There isn't / There aren't.</p>
+            
+            <div style="line-height: 2.5; font-size: 16px; background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
+                <div style="margin-bottom: 12px;"><b>a)</b> <select class="balloon-select" id="law-1" data-ans="there are"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> Towers in London.</div>
+                <div style="margin-bottom: 12px;"><b>b)</b> <select class="balloon-select" id="law-2" data-ans="there is"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> a church in the map.</div>
+                <div style="margin-bottom: 12px;"><b>c)</b> <select class="balloon-select" id="law-3" data-ans="there are"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> streets in London.</div>
+                <div style="margin-bottom: 12px;"><b>d)</b> <select class="balloon-select" id="law-4" data-ans="there are"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> houses in the picture.</div>
+                <div style="margin-bottom: 12px;"><b>e)</b> <select class="balloon-select" id="law-5" data-ans="there isn't"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> a hotel in the map.</div>
+                <div style="margin-bottom: 12px;"><b>f)</b> <select class="balloon-select" id="law-6" data-ans="there are"><option value="">( Choose )</option><option value="there is">There is</option><option value="there are">There are</option><option value="there isn't">There isn't</option><option value="there aren't">There aren't</option></select> train stations in London.</div>
+            </div>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button></div>
+        </div>
+
+        <!-- SEC 7: NOW IT'S YOUR TURN -->
+        <div id="sec-7" class="activity-section theme-yellow">
+            <h2>Now It's Your Turn</h2>
+            
+            <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <p><b>A.</b> Write a postcard of your city;</p>
+                <p><b>B.</b> Tell the places that exist (there is / there are) or not (there isn't / There aren't);</p>
+                <p><b>C.</b> Say your opinion about it;</p>
+                <p style="color: var(--theme-red-border); font-weight: bold;">D. Write below, download your postcard and send it to your teacher.</p>
+            </div>
+
+            <textarea id="student-text" style="width: 100%; height: 200px; padding: 20px; border-radius: 12px; border: 1px solid #ccc; font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 16px; background: #fdf8e4; resize: vertical; box-sizing: border-box;" placeholder="Dear friend, I am in..."></textarea>
+            
+            <button id="btn-download" style="background: var(--blue-light); color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 15px; transition: 0.3s;" onclick="baixarDocumento()">
+                📥 Download Postcard (Word / DOC)
+            </button>
+
+            <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 1B & Get XP</button>
+
+            <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button><div></div></div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESULTADO XP -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 1B.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Return to Map</button>
+        </div>
+    </div>
+
+    <!-- DICA GRAMATICAL FLUTUANTE -->
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:var(--blue-dark); font-weight:bold; margin-bottom:10px; font-size:16px;">❓ There is / There are</div>
+            <div style="margin-bottom:8px;">Usamos <b>There is</b> e <b>There are</b> para falar sobre a existência de coisas num lugar (Haver / Existir).</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold;">THERE IS (Singular)</div>
+            <div style="color:#666; font-style:italic; background:#f0f4f8; padding:5px; border-left:3px solid var(--blue-light);">"There is a Station nearby."</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold;">THERE ARE (Plural)</div>
+            <div style="color:#666; font-style:italic; background:#f0f4f8; padding:5px; border-left:3px solid var(--blue-light);">"There are Churches in London."</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold;">NEGATIVE</div>
+            <div style="color:#666; font-style:italic; background:#f0f4f8; padding:5px; border-left:3px solid var(--blue-light);">"There isn't a bank." / "There aren't Towers."</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // MODO LEITURA / TRAVA DE SEGURANÇA
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('licao_1b_status') === 'concluida') {
+                let savedData = localStorage.getItem('licao1b_respostas');
+                if (savedData) {
+                    let respostas = JSON.parse(savedData);
+
+                    // Restaura Texto do Postcard
+                    let textEl = document.getElementById('student-text');
+                    if(textEl) { textEl.value = respostas.text; textEl.disabled = true; }
+
+                    // Restaura Target Situation e Language Guide
+                    for(let id in respostas.ts) { let el = document.getElementById(id); if(el) { el.value = respostas.ts[id]; el.disabled = true; } }
+                    for(let id in respostas.lg) { let el = document.getElementById(id); if(el) { el.value = respostas.lg[id]; el.disabled = true; } }
+                    for(let id in respostas.lgFree) { let el = document.getElementById(id); if(el) { el.value = respostas.lgFree[id]; el.disabled = true; } }
+
+                    // Restaura Cross Curricular (Tick/Cross)
+                    for(let id in respostas.cc) {
+                        let val = respostas.cc[id];
+                        let el = document.getElementById(id);
+                        if(el && val) {
+                            el.setAttribute('data-user-ans', val);
+                            let btns = el.querySelectorAll('.choice-btn');
+                            btns.forEach(b => {
+                                if((val === 'yes' && b.classList.contains('yes')) || (val === 'no' && b.classList.contains('no'))) {
+                                    b.classList.add('active');
+                                }
+                                b.disabled = true; b.style.cursor = 'not-allowed';
+                                b.onclick = null;
+                            });
+                        }
+                    }
+
+                    // Restaura Language at Work (Selects)
+                    for(let id in respostas.law) { let el = document.getElementById(id); if(el) { el.value = respostas.law[id]; el.disabled = true; } }
+
+                    // Restaura Wordsearch
+                    if(respostas.ws) {
+                        respostas.ws.forEach(w => {
+                            let wordEl = document.getElementById('word-'+w);
+                            if(wordEl) wordEl.classList.add('found');
+                        });
+                        let grid = document.getElementById('ws-grid');
+                        if(grid) { grid.style.pointerEvents = 'none'; grid.style.opacity = '0.7'; }
+                    }
+                }
+
+                // Tranca o Botão de Finalizar
+                let btnFinish = document.querySelector('.btn-finish');
+                if(btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
+                    btnFinish.disabled = true;
+                    btnFinish.style.background = "#64748b"; 
+                    btnFinish.style.cursor = "not-allowed";
+                    btnFinish.onclick = null;
+                }
+            }
+        });
+
+        // ==========================================
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) { a.pause(); const otherBtn = document.getElementById('btn-' + a.id); if(otherBtn) { otherBtn.innerText = "▶ PLAY"; otherBtn.style.background = ""; } }
+            });
+            if (audio.paused) { audio.play(); btn.innerText = "⏸ PAUSE"; btn.style.background = "#c0392b"; } 
+            else { audio.pause(); btn.innerText = "▶ PLAY"; btn.style.background = originalColor; }
+            audio.onended = function() { btn.innerText = "▶ PLAY"; btn.style.background = originalColor; };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        const gridData = [
+            ['D','N','N','B','H','B','U','I','L','D','I','N','G','A','D','T','Y'],
+            ['U','I','S','Q','U','A','R','E','N','H','B','G','V','F','C','D','X'],
+            ['S','Z','A','Q','W','E','R','T','Y','U','I','O','P','L','O','K','I'],
+            ['J','U','H','Y','G','T','F','R','D','E','S','W','A','Q','A','Z','B'],
+            ['S','D','C','F','V','H','B','G','J','N','K','M','L','J','K','H','R'],
+            ['G','V','T','R','S','T','R','E','E','T','C','Z','E','D','A','O','I'],
+            ['Y','N','O','M','U','N','H','G','F','R','E','D','C','X','S','T','D'],
+            ['F','G','H','J','O','L','I','M','P','Q','I','W','U','Y','B','E','G'],
+            ['S','T','A','T','I','O','N','C','E','J','G','S','I','O','M','L','E'],
+            ['G','T','O','W','E','R','S','I','U','N','I','O','L','U','T','R','E'],
+            ['W','S','P','L','O','M','N','T','C','X','Z','E','D','G','H','K','N'],
+            ['B','D','S','W','E','R','T','Y','G','B','J','N','H','V','F','C','O','L']
+        ];
+        const targetWords = ["BUILDING", "SQUARE", "STREET", "STATION", "TOWER", "CITY", "BRIDGE", "HOTEL"];
+        let foundWords = []; let isSelecting = false; let selectedCells = []; let wsScore = 0; let timerInterval; let gameStarted = false;
+
+        function buildWordSearch() {
+            const gridEl = document.getElementById('ws-grid'); gridEl.innerHTML = '';
+            for(let r=0; r<12; r++) { for(let c=0; c<17; c++) { const cell = document.createElement('div'); cell.className = 'ws-cell'; cell.innerText = gridData[r][c]; cell.onmousedown = (e) => startSelection(e, cell); cell.onmouseenter = (e) => enterCell(e, cell); cell.onmouseup = () => checkSelection(); gridEl.appendChild(cell); } }
+        }
+
+        function startWordSearchTimer() {
+            if(timerInterval) return; let timeLeft = 120;
+            timerInterval = setInterval(() => {
+                if(timeLeft <= 0) { clearInterval(timerInterval); alert("Time's up! Your score: " + wsScore); return; }
+                timeLeft--;
+                let m = Math.floor(timeLeft / 60).toString().padStart(2, '0'); let s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('ws-timer').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function startSelection(e, cell) { if(!gameStarted) { gameStarted = true; startWordSearchTimer(); } isSelecting = true; selectedCells = [cell]; cell.classList.add('selecting'); }
+        function enterCell(e, cell) { if(!isSelecting) return; if(!selectedCells.includes(cell)) { selectedCells.push(cell); cell.classList.add('selecting'); } }
+        function endSelection() { if(isSelecting) checkSelection(); }
+
+        function checkSelection() {
+            if(!isSelecting) return; isSelecting = false;
+            let word1 = selectedCells.map(c => c.innerText).join(''); let word2 = selectedCells.map(c => c.innerText).reverse().join(''); 
+            let matchedWord = null;
+            if(targetWords.includes(word1)) matchedWord = word1; if(targetWords.includes(word2)) matchedWord = word2;
+            if(matchedWord && !foundWords.includes(matchedWord)) {
+                foundWords.push(matchedWord); document.getElementById(`word-${matchedWord}`).classList.add('found');
+                selectedCells.forEach(c => { c.classList.remove('selecting'); c.classList.add('found'); });
+                wsScore += 10; document.getElementById('ws-score').innerText = wsScore;
+                if(foundWords.length === targetWords.length) { clearInterval(timerInterval); document.getElementById('ws-congrats').style.display = 'block'; }
+            } else { selectedCells.forEach(c => { c.classList.remove('selecting'); }); }
+            selectedCells = [];
+        }
+        buildWordSearch();
+
+        function selectChoice(btn, type) { const container = btn.parentElement; container.querySelector('.btn-yes').classList.remove('active'); container.querySelector('.btn-no').classList.remove('active'); btn.classList.add('active'); container.parentElement.setAttribute('data-user-ans', type); }
+
+        function baixarDocumento() {
+            const textoAluno = document.getElementById('student-text').value;
+            if(textoAluno.trim() === "") { alert("Please, write your postcard first!"); return; }
+            const conteudoMsword = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>My Postcard</title></head>
+                <body style="font-family: Arial, sans-serif; font-size: 14pt;">
+                    <h2 style="color: #E67E22;">My Postcard - Lesson 1B</h2><hr>
+                    <p style="white-space: pre-wrap;">${textoAluno.replace(/\n/g, '<br>')}</p>
+                </body></html>`;
+            const blob = new Blob(['\ufeff', conteudoMsword], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a'); link.href = url; link.download = 'My_Postcard_1B.doc';
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+
+        // ==========================================
+        // CÁLCULO DE XP E FOTOGRAFIA DAS RESPOSTAS
+        // ==========================================
+        let finalXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            // Objeto que vai "fotografar" a página
+            let respostasFotografadas = {
+                ws: foundWords,
+                ts: {},
+                lg: {},
+                lgFree: {},
+                cc: {},
+                law: {},
+                text: document.getElementById('student-text') ? document.getElementById('student-text').value : ""
+            };
+
+            total += 8;
+            correct += foundWords.length;
+
+            // 1. Target Situation
+            for(let i=1; i<=5; i++) {
+                let input = document.getElementById('ts-' + i);
+                if(input) {
+                    total++;
+                    respostasFotografadas.ts['ts-' + i] = input.value;
+                    let expected = input.getAttribute('data-ans').toLowerCase();
+                    let userAns = input.value.trim().toLowerCase();
+                    if(i === 4) {
+                        if(userAns.includes("tower") && userAns.includes("church")) correct++;
+                    } else {
+                        if(userAns === expected) correct++;
+                    }
+                }
+            }
+
+            // 2. Language Guide (Rules)
+            for(let i=1; i<=2; i++) {
+                let input = document.getElementById('lg-' + i);
+                if(input) {
+                    total++;
+                    respostasFotografadas.lg['lg-' + i] = input.value;
+                    if(input.value.trim().toLowerCase() === input.getAttribute('data-ans').toLowerCase()) correct++;
+                }
+            }
+            // Language Guide (Free Text)
+            for(let i=1; i<=8; i++) {
+                let input = document.getElementById('lg-free-' + i);
+                if(input) { respostasFotografadas.lgFree['lg-free-' + i] = input.value; }
+            }
+
+            // 3. Cross Curricular
+            for(let i=1; i<=9; i++) {
+                let card = document.getElementById('cc-' + i);
+                if(card) {
+                    total++;
+                    respostasFotografadas.cc['cc-' + i] = card.getAttribute('data-user-ans');
+                    if(card.getAttribute('data-user-ans') === card.getAttribute('data-ans')) correct++;
+                }
+            }
+
+            // 4. Language at Work
+            for(let i=1; i<=6; i++) {
+                let select = document.getElementById('law-' + i);
+                if(select) {
+                    total++;
+                    respostasFotografadas.law['law-' + i] = select.value;
+                    if(select.value.toLowerCase() === select.getAttribute('data-ans').toLowerCase()) correct++;
+                }
+            }
+
+            // Guarda as respostas na Mochila
+            localStorage.setItem('licao1b_respostas', JSON.stringify(respostasFotografadas));
+
+            // Calcula a percentagem de acertos e gera o valor final de XP
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+            // Exibe a pontuação final local
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // Devolve o XP à estrutura principal do índice
+        function returnToMap() {
+            localStorage.setItem('licao_1b_status', 'concluida');
+            localStorage.setItem('licao_1b_xp', finalXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(2, finalXP); 
+            }
+            window.location.href = "about:blank"; 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6B | A Romantic Dinner</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 920px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+        }
+        .text-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .textarea-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            resize: vertical;
+        }
+        .textarea-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        /* FOOD GROUPS GRID */
+        .food-groups-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media(max-width: 650px) { .food-groups-grid { grid-template-columns: 1fr; } }
+        .food-group-box {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .food-group-box h4 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-title);
+            font-size: 14px;
+            color: var(--blue-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* AUDIO PLAYER */
+        .audio-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            gap: 8px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .play-btn:hover { background: var(--blue-medium); }
+        .play-btn.playing { background: #ea580c !important; }
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.04); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--blue-dark);
+            margin-left: 4px;
+        }
+
+        /* SENTENCE COMPLETION */
+        .sentence-row {
+            margin-bottom: 14px;
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+
+        /* DREAM DATE FORM */
+        .dream-date-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        @media(max-width: 600px) { .dream-date-grid { grid-template-columns: 1fr; } }
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-field label {
+            font-size: 12.5px;
+            font-weight: bold;
+            color: var(--blue-dark);
+        }
+
+        /* STORY TRANSITION BOX */
+        .story-transition-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--accent-main);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9a3412;
+            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MODAL */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .xp-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 30px;
+            font-weight: 800;
+            margin: 20px auto;
+            border: 4px solid #f59e0b;
+        }
+
+        /* GRAMMAR TIP FLOATING */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 350px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 6 • Having a Date</span>
+            <h1>6B | A Romantic Dinner</h1>
+        </div>
+
+        <!-- SEÇÃO 1: WORDS AND IDEAS -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Words and Ideas • Food & Drink Categories</h2>
+            <p class="instruction">Listen and repeat the expressions. Complete the chart by writing food and drink items into their correct groups.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-6b1">
+                    <audio id="audio-6b1" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-6b1" onclick="handleAudioPlay('audio-6b1', 'btn-audio-6b1', 'script-6b1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-6b1" onclick="handleAudioPause('audio-6b1', 'btn-audio-6b1', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-6b1" onclick="changeSpeedDirect('audio-6b1', 'spd-audio-6b1', 0.75, 'slow-audio-6b1')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-6b1" onclick="cycleSpeed('audio-6b1', 'spd-audio-6b1')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-6b1" onclick="changeSpeedDirect('audio-6b1', 'spd-audio-6b1', 1.25, 'fast-audio-6b1')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 6B.1: Restaurant Vocabulary</span>
+                </div>
+            </div>
+
+            <div class="food-groups-grid">
+                <!-- GRUPO 1: Fruit and vegetables -->
+                <div class="food-group-box">
+                    <h4>🥦 Fruit and vegetables</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" class="text-input eval-cat" id="veg-1" data-ans="apples|carrots|spinach|tomatoes|lettuce|broccoli|onions|salad" placeholder="e.g. Carrots">
+                        <input type="text" class="text-input eval-cat" id="veg-2" data-ans="apples|carrots|spinach|tomatoes|lettuce|broccoli|onions|salad" placeholder="e.g. Tomatoes">
+                        <input type="text" class="text-input eval-cat" id="veg-3" data-ans="apples|carrots|spinach|tomatoes|lettuce|broccoli|onions|salad" placeholder="e.g. Green Salad">
+                    </div>
+                </div>
+
+                <!-- GRUPO 2: Meat and fish -->
+                <div class="food-group-box">
+                    <h4>🥩 Meat and fish</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" class="text-input eval-cat" id="meat-1" data-ans="salmon|steak|chicken|beef|tuna|pork|cod|fish" placeholder="e.g. Grilled Salmon">
+                        <input type="text" class="text-input eval-cat" id="meat-2" data-ans="salmon|steak|chicken|beef|tuna|pork|cod|fish" placeholder="e.g. Beef Steak">
+                        <input type="text" class="text-input eval-cat" id="meat-3" data-ans="salmon|steak|chicken|beef|tuna|pork|cod|fish" placeholder="e.g. Roast Chicken">
+                    </div>
+                </div>
+
+                <!-- GRUPO 3: Drinks -->
+                <div class="food-group-box">
+                    <h4>🍷 Drinks</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" class="text-input eval-cat" id="drink-1" data-ans="wine|red wine|white wine|water|sparkling water|mineral water|juice|orange juice|coffee|tea" placeholder="e.g. Red Wine">
+                        <input type="text" class="text-input eval-cat" id="drink-2" data-ans="wine|red wine|white wine|water|sparkling water|mineral water|juice|orange juice|coffee|tea" placeholder="e.g. Sparkling Water">
+                        <input type="text" class="text-input eval-cat" id="drink-3" data-ans="wine|red wine|white wine|water|sparkling water|mineral water|juice|orange juice|coffee|tea" placeholder="e.g. Fresh Orange Juice">
+                    </div>
+                </div>
+
+                <!-- GRUPO 4: Desserts / Extras -->
+                <div class="food-group-box">
+                    <h4>🍰 Desserts / Extras</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" class="text-input eval-cat" id="des-1" data-ans="tiramisu|ice cream|chocolate cake|cheesecake|apple pie|pudding|fruit salad" placeholder="e.g. Tiramisu">
+                        <input type="text" class="text-input eval-cat" id="des-2" data-ans="tiramisu|ice cream|chocolate cake|cheesecake|apple pie|pudding|fruit salad" placeholder="e.g. Chocolate Cake">
+                        <input type="text" class="text-input eval-cat" id="des-3" data-ans="tiramisu|ice cream|chocolate cake|cheesecake|apple pie|pudding|fruit salad" placeholder="e.g. Vanilla Ice Cream">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: TARGET SITUATION -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Target Situation • The Dinner Conversation</h2>
+            <p class="instruction">Ivete and Alan are having dinner. Listen to the audio and answer the questions below.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-6b2">
+                    <audio id="audio-6b2" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-6b2" onclick="handleAudioPlay('audio-6b2', 'btn-audio-6b2', 'script-6b2', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-6b2" onclick="handleAudioPause('audio-6b2', 'btn-audio-6b2', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-6b2" onclick="changeSpeedDirect('audio-6b2', 'spd-audio-6b2', 0.75, 'slow-audio-6b2')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-6b2" onclick="cycleSpeed('audio-6b2', 'spd-audio-6b2')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-6b2" onclick="changeSpeedDirect('audio-6b2', 'spd-audio-6b2', 1.25, 'fast-audio-6b2')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 6B.2: Covent Garden Trattoria</span>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
+                        a) Where are they?
+                    </label>
+                    <textarea class="textarea-input eval-sit" id="sit-where" rows="2" placeholder="e.g. They are at an authentic candlelit Italian trattoria in Covent Garden, London."></textarea>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
+                        b) What does Alan order?
+                    </label>
+                    <textarea class="textarea-input eval-sit" id="sit-alan" rows="2" placeholder="e.g. Alan orders handmade wild mushroom risotto and a glass of Italian red wine."></textarea>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
+                        c) What does Ivete order?
+                    </label>
+                    <textarea class="textarea-input eval-sit" id="sit-ivete" rows="2" placeholder="e.g. Ivete orders fresh tomato bruschetta to start, grilled sea bass with herbs, and sparkling water."></textarea>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language Guide ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: LANGUAGE GUIDE -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Language Guide • Adverbs of Frequency</h2>
+            <p class="instruction">Complete the sentences with adverbs of frequency: <b>Always, Usually, Often, Sometimes, Hardly ever, Never</b> based on the couple's preferences.</p>
+
+            <div class="card-box">
+                <div class="sentence-row">
+                    1. Alan 
+                    <input type="text" class="text-input eval-adv" id="adv-1" data-ans="always" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    orders sparkling mineral water with lemon at Italian restaurants.
+                </div>
+
+                <div class="sentence-row">
+                    2. Ivete 
+                    <input type="text" class="text-input eval-adv" id="adv-2" data-ans="hardly ever|rarely" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    eats very spicy food because it upsets her stomach.
+                </div>
+
+                <div class="sentence-row">
+                    3. They 
+                    <input type="text" class="text-input eval-adv" id="adv-3" data-ans="usually|often" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    go for a romantic walk through the streets after dinner on Friday evenings.
+                </div>
+
+                <div class="sentence-row">
+                    4. Alan 
+                    <input type="text" class="text-input eval-adv" id="adv-4" data-ans="never" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    drinks black tea without milk or sugar.
+                </div>
+
+                <div class="sentence-row">
+                    5. Ivete 
+                    <input type="text" class="text-input eval-adv" id="adv-5" data-ans="sometimes|often" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    tries rich Italian desserts like creamy tiramisu on special celebrations.
+                </div>
+
+                <div class="sentence-row">
+                    6. They 
+                    <input type="text" class="text-input eval-adv" id="adv-6" data-ans="often|always|usually" style="display: inline-block; width: 150px;" placeholder="adverb..."> 
+                    talk enthusiastically about art, theater and travel when they have quiet dinners together.
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Cross Curricular & Date ➔</button>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: CROSS CURRICULAR & NOW, IT'S YOUR TURN -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Cross Curricular • Healthy Eating Habits</h2>
+            <p class="instruction">How often do you eat healthy food? Describe your eating habits in detail.</p>
+
+            <div class="card-box">
+                <textarea class="textarea-input eval-free" id="healthy-habits" rows="4" placeholder="Describe your daily diet: How often do you eat vegetables, fruit, fish, or sweets? Use adverbs of frequency: I always eat fresh salad for lunch; I usually drink water; I hardly ever eat fast food..."></textarea>
+            </div>
+
+            <h2 style="margin-top: 25px;">Now, It’s Your Turn • Dream Dinner Date</h2>
+            <p class="instruction">Complete the form about your dream dinner date and write a paragraph describing it.</p>
+
+            <div class="card-box">
+                <div class="dream-date-grid">
+                    <div class="form-field">
+                        <label>Date's Name:</label>
+                        <input type="text" class="text-input eval-free" id="date-name" placeholder="e.g. Alan / Sophia / Carlos">
+                    </div>
+                    <div class="form-field">
+                        <label>Restaurant Type:</label>
+                        <input type="text" class="text-input eval-free" id="date-type" placeholder="e.g. Cozy Italian Trattoria / Rooftop Bistro">
+                    </div>
+                    <div class="form-field">
+                        <label>Main Dish:</label>
+                        <input type="text" class="text-input eval-free" id="date-main" placeholder="e.g. Wild Mushroom Risotto / Grilled Salmon">
+                    </div>
+                    <div class="form-field">
+                        <label>Drink:</label>
+                        <input type="text" class="text-input eval-free" id="date-drink" placeholder="e.g. Sparkling Wine / Mint Lime Soda">
+                    </div>
+                    <div class="form-field" style="grid-column: 1 / -1;">
+                        <label>Dessert:</label>
+                        <input type="text" class="text-input eval-free" id="date-dessert" placeholder="e.g. Homemade Tiramisu / Chocolate Lava Cake">
+                    </div>
+                </div>
+
+                <label style="font-weight: bold; color: var(--blue-dark); font-size: 13.5px; display: block; margin-bottom: 6px;">
+                    Describe your dream dinner date in a complete paragraph:
+                </label>
+                <textarea class="textarea-input eval-free" id="date-paragraph" rows="4" placeholder="Write a romantic or fun description of your ideal dinner evening using would like, adverbs of frequency, and expressions from this lesson..."></textarea>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA EXATA -->
+            <div class="story-transition-box">
+                <b>Story Update:</b>
+                "O jantar foi incrível e a química entre eles foi evidente. No dia seguinte, Ivete conta tudo para suas amigas."
+            </div>
+
+            <button class="btn-finish" id="btn-finish-6b" onclick="calculateXP()">
+                Finish Lesson 6B & Calculate XP ➔
+            </button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 6B Completed!</h2>
+            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
+            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
+            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
+                You mastered restaurant food vocabulary, frequency adverbs, and romantic date conversations!
+            </p>
+            <button class="btn-finish" onclick="proceedToNextLesson()">Continue to 6C (The Day After) ➔</button>
+        </div>
+    </div>
+
+    <!-- FLOATING GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 10px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 15px;">
+                Advérbios de Frequência & Restaurantes
+            </h4>
+            
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">1. Posição dos Advérbios:</p>
+            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
+                • <b>Antes de verbos principais:</b> <i>I <b>usually</b> order pasta.</i><br>
+                • <b>Depois do verbo BE:</b> <i>They are <b>always</b> happy together.</i>
+            </p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">2. Escala de Frequência:</p>
+            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
+                100% Always ➔ Usually ➔ Often ➔ Sometimes ➔ Hardly ever / Rarely ➔ 0% Never.
+            </p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">3. Pedindo no Restaurante:</p>
+            <p style="margin: 0; font-size: 12.5px; color: #475569;">
+                • <i>Could we have the menu, please?</i><br>
+                • <i>For my main course, I'd like the grilled salmon.</i><br>
+                • <i>Could we get the bill, please?</i>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // STANDARDIZED AUDIO & SPEECH PLAYER SYSTEM
+        // ==========================================
+        const audioScripts = {
+            'script-6b1': "Listen and categorize: Carrots, fresh tomatoes and green salad in vegetables. Grilled salmon, beef steak and roast chicken in meat and fish. Red wine, sparkling water and orange juice in drinks. Tiramisu and chocolate cake in desserts.",
+            'script-6b2': "Welcome to Trattoria Covent Garden. Alan: 'Good evening! We have a reservation for two.' Waiter: 'What would you like to order?' Alan: 'I would like the wild mushroom risotto and a glass of red wine.' Ivete: 'To start, I'd like the fresh bruschetta, followed by grilled sea bass and sparkling water, please.'"
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "var(--blue-dark)";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--blue-dark)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--blue-dark)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        function playFoodVocabAudio() {
+            handleAudioPlay('audio-6b1', 'btn-audio-6b1', 'script-6b1', 'var(--blue-dark)');
+        }
+
+        function playDinnerDialogueAudio() {
+            handleAudioPlay('audio-6b2', 'btn-audio-6b2', 'script-6b2', 'var(--blue-dark)');
+        }
+
+        let calculatedXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let userAnswers = {
+                categories: {},
+                situation: {},
+                adverbs: {},
+                free: {}
+            };
+
+            // 1. Food Categories (12 inputs)
+            document.querySelectorAll('.eval-cat').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers.categories[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else if (val.length >= 3) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            // 2. Situation (3 textareas)
+            document.querySelectorAll('.eval-sit').forEach(txt => {
+                total++;
+                let val = txt.value.trim();
+                userAnswers.situation[txt.id] = val;
+                if (val.length >= 6) {
+                    correct++;
+                    txt.style.borderColor = "#22c55e";
+                    txt.style.backgroundColor = "#f0fdf4";
+                } else {
+                    txt.style.borderColor = "#ef4444";
+                }
+            });
+
+            // 3. Adverbs of Frequency (6 inputs)
+            document.querySelectorAll('.eval-adv').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase();
+                userAnswers.adverbs[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
+                if (accepted.some(a => val.includes(a) || a.includes(val))) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            // 4. Free fields
+            document.querySelectorAll('.eval-free').forEach(el => {
+                total++;
+                let val = el.value.trim();
+                userAnswers.free[el.id] = val;
+                if (val.length >= 3) {
+                    correct++;
+                    el.style.borderColor = "#22c55e";
+                } else {
+                    el.style.borderColor = "#ef4444";
+                }
+            });
+
+            localStorage.setItem('licao6b_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            calculatedXP = Math.min(100, Math.round(percentage * 100));
+
+            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function proceedToNextLesson() {
+            let oldXP = parseInt(localStorage.getItem('licao_6b_xp')) || 0;
+            let diff = calculatedXP - oldXP;
+
+            localStorage.setItem('licao_6b_status', 'concluida');
+            localStorage.setItem('licao_6b_xp', calculatedXP);
+
+            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalXP += diff;
+            localStorage.setItem('target_on_profile_xp', totalXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, calculatedXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao6c.html', 'link-6c');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao6c.html', null);
+                return;
+            }
+            window.location.href = "licao6c.html";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao6b_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.categories) {
+                        for (let id in data.categories) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.categories[id];
+                        }
+                    }
+                    if (data.situation) {
+                        for (let id in data.situation) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.situation[id];
+                        }
+                    }
+                    if (data.adverbs) {
+                        for (let id in data.adverbs) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.adverbs[id];
+                        }
+                    }
+                    if (data.free) {
+                        for (let id in data.free) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.free[id];
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            if (localStorage.getItem('licao_6b_status') === 'concluida') {
+                let btnFinish = document.getElementById('btn-finish-6b');
+                if (btnFinish) {
+                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

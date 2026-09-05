@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8A | Vacations and Trips</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-page {
+            background: var(--white);
+            width: 100%;
+            max-width: 920px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--accent-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .activity-section {
+            display: none;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 6px solid;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .activity-section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .instruction {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 13.5px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+        .text-input:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .textarea-styled {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: 0.2s;
+        }
+        .textarea-styled:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        /* STANDARDIZED AUDIO PLAYER */
+        .audio-wrapper {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            gap: 8px;
+        }
+        .play-btn {
+            background: var(--blue-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--font-title);
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .play-btn:hover { background: var(--blue-medium); }
+        .play-btn.playing { background: #ea580c !important; }
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.04); }
+        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-track-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--blue-dark);
+            margin-left: 4px;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+        }
+        .word-chip {
+            background: white;
+            border: 1px solid #94a3b8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--blue-dark);
+        }
+
+        /* VACATION PREFERENCES TABLE */
+        .vacation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .vacation-table th {
+            background: #0f172a;
+            color: white;
+            padding: 12px;
+            font-size: 13.5px;
+            font-family: var(--font-title);
+            text-align: left;
+        }
+        .vacation-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        .vacation-table textarea {
+            width: 100%;
+            min-height: 70px;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: var(--font-text);
+            box-sizing: border-box;
+        }
+
+        .story-transition-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--accent-main);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #9a3412;
+            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 10px 24px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MODAL */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .xp-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 28px;
+            font-weight: 800;
+            margin: 15px auto;
+            border: 4px solid #f59e0b;
+        }
+
+        /* FLOATING GRAMMAR TIP */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: transform 0.2s;
+            border: none;
+        }
+        .grammar-floating-btn:hover { transform: scale(1.05); }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 340px;
+            background: white;
+            color: var(--black);
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: 0.3s;
+            pointer-events: none;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit 8 • Vacations and Trips</span>
+            <h1>8A | Vacations and Trips</h1>
+        </div>
+
+        <!-- ================= 1. WORDS AND IDEAS ================= -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. WORDS AND IDEAS • Vacation Activities</h2>
+            <p class="instruction">
+                Use the activities from the box to label the 9 vacation pictures below:
+            </p>
+
+            <div class="word-bank">
+                <span class="word-chip">Visit historical places</span>
+                <span class="word-chip">Scuba dive</span>
+                <span class="word-chip">Go hiking</span>
+                <span class="word-chip">Sunbathe</span>
+                <span class="word-chip">Take a boat trip</span>
+                <span class="word-chip">Try local cuisine</span>
+                <span class="word-chip">Go sightseeing</span>
+                <span class="word-chip">Relax on the beach</span>
+                <span class="word-chip">Go camping</span>
+            </div>
+
+            <div class="card-box">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">1. Ancient ruins and museums:</span>
+                        <input type="text" class="text-input eval-input" id="act-1" data-ans="visit historical places" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">2. Underwater exploring with oxygen tank:</span>
+                        <input type="text" class="text-input eval-input" id="act-2" data-ans="scuba dive" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">3. Walking mountain trails with backpack:</span>
+                        <input type="text" class="text-input eval-input" id="act-3" data-ans="go hiking" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">4. Lying under the bright sunshine:</span>
+                        <input type="text" class="text-input eval-input" id="act-4" data-ans="sunbathe" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">5. Sailing across the calm lake:</span>
+                        <input type="text" class="text-input eval-input" id="act-5" data-ans="take a boat trip" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">6. Tasting regional traditional dishes:</span>
+                        <input type="text" class="text-input eval-input" id="act-6" data-ans="try local cuisine" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">7. Touring the famous city monuments:</span>
+                        <input type="text" class="text-input eval-input" id="act-7" data-ans="go sightseeing" placeholder="Type activity...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">8. Sitting by the sea ocean waves:</span>
+                        <input type="text" class="text-input eval-input" id="act-8" data-ans="relax on the beach" placeholder="Type activity...">
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">9. Sleeping in a tent under the night stars:</span>
+                        <input type="text" class="text-input eval-input" id="act-9" data-ans="go camping" placeholder="Type activity...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= 2. TARGET SITUATION ================= -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. TARGET SITUATION • Ivete & Alan’s End of Year Vacation Plans</h2>
+            <p class="instruction">
+                Listen to Ivete and Alan talking about their plans for the end of the year. What are their preferences? What are their opinions? What are they going to do? Fill in the planning table.
+            </p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-8a1">
+                    <audio id="audio-8a1" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-8a1" onclick="handleAudioPlay('audio-8a1', 'btn-audio-8a1', 'script-8a1', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-8a1" onclick="handleAudioPause('audio-8a1', 'btn-audio-8a1', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-8a1" onclick="changeSpeedDirect('audio-8a1', 'spd-audio-8a1', 0.75, 'slow-audio-8a1')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-8a1" onclick="cycleSpeed('audio-8a1', 'spd-audio-8a1')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-8a1" onclick="changeSpeedDirect('audio-8a1', 'spd-audio-8a1', 1.25, 'fast-audio-8a1')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 8A.1: Ivete & Alan Vacation Planning</span>
+                </div>
+            </div>
+
+            <div class="card-box" style="padding: 10px; overflow-x: auto;">
+                <table class="vacation-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Person</th>
+                            <th style="width: 28%;">Preferences</th>
+                            <th style="width: 28%;">Activities (Going to...)</th>
+                            <th style="width: 29%;">Opinions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Ivete</b></td>
+                            <td><textarea id="ivete-pref" placeholder="e.g. Loves green nature, peaceful scenery, and photography..."></textarea></td>
+                            <td><textarea id="ivete-act" placeholder="e.g. She is going to take a scenic boat cruise on Lake Windermere..."></textarea></td>
+                            <td><textarea id="ivete-op" placeholder="e.g. Believes the Lake District is the most romantic spot in Britain..."></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><b>Alan</b></td>
+                            <td><textarea id="alan-pref" placeholder="e.g. Prefers hiking, historical countryside pubs, and mountain views..."></textarea></td>
+                            <td><textarea id="alan-act" placeholder="e.g. He is going to hike around the national park and try local food..."></textarea></td>
+                            <td><textarea id="alan-op" placeholder="e.g. Thinks it will be relaxing and energizing before the new corporate term..."></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= 3. CROSS CURRICULAR ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. CROSS CURRICULAR • Vitor’s Vacation Plans</h2>
+            <p class="instruction">
+                Listen to Vitor's holiday plans audio and answer questions A through E.
+            </p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-8a2">
+                    <audio id="audio-8a2" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-8a2" onclick="handleAudioPlay('audio-8a2', 'btn-audio-8a2', 'script-8a2', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-8a2" onclick="handleAudioPause('audio-8a2', 'btn-audio-8a2', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-8a2" onclick="changeSpeedDirect('audio-8a2', 'spd-audio-8a2', 0.75, 'slow-audio-8a2')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-8a2" onclick="cycleSpeed('audio-8a2', 'spd-audio-8a2')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-8a2" onclick="changeSpeedDirect('audio-8a2', 'spd-audio-8a2', 1.25, 'fast-audio-8a2')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 8A.2: Vitor's Vacation Plans</span>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. Where is Vitor going to travel?</span><br>
+                        <select class="eval-input text-input" id="vitor-q-1" data-ans="lake district" style="max-width: 320px;">
+                            <option value="">-- select an option --</option>
+                            <option value="london center">London City Center</option>
+                            <option value="lake district">The English Lake District</option>
+                            <option value="paris">Paris, France</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. Who is he going to travel with?</span><br>
+                        <select class="eval-input text-input" id="vitor-q-2" data-ans="college friends" style="max-width: 320px;">
+                            <option value="">-- select an option --</option>
+                            <option value="alone">By himself</option>
+                            <option value="college friends">With his university friends</option>
+                            <option value="coworkers">With his boss</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. How are they going to travel there?</span><br>
+                        <select class="eval-input text-input" id="vitor-q-3" data-ans="train" style="max-width: 320px;">
+                            <option value="">-- select an option --</option>
+                            <option value="train">By high-speed train</option>
+                            <option value="airplane">By private jet</option>
+                            <option value="car">By rental car</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. Where are they going to stay?</span><br>
+                        <select class="eval-input text-input" id="vitor-q-4" data-ans="bed and breakfast" style="max-width: 320px;">
+                            <option value="">-- select an option --</option>
+                            <option value="5-star hotel">In a luxury 5-star hotel</option>
+                            <option value="bed and breakfast">In a cozy traditional Bed & Breakfast</option>
+                            <option value="camping">Camping in a tent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">E. How long are they going to stay?</span><br>
+                        <select class="eval-input text-input" id="vitor-q-5" data-ans="five days" style="max-width: 320px;">
+                            <option value="">-- select an option --</option>
+                            <option value="two days">A weekend (2 days)</option>
+                            <option value="five days">Five days</option>
+                            <option value="one month">One entire month</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 25px;">LANGUAGE AT WORK • Correcting Sentences with "Going to"</h2>
+            <p class="instruction">
+                Correct the sentences below about Vitor’s plans for vacation using the proper form of <b>be going to</b>.
+            </p>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. "Vitor going to travel next Friday."</span>
+                        <input type="text" class="text-input eval-input" id="law-v-1" data-ans="vitor is going to travel next friday|is going to travel" placeholder="Write corrected sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. "They is going to stay in a hotel."</span>
+                        <input type="text" class="text-input eval-input" id="law-v-2" data-ans="they are going to stay in a hotel|they are going to stay" placeholder="Write corrected sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. "We are going visit the national park."</span>
+                        <input type="text" class="text-input eval-input" id="law-v-3" data-ans="we are going to visit the national park|are going to visit" placeholder="Write corrected sentence...">
+                    </div>
+                    <div>
+                        <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. "He not going to work during vacation."</span>
+                        <input type="text" class="text-input eval-input" id="law-v-4" data-ans="he is not going to work during vacation|he isn't going to work during vacation" placeholder="Write corrected sentence...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Now, It’s Your Turn ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= 4. NOW, IT’S YOUR TURN ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. NOW, IT’S YOUR TURN • Writing a Vacation Letter</h2>
+            <p class="instruction">
+                Read Vitor’s letter to his father. Then, write a letter to a friend or relative describing your own vacation plans using <b>be going to</b>.
+            </p>
+
+            <div class="card-box" style="background: #f8fafc; border: 1px dashed #94a3b8; margin-bottom: 18px;">
+                <p style="font-size: 13.5px; font-style: italic; color: #334155; line-height: 1.7; margin: 0;">
+                    <b>Vitor's letter:</b> "Dear Dad, I am writing to tell you about my plans for next week! My friends and I are going to visit Lake Windermere. We are going to take the train on Friday morning. We are going to hike around the mountains and take a boat trip. I am going to take lots of pictures to show you when I return. Love, Vitor."
+                </p>
+            </div>
+
+            <div class="card-box">
+                <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 8px;">
+                    Write your vacation letter here (minimum 40 words):
+                </label>
+                <textarea class="textarea-styled" id="vacation-letter" placeholder="Dear [Name], I am excited to tell you about my holiday plans! I am going to..."></textarea>
+            </div>
+
+            <!-- TRANSIÇÃO NARRATIVA EXATA -->
+            <div class="story-transition-box">
+                <b>Story Update:</b>
+                "As malas estão prontas! Agora eles precisam correr para o aeroporto e conferir os horários."
+            </div>
+
+            <button class="btn-finish" id="btn-finish-8a" onclick="calculateXP()">
+                Finish Lesson 8A & Calculate XP ➔
+            </button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 8A Completed!</h2>
+            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
+            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
+            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
+                You mastered future vacation plans with 'be going to'!
+            </p>
+            <button class="btn-finish" onclick="proceedTo8B()">Continue to 8B (Timetables) ➔</button>
+        </div>
+    </div>
+
+    <!-- FLOATING GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 8px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 14px;">
+                Future: Be Going To (Plans & Intentions)
+            </h4>
+            <p style="margin: 0 0 6px 0;">
+                <b>Structure:</b> Subject + am/is/are + going to + base verb
+            </p>
+            <p style="margin: 0 0 6px 0;">
+                • <b>I am going to</b> visit the lake.<br>
+                • <b>She is going to</b> take a boat trip.<br>
+                • <b>We are going to</b> travel by train.
+            </p>
+            <p style="margin: 0;"><b>Negative:</b> is not (isn't) / are not (aren't) going to.</p>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        // ==========================================
+        // STANDARDIZED AUDIO & SPEECH PLAYER SYSTEM
+        // ==========================================
+        const audioScripts = {
+            'script-8a1': "Ivete says: I really prefer green nature, quiet scenery, and taking photos. I am going to take a boat cruise across Lake Windermere. Alan replies: That sounds wonderful! I prefer hiking mountain trails and trying local food in village pubs. It is going to be the most relaxing trip of the year!",
+            'script-8a2': "Vitor is speaking: Next Friday, my college friends and I are going to travel to the English Lake District. We are going to take the express train from London Euston. We booked five days at a traditional Bed and Breakfast near the lakeside. We are going to hike and enjoy nature!"
+        };
+
+        const playerStates = {};
+
+        function getPlayerState(id) {
+            if (!playerStates[id]) {
+                playerStates[id] = {
+                    rate: 1.0,
+                    isPlaying: false,
+                    isPaused: false,
+                    utterance: null
+                };
+            }
+            return playerStates[id];
+        }
+
+        function stopAllAudiosExcept(currentId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== currentId) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                if (!btn.id.includes(currentId)) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                    btn.style.background = "var(--blue-dark)";
+                }
+            });
+            Object.keys(playerStates).forEach(k => {
+                if (k !== currentId) {
+                    playerStates[k].isPlaying = false;
+                    playerStates[k].isPaused = false;
+                }
+            });
+        }
+
+        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+
+            if (hasAudioSrc) {
+                if (!audio.paused && !audio.ended) {
+                    audio.pause();
+                    btn.innerText = "▶ CONTINUAR";
+                    btn.classList.remove('playing');
+                    btn.style.background = originalColor || "var(--blue-dark)";
+                    state.isPlaying = false;
+                    state.isPaused = true;
+                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
+                    audio.playbackRate = state.rate;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+                } else {
+                    stopAllAudiosExcept(audioId);
+                    audio.playbackRate = state.rate;
+                    audio.currentTime = 0;
+                    audio.play().then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.classList.add('playing');
+                        btn.style.background = "#ea580c";
+                        state.isPlaying = true;
+                        state.isPaused = false;
+                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+
+                    audio.onended = () => {
+                        btn.innerText = "▶ PLAY";
+                        btn.classList.remove('playing');
+                        btn.style.background = originalColor || "var(--blue-dark)";
+                        state.isPlaying = false;
+                        state.isPaused = false;
+                    };
+                }
+            } else {
+                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+            }
+        }
+
+        function handleAudioPause(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (audio && !audio.paused) {
+                audio.pause();
+            }
+            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
+                window.speechSynthesis.pause();
+            }
+            state.isPlaying = false;
+            state.isPaused = true;
+            if (btn) {
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+            }
+        }
+
+        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
+            if (!('speechSynthesis' in window)) return;
+            const btn = document.getElementById(btnId);
+            const state = getPlayerState(audioId);
+
+            if (state.isPlaying && !state.isPaused) {
+                window.speechSynthesis.pause();
+                state.isPaused = true;
+                state.isPlaying = false;
+                btn.innerText = "▶ CONTINUAR";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                return;
+            }
+
+            if (state.isPaused && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                state.isPaused = false;
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+                btn.style.background = "#ea580c";
+                return;
+            }
+
+            stopAllAudiosExcept(audioId);
+            const text = audioScripts[scriptKey] || "";
+            if (!text) return;
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = state.rate;
+            state.utterance = utterance;
+            window.activeUtterance = utterance;
+
+            btn.innerText = "⏸ PAUSE";
+            btn.classList.add('playing');
+            btn.style.background = "#ea580c";
+            state.isPlaying = true;
+            state.isPaused = false;
+
+            utterance.onend = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            utterance.onerror = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+                btn.style.background = originalColor || "var(--blue-dark)";
+                state.isPlaying = false;
+                state.isPaused = false;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            const audio = document.getElementById(audioId);
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
+            }
+
+            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
+                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
+                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
+                window.speechSynthesis.cancel();
+                if (scriptKey && btn) {
+                    state.isPlaying = false;
+                    state.isPaused = false;
+                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
+                }
+            }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+            
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+        }
+
+        function playAudioVacationDialogue() {
+            handleAudioPlay('audio-8a1', 'btn-audio-8a1', 'script-8a1', 'var(--blue-dark)');
+        }
+
+        function playAudioVitorPlans() {
+            handleAudioPlay('audio-8a2', 'btn-audio-8a2', 'script-8a2', 'var(--blue-dark)');
+        }
+
+        let calculatedXP = 0;
+
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+            let userAnswers = {
+                inputs: {},
+                letter: document.getElementById('vacation-letter').value,
+                table: {
+                    ivete_pref: document.getElementById('ivete-pref').value,
+                    ivete_act: document.getElementById('ivete-act').value,
+                    ivete_op: document.getElementById('ivete-op').value,
+                    alan_pref: document.getElementById('alan-pref').value,
+                    alan_act: document.getElementById('alan-act').value,
+                    alan_op: document.getElementById('alan-op').value
+                }
+            };
+
+            document.querySelectorAll('.eval-input').forEach(input => {
+                total++;
+                let val = input.value.trim().toLowerCase().replace(/[.?]/g, '');
+                userAnswers.inputs[input.id] = input.value;
+                let accepted = input.getAttribute('data-ans').toLowerCase().split('|').map(a => a.replace(/[.?]/g, ''));
+                if (accepted.some(a => val === a || val.includes(a) || (a.includes(val) && val.length > 2))) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
+            });
+
+            // Check letter
+            let letterVal = document.getElementById('vacation-letter').value.toLowerCase();
+            if (letterVal.includes('going to') && letterVal.length > 20) {
+                correct += 2;
+            } else if (letterVal.length > 10) {
+                correct += 1;
+            }
+            total += 2;
+
+            localStorage.setItem('licao8a_respostas', JSON.stringify(userAnswers));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            calculatedXP = Math.min(100, Math.round(percentage * 100));
+
+            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function proceedTo8B() {
+            let oldXP = parseInt(localStorage.getItem('licao_8a_xp')) || 0;
+            let diff = calculatedXP - oldXP;
+
+            localStorage.setItem('licao_8a_status', 'concluida');
+            localStorage.setItem('licao_8a_xp', calculatedXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            if (window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(8, calculatedXP);
+            }
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao8b.html', 'link-8b');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao8b.html', null);
+                return;
+            }
+            window.location.href = "licao8b.html";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao8a_respostas');
+            if (saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if (data.letter) document.getElementById('vacation-letter').value = data.letter;
+                    if (data.table) {
+                        if (data.table.ivete_pref) document.getElementById('ivete-pref').value = data.table.ivete_pref;
+                        if (data.table.ivete_act) document.getElementById('ivete-act').value = data.table.ivete_act;
+                        if (data.table.ivete_op) document.getElementById('ivete-op').value = data.table.ivete_op;
+                        if (data.table.alan_pref) document.getElementById('alan-pref').value = data.table.alan_pref;
+                        if (data.table.alan_act) document.getElementById('alan-act').value = data.table.alan_act;
+                        if (data.table.alan_op) document.getElementById('alan-op').value = data.table.alan_op;
+                    }
+                    if (data.inputs) {
+                        for (let id in data.inputs) {
+                            let el = document.getElementById(id);
+                            if (el) el.value = data.inputs[id];
+                        }
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>

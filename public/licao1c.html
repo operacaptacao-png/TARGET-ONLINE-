@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1C | Checking in a hotel</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #1A1A1A; --white: #FFFFFF; --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-main: #E67E22; --blue-accent: #1E3C72;
+            --font-title: 'Montserrat', sans-serif; --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #eab308;
+        }
+
+        body { font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px; display: flex; justify-content: center; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 40%, var(--orange-main) 100%); background-attachment: fixed; padding-bottom: 120px; }
+        .book-page { background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh; box-shadow: 0 25px 60px rgba(0,0,0,0.4); border-radius: 24px; padding: 50px; position: relative; z-index: 1; margin: 0 auto; box-sizing: border-box;}
+        .lesson-banner { width: 100%; height: 220px; background: linear-gradient(rgba(230, 126, 34, 0.7), rgba(30, 60, 114, 0.8)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        .lesson-banner h1 { color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .story-transition-box { background: #fffcf2; border-left: 5px solid #eab308; padding: 20px; border-radius: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 16px; line-height: 1.8; color: #854d0e; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-red .btn-nav { color: var(--theme-red-border); border-color: var(--theme-red-border); } .theme-red .btn-nav:hover { background: var(--theme-red-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-gray .btn-nav { color: var(--theme-gray-border); border-color: var(--theme-gray-border); } .theme-gray .btn-nav:hover { background: var(--theme-gray-border); color: white; }
+        .theme-yellow .btn-nav { color: #b45309; border-color: var(--theme-yellow-border); } .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: var(--black); }
+
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; margin: 30px auto 0 auto; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+
+        .text-input { border: none; border-bottom: 2px solid #ccc; background: transparent; font-family: var(--font-text); font-size: 16px; padding: 5px; outline: none; transition: 0.3s; color: var(--black); font-weight: 500; }
+        .text-input:focus { border-color: var(--orange-main); }
+        .text-input:disabled { opacity: 0.7; cursor: not-allowed; border-bottom: 2px dashed #ccc; }
+        
+        .audio-player { background: var(--black); color: white; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; font-weight: 500; }
+        .play-btn { background: var(--theme-purple-border); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .speed-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: rgba(255,255,255,0.35); transform: scale(1.05); }
+
+        .warmup-box { position: relative; background: white; padding: 50px 40px; border-radius: 16px; text-align: center; border: 2px solid var(--theme-blue-border); box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 1; }
+        .warmup-box h3 { color: var(--blue-dark); font-size: 26px; margin-top: 0; }
+        .warmup-img { max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid var(--theme-blue-border); }
+        .warmup-options { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .warmup-btn { background: var(--theme-blue-bg); color: var(--blue-dark); border: 2px solid var(--theme-blue-border); padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; font-family: var(--font-text); font-size: 16px; transition: 0.3s; }
+        .warmup-btn:hover { background: var(--theme-blue-border); color: white; }
+        .warmup-success { display: none; margin-top: 20px; }
+        .warmup-success p { color: #22c55e; font-size: 20px; font-weight: bold; }
+        .btn-checkin { background: var(--orange-main); color: white; border: none; padding: 15px 40px; font-family: var(--font-title); font-weight: 800; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 15px; }
+        .btn-checkin:hover { background: #d35400; transform: scale(1.05); }
+
+        .word-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; background: white; padding: 25px; border-radius: 12px; border: 2px dashed var(--theme-blue-border); min-height: 60px; }
+        .draggable-word { background: var(--theme-blue-border); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: grab; user-select: none; transition: 0.2s; display: inline-block; }
+        .drop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        @media (max-width: 768px) { .drop-grid { grid-template-columns: repeat(2, 1fr); } }
+        .drop-card { background: white; padding: 20px; border-radius: 16px; text-align: center; border: 2px dashed #cbd5e1; display: flex; flex-direction: column; align-items: center; min-height: 80px; justify-content: center; }
+        .drop-zone { width: 100%; min-height: 50px; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+
+        .ts-container { background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .dialogue-text { line-height: 1.8; font-size: 15px; margin-bottom: 30px; background: #faf5ff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--theme-purple-border); }
+        .dialogue-text strong { color: var(--theme-purple-border); }
+        .ts-questions { display: flex; flex-direction: column; gap: 15px; }
+        .ts-questions div { font-weight: 500; }
+
+        .keyboard-container { background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 25px; }
+        .keyboard { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+        .key-btn { width: 40px; height: 40px; border-radius: 8px; border: none; background: white; color: var(--theme-red-border); font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s; }
+        .key-btn:hover, .key-btn:active { background: var(--theme-red-border); color: white; transform: translateY(-2px); }
+        .key-input { font-size: 20px; font-weight: bold; border: 2px dashed #ccc; border-radius: 8px; padding: 10px 15px; width: 100%; outline: none; letter-spacing: 2px; color: #333; background: white; cursor: pointer; transition: 0.3s; box-sizing: border-box; }
+        .key-input:focus, .key-input.active { border-color: var(--theme-red-border); background: #fef2f2; }
+        .list-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; }
+
+        .lw-word-display { font-size: 32px; font-weight: bold; text-align: center; color: var(--blue-dark); border: none; border-bottom: 4px solid var(--theme-gray-border); background: transparent; outline: none; width: 100%; max-width: 400px; letter-spacing: 8px; padding-bottom: 5px; margin: 20px 0; text-transform: uppercase; cursor: default; }
+
+        .notebook-area { width: 100%; height: 250px; padding: 25px; border-radius: 12px; border: 1px solid #eab308; font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 18px; line-height: 1.8; resize: vertical; background: #fdf8e4; box-shadow: inset 0 4px 10px rgba(0,0,0,0.05); box-sizing: border-box; outline: none; }
+
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
+        .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+
+        .grammar-floating-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .grammar-floating-btn { background: #9333ea; color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); transition: 0.3s; }
+        .grammar-box { visibility: hidden; opacity: 0; width: 320px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid #9333ea; transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.6; pointer-events: none; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>1C | Checking in a hotel</h1>
+        </div>
+
+        <div id="sec-0" class="activity-section theme-blue active">
+            <div class="warmup-box">
+                <h3>Look at the picture. Where is Ivete?</h3>
+                <img src="https://i.postimg.cc/VL6r92nb/ivete-e-recepcionista.png" alt="Ivete at reception" class="warmup-img">
+                
+                <div class="warmup-options" id="wu-options">
+                    <button class="warmup-btn" onclick="checkWarmup('A')">a) At the airport</button>
+                    <button class="warmup-btn" onclick="checkWarmup('B')">b) In a Hotel</button>
+                    <button class="warmup-btn" onclick="checkWarmup('C')">c) On the beach</button>
+                </div>
+                <div class="warmup-success" id="wu-success">
+                    <p>✔️ Check-in successfully completed!</p>
+                    <button class="btn-checkin" onclick="navigateSection('sec-0', 'sec-1')">Confirm Check-in ➔</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-1" class="activity-section theme-blue">
+            <h2>Words and Ideas</h2>
+            <p class="instruction">Drag the words and drop them in the correct hotel boxes below.</p>
+            
+            <div id="word-pool" class="word-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
+                <div class="draggable-word" draggable="true" id="w1" ondragstart="drag(event)">1) To book</div>
+                <div class="draggable-word" draggable="true" id="w2" ondragstart="drag(event)">2) Fill in</div>
+                <div class="draggable-word" draggable="true" id="w3" ondragstart="drag(event)">3) Registration</div>
+                <div class="draggable-word" draggable="true" id="w4" ondragstart="drag(event)">4) Card Room</div>
+                <div class="draggable-word" draggable="true" id="w5" ondragstart="drag(event)">5) Pen</div>
+                <div class="draggable-word" draggable="true" id="w6" ondragstart="drag(event)">6) Key</div>
+                <div class="draggable-word" draggable="true" id="w7" ondragstart="drag(event)">7) Welcome</div>
+                <div class="draggable-word" draggable="true" id="w8" ondragstart="drag(event)">8) Hotel</div>
+                <div class="draggable-word" draggable="true" id="w9" ondragstart="drag(event)">9) Reservation</div>
+                <div class="draggable-word" draggable="true" id="w10" ondragstart="drag(event)">10) Booking</div>
+            </div>
+            
+            <div class="drop-grid">
+                <div class="drop-card"><div class="drop-zone eval-drop" id="dz-1" data-ans="w1" ondrop="dropLimit(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><div class="drop-zone eval-drop" id="dz-2" data-ans="w2" ondrop="dropLimit(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><div class="drop-zone eval-drop" id="dz-3" data-ans="w3" ondrop="dropLimit(event)" ondragover="allowDrop(event)"></div></div>
+                <div class="drop-card"><div class="drop-zone eval-drop" id="dz-4" data-ans="w4" ondrop="dropLimit(event)" ondragover="allowDrop(event)"></div></div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>Target Situation</h2>
+            
+            <div class="audio-player" style="background: var(--theme-purple-bg); border: 1px solid var(--theme-purple-border); color: var(--theme-purple-border);">
+                <audio id="audio-ts" src="https://files.catbox.moe/pxviso.mp3"></audio>
+                <button type="button" class="play-btn" id="btn-ts" style="background: var(--theme-purple-border);" onclick="toggleAudio('audio-ts', 'btn-ts', 'var(--theme-purple-border)')">▶ PLAY</button>
+                <button type="button" class="speed-btn" id="spd-ts" style="background: #e2e8f0; color: #1e293b; border-color: #cbd5e1;" onclick="changeSpeed('audio-ts', 'spd-ts')">⚡ 1.0x</button>
+                <span>Listen to the dialogue</span>
+            </div>
+
+            <p class="instruction">Read the dialogue between Ivete and the hotel's receptionist, then answer the questions.</p>
+            
+            <div class="ts-container">
+                <div class="dialogue-text">
+                    <strong>Ivete:</strong> Good morning. My name is Ivete Alves. I have a booking here for 5 nights.<br>
+                    <strong>Receptionist:</strong> Wait a minute, please… Could you spell your name, please?<br>
+                    <strong>Ivete:</strong> I-V-E-T-E A-L-V-E-S<br>
+                    <strong>Receptionist:</strong> Thank you! … Here it is. Room 1029 for 5 nights.<br>
+                    <strong>Ivete:</strong> That’s correct.<br>
+                    <strong>Receptionist:</strong> May I See your passport, please?<br>
+                    <strong>Ivete:</strong> Here it is.<br>
+                    <strong>Receptionist:</strong> Thank you. Can you fill in this registration card, please?<br>
+                    <strong>Ivete:</strong> Sure thing!... Could I use your pen?<br>
+                    <strong>Receptionist:</strong> Sure!<br>
+                    <strong>Ivete:</strong> Here it is. Thank you very much.<br>
+                    <strong>Receptionist:</strong> You’re welcome! This is your key! Room number 1029.<br>
+                    <strong>Ivete:</strong> Lovely! Thank you!
+                </div>
+
+                <div class="ts-questions">
+                    <div>a. What does the receptionist say to greet Ivete?<br><input type="text" id="ts-input-1" data-ans="good morning" class="text-input eval-input" style="width:100%;"></div>
+                    <div>b. How many nights does Ivete have a booking for?<br><input type="text" id="ts-input-2" data-ans="5 nights" class="text-input eval-input" style="width:100%;"></div>
+                    <div>c. Why does the receptionist ask Ivete to spell her name?<br><input type="text" id="ts-input-3" data-ans="to find her booking" class="text-input eval-input" style="width:100%;"></div>
+                    <div>d. What is the room number assigned to Ivete?<br><input type="text" id="ts-input-4" data-ans="1029" class="text-input eval-input" style="width:100%;"></div>
+                    <div>e. What does the receptionist request to see from Ivete?<br><input type="text" id="ts-input-5" data-ans="passport" class="text-input eval-input" style="width:100%;"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-3" class="activity-section theme-red">
+            <h2>Language Guide</h2>
+            <p class="instruction">Practice spelling using the virtual keyboard. Click on a field below, then type the letters.</p>
+            
+            <div class="keyboard-container">
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: var(--black);">1. How do you spell your name?</label><br>
+                    <input type="text" id="spell-1" class="key-input spell-field eval-input" data-ans="ivete" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: var(--black);">2. Can you spell your last name, please?</label><br>
+                    <input type="text" id="spell-2" class="key-input spell-field eval-input" data-ans="alves" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                </div>
+
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: var(--black);">3. Could you spell Feira de Santana, please?</label><br>
+                    <input type="text" id="spell-3" class="key-input spell-field eval-input" data-ans="f-e-i-r-a d-e s-a-n-t-a-n-a" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                </div>
+
+                <div class="keyboard" id="keyboard"></div>
+            </div>
+
+            <p class="instruction">Spelling bee! Write the names you know:</p>
+            <div class="list-inputs">
+                <div>1. <input type="text" id="lg-list-1" class="text-input eval-input" data-ans="john" style="width: 80%;"></div>
+                <div>2. <input type="text" id="lg-list-2" class="text-input eval-input" data-ans="mary" style="width: 80%;"></div>
+                <div>3. <input type="text" id="lg-list-3" class="text-input eval-input" data-ans="peter" style="width: 80%;"></div>
+                <div>4. <input type="text" id="lg-list-4" class="text-input eval-input" data-ans="sarah" style="width: 80%;"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-4" class="activity-section theme-green">
+            <h2>Up To You</h2>
+            <div style="background: #f0fdf4; padding: 40px; border-radius: 16px; border: 3px dashed var(--theme-green-border); text-align: center;">
+                <div style="font-size: 50px; margin-bottom: 15px;">🗣️</div>
+                <p style="font-size: 24px; font-weight: bold; color: var(--theme-green-border); line-height: 1.5; margin: 0;">
+                    The spelling challenge: work in pairs, think about 5 words to challenge your classmate!
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-5" class="activity-section theme-orange">
+            <h2>Homework</h2>
+            <p class="instruction">Fill in the blanks of the guest registration:</p>
+
+            <div style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #ccc; line-height: 2.2; font-size: 16px;">
+                <b>R:</b> Good morning, sir. How can I help?<br>
+                <b>G:</b> I’d like a room for the weekend.<br>
+                <b>R:</b> Single or double?<br>
+                <b>G:</b> Single, please.<br>
+                <b>R:</b> Your last name, please.<br>
+                <b>G:</b> <input type="text" id="hw-input-1" data-ans="brown" class="text-input eval-input" style="width: 150px;">.<br>
+                <b>R:</b> And your first name?<br>
+                <b>G:</b> <input type="text" id="hw-input-2" data-ans="david" class="text-input eval-input" style="width: 150px;">.<br>
+                <b>R:</b> Home address?<br>
+                <b>G:</b> <input type="text" id="hw-input-3" data-ans="farm road" class="text-input eval-input" style="width: 200px;"> New Zealand.<br>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-6" class="activity-section theme-gray">
+            <h2>Language at Work</h2>
+            <p class="instruction">Listen to the audio, then click the letters to write what you hear.</p>
+            
+            <div style="text-align: center;">
+                <div class="audio-player" style="background: var(--theme-gray-border); border: 1px solid var(--theme-gray-border); color: white;">
+                    <audio id="audio-lw" src="https://files.catbox.moe/6y599k.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-lw" style="background: white; color: var(--theme-gray-border);" onclick="toggleAudio('audio-lw', 'btn-lw', 'white')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-lw" style="background: rgba(255,255,255,0.25); color: white; border-color: rgba(255,255,255,0.5);" onclick="changeSpeed('audio-lw', 'spd-lw')">⚡ 1.0x</button>
+                    <span>Listen carefully</span>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center;">
+                <p style="font-weight: bold; color: var(--theme-gray-border); font-size: 18px;">Type the word you hear:</p>
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="lw-word-display" data-ans="PASSPORT" class="lw-word-display eval-input" readonly placeholder="WORD...">
+                </div>
+                <div class="keyboard" id="keyboard-lw"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-7" class="activity-section theme-yellow">
+            <h2>Now It's Your Turn</h2>
+            <p class="instruction">Write your spelling practice words below.</p>
+            <textarea id="final-notes" class="notebook-area" placeholder="Write your words here..."></textarea>
+
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Ivete pegou a chave do quarto 1029, subiu com sua mala e finalmente desfez a bagagem. Amanhã de manhã será seu primeiro grande desafio da Unidade 1: o Unit Challenge!
+            </div>
+
+            <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 1C & Get XP</button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grammar-floating-container">
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+        <div class="grammar-box">
+            <div style="color:#9333ea; font-weight:bold; margin-bottom:10px; font-size:16px;">❓ Polite Requests</div>
+            <div style="margin-bottom:8px;">No hotel e no aeroporto, usamos expressões educadas para pedir informações ou permissão:</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: #9333ea;">COULD YOU...?</div>
+            <div style="color:#666; font-style:italic; background:#faf5ff; padding:5px; border-left:3px solid #9333ea;">"Could you spell your name, please?"</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: #9333ea;">COULD I...?</div>
+            <div style="color:#666; font-style:italic; background:#faf5ff; padding:5px; border-left:3px solid #9333ea;">"Could I use your pen?"</div>
+            <div style="margin-bottom:5px; margin-top:10px; font-weight: bold; color: #9333ea;">MAY I...?</div>
+            <div style="color:#666; font-style:italic; background:#faf5ff; padding:5px; border-left:3px solid #9333ea;">"May I see your passport?"</div>
+        </div>
+    </div>
+
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 1C.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Go to Unit Challenge ➔</button>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if(a.id !== audioId) { a.pause(); const otherBtn = document.getElementById('btn-' + a.id); if(otherBtn) { otherBtn.innerText = "▶ PLAY"; otherBtn.style.background = ""; } }
+            });
+            if (audio.paused) { 
+                audio.play(); 
+                btn.innerText = "⏸ PAUSE"; 
+                btn.style.background = "#c0392b"; 
+            } else { 
+                audio.pause(); 
+                btn.innerText = "▶ PLAY"; 
+                btn.style.background = originalColor; 
+            }
+            audio.onended = function() {
+                btn.innerText = "▶ PLAY";
+                btn.style.background = originalColor;
+            };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        function checkWarmup(answer) {
+            if(answer === 'B') {
+                document.getElementById('wu-options').style.display = 'none';
+                document.getElementById('wu-success').style.display = 'block';
+            } else {
+                alert("Incorrect. Look at the reception desk!");
+            }
+        }
+
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function dropLimit(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(data);
+            var target = ev.target;
+            if (target.classList.contains('drop-zone')) {
+                if(target.children.length > 0) { document.getElementById('word-pool').appendChild(target.children[0]); }
+                target.appendChild(draggedEl);
+            }
+        }
+        function dropBack(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            document.getElementById('word-pool').appendChild(document.getElementById(data));
+        }
+
+        let activeSpellInput = null;
+        function setActiveInput(el) {
+            document.querySelectorAll('.spell-field').forEach(inp => { inp.classList.remove('active'); inp.style.borderColor = '#ccc'; });
+            el.classList.add('active'); el.style.borderColor = 'var(--theme-red-border)'; activeSpellInput = el;
+        }
+
+        function initKeyboard() {
+            const kb = document.getElementById('keyboard');
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -";
+            for(let char of alphabet) {
+                let btn = document.createElement('button'); btn.className = 'key-btn'; btn.innerText = char;
+                btn.onclick = () => {
+                    if(activeSpellInput) {
+                        let val = activeSpellInput.value;
+                        if(val.length === 0) activeSpellInput.value = char;
+                        else activeSpellInput.value += (char === ' ' || char === '-' ? char : "-" + char);
+                    }
+                };
+                kb.appendChild(btn);
+            }
+            let bsBtn = document.createElement('button'); bsBtn.className = 'key-btn'; bsBtn.innerText = '⌫'; bsBtn.style.width = '60px'; bsBtn.style.background = '#fef2f2';
+            bsBtn.onclick = () => {
+                if(activeSpellInput && activeSpellInput.value.length > 0) {
+                    activeSpellInput.value = activeSpellInput.value.slice(0, -1);
+                }
+            };
+            kb.appendChild(bsBtn);
+        }
+        initKeyboard();
+
+        function initKeyboardLW() {
+            const kb = document.getElementById('keyboard-lw');
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const display = document.getElementById('lw-word-display');
+            for(let char of alphabet) {
+                let btn = document.createElement('button'); btn.className = 'key-btn'; btn.innerText = char;
+                btn.onclick = () => { display.value += char; };
+                kb.appendChild(btn);
+            }
+            let bsBtn = document.createElement('button'); bsBtn.className = 'key-btn'; bsBtn.innerText = '⌫'; bsBtn.style.width = '60px';
+            bsBtn.onclick = () => { if(display.value.length > 0) display.value = display.value.slice(0, -1); };
+            kb.appendChild(bsBtn);
+        }
+        initKeyboardLW();
+
+        let finalXP = 0;
+        function calculateXP() {
+            let correct = 0;
+            let total = 0;
+
+            let respostasFotografadas = {
+                dragDrop: {},
+                inputs: {},
+                notes: document.getElementById('final-notes') ? document.getElementById('final-notes').value : ""
+            };
+            
+            document.querySelectorAll('.eval-drop').forEach(drop => {
+                total++;
+                let expected = drop.getAttribute('data-ans');
+                if(drop.children.length > 0) {
+                    let childId = drop.children[0].id;
+                    respostasFotografadas.dragDrop[drop.id] = childId;
+                    if(childId === expected || childId) correct++;
+                }
+            });
+
+            document.querySelectorAll('.eval-input').forEach(inp => {
+                total++;
+                respostasFotografadas.inputs[inp.id] = inp.value;
+                let val = inp.value.trim().toLowerCase();
+                let ans = (inp.getAttribute('data-ans') || '').toLowerCase();
+                if(val && (ans === '' || val.includes(ans) || ans.includes(val))) correct++;
+            });
+
+            localStorage.setItem('licao1c_respostas', JSON.stringify(respostasFotografadas));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function returnToMap() {
+            localStorage.setItem('licao_1c_status', 'concluida');
+            localStorage.setItem('licao_1c_xp', finalXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('licao1d.html', 'link-1d');
+                    return;
+                }
+            }
+            window.location.href = "licao1d.html"; 
+        }
+    </script>
+</body>
+</html>

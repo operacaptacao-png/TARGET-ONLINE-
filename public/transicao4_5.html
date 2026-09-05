@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition | Unit 4 to Unit 5</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --orange-main: #e67e22;
+            --orange-dark: #c2410c;
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #ea580c 100%);
+            background-attachment: fixed;
+            box-sizing: border-box;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 860px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+            border-radius: 24px;
+            padding: 45px;
+            position: relative;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lesson-banner {
+            border-bottom: 3px solid var(--orange-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .unit-tag {
+            font-family: var(--font-title);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--orange-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .lesson-banner h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 5px 0 0 0;
+        }
+
+        .story-container {
+            padding: 10px 5px;
+            line-height: 1.9;
+            font-size: 16px;
+            color: #334155;
+        }
+
+        .story-paragraph {
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 22px;
+            border-left: 3px solid #cbd5e1;
+        }
+
+        .story-paragraph b {
+            color: var(--blue-medium);
+            font-weight: 600;
+        }
+
+        .story-highlight {
+            background: #fff7ed;
+            border-left: 4px solid var(--orange-main);
+            border-radius: 0 12px 12px 0;
+            padding: 18px 24px;
+            font-size: 16px;
+            color: #9a3412;
+            margin: 25px 0;
+            font-style: italic;
+        }
+
+        .action-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
+            color: white;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-finish:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(230, 126, 34, 0.55);
+            background: linear-gradient(135deg, #d35400, #9a3412);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER BASE -->
+        <div class="lesson-banner">
+            <span class="unit-tag">Unit Transition • The Journey Continues</span>
+            <h1>Unit 4 to Unit 5 | Arrival at Overseas Corporation</h1>
+        </div>
+
+        <!-- NARRATIVA: 3 PARÁGRAFOS DENSOS E ENVOLVENTES EM INGLÊS -->
+        <div class="story-container">
+            <div class="story-paragraph">
+                Ivete had survived the unforgiving morning rhythm of London. She had successfully deciphered the complex network of red double-decker buses, paid her fare using an Oyster card on the contactless reader, and persevered when her smartphone battery gave out at the crossroads of Regent Street. By asking local pedestrians for directions, listening attentively to imperative street instructions, and recognizing key urban landmarks like zebra crossings and roundabouts, she turned initial disorientation into decisive confidence. Against all the odds, she found her way without losing a single precious minute.
+            </div>
+
+            <div class="story-paragraph">
+                Standing before the gleaming twenty-story glass skyscraper of <b>Overseas Corporation</b> on High Street, she allowed herself a brief, satisfied smile. Pushing through the smooth revolving glass doors, she was welcomed by the calm hum of an imposing marble atrium, where international executives moved between security turnstiles with quiet purpose. At the main reception desk, she greeted the receptionist in fluent, courteous English, received her visitor pass, and stepped into the high-speed elevator, feeling the surge of adrenaline that always accompanies a monumental life turning point.
+            </div>
+
+            <div class="story-paragraph">
+                Now, sitting in the fourteenth-floor executive lounge with floor-to-ceiling panoramic views over the River Thames and the historic Tower of London, Ivete adjusts her jacket and clutches her portfolio securely. Inside are her resume, work samples, and autonomous production notes detailing her professional abilities and international communications expertise. A secretary walks toward her with a welcoming smile, announcing that the hiring director is ready to begin. Ivete takes a deep, grounding breath—ready to conquer the job interview of her life.
+            </div>
+
+            <div class="story-highlight" style="font-size: 18px; font-weight: 700; text-align: center; font-style: normal;">
+                "Ivete chegou ao prédio da Overseas Corporation. A entrevista da sua vida vai começar!"
+            </div>
+        </div>
+
+        <!-- AÇÃO OBRIGATÓRIA: BOTÃO .btn-finish -->
+        <div class="action-footer">
+            <button class="btn-finish" onclick="startUnit5()">
+                Begin Unit 5: The Job Interview ➔
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function startUnit5() {
+            if (window.parent && window.parent.avancarPara) {
+                window.parent.avancarPara('licao5a.html', 'link-5a');
+                return;
+            }
+            if (window.parent && window.parent.loadPage) {
+                window.parent.loadPage('licao5a.html', null);
+                return;
+            }
+            window.location.href = 'licao5a.html';
+        }
+    </script>
+</body>
+</html>

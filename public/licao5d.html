@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5D | Unit Challenge - The Job Interview</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --black: #0f172a;
+            --white: #FFFFFF;
+            --blue-dark: #0f172a;
+            --blue-medium: #1e3a8a;
+            --blue-light: #3b82f6;
+            --accent-main: #e67e22;
+            --accent-dark: #c2410c;
+            
+            --font-title: 'Montserrat', sans-serif;
+            --font-text: 'Roboto', sans-serif;
+            
+            --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #8b5cf6;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #16a34a;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--black);
+            margin: 0;
+            padding: 40px 15px 120px 15px;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #312e81 50%, #ea580c 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .book-page {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 920px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 45px;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .lesson-banner {
+            width: 100%;
+            height: 210px;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(79, 70, 229, 0.8)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+        .banner-tag {
+            font-family: var(--font-title);
+            font-size: 13px;
+            font-weight: 800;
+            color: #c7d2fe;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .lesson-banner h1 {
+            color: var(--white);
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 22px; margin-top: 0; margin-bottom: 8px; }
+        p.instruction { color: #475569; font-size: 14px; margin-bottom: 22px; line-height: 1.6; font-style: italic; }
+
+        .activity-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s ease;
+            margin-bottom: 25px;
+            padding: 30px;
+            border-radius: 18px;
+            border: 2px solid transparent;
+            box-sizing: border-box;
+        }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 35px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 20px;
+        }
+        .btn-nav {
+            padding: 12px 28px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            border: 2px solid;
+        }
+        
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); } .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); } .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); } .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); } .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+
+        /* MEMORY CHECK TEXTAREAS */
+        .memory-box {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            border: 2px solid #cbd5e1;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .memory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .memory-header h3 {
+            margin: 0;
+            font-family: var(--font-title);
+            color: var(--blue-dark);
+            font-size: 16px;
+        }
+        .timer-badge {
+            background: #fef3c7;
+            color: #b45309;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid #fde68a;
+        }
+        .timer-badge:hover {
+            background: #fde68a;
+        }
+        .textarea-memory {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.2s;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .textarea-memory:focus {
+            border-color: var(--blue-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        /* BOARD GAME TILES */
+        .board-track {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+        @media(max-width: 650px) { .board-track { grid-template-columns: 1fr; } }
+        .board-tile {
+            background: white;
+            border-radius: 16px;
+            border: 2px solid #cbd5e1;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            position: relative;
+        }
+        .tile-number {
+            background: var(--blue-medium);
+            color: white;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .board-tile h4 { margin: 0 0 8px 0; font-family: var(--font-title); font-size: 15px; color: var(--blue-dark); }
+        .board-tile p { font-size: 13.5px; color: #475569; margin: 0 0 12px 0; }
+
+        .eval-select {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            color: var(--blue-dark);
+            border-radius: 8px;
+            padding: 7px 28px 7px 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* QUIZ */
+        .quiz-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+        }
+        .quiz-card p { font-weight: bold; margin: 0 0 10px 0; font-size: 14.5px; }
+        .quiz-options label {
+            display: block;
+            padding: 9px 14px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: 0.2s;
+        }
+        .quiz-options label:hover {
+            background: #e2e8f0;
+        }
+
+        /* CHECKLIST */
+        .checklist-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid var(--theme-orange-border);
+            margin-bottom: 25px;
+        }
+        .checklist-container h3 { margin-top: 0; color: var(--theme-orange-border); font-family: var(--font-title); font-size: 18px; }
+        .check-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 14.5px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s; }
+        .check-item.done { background: #ecfdf5; color: #047857; font-weight: bold; }
+        .check-item input { width: 18px; height: 18px; cursor: pointer; }
+
+        /* REPORT CARD */
+        .report-card-container { display: none; margin-top: 25px; }
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            border: 4px solid var(--accent-main);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .rc-header h2 { font-size: 26px; color: var(--blue-dark); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .rc-header p { color: #64748b; margin: 0 0 25px 0; font-size: 14px; }
+        .rc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px; }
+        @media(max-width: 600px) { .rc-grid { grid-template-columns: repeat(2, 1fr); } }
+        .rc-item { background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .rc-item span { display: block; font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 4px; }
+        .rc-item strong { font-size: 20px; color: var(--blue-dark); font-family: var(--font-title); }
+        .rc-total { background: #fff7ed; padding: 22px; border-radius: 14px; border: 2px dashed var(--accent-main); margin-bottom: 25px; }
+        .rc-total span { display: block; font-size: 14px; color: #9a3412; font-weight: bold; }
+        .rc-total strong { font-size: 38px; color: var(--accent-main); font-family: var(--font-title); }
+
+        .answers-review-box {
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: #334155;
+        }
+        .answers-review-box h4 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-title);
+            color: var(--blue-dark);
+            font-size: 15px;
+        }
+
+        .btn-cloud-save {
+            background: linear-gradient(135deg, #e67e22, #c2410c);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 17px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+            transition: 0.3s;
+        }
+        .btn-cloud-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.55);
+        }
+
+        /* FLOATING SUPER REVIEW */
+        .grammar-floating-container { position: fixed; bottom: 25px; right: 25px; z-index: 9999; }
+        .grammar-floating-btn { background: var(--accent-main); color: white; padding: 13px 22px; border-radius: 50px; font-family: var(--font-title); font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 8px 25px rgba(230, 126, 34, 0.45); border: none; }
+        .grammar-box { visibility: hidden; opacity: 0; width: 340px; background: white; color: var(--black); border-radius: 16px; padding: 20px; position: absolute; bottom: 60px; right: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid var(--accent-main); transition: 0.3s; pointer-events: none; font-size: 13px; line-height: 1.5; max-height: 75vh; overflow-y: auto; text-align: left; }
+        .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; pointer-events: auto; }
+        .review-section-title { font-weight: 800; color: var(--accent-main); font-family: var(--font-title); font-size: 13px; margin: 10px 0 4px 0; border-bottom: 1px solid #fed7aa; padding-bottom: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <!-- BANNER -->
+        <div class="lesson-banner">
+            <div class="banner-tag">UNIT 5 FINALE • MASTER ASSESSMENT</div>
+            <h1>5D | Unit Challenge</h1>
+        </div>
+
+        <!-- ================= SECTION 1: MEMORY CHECK ================= -->
+        <div id="sec-1" class="activity-section theme-blue active">
+            <h2>1. Memory Check • Vocabulary Speed Challenge</h2>
+            <p class="instruction">How much vocabulary can you remember? Your teacher will count one minute each round. Type as many words and phrases as you can in each category!</p>
+
+            <!-- CAIXA 1: PHYSICAL CHARACTERISTICS -->
+            <div class="memory-box">
+                <div class="memory-header">
+                    <h3>PHYSICAL CHARACTERISTICS</h3>
+                    <span class="timer-badge" onclick="startTimer('timer-1', 60)">⏱️ 1 Min Timer: <b id="timer-1">60s</b></span>
+                </div>
+                <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., tall, short, slim, chubby, blond, curly hair, blue eyes, young, old, strong...)</p>
+                <textarea class="textarea-memory eval-mem" id="mem-physical" rows="4" placeholder="Type all physical traits you recall from Unit 5..."></textarea>
+            </div>
+
+            <!-- CAIXA 2: ROUTINE -->
+            <div class="memory-box">
+                <div class="memory-header">
+                    <h3>ROUTINE</h3>
+                    <span class="timer-badge" onclick="startTimer('timer-2', 60)">⏱️ 1 Min Timer: <b id="timer-2">60s</b></span>
+                </div>
+                <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., wake up at 7:00 AM, always arrive early, have lunch, check emails, finish work, usually, sometimes, never...)</p>
+                <textarea class="textarea-memory eval-mem" id="mem-routine" rows="4" placeholder="Type all routine verbs, schedules, and adverbs of frequency..."></textarea>
+            </div>
+
+            <!-- CAIXA 3: ACTIVITIES / ABILITIES -->
+            <div class="memory-box">
+                <div class="memory-header">
+                    <h3>ACTIVITIES / ABILITIES</h3>
+                    <span class="timer-badge" onclick="startTimer('timer-3', 60)">⏱️ 1 Min Timer: <b id="timer-3">60s</b></span>
+                </div>
+                <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., can speak English, can write reports, can organize meetings, can design, can use software, can't code...)</p>
+                <textarea class="textarea-memory eval-mem" id="mem-abilities" rows="4" placeholder="Type all professional activities and can/can't expressions..."></textarea>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Interview Decision Board ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 2: INTERVIEW DECISION BOARD ================= -->
+        <div id="sec-2" class="activity-section theme-purple">
+            <h2>2. Unit 5 Practice • Key Communication Scenarios</h2>
+            <p class="instruction">Navigate the 4 stages of the Overseas Corporation onboarding. Choose the correct linguistic response for each tile.</p>
+
+            <div class="board-track">
+                <!-- TILE 1 -->
+                <div class="board-tile">
+                    <span class="tile-number">Tile 1 • Abilities</span>
+                    <h4>Digital Marketing Tools</h4>
+                    <p>"Can you lead our social media strategy using data metrics?"</p>
+                    <select class="eval-select" id="bt-1" data-ans="can">
+                        <option value="">-- choose best answer --</option>
+                        <option value="can">"Yes, I can. I have managed campaigns for 3 years."</option>
+                        <option value="do">"Yes, I do can."</option>
+                        <option value="cant">"No, I not can use computers."</option>
+                    </select>
+                </div>
+
+                <!-- TILE 2 -->
+                <div class="board-tile">
+                    <span class="tile-number">Tile 2 • Corporate Routine</span>
+                    <h4>Morning Schedule</h4>
+                    <p>"What time does our morning briefing usually start?"</p>
+                    <select class="eval-select" id="bt-2" data-ans="at-8">
+                        <option value="">-- choose best answer --</option>
+                        <option value="at-8">"It always starts at 8:30 AM in Room 14."</option>
+                        <option value="start-8">"It start always 8:30."</option>
+                        <option value="starting">"Always it is starting."</option>
+                    </select>
+                </div>
+
+                <!-- TILE 3 -->
+                <div class="board-tile">
+                    <span class="tile-number">Tile 3 • Meeting Colleagues</span>
+                    <h4>Demonstratives</h4>
+                    <p>Introduce the colleague standing right next to you to the CEO:</p>
+                    <select class="eval-select" id="bt-3" data-ans="this-is">
+                        <option value="">-- choose best answer --</option>
+                        <option value="this-is">"Mr. Jenkins, this is Alan, our assistant."</option>
+                        <option value="that-is">"Mr. Jenkins, those is Alan."</option>
+                        <option value="these-is">"Mr. Jenkins, these is Alan."</option>
+                    </select>
+                </div>
+
+                <!-- TILE 4 -->
+                <div class="board-tile">
+                    <span class="tile-number">Tile 4 • Describing Appearance</span>
+                    <h4>Physical Stature & Features</h4>
+                    <p>How do you correctly describe a colleague's appearance?</p>
+                    <select class="eval-select" id="bt-4" data-ans="is-tall">
+                        <option value="">-- choose best answer --</option>
+                        <option value="is-tall">"She is tall and slim, and she has got blue eyes."</option>
+                        <option value="has-tall">"She has tall and is got blue eyes."</option>
+                        <option value="is-having">"She is having tall and is blue eyes."</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Speed Quiz ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 3: UNIT 5 SPEED QUIZ ================= -->
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>3. Unit 5 Speed Quiz • Grammar & Accuracy</h2>
+            <p class="instruction">Choose the grammatically accurate option for each core structure studied in Unit 5.</p>
+
+            <div class="quiz-card">
+                <p>1. Which sentence expresses ability with 'can' correctly?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="wrong"> She can to speak three languages fluently.</label>
+                    <label><input type="radio" name="q1" value="correct"> She can speak three languages fluently.</label>
+                    <label><input type="radio" name="q1" value="wrong"> She cans speak three languages fluently.</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>2. Where does the adverb of frequency 'always' belong?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="wrong"> Ivete arrives always at 8:00 AM.</label>
+                    <label><input type="radio" name="q2" value="correct"> Ivete always arrives at 8:00 AM.</label>
+                    <label><input type="radio" name="q2" value="wrong"> Always Ivete at 8:00 AM arrives.</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>3. To describe physical features (eyes and hair) of a person:</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="wrong"> He is brown eyes and short hair.</label>
+                    <label><input type="radio" name="q3" value="correct"> He has got brown eyes and short hair.</label>
+                    <label><input type="radio" name="q3" value="wrong"> He has got is brown eyes.</label>
+                </div>
+            </div>
+
+            <div class="quiz-card">
+                <p>4. Pointing to colleagues sitting across the conference hall:</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q4" value="correct"> "Those are our creative directors over there."</label>
+                    <label><input type="radio" name="q4" value="wrong"> "This is our creative directors over there."</label>
+                    <label><input type="radio" name="q4" value="wrong"> "These are our creative director over there."</label>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Report Card ➔</button>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 4: DETAILED REPORT CARD (SEM TRANSIÇÃO NARRATIVA) ================= -->
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>4. Self-Evaluation & Unit 5 Report Card</h2>
+            <p class="instruction">Check all skills you have mastered in Unit 5 to generate your Detailed Pedagogical Report Card.</p>
+
+            <div class="checklist-container">
+                <h3>Now I Can... (Unit 5 Competencies)</h3>
+                <label class="check-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can express personal and professional abilities using <b>can</b> and <b>can't</b> (5A).</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can describe daily schedules and routines using <b>adverbs of frequency</b> (5B).</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can differentiate between <b>BE</b> and <b>HAVE GOT</b> for physical descriptions (5C).</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="now-i-can-check" onchange="verifyChecklist(this)">
+                    <span>I can use demonstratives (<b>this / that / these / those</b>) to introduce colleagues (5C/5D).</span>
+                </label>
+            </div>
+
+            <!-- DETAILED REPORT CARD AREA (REVELADO AUTOMATICAMENTE QUANDO CHECKLIST É CONCLUÍDO) -->
+            <div class="report-card-container" id="report-card-area">
+                <div class="report-card">
+                    <div class="rc-header">
+                        <div class="banner-tag" style="color:var(--accent-main); margin-bottom: 5px;">OFFICIAL ACADEMIC AUDIT</div>
+                        <h2>Unit 5 Detailed Report Card</h2>
+                        <p>Student Performance & Learning Evidence across Unit 5: The Job Interview</p>
+                    </div>
+
+                    <div class="rc-grid">
+                        <div class="rc-item">
+                            <span>5A: Abilities (Can)</span>
+                            <strong id="rc-5a">--%</strong>
+                        </div>
+                        <div class="rc-item">
+                            <span>5B: Routines (Schedule)</span>
+                            <strong id="rc-5b">--%</strong>
+                        </div>
+                        <div class="rc-item">
+                            <span>5C: Onboarding</span>
+                            <strong id="rc-5c">--%</strong>
+                        </div>
+                        <div class="rc-item">
+                            <span>5D: Unit Challenge</span>
+                            <strong id="rc-5d">--%</strong>
+                        </div>
+                    </div>
+
+                    <div class="rc-total">
+                        <span>OVERALL UNIT 5 ACADEMIC AVERAGE</span>
+                        <strong id="rc-avg">--%</strong>
+                    </div>
+
+                    <div class="answers-review-box">
+                        <h4>📋 Learning Evidence & Student Responses Record:</h4>
+                        <div id="answers-history-display">Loading Unit 5 records from local storage...</div>
+                    </div>
+
+                    <p id="report-score-summary" style="font-size: 13.5px; color: #64748b; font-weight: bold; margin-bottom: 25px;"></p>
+
+                    <!-- BOTÃO OBRIGATÓRIO: SAVE TO CLOUD E REDIRECIONA PARA transicao_5_para_6.html -->
+                    <button class="btn-cloud-save" id="btn-cloud-save" onclick="saveToCloudAndStartUnit6()">
+                        ☁️ Save to Cloud & Continue Journey ➔
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING SUPER REVIEW -->
+    <div class="grammar-floating-container">
+        <button class="grammar-floating-btn">📚 Unit 5 Review</button>
+        <div class="grammar-box">
+            <h4 style="margin: 0 0 10px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 15px;">
+                Unit 5 Master Reference
+            </h4>
+
+            <div class="review-section-title">1. CAN / CAN'T (Abilities)</div>
+            <p style="margin: 0 0 8px 0;">No 'to' after can! <i>I can speak English. / He can't code.</i></p>
+
+            <div class="review-section-title">2. Adverbs of Frequency</div>
+            <p style="margin: 0 0 8px 0;">Position: Before main verbs, after verb TO BE. <i>I <b>always</b> arrive early. / She is <b>usually</b> happy.</i></p>
+
+            <div class="review-section-title">3. BE vs. HAVE GOT</div>
+            <p style="margin: 0 0 8px 0;"><b>BE:</b> Height, build, age (<i>He is tall/young</i>).<br><b>HAVE GOT:</b> Eyes, hair, features (<i>She has got curly hair</i>).</p>
+
+            <div class="review-section-title">4. Demonstratives</div>
+            <p style="margin: 0;"><b>This</b> (near, sing.) | <b>These</b> (near, plur.)<br><b>That</b> (far, sing.) | <b>Those</b> (far, plur.)</p>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function startTimer(timerId, seconds) {
+            let el = document.getElementById(timerId);
+            let remaining = seconds;
+            el.innerText = remaining + "s";
+            el.parentElement.style.background = "#fed7aa";
+
+            let interval = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    el.innerText = "Time's up!";
+                    el.parentElement.style.background = "#fecaca";
+                } else {
+                    el.innerText = remaining + "s";
+                }
+            }, 1000);
+        }
+
+        // ==========================================
+        // CHECKLIST & REPORT CARD CALCULATION
+        // ==========================================
+        function verifyChecklist(checkbox) {
+            const label = checkbox.parentElement;
+            if (checkbox.checked) { label.classList.add('done'); } 
+            else { label.classList.remove('done'); }
+
+            const allCheckboxes = document.querySelectorAll('.now-i-can-check');
+            let allChecked = true;
+            allCheckboxes.forEach(cb => { if (!cb.checked) allChecked = false; });
+
+            const reportArea = document.getElementById('report-card-area');
+            if (allChecked) {
+                calculateXPAndReport();
+                reportArea.style.display = 'block';
+                setTimeout(() => { reportArea.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+            } else {
+                reportArea.style.display = 'none';
+            }
+        }
+
+        function calculateXPAndReport() {
+            let correct = 0;
+            let total = 0;
+            let recorded = { memory: {}, board: {}, quiz: {} };
+
+            // 1. Memory Check (3 textareas)
+            document.querySelectorAll('.eval-mem').forEach(txt => {
+                total++;
+                let val = txt.value.trim();
+                recorded.memory[txt.id] = val;
+                if (val.length >= 10) correct++;
+            });
+
+            // 2. Board Tiles (4 tiles)
+            for(let i=1; i<=4; i++) {
+                total++;
+                let sel = document.getElementById(`bt-${i}`);
+                if(sel) {
+                    recorded.board[`bt-${i}`] = sel.value;
+                    if(sel.value === sel.getAttribute('data-ans')) correct++;
+                }
+            }
+
+            // 3. Quiz (4 questions)
+            for(let i=1; i<=4; i++) {
+                total++;
+                let radios = document.querySelectorAll(`input[name="q${i}"]`);
+                recorded.quiz[`q${i}`] = null;
+                radios.forEach((r, idx) => {
+                    if(r.checked) {
+                        recorded.quiz[`q${i}`] = idx;
+                        if(r.value === "correct") correct++;
+                    }
+                });
+            }
+
+            localStorage.setItem('licao5d_respostas', JSON.stringify(recorded));
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            let finalXP = Math.round(percentage * 100);
+
+            let oldXP = parseInt(localStorage.getItem('licao_5d_xp')) || 0;
+            let diff = finalXP - oldXP;
+
+            localStorage.setItem('licao_5d_status', 'concluida');
+            localStorage.setItem('licao_5d_xp', finalXP);
+
+            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+            totalProfileXP += diff;
+            localStorage.setItem('target_on_profile_xp', totalProfileXP);
+
+            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+            studentXP += diff;
+            localStorage.setItem('studentXP', studentXP);
+
+            // Fetch previous lessons in Unit 5
+            let xp5A = parseInt(localStorage.getItem('licao_5a_xp')) || 90;
+            let xp5B = parseInt(localStorage.getItem('licao_5b_xp')) || 85;
+            let xp5C = parseInt(localStorage.getItem('licao_5c_xp')) || 95;
+            let xp5D = finalXP;
+            
+            let avgXP = Math.round((xp5A + xp5B + xp5C + xp5D) / 4);
+
+            document.getElementById('rc-5a').innerText = xp5A + "%";
+            document.getElementById('rc-5b').innerText = xp5B + "%";
+            document.getElementById('rc-5c').innerText = xp5C + "%";
+            document.getElementById('rc-5d').innerText = xp5D + "%";
+            document.getElementById('rc-avg').innerText = avgXP + "%";
+
+            document.getElementById('report-score-summary').innerText = `Unit 5 Scores: 5A (${xp5A}%) | 5B (${xp5B}%) | 5C (${xp5C}%) | 5D (${xp5D}%) → FINAL UNIT 5: ${avgXP}%`;
+
+            // Recuperar e exibir histórico das lições 5A, 5B e 5C
+            let saved5A = localStorage.getItem('licao5a_respostas');
+            let saved5B = localStorage.getItem('licao5b_respostas');
+            let saved5C = localStorage.getItem('licao5c_respostas');
+
+            let historyHTML = `
+                <p>• <b>Lesson 5A (Abilities - What Can You Do?):</b> ${saved5A ? 'Professional abilities and curriculum profile completed.' : 'Abilities structures recorded.'}</p>
+                <p>• <b>Lesson 5B (Talking to the Director):</b> ${saved5B ? 'Corporate schedule questions and daily routine sentences validated.' : 'Simple Present routines saved.'}</p>
+                <p>• <b>Lesson 5C (Onboarding):</b> ${saved5C ? 'Pigpen cipher decoded, onboarding audio colleagues identified, and demonstratives practiced.' : 'Physical descriptions recorded.'}</p>
+                <p>• <b>Lesson 5D (Unit Challenge):</b> ${correct} / ${total} items completed successfully in Memory Check & Quiz (${finalXP}%).</p>
+            `;
+            document.getElementById('answers-history-display').innerHTML = historyHTML;
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(5, avgXP);
+            }
+        }
+
+        function saveToCloudAndStartUnit6() {
+            let btn = document.getElementById('btn-cloud-save');
+            btn.disabled = true;
+            btn.innerText = "Saving Unit 5 to Cloud ☁️...";
+
+            localStorage.setItem('unit5_done', 'true');
+
+            let playerName = localStorage.getItem('userName') || "Student";
+            let userCode = localStorage.getItem('userCode') || "NO-CODE";
+            let scoreText = document.getElementById('report-score-summary') ? document.getElementById('report-score-summary').innerText : "Unit 5 Completed";
+
+            const payload = {
+                action: "save_report",
+                name: playerName,
+                turma: userCode,
+                lesson: "Unit 5 Pedagogical Report (The Job Interview)",
+                scoreText: scoreText,
+                postcardText: "Unit 5 Job Interview, Abilities, Routine and Onboarding Challenge completed successfully.",
+                imageBase64: null, imageMimeType: null, imageName: null
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                redirectToUnit6();
+            }).catch(() => {
+                redirectToUnit6();
+            });
+        }
+
+        // Roteamento Obrigatório para transicao_5_para_6.html
+        function redirectToUnit6() {
+            let avgXP = parseInt(document.getElementById('rc-avg').innerText.replace('%', '')) || 90;
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(5, avgXP);
+            }
+            if(window.parent && window.parent.loadPage) {
+                window.parent.loadPage('transicao_5_para_6.html', null);
+                return;
+            }
+            window.location.href = "transicao_5_para_6.html";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let saved = localStorage.getItem('licao5d_respostas');
+            if(saved) {
+                try {
+                    let data = JSON.parse(saved);
+                    if(data.memory) {
+                        for(let id in data.memory) {
+                            let el = document.getElementById(id);
+                            if(el) el.value = data.memory[id];
+                        }
+                    }
+                    if(data.board) {
+                        for(let id in data.board) {
+                            let el = document.getElementById(id);
+                            if(el) el.value = data.board[id];
+                        }
+                    }
+                    if(data.quiz) {
+                        for(let q in data.quiz) {
+                            let idx = data.quiz[q];
+                            if(idx !== null) {
+                                let radios = document.querySelectorAll(`input[name="${q}"]`);
+                                if(radios[idx]) radios[idx].checked = true;
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>

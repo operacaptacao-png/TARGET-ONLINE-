@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2C | Shopping for Food (At The Grocery Store)</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #1A1A1A; --white: #FFFFFF; --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-main: #E67E22; --orange-dark: #d35400;
+            --light-blue-main: #0ea5e9; --light-blue-dark: #0284c7;
+            --font-title: 'Montserrat', sans-serif; --font-text: 'Roboto', sans-serif;
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
+            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #64748b;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #eab308;
+            --theme-lightblue-bg: #f0f9ff; --theme-lightblue-border: #0ea5e9;
+        }
+
+        body { font-family: var(--font-text); color: var(--black); margin: 0; padding: 40px 15px 120px 15px; display: flex; justify-content: center; background: linear-gradient(135deg, #e67e22 0%, #d35400 50%, #c0392b 100%); background-attachment: fixed; }
+        .book-page { background-color: var(--white); width: 100%; max-width: 900px; min-height: 100vh; margin: 0 auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 24px; padding: 50px; position: relative; z-index: 1; box-sizing: border-box;}
+        .lesson-banner { width: 100%; height: 220px; background: linear-gradient(rgba(211, 84, 0, 0.7), rgba(192, 57, 43, 0.8)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        .lesson-banner h1 { color: var(--white); font-family: var(--font-title); font-size: 38px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4); text-align: center; }
+
+        h2 { font-family: var(--font-title); font-weight: 800; font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+        p.instruction { color: #555; font-size: 15px; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+
+        .activity-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; margin-bottom: 30px; padding: 35px; border-radius: 20px; border: 2px solid transparent; }
+        .activity-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); } .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); } .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-red { background: var(--theme-red-bg); border-color: var(--theme-red-border); } .theme-red h2 { color: var(--theme-red-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); } .theme-green h2 { color: var(--theme-green-border); }
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); } .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-gray { background: var(--theme-gray-bg); border-color: var(--theme-gray-border); } .theme-gray h2 { color: var(--theme-gray-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); } .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .story-transition-box { background: #fffcf2; border-left: 5px solid #eab308; padding: 20px; border-radius: 8px; margin-top: 40px; margin-bottom: 20px; font-size: 16px; line-height: 1.8; color: #854d0e; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; }
+        .btn-nav { padding: 12px 30px; font-family: var(--font-title); font-weight: 700; font-size: 15px; border-radius: 50px; cursor: pointer; transition: 0.3s; background: white; border: 2px solid; }
+
+        .audio-wrapper { display: flex; justify-content: center; width: 100%; }
+        .audio-player { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px; margin-bottom: 25px; font-weight: 600; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .play-btn { background: var(--orange-main); border: none; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 800; font-family: var(--font-title); font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); }
+        .speed-btn { background: #e2e8f0; border: 1px solid #cbd5e1; color: #1e293b; padding: 7px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .speed-btn:hover { background: #cbd5e1; transform: scale(1.05); }
+
+        .warmup-box { background: white; padding: 40px; border-radius: 16px; text-align: center; border: 2px solid var(--theme-blue-border); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .lives-box { font-size: 24px; margin-bottom: 20px; letter-spacing: 5px; }
+        .password-display { font-size: 38px; font-weight: bold; letter-spacing: 8px; color: var(--theme-blue-border); margin-bottom: 25px; font-family: monospace; }
+        .keyboard-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 500px; margin: 0 auto 20px auto; }
+        .key-btn { width: 40px; height: 40px; border-radius: 8px; border: 1px solid #ccc; background: #f8fafc; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 16px; }
+        .btn-checkin { display: none; background: var(--orange-main); color: white; border: none; padding: 15px 40px; font-family: var(--font-title); font-weight: 800; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin: 20px auto 0 auto; }
+
+        .scramble-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        @media(max-width: 768px) { .scramble-grid { grid-template-columns: 1fr; } }
+        .scramble-card { display: flex; align-items: center; gap: 15px; background: white; padding: 10px 15px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .scramble-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background: #fff; border: 2px solid #eee; }
+        .scramble-info { display: flex; flex-direction: column; flex: 1; }
+        .scramble-letters { font-family: monospace; font-weight: bold; font-size: 18px; color: var(--theme-purple-border); letter-spacing: 2px; }
+        .scramble-input { border: none; border-bottom: 2px solid #ccc; font-size: 16px; padding: 5px 0; outline: none; transition: 0.3s; width: 100%; text-transform: uppercase; font-weight: bold;}
+
+        .ts-container { display: flex; gap: 30px; align-items: stretch; flex-wrap: wrap; }
+        .ivete-image { flex: 1; min-width: 200px; height: 350px; border-radius: 16px; overflow: hidden; border: 2px dashed #cbd5e1; background: #eee; }
+        .ivete-image img { width: 100%; height: 100%; object-fit: cover; }
+        .notebook-wrapper { flex: 1.5; min-width: 300px; position: relative; }
+        .notebook-paper { 
+            width: 100%; min-height: 350px; padding: 40px 20px 20px 50px; box-sizing: border-box; 
+            border: 1px solid #ccc; border-radius: 4px; box-shadow: 3px 5px 15px rgba(0,0,0,0.1); 
+            background-color: #fff; background-image: linear-gradient(#e5e7eb 1px, transparent 1px); 
+            background-size: 100% 2em; line-height: 2em; font-family: 'Comic Sans MS', cursive, sans-serif; 
+            font-size: 18px; position: relative; display: flex; flex-direction: column; gap: 10px;
+        }
+        .notebook-paper::before { content: ''; position: absolute; top: 0; bottom: 0; left: 35px; width: 2px; background: rgba(239, 68, 68, 0.4); }
+        .note-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; z-index: 2; position: relative;}
+        .note-input { border: none; border-bottom: 1px dashed #999; background: transparent; font-family: inherit; font-size: 18px; outline: none; color: #333; font-weight: bold;}
+
+        .match-container { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .match-col { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 200px; }
+        .match-item { background: #f8fafc; border: 2px solid #cbd5e1; padding: 12px 15px; border-radius: 8px; font-weight: bold; text-align: center; color: #333; }
+        .match-select { width: 100%; padding: 10px; border-radius: 8px; border: 2px solid var(--theme-green-border); outline: none; font-weight: bold; font-family: inherit; color: var(--theme-green-border); background: #f0fdf4; cursor: pointer; }
+
+        .hw-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        @media(max-width: 600px) { .hw-list { grid-template-columns: 1fr; } }
+        .hw-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; }
+        .hw-item-name { font-weight: 500; font-size: 16px; }
+        .tick-cross-group { display: flex; gap: 5px; }
+        .tc-btn { width: 35px; height: 35px; border-radius: 6px; border: 1px solid #ccc; background: #f8fafc; font-size: 18px; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
+        .tc-btn.tick.active { background: #dcfce7; border-color: #22c55e; }
+        .tc-btn.cross.active { background: #fee2e2; border-color: #ef4444; }
+
+        .builder-block { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .answer-area { min-height: 50px; background: var(--theme-yellow-bg); border: 2px dashed #eab308; border-radius: 8px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; align-items: center; justify-content: center; }
+        .word-btn { background: white; border: 1px solid #ccc; font-weight: bold; padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; color: #854d0e; }
+        .btn-clear { background: white; color: var(--theme-yellow-border); border: 2px solid var(--theme-yellow-border); padding: 8px 25px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: bold; display: block; margin: 15px auto 0 auto; }
+
+        .dialogue-textarea { width: 100%; height: 250px; padding: 20px; border-radius: 12px; border: 2px solid var(--theme-blue-border); font-family: var(--font-text); font-size: 16px; margin-bottom: 20px; box-sizing: border-box; resize: vertical; line-height: 1.6; }
+        .btn-finish-wrapper { display: flex; justify-content: center; width: 100%; flex-wrap: wrap; gap: 15px;}
+        .btn-finish { background: #22c55e; color: white; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; display: block; margin: 30px auto 0 auto; transition: 0.3s; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4); width: 100%; text-align: center;}
+        .btn-finish:hover { background: #16a34a; transform: translateY(-3px); }
+
+        #result-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
+        .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
+        .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; }
+    </style>
+</head>
+<body>
+
+    <div class="book-page">
+        <div class="lesson-banner">
+            <h1>2C | SHOPPING FOR FOOD<br><span style="font-size: 24px; font-weight: 500; text-transform: none;">At The Grocery Store</span></h1>
+        </div>
+
+        <div id="sec-0" class="activity-section theme-blue active">
+            <h2>WHERE IS IVETE? LET’S PLAY</h2>
+            <div class="warmup-box">
+                <p>Guess the secret place to unlock the lesson. You have 5 lives!</p>
+                <div class="lives-box" id="lives-display">❤️❤️❤️❤️❤️</div>
+                <div class="password-display" id="password-display">_ _ _ _ _ _ _   _ _ _ _ _</div>
+                <div class="keyboard-grid" id="wu-keyboard"></div>
+                <button id="btn-enter-shop" class="btn-checkin" onclick="navigateSection('sec-0', 'sec-1')">Enter Grocery Store ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-1" class="activity-section theme-purple">
+            <h2>Words and Ideas</h2>
+            <div class="scramble-grid">
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/RhQrvtNn/54.png" alt="Sugar"><div class="scramble-info"><div class="scramble-letters">ZBNHY</div><input type="text" class="scramble-input eval-cipher" id="c-1" data-ans="SUGAR" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/c4p3p8ff/rice.png" alt="Oil"><div class="scramble-info"><div class="scramble-letters">VPS</div><input type="text" class="scramble-input eval-cipher" id="c-2" data-ans="OIL" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/xdkWchXd/55.png" alt="Water"><div class="scramble-info"><div class="scramble-letters">DHALY</div><input type="text" class="scramble-input eval-cipher" id="c-3" data-ans="WATER" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/qRVZgRfn/58.png" alt="Rice"><div class="scramble-info"><div class="scramble-letters">YPJL</div><input type="text" class="scramble-input eval-cipher" id="c-4" data-ans="RICE" placeholder="Your answer..."></div></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-0')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-2" class="activity-section theme-red">
+            <h2>Target Situation</h2>
+            <p class="instruction">Listen to Ivete at the grocery store. Write down the items in your list:</p>
+            
+            <div class="audio-wrapper">
+                <div class="audio-player">
+                    <audio id="audio-2c" src="https://files.catbox.moe/yzmogf.mpeg"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2c" onclick="toggleAudio('audio-2c', 'btn-audio-2c', 'var(--orange-main)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-2c" onclick="changeSpeed('audio-2c', 'spd-audio-2c')">⚡ 1.0x</button>
+                    <span>Ivete at the Grocery (Audio 2C)</span>
+                </div>
+            </div>
+
+            <div class="ts-container">
+                <div class="ivete-image">
+                    <img src="https://i.postimg.cc/N0fjSgCK/ivete-compras-de-mercado.png" alt="Ivete at Grocery Store">
+                </div>
+                <div class="notebook-wrapper">
+                    <div class="notebook-paper">
+                        <div style="font-weight: bold; margin-bottom: 20px; font-size: 22px;">Shopping List:</div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-1-item" data-ans="rice" placeholder="rice"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-1-qty" data-ans="5kg" placeholder="5kg"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-2-item" data-ans="cheese" placeholder="cheese"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-2-qty" data-ans="0.5kg" placeholder="0.5kg"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-3-item" data-ans="oil" placeholder="oil"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-3-qty" data-ans="3l" placeholder="3L"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-4-item" data-ans="milk" placeholder="milk"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-4-qty" data-ans="1l" placeholder="1L"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-3" class="activity-section theme-green">
+            <h2>Language Guide</h2>
+            <p class="instruction">Match portions to food items:</p>
+            <div class="match-container">
+                <div class="match-col">
+                    <div class="match-item">I'd like some...</div>
+                    <div class="match-item">I'd like a kilo of...</div>
+                    <div class="match-item">I'd like a liter of...</div>
+                </div>
+                <div class="match-col">
+                    <select class="match-select eval-lg-select" id="lg-s1" data-ans="a liter of"><option value="">(Select quantity) + Oil</option><option>some</option><option>a kilo of</option><option>a liter of</option></select>
+                    <select class="match-select eval-lg-select" id="lg-s2" data-ans="a kilo of"><option value="">(Select quantity) + Cheese</option><option>some</option><option>a kilo of</option><option>a liter of</option></select>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-4" class="activity-section theme-orange">
+            <h2>Up To You</h2>
+            <p class="instruction">Write a shopping list and script for a grocery run:</p>
+            <textarea id="uptoyou-dialogue" class="dialogue-textarea" placeholder="Customer: Good morning, I'd like a kilo of rice..."></textarea>
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-5" class="activity-section theme-gray">
+            <h2>Cross Curricular (Pag 57) / Homework (Shopping List)</h2>
+            <p class="instruction">Listen to the audio and select the items bought:</p>
+            <div class="audio-wrapper" style="margin-bottom: 20px;">
+                <div class="audio-player">
+                    <audio id="audio-2c-cc" src="https://files.catbox.moe/9hib9e.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2c-cc" onclick="toggleAudio('audio-2c-cc', 'btn-audio-2c-cc', 'var(--orange-main)')">▶ PLAY</button>
+                    <button type="button" class="speed-btn" id="spd-audio-2c-cc" onclick="changeSpeed('audio-2c-cc', 'spd-audio-2c-cc')">⚡ 1.0x</button>
+                    <span>Listen (Cross Curricular Pag 57)</span>
+                </div>
+            </div>
+            <div class="hw-list">
+                <div class="hw-item" id="hw-1"><span class="hw-item-name">Bread</span><div class="tick-cross-group"><button class="tc-btn tick" data-ans="tick" onclick="toggleBtn(this, 'tick')">✔️</button><button class="tc-btn cross" onclick="toggleBtn(this, 'cross')">❌</button></div></div>
+                <div class="hw-item" id="hw-2"><span class="hw-item-name">Tomatoes</span><div class="tick-cross-group"><button class="tc-btn tick" data-ans="tick" onclick="toggleBtn(this, 'tick')">✔️</button><button class="tc-btn cross" onclick="toggleBtn(this, 'cross')">❌</button></div></div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-6" class="activity-section theme-yellow">
+            <h2>Language at Work</h2>
+            <p class="instruction">Organize the sentences:</p>
+            <div id="builders-container"></div>
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-5')">⬅️ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-6', 'sec-7')">Next Activity ➔</button>
+            </div>
+        </div>
+
+        <div id="sec-7" class="activity-section theme-blue">
+            <h2>Now It's Your Turn!</h2>
+            <textarea id="nowturn-dialogue" class="dialogue-textarea" placeholder="Write your dialogue here..."></textarea>
+
+            <div class="story-transition-box">
+                <b>The Journey Continues...</b><br>
+                Com a despensa cheia e alimentada, Ivete agora está pronta para revisar tudo o que aprendeu sobre compras e alimentos no grande Unit 2 Challenge (Lição 2D)!
+            </div>
+
+            <div class="btn-finish-wrapper" style="margin-top: 15px;">
+                <button class="btn-finish" onclick="calculateXP()">✅ Finish Lesson 2C & Get XP</button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-7', 'sec-6')">⬅️ Back</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>Mission Complete!</h2>
+            <p>You have finished Lesson 2C.</p>
+            <div class="xp-circle" id="xp-gained-text">+0</div>
+            <p id="score-text" style="font-weight: bold; color: #555; text-align: center;">You scored X out of Y.</p>
+            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px;" onclick="returnToMap()">Collect XP & Go to Unit Challenge ➔</button>
+        </div>
+    </div>
+
+    <script>
+        function navigateSection(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            const showEl = document.getElementById(showId);
+            showEl.classList.add('active');
+            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        const wuWord = "GROCERY STORE";
+        let wuGuesses = [];
+        let wuLives = 5;
+
+        function initWuKeyboard() {
+            const kb = document.getElementById('wu-keyboard');
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for(let char of alphabet) {
+                let btn = document.createElement('button'); btn.className = 'key-btn'; btn.innerText = char;
+                btn.onclick = () => {
+                    btn.disabled = true;
+                    if(wuWord.includes(char)) { wuGuesses.push(char); btn.style.background = "#dcfce7"; }
+                    else { wuLives--; updateLivesDisplay(); btn.style.background = "#fee2e2"; }
+                    updateWuDisplay();
+                };
+                kb.appendChild(btn);
+            }
+            updateWuDisplay();
+        }
+
+        function updateLivesDisplay() {
+            let hearts = "";
+            for(let i=0; i<wuLives; i++) hearts += "❤️";
+            for(let i=wuLives; i<5; i++) hearts += "🖤";
+            document.getElementById('lives-display').innerText = hearts;
+        }
+
+        function updateWuDisplay() {
+            let display = "";
+            let won = true;
+            for(let char of wuWord) {
+                if(char === " ") display += "   ";
+                else if(wuGuesses.includes(char)) display += char + " ";
+                else { display += "_ "; won = false; }
+            }
+            document.getElementById('password-display').innerText = display;
+            if(won || wuLives <= 0) {
+                document.getElementById('btn-enter-shop').style.display = 'block';
+            }
+        }
+        initWuKeyboard();
+
+        function toggleBtn(btn, type) {
+            const container = btn.parentElement;
+            container.querySelectorAll('.tc-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            container.parentElement.setAttribute('data-user-ans', type);
+        }
+
+        const sentencesData = [
+            { id: 1, text: "I would like a kilo of cheese, please." },
+            { id: 2, text: "How much milk would you like?" }
+        ];
+
+        function createBuilders() {
+            const container = document.getElementById('builders-container');
+            sentencesData.forEach((item, index) => {
+                let words = item.text.split(" ").sort(() => Math.random() - 0.5);
+                const block = document.createElement('div');
+                block.className = 'builder-block';
+                block.innerHTML = `<div style="font-weight:bold; margin-bottom:10px;">Sentence ${index+1}:</div>
+                                   <div class="answer-area" id="ans-${item.id}"></div>
+                                   <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;" id="bank-${item.id}"></div>
+                                   <button class="btn-clear" onclick="clearBuilder(${item.id})">↻ Clear Area</button>`;
+                container.appendChild(block);
+
+                const bankEl = document.getElementById(`bank-${item.id}`);
+                words.forEach(word => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn'; btn.innerText = word;
+                    btn.onclick = () => {
+                        btn.style.display = 'none';
+                        const clone = document.createElement('button');
+                        clone.className = 'word-btn'; clone.innerText = btn.innerText;
+                        clone.onclick = () => { clone.remove(); btn.style.display = 'inline-block'; };
+                        document.getElementById(`ans-${item.id}`).appendChild(clone);
+                    };
+                    bankEl.appendChild(btn);
+                });
+            });
+        }
+        function clearBuilder(id) {
+            document.getElementById(`ans-${id}`).innerHTML = '';
+            Array.from(document.getElementById(`bank-${id}`).children).forEach(btn => btn.style.display = 'inline-block');
+        }
+        createBuilders();
+
+        function toggleAudio(audioId, btnId, originalColor) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== audioId) {
+                    a.pause();
+                    const otherBtn = document.getElementById('btn-' + a.id);
+                    if (otherBtn) otherBtn.innerText = "▶ PLAY";
+                }
+            });
+            if (audio.paused) { 
+                audio.play(); 
+                btn.innerText = "⏸ PAUSE"; 
+            } else { 
+                audio.pause(); 
+                btn.innerText = "▶ PLAY"; 
+            }
+            audio.onended = function() {
+                btn.innerText = "▶ PLAY";
+            };
+        }
+
+        function changeSpeed(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio) return;
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            let current = audio.playbackRate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 0;
+            let nextIdx = (idx + 1) % speeds.length;
+            audio.playbackRate = speeds[nextIdx];
+            if (btn) btn.innerText = '⚡ ' + speeds[nextIdx].toFixed(1) + 'x';
+        }
+
+        let finalXP = 0;
+        function calculateXP() {
+            let correct = 0; let total = 0;
+            document.querySelectorAll('.eval-cipher, .eval-list').forEach(input => {
+                total++;
+                let userAns = input.value.toLowerCase().trim().replace(',', '.');
+                let expectedAns = input.getAttribute('data-ans').toLowerCase().trim().replace(',', '.');
+                if(userAns.includes(expectedAns) || expectedAns.includes(userAns)) correct++;
+            });
+
+            document.querySelectorAll('.eval-lg-select').forEach(select => {
+                total++;
+                if(select.value !== "") correct++;
+            });
+
+            document.querySelectorAll('.hw-item').forEach(hw => {
+                total++;
+                let userAns = hw.getAttribute('data-user-ans');
+                let expectedBtn = hw.querySelector('[data-ans]');
+                let expectedAns = expectedBtn ? expectedBtn.getAttribute('data-ans') : 'cross';
+                if(userAns === expectedAns) correct++;
+            });
+
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100); 
+
+            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function returnToMap() {
+            localStorage.setItem('licao_2c_status', 'concluida');
+            localStorage.setItem('licao_2c_xp', finalXP);
+
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(0, finalXP); 
+                if(window.parent.avancarPara) {
+                    window.parent.avancarPara('licao2d.html', 'link-2d');
+                    return;
+                }
+            }
+            window.location.href = "licao2d.html"; 
+        }
+    </script>
+</body>
+</html>
