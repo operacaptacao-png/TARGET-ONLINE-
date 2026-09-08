@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4B | Giving Directions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>4B | HOW CAN I GET TO OVERSEAS CORPORATION?</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --black: #1A1A1A;
@@ -13,392 +16,485 @@
             --blue-dark: #1E3C72;
             --blue-light: #2A5298;
             --orange-main: #E67E22;
+            --orange-hover: #d35400;
+            --yellow-accent: #f59e0b;
+            --green-success: #22c55e;
             --font-title: 'Montserrat', sans-serif;
             --font-text: 'Roboto', sans-serif;
-            --theme-blue-bg: #eef2ff; --theme-blue-border: #4f46e5;
-            --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
-            --theme-red-bg: #fef2f2; --theme-red-border: #ef4444;
-            --theme-green-bg: #f0fdf4; --theme-green-border: #22c55e;
+            
+            --theme-blue-bg: #eef2ff; --theme-blue-border: #3949ab;
+            --theme-purple-bg: #faf5ff; --theme-purple-border: #8e24aa;
+            --theme-red-bg: #fef2f2; --theme-red-border: #d32f2f;
+            --theme-green-bg: #f0fdf4; --theme-green-border: #2e7d32;
             --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
+            --theme-yellow-bg: #fefce8; --theme-yellow-border: #d97706;
+            --theme-gray-bg: #f8fafc; --theme-gray-border: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: var(--font-text);
-            background: #f1f5f9;
-            margin: 0;
-            padding: 20px;
             color: var(--black);
+            margin: 0;
+            padding: 30px 15px 120px 15px;
             display: flex;
             justify-content: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 45%, #e67e22 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
         .book-page {
-            background: var(--white);
+            background-color: var(--white);
             width: 100%;
-            max-width: 900px;
+            max-width: 960px;
             min-height: 90vh;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            border-radius: 24px;
             padding: 40px;
-            box-sizing: border-box;
             position: relative;
+            z-index: 1;
+            margin: 0 auto;
         }
 
+        @media(max-width: 768px) {
+            .book-page { padding: 22px 16px; }
+            body { padding: 15px 8px 100px 8px; }
+        }
+
+        /* LESSON BANNER */
         .lesson-banner {
-            border-bottom: 3px solid var(--orange-main);
-            padding-bottom: 20px;
+            width: 100%;
+            min-height: 180px;
+            background: linear-gradient(rgba(30, 60, 114, 0.85), rgba(230, 126, 34, 0.85)), url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            text-align: center;
+            padding: 25px 20px;
+            color: white;
         }
-        .unit-tag {
+
+        .lesson-banner .unit-tag {
+            background: var(--yellow-accent);
+            color: var(--black);
             font-family: var(--font-title);
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--orange-main);
+            font-weight: 800;
+            font-size: 13px;
+            padding: 5px 18px;
+            border-radius: 50px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
+
         .lesson-banner h1 {
             font-family: var(--font-title);
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--blue-dark);
-            margin: 5px 0 0 0;
+            font-size: clamp(22px, 4vw, 32px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .activity-section {
-            display: none;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border-left: 6px solid;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .activity-section.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
-        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
-        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
-        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
-
-        .activity-section h2 {
-            font-family: var(--font-title);
-            font-size: 20px;
-            font-weight: 700;
-            margin-top: 0;
-            margin-bottom: 8px;
-        }
-        .theme-blue h2 { color: var(--theme-blue-border); }
-        .theme-purple h2 { color: var(--theme-purple-border); }
-        .theme-green h2 { color: var(--theme-green-border); }
-        .theme-orange h2 { color: var(--theme-orange-border); }
-
-        .instruction {
+        .lesson-banner p {
+            margin: 8px 0 0 0;
             font-size: 14px;
-            color: #475569;
-            margin-bottom: 20px;
+            opacity: 0.9;
             font-style: italic;
         }
 
-        .audio-wrapper {
+        /* TABS DE ATIVIDADE */
+        .section-tabs-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
             margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+            scrollbar-width: thin;
+        }
+        .section-tab-btn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 9px 16px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .section-tab-btn:hover {
+            background: #e2e8f0;
+            color: var(--blue-dark);
+        }
+        .section-tab-btn.active {
+            background: var(--orange-main);
+            color: white;
+            border-color: var(--orange-main);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.35);
+        }
+
+        /* CARDS DE ATIVIDADE */
+        .activity-section {
+            display: none;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+            animation: fadeIn 0.35s ease-in-out;
+            background: white;
+        }
+        .activity-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
+        .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
+        .theme-yellow { background: var(--theme-yellow-bg); border-color: var(--theme-yellow-border); }
+
+        .activity-section h2 {
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 22px;
+            margin-top: 0;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
+            gap: 10px;
+        }
+        .theme-orange h2 { color: var(--theme-orange-border); }
+        .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
+        .theme-yellow h2 { color: var(--theme-yellow-border); }
+
+        .instruction-box {
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #334155;
+            border-left: 4px solid var(--orange-main);
+        }
+
+        /* INPUTS GAMIFICADOS (.fancy-input) */
+        .fancy-input {
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 2.5px solid #cbd5e1;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.25s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+            width: 100%;
+            box-sizing: border-box;
+            font-family: var(--font-text);
+        }
+        .fancy-input:focus {
+            border-color: var(--orange-main);
+            background-color: #fff7ed;
+            box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.2);
+        }
+        textarea.fancy-input {
+            resize: vertical;
+            line-height: 1.6;
+            min-height: 110px;
+        }
+
+        /* EXERCISE CARD */
+        .exercise-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1.5px solid #e2e8f0;
+        }
+
+        /* AUDIO PLAYER */
+        .audio-wrapper {
+            display: flex;
             justify-content: center;
             width: 100%;
+            margin: 15px 0 25px 0;
         }
         .audio-player {
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 50px;
             display: inline-flex;
             align-items: center;
             flex-wrap: wrap;
-            background: white;
-            padding: 8px 18px;
-            border-radius: 50px;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
             gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
         }
         .play-btn {
-            background: var(--blue-dark);
-            color: white;
+            background: var(--orange-main);
             border: none;
+            color: white;
+            padding: 8px 20px;
             border-radius: 50px;
-            padding: 9px 20px;
-            font-weight: 800;
             cursor: pointer;
+            font-weight: 800;
             font-family: var(--font-title);
             font-size: 13px;
-            transition: 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
         }
-        .play-btn:hover { background: var(--blue-light); transform: scale(1.03); }
-        .play-btn.playing { background: #ea580c !important; }
+        .play-btn:hover { background: var(--orange-hover); transform: scale(1.03); }
+        .play-btn.playing { background: #16a34a !important; }
 
         .audio-ctrl-btn {
             background: #f1f5f9;
             border: 1px solid #cbd5e1;
             color: #1e293b;
-            padding: 8px 14px;
+            padding: 7px 13px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
             transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
         }
         .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.05); }
         .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
-        .audio-ctrl-btn.pause-btn { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
-        .audio-ctrl-btn.pause-btn:hover { background: #fecaca; }
-
         .audio-track-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            color: #475569;
+            color: #64748b;
             margin-left: 6px;
         }
 
-        /* ESTÉTICA GAMIFICADA */
-        .gamified-input, .text-blank, select.balloon-select, select, input[type="text"], textarea {
-            border-radius: 12px;
-            background: #f8fafc;
-            border: 2px solid #cbd5e1;
-            color: #1e293b;
-            font-weight: 600;
-            padding: 10px 14px;
-            outline: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .gamified-input:focus, .text-blank:focus, select.balloon-select:focus, select:focus, input[type="text"]:focus, textarea:focus {
-            background: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(59, 130, 246, 0.12);
-            transform: translateY(-1px);
-        }
-        .gamified-input:hover, .text-blank:hover, select.balloon-select:hover, select:hover, input[type="text"]:hover, textarea:hover {
-            border-color: #94a3b8;
-            background: #ffffff;
-        }
-
-        .draggable-sign * {
-            pointer-events: none;
-        }
-
-        .signs-pool {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            min-height: 60px;
-            border: 2px dashed #cbd5e1;
-        }
-        .draggable-sign {
-            background: #f8fafc;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 10px 14px;
-            cursor: grab;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            transition: transform 0.15s, border-color 0.15s;
-            user-select: none;
-        }
-        .draggable-sign:hover { border-color: var(--theme-blue-border); transform: translateY(-2px); }
-        .draggable-sign.sign-tapped {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.35);
-            transform: scale(1.05);
-        }
-
-        .directions-grid {
+        /* VOCABULARY TAGS GRID */
+        .vocab-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
         }
-        @media(max-width: 650px) { .directions-grid { grid-template-columns: 1fr; } }
-
-        .dir-slot-card {
+        .vocab-tag {
             background: white;
-            border-radius: 12px;
+            border: 2px solid var(--theme-blue-border);
+            border-radius: 14px;
             padding: 14px;
-            border: 1px solid #e2e8f0;
+            text-align: center;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--blue-dark);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            transition: 0.25s;
             display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: 6px;
+        }
+        .vocab-tag:hover {
+            transform: translateY(-3px);
+            background: #e0e7ff;
+            border-color: var(--orange-main);
+            color: var(--orange-main);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+        .vocab-tag .tag-icon {
+            font-size: 20px;
+        }
+
+        /* MAP VISUALIZER COMPONENT */
+        .city-map-container {
+            background: #f8fafc;
+            border: 2.5px solid #cbd5e1;
+            border-radius: 18px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .city-map-header {
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            color: #334155;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .city-map-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
-        .dir-slot-desc { flex: 1; }
-        .dir-slot-desc b { display: block; color: var(--theme-blue-border); font-size: 14px; margin-bottom: 3px; }
-        .dir-slot-desc p { margin: 0; font-size: 12px; color: #64748b; }
-        .dir-target-slot {
-            width: 140px;
-            height: 52px;
-            background: #f1f5f9;
-            border: 2px dashed #94a3b8;
+        @media(max-width: 650px) {
+            .city-map-grid { grid-template-columns: 1fr; }
+        }
+        .map-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .map-card .map-badge {
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            transition: 0.2s;
+            font-size: 16px;
+            background: #f1f5f9;
+            flex-shrink: 0;
         }
-        .dir-target-slot.drag-over { background: #e0e7ff; border-color: var(--theme-blue-border); }
-
-        .dialogue-box {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            border: 2px solid var(--theme-purple-border);
-            margin-bottom: 20px;
-        }
-        .dialogue-row { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
-        .dialogue-row.local { flex-direction: row-reverse; }
-        .dialogue-bubble {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 14px;
-            line-height: 1.5;
-            max-width: 80%;
-        }
-        .dialogue-row.local .dialogue-bubble { background: #fdf4ff; border-color: #f0abfc; color: #701a75; }
-
-        .exercise-card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 12px;
-        }
-        .exercise-card p { margin: 0 0 10px 0; font-weight: 600; font-size: 14px; }
-
-        .balloon-select {
-            background: #f8fafc;
-            border: 2px solid var(--theme-green-border);
-            color: var(--theme-green-border);
-            border-radius: 50px;
-            padding: 5px 28px 5px 12px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            outline: none;
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="%2322c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            margin: 0 4px;
-        }
-
-        .text-blank {
-            border: none;
-            border-bottom: 2px dashed #94a3b8;
-            font-size: 14px;
-            color: var(--blue-dark);
-            padding: 2px 6px;
-            outline: none;
-            background: #fffbeb;
-            border-radius: 4px;
-            width: 130px;
+        .street-banner {
+            grid-column: 1 / -1;
+            background: #334155;
+            color: white;
             text-align: center;
-        }
-
-        .notepad-container {
-            background: #fffbeb;
-            border: 2px solid #fcd34d;
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .notepad-title {
+            padding: 8px;
+            border-radius: 8px;
             font-family: var(--font-title);
             font-weight: 800;
-            color: #92400e;
-            font-size: 15px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* DRAWING CANVAS */
+        .canvas-wrapper {
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 14px;
+            margin: 15px 0 20px 0;
+            text-align: center;
+        }
+        .drawing-canvas {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none;
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        .canvas-toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-tool {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-tool:hover { background: #e2e8f0; }
+
+        /* NAVIGATION BUTTONS */
+        .nav-buttons {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            align-items: center;
+            margin-top: 35px;
+            border-top: 1px dashed rgba(0,0,0,0.15);
+            padding-top: 20px;
         }
-        .notepad-area {
-            width: 100%;
-            height: 140px;
-            background: transparent;
-            border: none;
-            font-family: inherit;
-            font-size: 14px;
-            line-height: 28px;
-            outline: none;
-            resize: vertical;
-            color: #451a03;
-            background-image: repeating-linear-gradient(transparent, transparent 27px, #fcd34d 27px, #fcd34d 28px);
-            box-sizing: border-box;
+        .btn-nav {
+            padding: 12px 26px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 13px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: white;
+            border: 2px solid;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
 
-        .story-transition-box {
-            background: #fdf2f8;
-            border: 2px dashed #f472b6;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 25px;
-            color: #831843;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
+        /* BOTÃO FINALIZAR */
         .btn-finish {
-            background: #22c55e;
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
             color: white;
             border: none;
-            padding: 15px 35px;
+            padding: 16px 40px;
             font-family: var(--font-title);
             font-size: 16px;
             font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
             display: block;
-            margin: 20px auto 0 auto;
+            margin: 30px auto 10px auto;
             transition: 0.3s;
-            box-shadow: 0 6px 20px rgba(34,197,94,0.3);
+            box-shadow: 0 8px 25px rgba(34,197,94,0.4);
             width: 100%;
+            max-width: 420px;
             text-align: center;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .btn-finish:hover { background: #16a34a; transform: translateY(-2px); }
+        .btn-finish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(34,197,94,0.5);
+        }
 
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-        }
-        .btn-nav {
-            background: var(--blue-dark);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 8px;
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-nav:hover { background: var(--blue-light); }
-
+        /* RESULT MODAL */
         #result-modal {
             display: none;
             position: fixed;
@@ -407,778 +503,887 @@
             z-index: 9999;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
         }
         .modal-content {
             background: white;
-            padding: 35px;
-            border-radius: 20px;
+            padding: 40px;
+            border-radius: 24px;
             text-align: center;
-            max-width: 400px;
+            max-width: 440px;
             width: 90%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         .xp-circle {
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: #22c55e;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
+            font-size: 38px;
             font-weight: 900;
             margin: 20px auto;
-            border: 6px solid #bbf7d0;
+            border: 6px solid #fef3c7;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
         }
 
+        /* BOTÃO FLUTUANTE GRAMMAR TIP */
         .grammar-floating-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             z-index: 1000;
         }
         .grammar-floating-btn {
             background: var(--orange-main);
             color: white;
-            padding: 12px 20px;
+            padding: 14px 24px;
             border-radius: 50px;
             font-family: var(--font-title);
             font-weight: 800;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+            box-shadow: 0 10px 25px rgba(230, 126, 34, 0.45);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .grammar-floating-btn:hover {
+            background: var(--orange-hover);
+            transform: scale(1.05);
         }
         .grammar-box {
             visibility: hidden;
             opacity: 0;
-            width: 300px;
+            width: 320px;
             background: white;
             color: var(--black);
-            border-radius: 14px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 22px;
             position: absolute;
-            bottom: 55px;
+            bottom: 60px;
             right: 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             border: 2px solid var(--orange-main);
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(15px);
+            font-size: 14px;
+            line-height: 1.6;
             pointer-events: none;
-            font-size: 13px;
-            line-height: 1.5;
         }
         .grammar-floating-container:hover .grammar-box {
             visibility: visible;
             opacity: 1;
+            transform: translateY(0);
             pointer-events: auto;
+        }
+        .grammar-box h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: var(--orange-main);
+            font-family: var(--font-title);
+            font-size: 16px;
+        }
+
+        .word-bank {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #1e293b;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin: 2px 4px;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
     <div class="book-page">
-        <!-- BANNER -->
+        
+        <!-- BANNER DA LIÇÃO -->
         <div class="lesson-banner">
-            <span class="unit-tag">Unit 4 • Round and about</span>
-            <h1>4B | Giving Directions</h1>
+            <span class="unit-tag">Unit 4 | Round and About</span>
+            <h1>4B | HOW CAN I GET TO OVERSEAS CORPORATION?</h1>
+            <p>Giving Directions • Street Abbreviations • Prepositions of Place</p>
         </div>
 
-        <!-- SEÇÃO 1: WORDS & IDEAS -->
-        <div id="sec-1" class="activity-section theme-blue active">
-            <h2>1. Words and Ideas • Street Directions & Signs</h2>
-            <p class="instruction">Listen to the direction phrases, then drag each expression to its correct definition.</p>
+        <!-- TABS DE NAVEGAÇÃO SUPERIOR -->
+        <div class="section-tabs-bar">
+            <button class="section-tab-btn active" onclick="showTab(0)">1. Warm Up</button>
+            <button class="section-tab-btn" onclick="showTab(1)">2. Words & Ideas</button>
+            <button class="section-tab-btn" onclick="showTab(2)">3. Target Situation</button>
+            <button class="section-tab-btn" onclick="showTab(3)">4. Language Guide</button>
+            <button class="section-tab-btn" onclick="showTab(4)">5. Up to You</button>
+            <button class="section-tab-btn" onclick="showTab(5)">6. Cross Curricular</button>
+            <button class="section-tab-btn" onclick="showTab(6)">7. Language at Work 1</button>
+            <button class="section-tab-btn" onclick="showTab(7)">8. Language at Work 2</button>
+            <button class="section-tab-btn" onclick="showTab(8)">9. Your Turn</button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 1. WARM UP -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-orange active" id="sec-warmup">
+            <h2>🧭 WARM UP</h2>
+            <div class="instruction-box">
+                Create drawings for the directions and find the abbreviations for the places:
+            </div>
+
+            <div class="canvas-wrapper">
+                <p style="font-weight: 700; margin: 0 0 10px 0; color: #475569; font-size: 13px;">
+                    ✍️ Sketch area: Draw your direction symbols / arrows:
+                </p>
+                <canvas id="canvas-warmup" class="drawing-canvas" width="600" height="150"></canvas>
+                <div class="canvas-toolbar">
+                    <button class="btn-tool" onclick="clearCanvas('canvas-warmup')">🗑️ Clear Drawing</button>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <p style="font-weight: 800; color: var(--blue-dark); margin-top: 0;">Write the standard abbreviation for each place:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px;">
+                    <div>
+                        <label style="font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px;">a) Street:</label>
+                        <input type="text" class="fancy-input eval-input" id="wu-street" data-ans="St." placeholder="e.g. St.">
+                    </div>
+                    <div>
+                        <label style="font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px;">b) Square:</label>
+                        <input type="text" class="fancy-input eval-input" id="wu-square" data-ans="Sq." placeholder="e.g. Sq.">
+                    </div>
+                    <div>
+                        <label style="font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px;">c) Avenue:</label>
+                        <input type="text" class="fancy-input eval-input" id="wu-avenue" data-ans="Av." placeholder="e.g. Av.">
+                    </div>
+                    <div>
+                        <label style="font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px;">d) Lane:</label>
+                        <input type="text" class="fancy-input eval-input" id="wu-lane" data-ans="Ln." placeholder="e.g. Ln.">
+                    </div>
+                    <div>
+                        <label style="font-weight: 700; font-size: 14px; display: block; margin-bottom: 6px;">e) Place:</label>
+                        <input type="text" class="fancy-input eval-input" id="wu-place" data-ans="Pl." placeholder="e.g. Pl.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <div></div>
+                <button class="btn-nav" onclick="showTab(1)">Next: Words and Ideas ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. WORDS AND IDEAS -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-blue" id="sec-words">
+            <h2>🗣️ WORDS AND IDEAS</h2>
+            <div class="instruction-box">
+                Create drawings for the directions. Check the examples:
+            </div>
 
             <div class="audio-wrapper">
-                <div class="audio-player" data-script-key="audio-1">
-                    <audio id="audio-1" src="https://files.catbox.moe/4jajwy.mp3" preload="none"></audio>
-                    <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--blue-dark)')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
-                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
-                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-1" onclick="cycleSpeed('audio-1', 'spd-audio-1')" title="Alternar velocidade">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 1.25, 'fast-audio-1')" title="1.25x">🐇</button>
+                <div class="audio-player">
+                    <audio id="audio-words" src="https://files.catbox.moe/4jajwy.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-words" onclick="toggleAudio('audio-words', 'btn-audio-words')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 0.75)">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 1.0)">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 1.25)">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.1: Direction Expressions</span>
                 </div>
             </div>
 
-            <div id="signs-pool" class="signs-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
-                <div class="draggable-sign" id="s1" draggable="true" ondragstart="drag(event)">⬅️ Turn Left</div>
-                <div class="draggable-sign" id="s2" draggable="true" ondragstart="drag(event)">➡️ Turn Right</div>
-                <div class="draggable-sign" id="s3" draggable="true" ondragstart="drag(event)">⬆️ Go Straight On</div>
-                <div class="draggable-sign" id="s4" draggable="true" ondragstart="drag(event)">🚦 Traffic Lights</div>
-                <div class="draggable-sign" id="s5" draggable="true" ondragstart="drag(event)">🔄 Roundabout</div>
-                <div class="draggable-sign" id="s6" draggable="true" ondragstart="drag(event)">➕ Crossroads</div>
+            <div class="vocab-grid">
+                <div class="vocab-tag"><span class="tag-icon">🚶‍♂️</span><span>Go past</span></div>
+                <div class="vocab-tag"><span class="tag-icon">↰</span><span>Take a left</span></div>
+                <div class="vocab-tag"><span class="tag-icon">↱</span><span>Turn right</span></div>
+                <div class="vocab-tag"><span class="tag-icon">🔄</span><span>Go round</span></div>
+                <div class="vocab-tag"><span class="tag-icon">⛩️</span><span>Go through</span></div>
+                <div class="vocab-tag"><span class="tag-icon">⬆️</span><span>Go straight ahead</span></div>
+                <div class="vocab-tag"><span class="tag-icon">👀</span><span>You'll see</span></div>
+                <div class="vocab-tag"><span class="tag-icon">↩️</span><span>Take the U turn</span></div>
+                <div class="vocab-tag"><span class="tag-icon">📐</span><span>Go to the corner</span></div>
+                <div class="vocab-tag"><span class="tag-icon">⭕</span><span>Take the roundabout</span></div>
+                <div class="vocab-tag"><span class="tag-icon">🔝</span><span>Go up</span></div>
             </div>
 
-            <div class="directions-grid">
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>A. Continue along the road</b>
-                        <p>Keep moving forward without turning into any side street.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-1" data-ans="s3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>B. Make a left turn</b>
-                        <p>Change your direction towards the west or left sidewalk.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-2" data-ans="s1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>C. Make a right turn</b>
-                        <p>Direct your movement into the right-hand corner road.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-3" data-ans="s2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>D. Signal-controlled intersection</b>
-                        <p>Red, amber, and green automatic street lights.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-4" data-ans="s4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>E. Circular junction</b>
-                        <p>Vehicles move clockwise around a circular central point.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-5" data-ans="s5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                </div>
-
-                <div class="dir-slot-card">
-                    <div class="dir-slot-desc">
-                        <b>F. Road intersection</b>
-                        <p>A point where two streets cross each other forming a plus sign.</p>
-                    </div>
-                    <div class="dir-target-slot eval-drop" id="slot-6" data-ans="s6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div class="canvas-wrapper">
+                <p style="font-weight: 700; margin: 0 0 10px 0; color: #475569; font-size: 13px;">
+                    ✍️ Practice drawing directions (straight ahead, roundabout, corner, etc.):
+                </p>
+                <canvas id="canvas-directions" class="drawing-canvas" width="600" height="160"></canvas>
+                <div class="canvas-toolbar">
+                    <button class="btn-tool" onclick="clearCanvas('canvas-directions')">🗑️ Clear Drawing</button>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <div></div>
-                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+                <button class="btn-nav" onclick="showTab(0)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(2)">Next: Target Situation ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 2: TARGET SITUATION -->
-        <div id="sec-2" class="activity-section theme-purple">
-            <h2>2. Target Situation • Asking for the British Museum</h2>
-            <p class="instruction">Ivete has stepped off the bus and needs directions to reach the British Museum entrance.</p>
+        <!-- ========================================== -->
+        <!-- 3. TARGET SITUATION -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-purple" id="sec-target">
+            <h2>🎯 TARGET SITUATION</h2>
+            <div class="instruction-box">
+                Ivete is at Overseas Co. Now she is looking for a post office. Can you help her? Write the directions. Give details.
+            </div>
 
             <div class="audio-wrapper">
-                <div class="audio-player" data-script-key="audio-2">
-                    <audio id="audio-2" src="https://files.catbox.moe/tfq26j.mp3" preload="none"></audio>
-                    <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')" title="Pausar áudio">⏸ PAUSE</button>
-                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
-                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-2" onclick="cycleSpeed('audio-2', 'spd-audio-2')" title="Alternar velocidade">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 1.25, 'fast-audio-2')" title="1.25x">🐇</button>
+                <div class="audio-player">
+                    <audio id="audio-target" src="https://files.catbox.moe/tfq26j.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-target" onclick="toggleAudio('audio-target', 'btn-audio-target')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 0.75)">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 1.0)">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 1.25)">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.2: Asking for Directions</span>
                 </div>
             </div>
 
-            <div class="dialogue-box">
-                <div class="dialogue-row">
-                    <div class="dialogue-bubble">
-                        <b>Ivete:</b> "Excuse me! Could you tell me the way to the <b>British Museum</b>, please?"
-                    </div>
+            <!-- MAPA DA ÁREA CENTRAL -->
+            <div class="city-map-container">
+                <div class="city-map-header">
+                    <span>🗺️ Downtown Westminster Map</span>
+                    <span style="font-size: 11px; color: #64748b;">Overseas Co. Sector</span>
                 </div>
-                <div class="dialogue-row local">
-                    <div class="dialogue-bubble">
-                        <b>Local Pedestrian:</b> "Yes, of course! Go straight on down this avenue until you see the traffic lights."
-                    </div>
-                </div>
-                <div class="dialogue-row">
-                    <div class="dialogue-bubble">
-                        <b>Ivete:</b> "And what do I do at the traffic lights?"
-                    </div>
-                </div>
-                <div class="dialogue-row local">
-                    <div class="dialogue-bubble">
-                        <b>Local Pedestrian:</b> "Turn right into Great Russell Street. Walk past the bookshop, and the museum will be directly on your left."
-                    </div>
-                </div>
-                <div class="dialogue-row">
-                    <div class="dialogue-bubble">
-                        <b>Ivete:</b> "Is it far from here?"
-                    </div>
-                </div>
-                <div class="dialogue-row local">
-                    <div class="dialogue-bubble">
-                        <b>Local Pedestrian:</b> "Not at all, only about five minutes on foot. You can't miss it!"
-                    </div>
+                <div class="city-map-grid">
+                    <div class="map-card"><span class="map-badge">🏢</span><span>Overseas Corporation</span></div>
+                    <div class="map-card"><span class="map-badge">🏥</span><span>City Hospital</span></div>
+                    <div class="map-card"><span class="map-badge">👮</span><span>Police Station</span></div>
+                    <div class="street-banner">--- KING'S ROAD ---</div>
+                    <div class="map-card"><span class="map-badge">🎬</span><span>Cinema</span></div>
+                    <div class="map-card"><span class="map-badge">☕</span><span>Central Café</span></div>
+                    <div class="map-card"><span class="map-badge">📮</span><span>Post Office</span></div>
+                    <div class="street-banner">--- GREEN STREET ---</div>
+                    <div class="map-card"><span class="map-badge">🛍️</span><span>Fashion Shop</span></div>
+                    <div class="map-card"><span class="map-badge">🚇</span><span>Underground Station</span></div>
+                    <div class="map-card"><span class="map-badge">🌳</span><span>City Park</span></div>
                 </div>
             </div>
 
             <div class="exercise-card">
-                <p>1. What should Ivete do at the traffic lights?</p>
-                <select class="balloon-select eval-select" id="sit-1" data-ans="right">
-                    <option value="">-- Choose direction --</option>
-                    <option value="right">Turn right into Great Russell Street.</option>
-                    <option value="left">Turn left towards the river.</option>
-                    <option value="stop">Wait for another bus.</option>
-                </select>
-            </div>
-
-            <div class="exercise-card">
-                <p>2. Where is the British Museum located?</p>
-                <select class="balloon-select eval-select" id="sit-2" data-ans="left">
-                    <option value="">-- Choose location --</option>
-                    <option value="left">Directly on her left, past the bookshop.</option>
-                    <option value="behind">Behind the Underground station.</option>
-                    <option value="across">Across the River Thames.</option>
-                </select>
+                <label for="target-directions-text" style="font-weight: 800; color: var(--theme-purple-border); margin-bottom: 8px; display: block;">
+                    📝 Write step-by-step directions for Ivete from Overseas Co. to the Post Office:
+                </label>
+                <textarea class="fancy-input" id="target-directions-text" rows="6" placeholder="Example: Go straight ahead on King's Road. Turn left at Green Street. Go past the Cinema, and the Post Office is on your right next to the Café..."></textarea>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language Guide ➔</button>
+                <button class="btn-nav" onclick="showTab(1)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(3)">Next: Language Guide ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 3: LANGUAGE GUIDE -->
-        <div id="sec-3" class="activity-section theme-green">
-            <h2>3. Language Guide • Giving & Understanding Directions</h2>
-            <p class="instruction">Choose the correct words to complete the instructions.</p>
-
-            <div class="exercise-card">
-                <p><b>Exercise A: Prepositions of Position & Movement</b></p>
-                <div style="line-height: 2.2; font-size: 14px;">
-                    1. Go 
-                    <select class="balloon-select eval-select" id="prep-1" data-ans="straight">
-                        <option value="">-- select --</option>
-                        <option value="straight">straight on</option>
-                        <option value="up">straight up</option>
-                    </select> until the roundabout.<br>
-                    2. Take the second turning 
-                    <select class="balloon-select eval-select" id="prep-2" data-ans="on">
-                        <option value="">-- select --</option>
-                        <option value="on">on the left</option>
-                        <option value="at">at the left</option>
-                    </select>.<br>
-                    3. The museum is 
-                    <select class="balloon-select eval-select" id="prep-3" data-ans="opposite">
-                        <option value="">-- select --</option>
-                        <option value="opposite">opposite</option>
-                        <option value="facing">facing</option>
-                    </select> the café across the street.<br>
-                    4. Walk 
-                    <select class="balloon-select eval-select" id="prep-4" data-ans="past">
-                        <option value="">-- select --</option>
-                        <option value="past">past</option>
-                        <option value="pass">pass</option>
-                    </select> the post office and you will see the park.
-                </div>
+        <!-- ========================================== -->
+        <!-- 4. LANGUAGE GUIDE -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-green" id="sec-guide">
+            <h2>📖 LANGUAGE GUIDE</h2>
+            <div class="instruction-box">
+                To give more details and tell directions we can use the positions below: 
+                <span class="word-bank">Under</span>
+                <span class="word-bank">On</span>
+                <span class="word-bank">In</span>
+                <span class="word-bank">Next to</span>
+                <span class="word-bank">Between</span>
+                <span class="word-bank">In front of</span>
+                <br><br>
+                Look at the map again. What can you say using the words from the box about the pair of places.
             </div>
 
             <div class="exercise-card">
-                <p><b>Exercise B: Key Questions</b></p>
-                <div style="line-height: 2.2; font-size: 14px;">
-                    1. "Excuse me, <input type="text" class="text-blank eval-text" id="q-1" data-ans="how do i get" placeholder="..."> to Covent Garden?"<br>
-                    2. "Could you <input type="text" class="text-blank eval-text" id="q-2" data-ans="tell me" placeholder="..."> the way to the station?"<br>
-                    3. "Is there a cash machine <input type="text" class="text-blank eval-text" id="q-3" data-ans="near here" placeholder="...">?"
-                </div>
+                <label style="font-weight: 800; color: #1e293b; display: block; margin-bottom: 8px;">
+                    1. (Hospital x police station)
+                </label>
+                <textarea class="fancy-input eval-input" id="lg-hospital-police" rows="2" data-ans="The hospital is next to the police station." placeholder="Write complete sentence..."></textarea>
+            </div>
+
+            <div class="exercise-card">
+                <label style="font-weight: 800; color: #1e293b; display: block; margin-bottom: 8px;">
+                    2. (Cinema x Hospital)
+                </label>
+                <textarea class="fancy-input eval-input" id="lg-cinema-hospital" rows="2" data-ans="The cinema is in front of the hospital." placeholder="Write complete sentence..."></textarea>
+            </div>
+
+            <div class="exercise-card">
+                <label style="font-weight: 800; color: #1e293b; display: block; margin-bottom: 8px;">
+                    3. (Shop x Underground station)
+                </label>
+                <textarea class="fancy-input eval-input" id="lg-shop-underground" rows="2" data-ans="The shop is next to the underground station." placeholder="Write complete sentence..."></textarea>
+            </div>
+
+            <div class="exercise-card">
+                <label style="font-weight: 800; color: #1e293b; display: block; margin-bottom: 8px;">
+                    4. (Café x King's road x Green street)
+                </label>
+                <textarea class="fancy-input eval-input" id="lg-cafe-streets" rows="2" data-ans="The café is between King's road and green street." placeholder="Write complete sentence..."></textarea>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Homework ➔</button>
+                <button class="btn-nav" onclick="showTab(2)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(4)">Next: Up to You ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 4: HOMEWORK & PRODUCTION -->
-        <div id="sec-4" class="activity-section theme-orange">
-            <h2>4. Homework & Production • My London Walking Tour</h2>
-            <p class="instruction">Write directions from your hotel to a nearby landmark, using at least 3 direction phrases.</p>
-
-            <div class="notepad-container" id="notepad-capture">
-                <div class="notepad-title">
-                    <span>📝 Autonomous Production • Walking Route Directions</span>
-                    <button class="btn-nav" style="padding: 4px 12px; font-size: 11px;" onclick="downloadNotepad()">📷 Save Note</button>
-                </div>
-                <textarea id="final-dialogue" class="notepad-area" placeholder="To reach Trafalgar Square from the hotel: First, turn left out of the hotel. Go straight on along Strand. Walk past Charing Cross station. Trafalgar Square will be right in front of you."></textarea>
+        <!-- ========================================== -->
+        <!-- 5. UP TO YOU -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-blue" id="sec-uptoyou">
+            <h2>👥 UP TO YOU</h2>
+            <div class="instruction-box">
+                Work in pairs. Read the Map.<br>
+                a) Choose a location and give directions to another student.<br>
+                b) Use the directions to help.
             </div>
 
-            <!-- TRANSIÇÃO NARRATIVA -->
-            <div class="story-transition-box">
-                <b>The Journey Continues...</b><br>
-                Ivete chegou perfeitamente ao destino! Agora é hora de explorar a cidade a fundo na Lição 4C. Continue sua jornada em Londres!
+            <div class="exercise-card" style="border-left: 4px solid var(--theme-blue-border);">
+                <h4 style="margin-top: 0; color: var(--theme-blue-border);">Pair Practice Prompts:</h4>
+                <p><strong>Student A:</strong> "Excuse me, how can I get to the underground station from the cinema?"</p>
+                <p><strong>Student B:</strong> "Go down Green Street, turn right at King's Road..."</p>
+                <label style="font-weight: 700; margin-top: 15px; display: block; color: #334155;">
+                    📝 Write the roleplay dialogue between you and your partner:
+                </label>
+                <textarea class="fancy-input" id="uptoyou-dialogue" rows="5" placeholder="Student A: Excuse me, can you tell me the way to...&#10;Student B: Sure! Go straight ahead..."></textarea>
             </div>
-
-            <button class="btn-finish" id="btn-finish-4b" onclick="calculateXP()">✅ Finish Lesson & Get XP</button>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="showTab(3)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(5)">Next: Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 6. CROSS CURRICULAR -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-orange" id="sec-cross">
+            <h2>🌍 CROSS CURRICULAR</h2>
+            <div class="instruction-box">
+                Ivete is in a different area of the city. She is looking for some places. Listen and write the places according to the box.<br><br>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+                    <span class="word-bank">POST OFFICE</span>
+                    <span class="word-bank">ITALIAN RESTAURANT</span>
+                    <span class="word-bank">INTERNET CAFÉ</span>
+                    <span class="word-bank">NEWS AGENCY</span>
+                </div>
+            </div>
+
+            <div class="audio-wrapper">
+                <div class="audio-player">
+                    <audio id="audio-cross" src="https://files.catbox.moe/2m06lt.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-cross" onclick="toggleAudio('audio-cross', 'btn-audio-cross')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 0.75)">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 1.0)">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 1.25)">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 4B.3: Cross Curricular Listening</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                <div class="exercise-card">
+                    <label style="font-weight: 800; display: block; margin-bottom: 8px; color: var(--theme-orange-border);">Place 1:</label>
+                    <input type="text" class="fancy-input eval-input" id="cc-place-1" data-ans="News agency" placeholder="Write place name...">
+                </div>
+                <div class="exercise-card">
+                    <label style="font-weight: 800; display: block; margin-bottom: 8px; color: var(--theme-orange-border);">Place 2:</label>
+                    <input type="text" class="fancy-input eval-input" id="cc-place-2" data-ans="Café" placeholder="Write place name...">
+                </div>
+                <div class="exercise-card">
+                    <label style="font-weight: 800; display: block; margin-bottom: 8px; color: var(--theme-orange-border);">Place 3:</label>
+                    <input type="text" class="fancy-input eval-input" id="cc-place-3" data-ans="Post office" placeholder="Write place name...">
+                </div>
+                <div class="exercise-card">
+                    <label style="font-weight: 800; display: block; margin-bottom: 8px; color: var(--theme-orange-border);">Place 4:</label>
+                    <input type="text" class="fancy-input eval-input" id="cc-place-4" data-ans="Italian restaurant" placeholder="Write place name...">
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="showTab(4)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(6)">Next: Language at Work 1 ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 7. LANGUAGE AT WORK 1 -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-purple" id="sec-law1">
+            <h2>🎧 LANGUAGE AT WORK 1</h2>
+            <div class="instruction-box">
+                Listen to Ivete again. Fill the gaps according to what she says.
+            </div>
+
+            <div class="audio-wrapper">
+                <div class="audio-player">
+                    <audio id="audio-law1" src="https://files.catbox.moe/87ej9g.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-law1" onclick="toggleAudio('audio-law1', 'btn-audio-law1')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 0.75)">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 1.0)">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 1.25)">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 4B.4: Language at Work Audio</span>
+                </div>
+            </div>
+
+            <!-- DIÁLOGO 1 -->
+            <div class="exercise-card" style="line-height: 2.2; font-size: 15px;">
+                <h4 style="margin: 0 0 10px 0; color: var(--theme-purple-border);">Diálogo 1:</h4>
+                <p>
+                    <strong>Ivete:</strong> Excuse me! Is there a 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-1" style="width: 140px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="news agency" placeholder="..."> 
+                    near here?
+                </p>
+                <p>
+                    <strong>Local:</strong> Yes. It's on Church Street. Take the first 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-2" style="width: 150px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="street on the" placeholder="..."> 
+                    right. It's 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-3" style="width: 120px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="next to" placeholder="..."> 
+                    the music shop.
+                </p>
+                <p><strong>Ivete:</strong> OK. Thanks.</p>
+            </div>
+
+            <!-- DIÁLOGO 2 -->
+            <div class="exercise-card" style="line-height: 2.2; font-size: 15px;">
+                <h4 style="margin: 0 0 10px 0; color: var(--theme-purple-border);">Diálogo 2:</h4>
+                <p><strong>Ivete:</strong> Is there a post office near here?</p>
+                <p>
+                    <strong>Local:</strong> Go straight ahead, and it's 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-4" style="width: 120px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="on the" placeholder="..."> 
+                    left, 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-5" style="width: 120px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="next to" placeholder="..."> 
+                    the pub.
+                </p>
+            </div>
+
+            <!-- DIÁLOGO 3 -->
+            <div class="exercise-card" style="line-height: 2.2; font-size: 15px;">
+                <h4 style="margin: 0 0 10px 0; color: var(--theme-purple-border);">Diálogo 3:</h4>
+                <p>
+                    <strong>Ivete:</strong> Excuse me! Is there a 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-6" style="width: 120px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="café" placeholder="..."> 
+                    near here?
+                </p>
+                <p>
+                    <strong>Local:</strong> There's an Internet café in Parklane 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-7" style="width: 120px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="next to" placeholder="..."> 
+                    the bank, and there's an Italian restaurant in Church Street next to the 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-8" style="width: 150px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="travel agency" placeholder="...">.
+                </p>
+                <p>
+                    <strong>Ivete:</strong> Is that one 
+                    <input type="text" class="fancy-input eval-input" id="law1-gap-9" style="width: 100px; display: inline-block; padding: 6px 12px; margin: 0 4px;" data-ans="far" placeholder="...">?
+                </p>
+                <p><strong>Local:</strong> No. Just two minutes, that's all.</p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="showTab(5)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(7)">Next: Language at Work 2 ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 8. LANGUAGE AT WORK 2 -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-green" id="sec-law2">
+            <h2>📍 LANGUAGE AT WORK 2</h2>
+            <div class="instruction-box">
+                How can Ivete get to the places? Give instructions according to the pictures from the previous activity. Use: 
+                <span class="word-bank">Across</span>
+                <span class="word-bank">Next to</span>
+                <span class="word-bank">Between</span>
+                <span class="word-bank">In front of</span>
+            </div>
+
+            <div class="exercise-card" style="background: #f8fafc; border-left: 4px solid #64748b;">
+                <p style="margin: 0; font-size: 15px; color: #334155;">
+                    <strong>a) The swimming pool and the park</strong> — <em>The swimming pool is across the park.</em> <span style="color: #64748b; font-size: 13px;">(Example)</span>
+                </p>
+            </div>
+
+            <div class="exercise-card">
+                <label style="font-weight: 800; display: block; margin-bottom: 8px; color: #1e293b;">
+                    b) The post office and the pub:
+                </label>
+                <input type="text" class="fancy-input eval-input" id="law2-post-pub" data-ans="The post office is next to the pub." placeholder="Write the sentence...">
+            </div>
+
+            <div class="exercise-card">
+                <label style="font-weight: 800; display: block; margin-bottom: 8px; color: #1e293b;">
+                    c) The music shop, the bookshop and the post office:
+                </label>
+                <input type="text" class="fancy-input eval-input" id="law2-shops" data-ans="The bookshop is between the post office and the music shop." placeholder="Write the sentence...">
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="showTab(6)">⬅ Previous</button>
+                <button class="btn-nav" onclick="showTab(8)">Next: Now, It's Your Turn ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 9. NOW, IT'S YOUR TURN -->
+        <!-- ========================================== -->
+        <div class="activity-section theme-yellow" id="sec-turn">
+            <h2>⭐ NOW, IT'S YOUR TURN</h2>
+            <div class="instruction-box">
+                Draw a map of the streets in your neighbourhood. Then, write 10 sentences about the places in it. Follow the example:<br>
+                <em>"In my Neighbourhood there is a supermarket and a post office. The supermarket is across the post office."</em>
+            </div>
+
+            <div class="canvas-wrapper">
+                <p style="font-weight: 700; margin: 0 0 10px 0; color: #475569; font-size: 13px;">
+                    🗺️ Draw your neighbourhood streets & buildings:
+                </p>
+                <canvas id="canvas-neighbourhood" class="drawing-canvas" width="650" height="220"></canvas>
+                <div class="canvas-toolbar">
+                    <button class="btn-tool" onclick="clearCanvas('canvas-neighbourhood')">🗑️ Clear Map</button>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <label for="turn-sentences" style="font-weight: 800; color: var(--theme-yellow-border); margin-bottom: 8px; display: block;">
+                    📝 Write your 10 sentences about your neighbourhood places:
+                </label>
+                <textarea class="fancy-input" id="turn-sentences" rows="12" placeholder="1. In my neighbourhood there is a bakery and a school. The bakery is next to the school.&#10;2. There is a supermarket in front of the park.&#10;3. The bank is between the pharmacy and the bookshop.&#10;4. ...&#10;5. ...&#10;6. ...&#10;7. ...&#10;8. ...&#10;9. ...&#10;10. ..."></textarea>
+            </div>
+
+            <!-- BOTÃO DE FINALIZAR LIÇÃO -->
+            <button class="btn-finish" id="btn-finish-lesson" onclick="calculateXP()">
+                ✅ Finish Lesson & Get XP
+            </button>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="showTab(7)">⬅ Previous</button>
                 <div></div>
             </div>
         </div>
+
     </div>
 
-    <!-- MODAL (A, B, C) -->
+    <!-- BOTÃO FLUTUANTE GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <div class="grammar-box">
+            <h4>💡 Grammar Tip</h4>
+            <p>For directions, use the <strong>imperative</strong>: <em>Go straight ahead. Turn right. Go past the bank.</em></p>
+            <p>For location, use <strong>prepositions</strong> such as <em>next to, between, in front of and across from.</em></p>
+        </div>
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+    </div>
+
+    <!-- RESULT MODAL -->
     <div id="result-modal">
         <div class="modal-content">
-            <h2 style="color: var(--orange-main);">Mission Complete!</h2>
-            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 4B • Giving Directions Finished</p>
-            <div class="xp-circle" id="xp-gained-text">+0</div>
-            <p id="score-text" style="font-weight: bold; color: #555;">You scored 0 out of 0.</p>
-            <p id="score-details" style="font-size: 14px; color: #64748b; margin-top: 5px;"></p>
-            <button class="btn-nav" style="background: #22c55e; color: white; border:none; width: 100%; margin-top: 20px; font-weight: 800; font-size: 16px; padding: 14px 28px; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 20px rgba(34,197,94,0.35);" onclick="returnToMap()">Collect XP & Next ➔</button>
+            <h2 style="font-family: var(--font-title); font-size: 26px; color: var(--blue-dark); margin: 0;">🎉 Congratulations!</h2>
+            <p style="color: #64748b; font-size: 15px; margin: 8px 0 20px 0;">You completed Lesson 4B!</p>
+            
+            <div class="xp-circle" id="xp-gained-text">+100</div>
+            
+            <p id="score-text" style="font-size: 18px; font-weight: 800; color: #1e293b; margin: 15px 0 5px 0;">You scored 100%!</p>
+            <p id="score-details" style="font-size: 14px; color: #64748b; margin: 0 0 25px 0;">All questions evaluated successfully.</p>
+            
+            <button class="btn-finish" style="margin: 0 auto; width: 100%; max-width: 300px;" onclick="advanceToNextLesson()">
+                Next Lesson (4C) ➔
+            </button>
         </div>
     </div>
 
-    <!-- DICA GRAMATICAL -->
-    <div class="grammar-floating-container">
-        <div class="grammar-floating-btn">💡 Grammar Tip</div>
-        <div class="grammar-box">
-            <div style="color:var(--blue-dark); font-weight:bold; margin-bottom:10px; font-size:15px;">📚 Giving Directions (Imperatives)</div>
-            <div>
-                Use the base form of the verb for direct instructions:<br>
-                • <b>Go straight on</b> (Siga em frente)<br>
-                • <b>Turn left / right</b> (Vire à esquerda / direita)<br>
-                • <b>Take the second turning</b> (Pegue a segunda entrada)<br>
-                • <b>Cross the street</b> (Atravesse a rua)<br>
-                • <b>It's on your left / right</b> (Fica à sua esquerda / direita)
-            </div>
-        </div>
-    </div>
-
+    <!-- SCRIPT DE LÓGICA, VALIDAÇÃO, ÁUDIO, CANVASES E LMS -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('licao_4b_status') === 'concluida') {
-                let savedData = localStorage.getItem('licao4b_respostas');
-                if (savedData) {
-                    let respostas = JSON.parse(savedData);
-                    let diagEl = document.getElementById('final-dialogue');
-                    if(diagEl && respostas.dialogue) { diagEl.value = respostas.dialogue; diagEl.disabled = true; }
-                    if(respostas.dragDrop) {
-                        for(let slotId in respostas.dragDrop) {
-                            let signId = respostas.dragDrop[slotId];
-                            let slot = document.getElementById(slotId);
-                            let sign = document.getElementById(signId);
-                            if(slot && sign) slot.appendChild(sign);
-                        }
-                    }
-                    if(respostas.selects) {
-                        for(let selId in respostas.selects) {
-                            let el = document.getElementById(selId);
-                            if(el) { el.value = respostas.selects[selId]; el.disabled = true; }
-                        }
-                    }
-                    if(respostas.texts) {
-                        for(let txtId in respostas.texts) {
-                            let el = document.getElementById(txtId);
-                            if(el) { el.value = respostas.texts[txtId]; el.disabled = true; }
-                        }
-                    }
-                }
-                let btnFinish = document.getElementById('btn-finish-4b');
-                if(btnFinish) {
-                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
-                    btnFinish.disabled = true;
-                    btnFinish.style.background = "#64748b";
-                    btnFinish.style.cursor = "not-allowed";
-                }
-            }
-        });
+        // ==========================================
+        // CONTROLE DE ABAS SUPERIORES
+        // ==========================================
+        const sections = [
+            'sec-warmup', 'sec-words', 'sec-target', 'sec-guide',
+            'sec-uptoyou', 'sec-cross', 'sec-law1', 'sec-law2', 'sec-turn'
+        ];
 
-        function navigateSection(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
-            const showEl = document.getElementById(showId);
-            showEl.classList.add('active');
-            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        function showTab(index) {
+            sections.forEach((id, i) => {
+                const el = document.getElementById(id);
+                if (el) el.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.section-tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        const audioScripts = {
-            'audio-1': "Track 4B point 1: Direction Expressions. Turn Left. Turn Right. Go Straight On. Traffic Lights. Roundabout. Crossroads.",
-            'audio-2': "Track 4B point 2: Asking for Directions. Ivete: Excuse me! Could you tell me the way to the British Museum, please? Local: Yes, of course! Go straight on down this avenue until you see the traffic lights. Ivete: And what do I do at the traffic lights? Local: Turn right into Great Russell Street. Walk past the bookshop, and the museum will be directly on your left."
-        };
+        // ==========================================
+        // CONTROLE DE ÁUDIOS
+        // ==========================================
+        let activeAudio = null;
+        let activeBtn = null;
 
-        const playerStates = {};
-
-        function getPlayerState(id) {
-            if (!playerStates[id]) {
-                playerStates[id] = {
-                    rate: 1.0,
-                    isPlaying: false,
-                    isPaused: false,
-                    utterance: null
-                };
-            }
-            return playerStates[id];
-        }
-
-        function stopAllAudiosExcept(currentId) {
-            document.querySelectorAll('audio').forEach(a => {
-                if (a.id !== currentId) {
-                    a.pause();
-                    a.currentTime = 0;
-                }
-            });
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-            }
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                if (!btn.id.includes(currentId)) {
-                    btn.innerText = "▶ PLAY";
-                    btn.classList.remove('playing');
-                    btn.style.background = "";
-                }
-            });
-            Object.keys(playerStates).forEach(k => {
-                if (k !== currentId) {
-                    playerStates[k].isPlaying = false;
-                    playerStates[k].isPaused = false;
-                }
-            });
-        }
-
-        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+        function toggleAudio(audioId, btnId) {
             const audio = document.getElementById(audioId);
             const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
+            if (!audio) return;
 
-            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
+            if (activeAudio && activeAudio !== audio) {
+                activeAudio.pause();
+                activeAudio.currentTime = 0;
+                if (activeBtn) {
+                    activeBtn.innerText = "▶ PLAY";
+                    activeBtn.classList.remove('playing');
+                }
+            }
 
-            if (hasAudioSrc) {
-                if (!audio.paused && !audio.ended) {
-                    audio.pause();
-                    btn.innerText = "▶ CONTINUAR";
-                    btn.classList.remove('playing');
-                    btn.style.background = originalColor || "var(--blue-dark)";
-                    state.isPlaying = false;
-                    state.isPaused = true;
-                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
-                    audio.playbackRate = state.rate;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
-                } else {
-                    stopAllAudiosExcept(audioId);
-                    audio.playbackRate = state.rate;
-                    audio.currentTime = 0;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.innerText = "⏸ PAUSE";
+                    btn.classList.add('playing');
+                    activeAudio = audio;
+                    activeBtn = btn;
+                }).catch(err => console.warn("Audio play prevented:", err));
+            } else {
+                audio.pause();
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+            }
 
-                    audio.onended = () => {
-                        btn.innerText = "▶ PLAY";
-                        btn.classList.remove('playing');
-                        btn.style.background = originalColor || "var(--blue-dark)";
-                        state.isPlaying = false;
-                        state.isPaused = false;
+            audio.onended = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+            };
+        }
+
+        function setSpeed(audioId, rate) {
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.playbackRate = rate;
+            }
+        }
+
+        // ==========================================
+        // CANVAS DE DESENHO (WARMUP & YOUR TURN)
+        // ==========================================
+        function setupCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#1e3c72';
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                if (e.touches && e.touches.length > 0) {
+                    return {
+                        x: (e.touches[0].clientX - rect.left) * scaleX,
+                        y: (e.touches[0].clientY - rect.top) * scaleY
                     };
                 }
-            } else {
-                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
+                };
+            }
+
+            function startDraw(e) {
+                if (localStorage.getItem('licao_4b_status') === 'concluida') return;
+                isDrawing = true;
+                const p = getPos(e);
+                lastX = p.x;
+                lastY = p.y;
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const p = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+                lastX = p.x;
+                lastY = p.y;
+            }
+
+            function stopDraw() {
+                isDrawing = false;
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', stopDraw);
+        }
+
+        function clearCanvas(canvasId) {
+            if (localStorage.getItem('licao_4b_status') === 'concluida') return;
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         }
 
-        function handleAudioPause(audioId, btnId, originalColor) {
-            const audio = document.getElementById(audioId);
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
+        // ==========================================
+        // MODO LEITURA (READ-ONLY) NA INICIALIZAÇÃO
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            setupCanvas('canvas-warmup');
+            setupCanvas('canvas-directions');
+            setupCanvas('canvas-neighbourhood');
 
-            if (audio && !audio.paused) {
-                audio.pause();
-            }
-            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
-                window.speechSynthesis.pause();
-            }
-            state.isPlaying = false;
-            state.isPaused = true;
-            if (btn) {
-                btn.innerText = "▶ CONTINUAR";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-            }
-        }
-
-        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
-            if (!('speechSynthesis' in window)) return;
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
-
-            if (state.isPlaying && !state.isPaused) {
-                window.speechSynthesis.pause();
-                state.isPaused = true;
-                state.isPlaying = false;
-                btn.innerText = "▶ CONTINUAR";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                return;
-            }
-
-            if (state.isPaused && window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-                state.isPaused = false;
-                state.isPlaying = true;
-                btn.innerText = "⏸ PAUSE";
-                btn.classList.add('playing');
-                btn.style.background = "#ea580c";
-                return;
-            }
-
-            stopAllAudiosExcept(audioId);
-            const text = audioScripts[scriptKey] || "";
-            if (!text) return;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-GB';
-            utterance.rate = state.rate;
-            state.utterance = utterance;
-            window.activeUtterance = utterance;
-
-            btn.innerText = "⏸ PAUSE";
-            btn.classList.add('playing');
-            btn.style.background = "#ea580c";
-            state.isPlaying = true;
-            state.isPaused = false;
-
-            utterance.onend = () => {
-                btn.innerText = "▶ PLAY";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
-            };
-
-            utterance.onerror = () => {
-                btn.innerText = "▶ PLAY";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
-            };
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
-            const state = getPlayerState(audioId);
-            state.rate = targetRate;
-            const audio = document.getElementById(audioId);
-            if (audio) audio.playbackRate = targetRate;
-
-            const spdBtn = document.getElementById(spdBtnId);
-            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
-
-            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
-            if (playerEl) {
-                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
-                if (clickedBtnId) {
-                    const cb = document.getElementById(clickedBtnId);
-                    if (cb) cb.classList.add('active');
-                }
-            }
-
-            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
-                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
-                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
-                window.speechSynthesis.cancel();
-                if (scriptKey && btn) {
-                    state.isPlaying = false;
-                    state.isPaused = false;
-                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
-                }
-            }
-        }
-
-        function cycleSpeed(audioId, spdBtnId) {
-            const speeds = [0.75, 1.0, 1.25, 1.5];
-            const state = getPlayerState(audioId);
-            let current = state.rate || 1.0;
-            let idx = speeds.indexOf(current);
-            if (idx === -1) idx = 1;
-            let nextIdx = (idx + 1) % speeds.length;
-            let newRate = speeds[nextIdx];
-            
-            let clickedBtnId = null;
-            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
-            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
-
-            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
-        }
-
-        let selectedSignId = null;
-
-        function allowDrop(ev) { 
-            ev.preventDefault(); 
-            ev.stopPropagation();
-            if (ev.dataTransfer) {
-                ev.dataTransfer.dropEffect = "move";
-            }
-        }
-
-        function drag(ev) { 
-            const target = ev.target.closest('.draggable-sign') || ev.target;
-            if (ev.dataTransfer) {
-                ev.dataTransfer.effectAllowed = "move";
-                ev.dataTransfer.setData("text/plain", target.id);
-                ev.dataTransfer.setData("text", target.id);
-            }
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            var data = ev.dataTransfer ? (ev.dataTransfer.getData("text/plain") || ev.dataTransfer.getData("text")) : selectedSignId;
-            var draggedEl = document.getElementById(data);
-            if (!draggedEl) return;
-            var target = ev.target.closest('.dir-target-slot') || ev.target.closest('.signs-pool');
-            if (!target) return;
-            
-            if (target.classList.contains('dir-target-slot')) {
-                if (target.children.length > 0) {
-                    document.getElementById('signs-pool').appendChild(target.children[0]);
-                }
-                target.appendChild(draggedEl);
-                target.classList.remove('drag-over');
-            }
-        }
-
-        function dropBack(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            var data = ev.dataTransfer ? (ev.dataTransfer.getData("text/plain") || ev.dataTransfer.getData("text")) : selectedSignId;
-            var el = document.getElementById(data);
-            if (el) document.getElementById('signs-pool').appendChild(el);
-        }
-
-        document.querySelectorAll('.dir-target-slot').forEach(slot => {
-            slot.addEventListener('dragenter', () => slot.classList.add('drag-over'));
-            slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-            slot.addEventListener('drop', () => slot.classList.remove('drag-over'));
-
-            slot.addEventListener('click', () => {
-                if(localStorage.getItem('licao_4b_status') === 'concluida') return;
-                if(selectedSignId) {
-                    const signEl = document.getElementById(selectedSignId);
-                    if(signEl) {
-                        if(slot.children.length > 0) {
-                            document.getElementById('signs-pool').appendChild(slot.children[0]);
-                        }
-                        slot.appendChild(signEl);
-                        signEl.classList.remove('sign-tapped');
-                        selectedSignId = null;
+            if (localStorage.getItem('licao_4b_status') === 'concluida') {
+                const savedData = localStorage.getItem('licao4b_respostas');
+                if (savedData) {
+                    try {
+                        const respostas = JSON.parse(savedData);
+                        // Restaura valores em todos os inputs e textareas por id
+                        document.querySelectorAll('.fancy-input, .eval-input').forEach(el => {
+                            if (el.id && respostas[el.id] !== undefined) {
+                                el.value = respostas[el.id];
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Erro ao recuperar respostas salvas:", e);
                     }
                 }
-            });
+
+                // Aplica disabled = true em todos eles
+                document.querySelectorAll('input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Altera botão de finalizar
+                const finishBtn = document.getElementById('btn-finish-lesson');
+                if (finishBtn) {
+                    finishBtn.innerText = "🔒 Lesson Completed (Read-Only)";
+                    finishBtn.disabled = true;
+                    finishBtn.style.background = "#64748b";
+                    finishBtn.style.cursor = "not-allowed";
+                    finishBtn.style.boxShadow = "none";
+                }
+            }
         });
 
-        document.querySelectorAll('.draggable-sign').forEach(sign => {
-            sign.addEventListener('click', (e) => {
-                if(localStorage.getItem('licao_4b_status') === 'concluida') return;
-                e.stopPropagation();
-                if(sign.parentElement && sign.parentElement.classList.contains('dir-target-slot')) {
-                    document.getElementById('signs-pool').appendChild(sign);
-                    sign.classList.remove('sign-tapped');
-                    if(selectedSignId === sign.id) selectedSignId = null;
-                    return;
-                }
-                if(selectedSignId === sign.id) {
-                    sign.classList.remove('sign-tapped');
-                    selectedSignId = null;
-                } else {
-                    document.querySelectorAll('.draggable-sign').forEach(s => s.classList.remove('sign-tapped'));
-                    sign.classList.add('sign-tapped');
-                    selectedSignId = sign.id;
-                }
-            });
-        });
-
-        function downloadNotepad() {
-            html2canvas(document.querySelector("#notepad-capture")).then(canvas => {
-                let link = document.createElement('a');
-                link.download = 'Lesson_4B_Directions.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
-        let finalXP = 0;
-
+        // ==========================================
+        // CÁLCULO DE XP E AVALIAÇÃO
+        // ==========================================
         function calculateXP() {
             let correct = 0;
             let total = 0;
+            const respostasFotografadas = {};
 
-            let respostasFotografadas = {
-                dragDrop: {},
-                selects: {},
-                texts: {},
-                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : ""
-            };
-
-            document.querySelectorAll('.eval-drop').forEach(slot => {
-                total++;
-                let expected = slot.getAttribute('data-ans');
-                if(slot.children.length > 0) {
-                    let childId = slot.children[0].id;
-                    respostasFotografadas.dragDrop[slot.id] = childId;
-                    if(childId === expected) correct++;
+            // Salva todas as respostas no objeto
+            document.querySelectorAll('.fancy-input, .eval-input').forEach(el => {
+                if (el.id) {
+                    respostasFotografadas[el.id] = el.value;
                 }
             });
 
-            document.querySelectorAll('.eval-select').forEach(sel => {
+            // Normalizador de texto para comparação flexível
+            function normalize(text) {
+                return text.trim().toLowerCase()
+                    .replace(/[.,!?;:'"]/g, '')
+                    .replace(/\s+/g, ' ');
+            }
+
+            // Compara os .eval-input com data-ans
+            document.querySelectorAll('.eval-input[data-ans]').forEach(input => {
                 total++;
-                respostasFotografadas.selects[sel.id] = sel.value;
-                if(sel.value === sel.getAttribute('data-ans')) correct++;
+                const expected = input.getAttribute('data-ans');
+                const userVal = input.value;
+
+                const normExpected = normalize(expected);
+                const normUser = normalize(userVal);
+
+                if (normUser === normExpected) {
+                    correct++;
+                    input.style.borderColor = "#22c55e";
+                    input.style.backgroundColor = "#f0fdf4";
+                } else {
+                    input.style.borderColor = "#ef4444";
+                    input.style.backgroundColor = "#fef2f2";
+                }
             });
 
-            document.querySelectorAll('.eval-text').forEach(input => {
-                total++;
-                respostasFotografadas.texts[input.id] = input.value;
-                let userVal = input.value.trim().toLowerCase();
-                let expected = input.getAttribute('data-ans').toLowerCase();
-                if(expected.split('|').includes(userVal)) correct++;
-            });
+            const percentage = total > 0 ? (correct / total) : 1;
+            const finalXP = Math.round(percentage * 100);
 
-            localStorage.setItem('licao4b_respostas', JSON.stringify(respostasFotografadas));
+            try {
+                localStorage.setItem('licao4b_respostas', JSON.stringify(respostasFotografadas));
+                localStorage.setItem('licao_4b_status', 'concluida');
+                localStorage.setItem('licao_4b_xp', finalXP);
 
-            let percentage = total > 0 ? (correct / total) : 1;
-            finalXP = Math.round(percentage * 100);
+                let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
+                studentXP += finalXP;
+                localStorage.setItem('studentXP', studentXP);
 
-            document.getElementById('xp-gained-text').innerText = "+" + finalXP;
-            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} (${finalXP}%).`;
-            document.getElementById('score-details').innerText = `${correct} correct answers out of ${total}.`;
-            document.getElementById('result-modal').style.display = 'flex';
+                let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
+                totalProfileXP += finalXP;
+                localStorage.setItem('target_on_profile_xp', totalProfileXP);
+            } catch (e) {
+                console.error("Erro ao salvar no localStorage:", e);
+            }
+
+            // Exibe resultados no modal
+            const xpText = document.getElementById('xp-gained-text');
+            if (xpText) xpText.innerText = `+${finalXP}`;
+            const scoreText = document.getElementById('score-text');
+            if (scoreText) scoreText.innerText = `You scored ${correct} out of ${total} (${finalXP}%).`;
+            const scoreDetails = document.getElementById('score-details');
+            if (scoreDetails) scoreDetails.innerText = `${correct} correct answers out of ${total}.`;
+
+            const modal = document.getElementById('result-modal');
+            if (modal) modal.style.display = 'flex';
+
+            if (window.confetti && finalXP >= 60) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
         }
 
-        function returnToMap() {
-            let oldXP = parseInt(localStorage.getItem('licao_4b_xp')) || 0;
-            let xpDifference = finalXP - oldXP;
-
-            localStorage.setItem('licao_4b_status', 'concluida');
-            localStorage.setItem('licao_4b_xp', finalXP);
-
-            let totalProfileXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
-            totalProfileXP += xpDifference;
-            localStorage.setItem('target_on_profile_xp', totalProfileXP);
-
-            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
-            studentXP += xpDifference;
-            localStorage.setItem('studentXP', studentXP);
-
-            if(window.parent && window.parent.completeUnit) {
-                window.parent.completeUnit(0, finalXP);
+        // ==========================================
+        // AVANÇAR PARA A PRÓXIMA LIÇÃO (4C) NO LMS
+        // ==========================================
+        function advanceToNextLesson() {
+            const finalXP = parseInt(localStorage.getItem('licao_4b_xp')) || 100;
+            
+            try {
+                if (window.parent && window.parent.completeUnit) {
+                    window.parent.completeUnit(0, finalXP);
+                }
+            } catch (e) {
+                console.warn("window.parent.completeUnit falhou:", e);
             }
-            if(window.parent && window.parent.avancarPara) {
-                window.parent.avancarPara('licao4c.html', 'link-4c');
-                return;
+
+            try {
+                if (window.parent && window.parent.avancarPara) {
+                    window.parent.avancarPara('licao4c.html', 'link-4c');
+                    return;
+                }
+            } catch (e) {
+                console.warn("window.parent.avancarPara falhou:", e);
             }
-            window.location.href = "licao4c.html";
+
+            // Fallback padrão
+            window.location.href = 'licao4c.html';
         }
     </script>
 </body>
