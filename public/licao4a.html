@@ -275,42 +275,52 @@
         .btn-tf.true-selected { background: #22c55e; color: white; border-color: #22c55e; }
         .btn-tf.false-selected { background: #ef4444; color: white; border-color: #ef4444; }
 
-        /* DINÂMICA INTERATIVA: ARRASTAR PLACAS DE TRÂNSITO */
+        /* DINÂMICA INTERATIVA: ARRASTAR PLACAS DE TRÂNSITO (PLACAS OFICIAIS LADO A LADO) */
         .signs-pool {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
             background: white;
             padding: 20px;
             border-radius: 16px;
             border: 2px dashed var(--theme-blue-border);
             margin-bottom: 25px;
-            min-height: 90px;
+            min-height: 105px;
         }
-        @media(max-width: 768px) { .signs-pool { grid-template-columns: repeat(2, 1fr); } }
 
         .draggable-sign {
             background: #ffffff;
             border: 2px solid #cbd5e1;
             border-radius: 12px;
-            padding: 10px;
+            padding: 6px;
             text-align: center;
             cursor: grab;
             user-select: none;
             transition: 0.2s;
-            display: flex;
-            flex-direction: column;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+        .draggable-sign:hover {
+            border-color: var(--blue-light);
+            transform: translateY(-2px);
         }
         .draggable-sign * {
             pointer-events: none;
         }
         .draggable-sign:active { cursor: grabbing; transform: scale(0.95); }
-        .draggable-sign .sign-icon { font-size: 32px; margin-bottom: 5px; }
-        .draggable-sign .sign-name { font-weight: 800; font-family: var(--font-title); font-size: 13px; color: #1e293b; }
-        .draggable-sign .sign-badge { font-size: 10px; font-weight: bold; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
+        .draggable-sign img.sign-img {
+            width: 80px;
+            height: auto;
+            max-height: 80px;
+            object-fit: contain;
+            display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
         .draggable-sign.sign-tapped {
             border-color: #f59e0b;
             box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.35);
@@ -340,7 +350,7 @@
         
         .sign-drop-slot {
             width: 110px;
-            height: 95px;
+            height: 105px;
             background: #f1f5f9;
             border: 2px dashed #94a3b8;
             border-radius: 12px;
@@ -375,6 +385,81 @@
             color: #86198f;
         }
 
+        /* PERSONAGENS DO DIÁLOGO (LADO A LADO - 120px CÍRCULO COM BORDA COLORIDA) */
+        .dialogue-characters-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            padding: 24px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 50%, #fff7ed 100%);
+            border: 2px solid #cbd5e1;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        @media (max-width: 600px) {
+            .dialogue-characters-container {
+                gap: 15px;
+                flex-wrap: wrap;
+                padding: 16px;
+            }
+        }
+        .dialogue-character-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .character-circle-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #ffffff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+        .character-circle-avatar:hover {
+            transform: scale(1.05);
+        }
+        .character-circle-avatar.avatar-driver {
+            border: 4px solid var(--blue-dark); /* Borda azul do uniforme do Motorista */
+        }
+        .character-circle-avatar.avatar-ivete {
+            border: 4px solid var(--orange-main); /* Borda laranja vibrante de Ivete */
+        }
+        .character-dialogue-label {
+            margin-top: 10px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--black);
+        }
+        .character-dialogue-sub {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .dialogue-interaction-bubble {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .dialogue-symbol {
+            font-size: 32px;
+        }
+        .dialogue-tag {
+            font-family: var(--font-title);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+        }
+
         .comic-bubbles-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
         .bubble-row { display: flex; gap: 15px; align-items: flex-start; }
         .bubble-row.passenger { flex-direction: row-reverse; }
@@ -383,13 +468,26 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: #e2e8f0;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            border: 2px solid #cbd5e1;
             flex-shrink: 0;
+            border: none;
+            background: transparent;
+        }
+        .bubble-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-sizing: border-box;
+        }
+        .bubble-avatar-img.driver-bubble-border {
+            border: 2px solid var(--blue-dark);
+        }
+        .bubble-avatar-img.ivete-bubble-border {
+            border: 2px solid var(--orange-main);
         }
         .speech-bubble {
             background: #f8fafc;
@@ -639,47 +737,31 @@
                 </div>
             </div>
 
-            <!-- WORD/SIGN POOL (DROP ZONE COM PROTOCOLO PADRÃO) -->
+            <!-- WORD/SIGN POOL (DROP ZONE COM PROTOCOLO PADRÃO - PLACAS OFICIAIS) -->
             <div id="signs-pool" class="signs-pool drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <div class="draggable-sign" id="s1" draggable="true" ondragstart="drag(event)" data-cat="bus-stop">
-                    <span class="sign-icon">🚏</span>
-                    <span class="sign-name">Bus Stop</span>
-                    <span class="sign-badge">Sign #1</span>
+                <div class="draggable-sign" id="s1" draggable="true" ondragstart="drag(event)" data-cat="bus-stop" title="Bus stop">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/82_gft6gt.png" alt="Bus stop" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s2" draggable="true" ondragstart="drag(event)" data-cat="bus-lane">
-                    <span class="sign-icon">🚌</span>
-                    <span class="sign-name">Bus Lane</span>
-                    <span class="sign-badge">Sign #2</span>
+                <div class="draggable-sign" id="s2" draggable="true" ondragstart="drag(event)" data-cat="bus-lane" title="Bus lane">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/83_ljk6lk.png" alt="Bus lane" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s3" draggable="true" ondragstart="drag(event)" data-cat="no-entry">
-                    <span class="sign-icon">⛔</span>
-                    <span class="sign-name">No Entry</span>
-                    <span class="sign-badge">Sign #3</span>
+                <div class="draggable-sign" id="s3" draggable="true" ondragstart="drag(event)" data-cat="no-entry" title="No entry">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/84_cpxy8r.png" alt="No entry" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s4" draggable="true" ondragstart="drag(event)" data-cat="stop-sign">
-                    <span class="sign-icon">🛑</span>
-                    <span class="sign-name">Stop Sign</span>
-                    <span class="sign-badge">Sign #4</span>
+                <div class="draggable-sign" id="s4" draggable="true" ondragstart="drag(event)" data-cat="stop-sign" title="Stop">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825382/85_jjqool.png" alt="Stop" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s5" draggable="true" ondragstart="drag(event)" data-cat="zebra-cross">
-                    <span class="sign-icon">🦓</span>
-                    <span class="sign-name">Zebra Crossing</span>
-                    <span class="sign-badge">Sign #5</span>
+                <div class="draggable-sign" id="s5" draggable="true" ondragstart="drag(event)" data-cat="zebra-cross" title="Zebra crossing">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/86_pjivws.png" alt="Zebra crossing" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s6" draggable="true" ondragstart="drag(event)" data-cat="roundabout">
-                    <span class="sign-icon">🔄</span>
-                    <span class="sign-name">Roundabout</span>
-                    <span class="sign-badge">Sign #6</span>
+                <div class="draggable-sign" id="s6" draggable="true" ondragstart="drag(event)" data-cat="roundabout" title="Round about">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825384/87_dczcbl.png" alt="Round about" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s7" draggable="true" ondragstart="drag(event)" data-cat="tube-station">
-                    <span class="sign-icon">🚇</span>
-                    <span class="sign-name">The Underground</span>
-                    <span class="sign-badge">Sign #7</span>
+                <div class="draggable-sign" id="s7" draggable="true" ondragstart="drag(event)" data-cat="tube-station" title="Underground">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/88_h4fxdb.png" alt="Underground" class="sign-img" style="width: 80px;" />
                 </div>
-                <div class="draggable-sign" id="s8" draggable="true" ondragstart="drag(event)" data-cat="ticket-kiosk">
-                    <span class="sign-icon">🎫</span>
-                    <span class="sign-name">Pay / Oyster Here</span>
-                    <span class="sign-badge">Sign #8</span>
+                <div class="draggable-sign" id="s8" draggable="true" ondragstart="drag(event)" data-cat="ticket-kiosk" title="Oyster">
+                    <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/89_rkvx8a.png" alt="Oyster" class="sign-img" style="width: 80px;" />
                 </div>
             </div>
 
@@ -781,51 +863,83 @@
                     <span>Destination: Oxford Circus via Piccadilly</span>
                 </div>
 
+                <!-- PERSONAGENS LADO A LADO SIMULANDO O DIÁLOGO (120px CÍRCULOS COM BORDAS COLORIDAS) -->
+                <div class="dialogue-characters-container">
+                    <div class="dialogue-character-box driver-side">
+                        <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/90_vgfll1.png" alt="Driver" class="character-circle-avatar avatar-driver" />
+                        <span class="character-dialogue-label">Driver</span>
+                        <span class="character-dialogue-sub">London Bus Route 14</span>
+                    </div>
+                    <div class="dialogue-interaction-bubble">
+                        <div class="dialogue-symbol">💬</div>
+                        <span class="dialogue-tag">Boarding Conversation</span>
+                    </div>
+                    <div class="dialogue-character-box ivete-side">
+                        <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/91_jd5qrm.png" alt="Ivete" class="character-circle-avatar avatar-ivete" />
+                        <span class="character-dialogue-label">Ivete</span>
+                        <span class="character-dialogue-sub">Passenger</span>
+                    </div>
+                </div>
+
                 <div class="comic-bubbles-grid">
                     <div class="bubble-row driver">
-                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/90_vgfll1.png" alt="Driver" class="bubble-avatar-img driver-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Driver:</b> "Morning! Where are you heading today, love?"
                         </div>
                     </div>
 
                     <div class="bubble-row passenger">
-                        <div class="bubble-avatar">👩</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/91_jd5qrm.png" alt="Ivete" class="bubble-avatar-img ivete-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Ivete:</b> "Good morning! <b>Does this bus go to</b> Oxford Street?"
                         </div>
                     </div>
 
                     <div class="bubble-row driver">
-                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/90_vgfll1.png" alt="Driver" class="bubble-avatar-img driver-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Driver:</b> "Yes, it does! Straight along Regent Street to Oxford Circus."
                         </div>
                     </div>
 
                     <div class="bubble-row passenger">
-                        <div class="bubble-avatar">👩</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/91_jd5qrm.png" alt="Ivete" class="bubble-avatar-img ivete-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Ivete:</b> "Wonderful. <b>How much is the fare</b>, please?"
                         </div>
                     </div>
 
                     <div class="bubble-row driver">
-                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/90_vgfll1.png" alt="Driver" class="bubble-avatar-img driver-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Driver:</b> "It's <b>£1.75</b>. Just tap your Oyster or contactless card on the yellow reader. Remember, we don't accept cash on London buses!"
                         </div>
                     </div>
 
                     <div class="bubble-row passenger">
-                        <div class="bubble-avatar">👩</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/91_jd5qrm.png" alt="Ivete" class="bubble-avatar-img ivete-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Ivete:</b> "Understood. Could you please let me know when we arrive at my stop?"
                         </div>
                     </div>
 
                     <div class="bubble-row driver">
-                        <div class="bubble-avatar">👨‍✈️</div>
+                        <div class="bubble-avatar">
+                            <img src="https://res.cloudinary.com/pfrqadfm/image/upload/v1788825383/90_vgfll1.png" alt="Driver" class="bubble-avatar-img driver-bubble-border" />
+                        </div>
                         <div class="speech-bubble">
                             <b>Driver:</b> "Sure thing. It's about five stops ahead. Take a seat upstairs if you want the best view!"
                         </div>
