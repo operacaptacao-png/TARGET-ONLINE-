@@ -148,10 +148,9 @@
             <input type="text" id="player-doc" class="dialog-input" placeholder="TARGET1ON-XXXX" autocomplete="off" onkeydown="if(event.key==='Enter') unlockPortal()">
             
             <div class="quick-codes-container">
-                <span style="font-size: 11px; color: #aaa; width: 100%; margin-bottom: 3px;">Códigos Rápidos para Teste:</span>
+                <span style="font-size: 11px; color: #aaa; width: 100%; margin-bottom: 3px;">Códigos Rápidos:</span>
                 <span class="code-chip" onclick="fillPassportCode('TARGET1ONT1-A9X2')">✈️ Turma 1</span>
                 <span class="code-chip" onclick="fillPassportCode('TARGET1ONT2-X1Q9')">✈️ Turma 2</span>
-                <span class="code-chip" onclick="fillPassportCode('DEMO')">🚀 Modo Demo</span>
                 <span class="code-chip" onclick="fillPassportCode('T1ONPROF1')">👨‍🏫 Professor</span>
             </div>
 
@@ -169,7 +168,6 @@
             
             <div class="quick-codes-container">
                 <span class="code-chip" onclick="fillSimpleCode('TARGET1ONT1-A9X2')">Turma 1</span>
-                <span class="code-chip" onclick="fillSimpleCode('DEMO')">Demo</span>
                 <span class="code-chip" onclick="fillSimpleCode('T1ONPROF1')">Professor</span>
             </div>
 
@@ -201,16 +199,6 @@
                     </div>
                     <div id="xp-text-ui" style="display: none; font-size: 10px; color: #22c55e; text-align: right; margin-top: 3px; font-weight: bold;"><span id="sidebar-xp-text">0</span> XP</div>
                 </div>
-            </div>
-
-            <div style="padding: 12px 18px; margin: 0 15px 15px 15px; background: #fff7ed; border: 2px dashed #f97316; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;">
-                <div>
-                    <div style="font-size: 11px; font-weight: 800; color: #c2410c; font-family: var(--font-title); letter-spacing: 0.5px;">🔓 MODO TESTE / AUDITORIA</div>
-                    <div style="font-size: 10px; color: #ea580c;">Todas as 16 lições liberadas</div>
-                </div>
-                <button id="btn-unlock-all" onclick="liberarTodasLicoes()" style="background: #ea580c; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">
-                    Liberar Tudo
-                </button>
             </div>
 
             <div class="sidebar-menu">

@@ -517,10 +517,13 @@
     <div class="hud-controls">
         <button class="btn-hud" id="btn-pause" onclick="togglePause()">⏸ Pause</button>
         <button class="btn-hud" id="btn-speed" onclick="toggleSpeed()">⏩ 2x Speed</button>
-        <button class="btn-hud" onclick="toggleAudioTheme()">🎵 Music</button>
+        <button class="btn-hud" id="btn-music" onclick="toggleAudioTheme()">🎵 Music</button>
         <button class="btn-hud highlight" onclick="openCertificate()">📜 View Certificate</button>
         <button class="btn-hud" onclick="returnToDashboard()">🏠 Dashboard</button>
     </div>
+
+    <!-- AUDIO FOR CREDITS (SAME SOUNDTRACK AS INTRO) -->
+    <audio id="credits-audio" src="https://files.catbox.moe/bhi47v.mp3" loop preload="auto"></audio>
 
     <!-- CERTIFICATE MODAL -->
     <div id="cert-modal">
@@ -579,35 +582,63 @@
             document.getElementById('btn-speed').innerText = isFast ? "⏪ Normal" : "⏩ 2x Speed";
         }
 
-        // Web Audio Ambient Synthesizer
-        let audioCtx = null;
+        // Credits Background Soundtrack (Same music as the Intro)
         let isPlayingAudio = false;
-        let oscArray = [];
+        let userMuted = false;
 
         function toggleAudioTheme() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (isPlayingAudio) {
-                oscArray.forEach(o => { try { o.stop(); } catch(e){} });
-                oscArray = [];
+            const audio = document.getElementById('credits-audio');
+            const btn = document.getElementById('btn-music');
+            if (!audio) return;
+
+            if (!audio.paused) {
+                audio.pause();
                 isPlayingAudio = false;
-                return;
+                userMuted = true;
+                if (btn) btn.innerText = "🎵 Music";
+            } else {
+                audio.volume = 0.45;
+                audio.play().then(() => {
+                    isPlayingAudio = true;
+                    userMuted = false;
+                    if (btn) btn.innerText = "🔊 Mute Music";
+                }).catch(err => {
+                    console.warn("Could not play soundtrack:", err);
+                });
             }
-            isPlayingAudio = true;
-            const chords = [220, 277.18, 329.63, 440]; // A major ambient chord
-            chords.forEach(freq => {
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                oscArray.push(osc);
-            });
         }
+
+        // Auto-play intro theme on load or first user interaction
+        window.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('credits-audio');
+            const btn = document.getElementById('btn-music');
+            if (audio) {
+                audio.volume = 0.45;
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlayingAudio = true;
+                        if (btn) btn.innerText = "🔊 Mute Music";
+                    }).catch(() => {
+                        if (btn) btn.innerText = "🎵 Music";
+                    });
+                }
+            }
+        });
+
+        document.addEventListener('click', function startSoundtrackOnInteract() {
+            if (userMuted) return;
+            const audio = document.getElementById('credits-audio');
+            const btn = document.getElementById('btn-music');
+            if (audio && audio.paused && !userMuted) {
+                audio.volume = 0.45;
+                audio.play().then(() => {
+                    isPlayingAudio = true;
+                    if (btn) btn.innerText = "🔊 Mute Music";
+                }).catch(()=>{});
+            }
+            document.removeEventListener('click', startSoundtrackOnInteract);
+        }, { once: true });
 
         function openCertificate() {
             const name = localStorage.getItem('userName') || 'Ivete Silva';
