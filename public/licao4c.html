@@ -6,6 +6,16 @@
     <title>4C | Getting Lost</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- TRAVA DE SEGURANÇA GLOBAL OBRIGATÓRIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                alert("Access Denied");
+                window.parent.location.href = "index.html";
+            }
+        });
+    </script>
     <style>
         :root {
             --black: #1A1A1A;
@@ -1240,9 +1250,18 @@
             }
 
             if (localStorage.getItem('licao_4c_status') === 'concluida') {
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
                 let btnFinish = document.getElementById('btn-finish-4c');
                 if (btnFinish) {
-                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                    btnFinish.innerText = "🔒 Lesson Completed (Read-Only)";
+                    btnFinish.disabled = true;
+                    btnFinish.style.background = "#94a3b8";
+                    btnFinish.style.cursor = "not-allowed";
+                    btnFinish.style.boxShadow = "none";
                 }
             }
         });

@@ -5,16 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5C | Onboarding</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- TRAVA DE SEGURANÇA GLOBAL OBRIGATÓRIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                alert("Access Denied");
+                window.parent.location.href = "index.html";
+            }
+        });
+    </script>
     
     <style>
         :root {
-            --black: #0f172a;
-            --white: #FFFFFF;
             --blue-dark: #0f172a;
             --blue-medium: #1e3a8a;
-            --blue-light: #3b82f6;
+            --blue-light: #2563eb;
             --accent-main: #e67e22;
             --accent-dark: #c2410c;
             
@@ -27,36 +34,38 @@
             --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: var(--font-text);
             background: #f1f5f9;
             margin: 0;
             padding: 20px;
-            color: var(--black);
+            color: #1e293b;
             display: flex;
             justify-content: center;
         }
 
         .book-page {
-            background: var(--white);
+            background: #ffffff;
             width: 100%;
             max-width: 920px;
             min-height: 90vh;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            padding: 40px;
-            box-sizing: border-box;
+            padding: 36px;
             position: relative;
         }
 
+        /* BANNER DA LIÇÃO */
         .lesson-banner {
             border-bottom: 3px solid var(--accent-main);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
         .unit-tag {
             font-family: var(--font-title);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent-main);
             text-transform: uppercase;
@@ -64,23 +73,32 @@
         }
         .lesson-banner h1 {
             font-family: var(--font-title);
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--blue-dark);
-            margin: 5px 0 0 0;
+            margin: 6px 0 4px 0;
+        }
+        .lesson-banner p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
         }
 
+        /* SEÇÕES DE ATIVIDADE */
         .activity-section {
             display: none;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 28px;
+            border-radius: 16px;
             margin-bottom: 30px;
             border-left: 6px solid;
-            animation: fadeIn 0.4s ease-in-out;
+            background: #ffffff;
+            animation: fadeIn 0.35s ease-in-out;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
         }
         .activity-section.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -91,122 +109,124 @@
 
         .activity-section h2 {
             font-family: var(--font-title);
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 21px;
+            font-weight: 800;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .theme-blue h2 { color: var(--theme-blue-border); }
         .theme-purple h2 { color: var(--theme-purple-border); }
         .theme-green h2 { color: var(--theme-green-border); }
         .theme-orange h2 { color: var(--theme-orange-border); }
 
-        .instruction {
-            font-size: 14px;
+        .instruction-box {
+            font-size: 14.5px;
             color: #475569;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
-        .card-box {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .text-input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: var(--font-text);
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-            background: white;
-            transition: 0.2s;
-        }
-        .text-input:focus {
-            border-color: var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-
-        .textarea-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: var(--font-text);
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-            background: white;
-            transition: 0.2s;
-            resize: vertical;
-        }
-        .textarea-input:focus {
-            border-color: var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-
-        /* CIPHER GRID */
-        .cipher-key-container {
-            background: #1e293b;
-            color: #f8fafc;
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .cipher-key-header {
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 14px;
-            color: #f59e0b;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .cipher-symbols-legend {
-            font-family: monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            background: #0f172a;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            color: #e2e8f0;
-        }
-        .cipher-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-        @media(max-width: 650px) { .cipher-grid { grid-template-columns: 1fr; } }
-        .cipher-item {
-            background: white;
-            padding: 14px;
+            margin-bottom: 22px;
+            line-height: 1.55;
+            background: rgba(255,255,255,0.7);
+            padding: 12px 16px;
             border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* WORD BANK CHIPS */
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1.5px dashed #cbd5e1;
+            margin-bottom: 20px;
+        }
+        .bank-chip {
+            background: #f1f5f9;
+            color: var(--blue-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
             border: 1px solid #cbd5e1;
         }
-        .cipher-clue {
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 13px;
-            color: #6366f1;
-            background: #eef2ff;
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 8px;
+
+        /* INPUTS GAMIFICADOS */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: var(--font-text);
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
         }
 
-        /* AUDIO PLAYER */
+        /* CARDS E CONTAINERS */
+        .card-box {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+
+        /* SECRET WORDS GRID */
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 720px) {
+            .words-grid { grid-template-columns: 1fr; }
+        }
+        .word-item-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .word-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 13.5px;
+            color: var(--blue-dark);
+        }
+        .word-item-badge {
+            font-size: 18px;
+            background: #eff6ff;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* REPRODUTOR DE ÁUDIO PADRONIZADO */
         .audio-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -214,19 +234,20 @@
         .audio-player {
             display: inline-flex;
             align-items: center;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 30px;
+            background: #ffffff;
+            padding: 7px 16px;
+            border-radius: 40px;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
             gap: 10px;
+            flex-wrap: wrap;
         }
         .play-btn {
             background: var(--blue-dark);
-            color: white;
+            color: #ffffff;
             border: none;
             border-radius: 50px;
-            padding: 8px 16px;
+            padding: 8px 18px;
             font-weight: 800;
             cursor: pointer;
             font-family: var(--font-title);
@@ -234,101 +255,76 @@
             transition: 0.2s;
         }
         .play-btn:hover { background: var(--blue-medium); }
+        .play-btn.playing { background: #dc2626; }
+        
+        .audio-ctrl-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 11.5px;
+            transition: 0.2s;
+        }
+        .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.04); }
+        .audio-ctrl-btn.active {
+            background: var(--accent-main);
+            color: #ffffff;
+            border-color: var(--accent-main);
+        }
+        .audio-track-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-left: 4px;
+        }
 
-        /* PORTRAITS */
-        .portraits-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+        /* BARRAS DE NAVEGAÇÃO */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 18px;
+        }
+        .nav-buttons.top-nav {
+            margin-top: 0;
             margin-bottom: 20px;
+            border-top: none;
+            border-bottom: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 0;
+            padding-bottom: 16px;
         }
-        @media(max-width: 750px) { .portraits-row { grid-template-columns: repeat(2, 1fr); } }
-        .portrait-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
-        }
-        .portrait-avatar {
-            font-size: 40px;
-            margin-bottom: 6px;
-        }
-        .portrait-card p {
-            margin: 4px 0 10px 0;
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.4;
-        }
-
-        /* TEAM DEMONSTRATIVES */
-        .team-demonstratives-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        @media(max-width: 650px) { .team-demonstratives-grid { grid-template-columns: 1fr; } }
-        .team-dem-card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #e2e8f0;
-        }
-        .team-dem-card b {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--blue-dark);
-            font-size: 14px;
-        }
-        .team-dem-card span {
-            font-size: 12px;
-            color: #64748b;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        /* FRIENDS GRID */
-        .friends-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        @media(max-width: 650px) { .friends-grid { grid-template-columns: 1fr; } }
-        .friend-box {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid #e2e8f0;
-        }
-        .friend-box h4 {
-            margin: 0 0 6px 0;
+        .btn-nav {
+            padding: 9px 20px;
             font-family: var(--font-title);
-            color: var(--blue-dark);
-            font-size: 15px;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #ffffff;
+            border: 2px solid;
+            color: #334155;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
-        .friend-box p {
-            margin: 0 0 10px 0;
-            font-size: 12.5px;
-            color: #64748b;
-        }
+        .btn-nav:hover { transform: translateY(-1px); }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: #ffffff; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: #ffffff; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: #ffffff; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: #ffffff; }
 
-        /* STORY TRANSITION BOX */
-        .story-transition-box {
-            background: #fff7ed;
-            border-left: 5px solid var(--accent-main);
-            padding: 16px 20px;
-            border-radius: 0 12px 12px 0;
-            margin: 25px 0;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #9a3412;
-            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
-        }
-
+        /* BOTÃO FINALIZAR */
         .btn-finish {
             background: #22c55e;
-            color: white;
+            color: #ffffff;
             border: none;
             width: 100%;
             padding: 16px;
@@ -339,42 +335,20 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
             transition: 0.2s;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         .btn-finish:hover {
             background: #16a34a;
             transform: translateY(-2px);
         }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
-            padding-top: 20px;
+        .btn-finish:disabled {
+            background: #94a3b8 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+            transform: none !important;
         }
-        .btn-nav {
-            padding: 10px 24px;
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.2s;
-            background: white;
-            border: 2px solid;
-        }
-        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
-        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
-        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
-        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
-        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
-        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
-        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
-        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
 
-        /* MODAL */
+        /* MODAL DE RESULTADO */
         #result-modal {
             display: none;
             position: fixed;
@@ -385,22 +359,22 @@
             z-index: 10000;
         }
         .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
+            background: #ffffff;
+            padding: 38px;
+            border-radius: 24px;
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             animation: popIn 0.3s ease-out;
         }
         @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
+            from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         .xp-circle {
-            width: 100px;
-            height: 100px;
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
             background: #fef3c7;
             color: #d97706;
@@ -408,13 +382,13 @@
             align-items: center;
             justify-content: center;
             font-family: var(--font-title);
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 800;
-            margin: 20px auto;
+            margin: 18px auto;
             border: 4px solid #f59e0b;
         }
 
-        /* GRAMMAR TIP FLOATING */
+        /* BOTÃO FLUTUANTE GRAMMAR TIP */
         .grammar-floating-container {
             position: fixed;
             bottom: 25px;
@@ -423,574 +397,654 @@
         }
         .grammar-floating-btn {
             background: var(--accent-main);
-            color: white;
+            color: #ffffff;
             padding: 12px 22px;
             border-radius: 50px;
             font-family: var(--font-title);
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13.5px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
             transition: transform 0.2s, background 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
-            border: none;
         }
         .grammar-floating-btn:hover {
             transform: scale(1.05);
-            background: #d35400;
+            background: var(--accent-dark);
         }
         .grammar-box {
             visibility: hidden;
             opacity: 0;
-            width: 350px;
-            background: white;
-            color: var(--black);
+            width: 320px;
+            background: #ffffff;
+            color: #1e293b;
             text-align: left;
-            border-radius: 14px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 20px;
             position: absolute;
             bottom: 55px;
             right: 0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             border: 2px solid var(--accent-main);
             transition: 0.3s;
             pointer-events: none;
-            font-size: 13px;
-            line-height: 1.5;
-            max-height: 80vh;
-            overflow-y: auto;
+            font-size: 13.5px;
+            line-height: 1.55;
         }
         .grammar-floating-container:hover .grammar-box {
             visibility: visible;
             opacity: 1;
             pointer-events: auto;
         }
+        .grammar-box h4 {
+            margin: 0 0 8px 0;
+            color: var(--accent-dark);
+            font-size: 15px;
+            font-family: var(--font-title);
+        }
     </style>
 </head>
 <body>
 
     <div class="book-page">
-        <!-- BANNER -->
+        <!-- BANNER DA LIÇÃO -->
         <div class="lesson-banner">
             <span class="unit-tag">Unit 5 • The Job Interview</span>
-            <h1>5C | Onboarding</h1>
+            <h1>5C | ONBOARDING</h1>
+            <p>Physical Descriptions • Demonstratives THIS/THAT/THESE/THOSE • Team Introductions</p>
         </div>
 
-        <!-- SEÇÃO 1: WARM UP & WORDS AND IDEAS -->
-        <div id="sec-1" class="activity-section theme-blue active">
-            <h2>1. Warm Up • Abilities & Routine</h2>
-            <p class="instruction">The CEO really likes Ivete! Why? Try to remember Ivete’s abilities and routine. Write what you remember in the groups below.</p>
-
-            <div class="card-box">
-                <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                    PERSONAL ABILITIES:
-                </label>
-                <textarea class="textarea-input" id="warmup-abilities" rows="3" placeholder="e.g. She can speak English and Portuguese, manage campaigns, analyze metrics, solve complex problems..."></textarea>
+        <!-- ========================================== -->
+        <!-- 1. WORDS AND IDEAS -->
+        <!-- ========================================== -->
+        <div id="sec-words" class="activity-section theme-blue active">
+            <div class="nav-buttons top-nav">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
             </div>
 
-            <div class="card-box">
-                <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                    PERSONAL ROUTINE:
-                </label>
-                <textarea class="textarea-input" id="warmup-routine" rows="3" placeholder="e.g. She always wakes up at 7:00 AM, arrives on time, checks emails, plans daily goals..."></textarea>
+            <h2>🧭 1. WORDS AND IDEAS</h2>
+            <div class="instruction-box">
+                Discover the secret words. Read the clues and type the matching physical appearance vocabulary:
             </div>
 
-            <h2 style="margin-top: 30px;">Words and Ideas • The Pigpen Cipher</h2>
-            <p class="instruction">Look at the Pigpen Cipher. Discover the 14 secret words describing physical appearance.</p>
+            <div class="word-bank">
+                <span class="bank-chip">Tall</span>
+                <span class="bank-chip">Blond</span>
+                <span class="bank-chip">Hair</span>
+                <span class="bank-chip">Blue eyes</span>
+                <span class="bank-chip">Slim</span>
+                <span class="bank-chip">Short hair</span>
+                <span class="bank-chip">Strong</span>
+                <span class="bank-chip">Chubby</span>
+                <span class="bank-chip">Black hair</span>
+                <span class="bank-chip">Brown eyes</span>
+                <span class="bank-chip">Short</span>
+                <span class="bank-chip">Long hair</span>
+                <span class="bank-chip">Young</span>
+                <span class="bank-chip">Old</span>
+            </div>
 
-            <div class="cipher-key-container">
-                <div class="cipher-key-header">
-                    <span>🗝️ Pigpen Cipher Key & Appearance Code</span>
-                </div>
-                <div class="cipher-symbols-legend">
-                    Decode the physical trait terms: Tall, Blond, Hair, Blue eyes, Slim, Short hair, Strong, Chubby, Black hair, Brown eyes, Short, Long hair, Young, Old.
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
+            <div class="audio-wrapper">
+                <div class="audio-player" id="player-words">
+                    <audio id="audio-words" src="https://files.catbox.moe/3uuee3.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-words" onclick="toggleAudio('audio-words', 'btn-audio-words')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-words" onclick="changeSpeedDirect('audio-words', 'spd-audio-words', 0.75, 'slow-audio-words')">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn active" id="spd-audio-words" onclick="cycleSpeed('audio-words', 'spd-audio-words')">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-words" onclick="changeSpeedDirect('audio-words', 'spd-audio-words', 1.25, 'fast-audio-words')">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 5C.1: Physical Descriptions</span>
                 </div>
             </div>
 
-            <div class="cipher-grid">
-                <div class="cipher-item">
-                    <span class="cipher-clue">#1: [ ⟂ ⊔ ⨆ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-1" data-ans="tall" placeholder="1. Secret word...">
+            <div class="words-grid">
+                <!-- 1. Tall -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">📏</span>
+                        <span>1. Having greater height than average; not short</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-1" data-ans="Tall" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#2: [ ⊔ ⨆ ⊙ ⊓ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-2" data-ans="blond|blonde" placeholder="2. Secret word...">
+
+                <!-- 2. Blond -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">👱</span>
+                        <span>2. Fair, golden-yellowish hair color</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-2" data-ans="Blond" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#3: [ ⨅ ⊔ ⨂ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-3" data-ans="hair" placeholder="3. Secret word...">
+
+                <!-- 3. Hair -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">💇</span>
+                        <span>3. Fine strands growing on the head</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-3" data-ans="Hair" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#4: [ ⊔ ⨆ ⊙ ⨆ + ⨂ ⨅ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-4" data-ans="blue eyes" placeholder="4. Secret words...">
+
+                <!-- 4. Blue eyes -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">👁️</span>
+                        <span>4. Eye color resembling the ocean or sky</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-4" data-ans="Blue eyes" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#5: [ ⨅ ⨆ ⨂ ⊓ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-5" data-ans="slim" placeholder="5. Secret word...">
+
+                <!-- 5. Slim -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">🧘</span>
+                        <span>5. Slender, lean and fit body build</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-5" data-ans="Slim" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#6: [ ⨅ ⨅ ⊙ ⨆ ⨂ + ⨅ ⊔ ⨂ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-6" data-ans="short hair" placeholder="6. Secret words...">
+
+                <!-- 6. Short hair -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">✂️</span>
+                        <span>6. Haircut that does not reach shoulders</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-6" data-ans="Short hair" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#7: [ ⨅ ⨆ ⨂ ⊙ ⊓ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-7" data-ans="strong" placeholder="7. Secret word...">
+
+                <!-- 7. Strong -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">💪</span>
+                        <span>7. Having muscular power and physical capacity</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-7" data-ans="Strong" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#8: [ ⊓ ⨅ ⊙ ⊔ ⊔ ⨂ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-8" data-ans="chubby" placeholder="8. Secret word...">
+
+                <!-- 8. Chubby -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">🧸</span>
+                        <span>8. Plump, rounded body shape</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-8" data-ans="Chubby" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#9: [ ⊔ ⨆ ⊔ ⊓ ⨅ + ⨅ ⊔ ⨂ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-9" data-ans="black hair" placeholder="9. Secret words...">
+
+                <!-- 9. Black hair -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">🖤</span>
+                        <span>9. Very dark, jet hair color</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-9" data-ans="Black hair" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#10: [ ⊔ ⨂ ⊙ ⨆ ⊓ + ⨂ ⨅ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-10" data-ans="brown eyes" placeholder="10. Secret words...">
+
+                <!-- 10. Brown eyes -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">🌰</span>
+                        <span>10. Rich dark chestnut iris eye color</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-10" data-ans="Brown eyes" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#11: [ ⨅ ⨅ ⊙ ⨆ ⨂ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-11" data-ans="short" placeholder="11. Secret word...">
+
+                <!-- 11. Short -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">📐</span>
+                        <span>11. Small in vertical height; not tall</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-11" data-ans="Short" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#12: [ ⨆ ⊙ ⊓ ⨆ + ⨅ ⊔ ⨂ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-12" data-ans="long hair" placeholder="12. Secret words...">
+
+                <!-- 12. Long hair -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">🦱</span>
+                        <span>12. Hair extending well down past shoulders</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-12" data-ans="Long hair" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#13: [ ⨂ ⊙ ⨆ ⊓ ⨆ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-13" data-ans="young" placeholder="13. Secret word...">
+
+                <!-- 13. Young -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">👶</span>
+                        <span>13. In the early stages of life; youthful</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-13" data-ans="Young" placeholder="Type secret word...">
                 </div>
-                <div class="cipher-item">
-                    <span class="cipher-clue">#14: [ ⊙ ⨆ ⊓ ]</span>
-                    <input type="text" class="text-input eval-input" id="cipher-14" data-ans="old" placeholder="14. Secret word...">
+
+                <!-- 14. Old -->
+                <div class="word-item-card">
+                    <div class="word-item-header">
+                        <span class="word-item-badge">👴</span>
+                        <span>14. Having lived many years; senior or elderly</span>
+                    </div>
+                    <input type="text" class="fancy-input eval-input" id="sw-14" data-ans="Old" placeholder="Type secret word...">
                 </div>
             </div>
 
             <div class="nav-buttons">
                 <div></div>
-                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 2: TARGET SITUATION & LANGUAGE GUIDE -->
-        <div id="sec-2" class="activity-section theme-purple">
-            <h2>2. Target Situation • Meeting the Colleagues</h2>
-            <p class="instruction">Charles, the CEO, wants Ivete to meet his assistant, Alan, and other employees. Listen to the audio and name the people in the pictures.</p>
+        <!-- ========================================== -->
+        <!-- 2. TARGET SITUATION -->
+        <!-- ========================================== -->
+        <div id="sec-target" class="activity-section theme-purple">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
+            </div>
 
+            <h2>🎯 2. TARGET SITUATION</h2>
+            <div class="instruction-box">
+                Listen to the audio and name the people. Type the names of the five colleagues:
+            </div>
+
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
-                <div class="audio-player">
-                    <audio id="audio-5c" src="https://files.catbox.moe/4sq816.mp3" preload="none"></audio>
-                    <button type="button" class="play-btn" id="btn-audio-5c" onclick="playOnboardingAudio()">▶ PLAY AUDIO</button>
-                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-5c" onclick="changeAudio5cSpeed(0.75)" title="0.75x">🐢</button>
-                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-5c" onclick="cycleAudio5cSpeed()" title="Alternar velocidade">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-5c" onclick="changeAudio5cSpeed(1.25)" title="1.25x">🐇</button>
-                    <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Track 5C.1: Meet the Overseas Team</span>
+                <div class="audio-player" id="player-target">
+                    <audio id="audio-target" src="https://files.catbox.moe/3uuee3.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-target" onclick="toggleAudio('audio-target', 'btn-audio-target')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-target" onclick="changeSpeedDirect('audio-target', 'spd-audio-target', 0.75, 'slow-audio-target')">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn active" id="spd-audio-target" onclick="cycleSpeed('audio-target', 'spd-audio-target')">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-target" onclick="changeSpeedDirect('audio-target', 'spd-audio-target', 1.25, 'fast-audio-target')">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 5C.2: Meeting the Colleagues</span>
                 </div>
             </div>
 
-            <div class="portraits-row">
-                <div class="portrait-card">
-                    <div class="portrait-avatar">👩‍💼</div>
-                    <p>Strategist, wavy blond hair, green eyes.</p>
-                    <input type="text" class="text-input eval-input" id="meet-1" data-ans="claire" placeholder="Name: Claire">
-                </div>
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            1. Person 1 (Marketing coordinator with blond hair and blue eyes):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="name-1" data-ans="Claire" placeholder="Type name (Claire, Alan, Tom, Gemma, Brian)...">
+                    </div>
 
-                <div class="portrait-card">
-                    <div class="portrait-avatar">👨‍💼</div>
-                    <p>CEO Assistant, tall, short brown hair, very friendly.</p>
-                    <input type="text" class="text-input eval-input" id="meet-2" data-ans="alan" placeholder="Name: Alan">
-                </div>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            2. Person 2 (Finance executive with brown eyes and tall posture):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="name-2" data-ans="Alan" placeholder="Type name...">
+                    </div>
 
-                <div class="portrait-card">
-                    <div class="portrait-avatar">👨‍💻</div>
-                    <p>Senior Developer, glasses, dark short hair, slim.</p>
-                    <input type="text" class="text-input eval-input" id="meet-3" data-ans="tom" placeholder="Name: Tom">
-                </div>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            3. Person 3 (IT engineer with short dark hair and slim build):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="name-3" data-ans="Tom" placeholder="Type name...">
+                    </div>
 
-                <div class="portrait-card">
-                    <div class="portrait-avatar">👩‍🎨</div>
-                    <p>Art Director, creative, curly black hair, tall.</p>
-                    <input type="text" class="text-input eval-input" id="meet-4" data-ans="gemma" placeholder="Name: Gemma">
-                </div>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            4. Person 4 (Operations specialist with long hair and bright smile):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="name-4" data-ans="Gemma" placeholder="Type name...">
+                    </div>
 
-                <div class="portrait-card">
-                    <div class="portrait-avatar">🧔‍♂️</div>
-                    <p>Operations Manager, strong build, beard, blue eyes.</p>
-                    <input type="text" class="text-input eval-input" id="meet-5" data-ans="brian" placeholder="Name: Brian">
-                </div>
-            </div>
-
-            <h2 style="margin-top: 30px;">Language Guide • Demonstratives (THIS / THESE and THAT / THOSE)</h2>
-            <p class="instruction">Look at the picture of the rest of the company team. Use THIS/THESE (for people close to you) and THAT/THOSE (for people further away).</p>
-
-            <div class="team-demonstratives-grid">
-                <div class="team-dem-card">
-                    <b>Jones (standing right beside you):</b>
-                    <span>Demonstrative sentence:</span>
-                    <input type="text" class="text-input eval-input" id="dem-jones" data-ans="this is jones|this is mr jones|this is" placeholder="e.g. This is Jones, our senior editor.">
-                </div>
-
-                <div class="team-dem-card">
-                    <b>Samuel (sitting across the conference hall):</b>
-                    <span>Demonstrative sentence:</span>
-                    <input type="text" class="text-input eval-input" id="dem-samuel" data-ans="that is samuel|that is|that's samuel" placeholder="e.g. That is Samuel over there in the corner.">
-                </div>
-
-                <div class="team-dem-card">
-                    <b>Dana (standing next to the office doorway):</b>
-                    <span>Demonstrative sentence:</span>
-                    <input type="text" class="text-input eval-input" id="dem-dana" data-ans="that is dana|that's dana|this is dana" placeholder="e.g. That is Dana by the executive doorway.">
-                </div>
-
-                <div class="team-dem-card">
-                    <b>Richard (working right at the adjacent desk):</b>
-                    <span>Demonstrative sentence:</span>
-                    <input type="text" class="text-input eval-input" id="dem-richard" data-ans="this is richard|this is" placeholder="e.g. This is Richard, our marketing researcher.">
-                </div>
-
-                <div class="team-dem-card" style="grid-column: 1 / -1;">
-                    <b>Samantha and Kathy (walking together across the corridor):</b>
-                    <span>Demonstrative sentence:</span>
-                    <input type="text" class="text-input eval-input" id="dem-sam-kathy" data-ans="these are samantha and kathy|those are samantha and kathy|those are|these are" placeholder="e.g. Those are Samantha and Kathy walking to the meeting.">
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            5. Person 5 (Department lead, strong physique with short hair):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="name-5" data-ans="Brian" placeholder="Type name...">
+                    </div>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Cross Curricular ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 3: CROSS CURRICULAR & LANGUAGE AT WORK -->
-        <div id="sec-3" class="activity-section theme-green">
-            <h2>3. Cross Curricular • Describing Brazilian Friends</h2>
-            <p class="instruction">Look at the picture of Ivete and her Brazilian friends. How can you describe them? Describe their physical traits using Be and Have got.</p>
-
-            <div class="friends-grid">
-                <div class="friend-box">
-                    <h4>Karen</h4>
-                    <p>Describe Karen (height, hair, eyes):</p>
-                    <textarea class="textarea-input eval-desc" id="friend-karen" rows="3" placeholder="e.g. Karen is tall and slim. She has got long brown hair and brown eyes."></textarea>
-                </div>
-
-                <div class="friend-box">
-                    <h4>Suze and Bruno</h4>
-                    <p>Describe Suze and Bruno (plural traits):</p>
-                    <textarea class="textarea-input eval-desc" id="friend-suze-bruno" rows="3" placeholder="e.g. Suze and Bruno are young and active. They have got dark hair and bright smiles."></textarea>
-                </div>
-
-                <div class="friend-box">
-                    <h4>Gustavo</h4>
-                    <p>Describe Gustavo (build, stature, hair):</p>
-                    <textarea class="textarea-input eval-desc" id="friend-gustavo" rows="3" placeholder="e.g. Gustavo is strong and medium-height. He has got short black hair and glasses."></textarea>
-                </div>
-
-                <div class="friend-box">
-                    <h4>Sophia</h4>
-                    <p>Describe Sophia (age, hair, features):</p>
-                    <textarea class="textarea-input eval-desc" id="friend-sophia" rows="3" placeholder="e.g. Sophia is petite and young. She has got blond wavy hair and blue eyes."></textarea>
-                </div>
+        <!-- ========================================== -->
+        <!-- 3. LANGUAGE GUIDE -->
+        <!-- ========================================== -->
+        <div id="sec-guide" class="activity-section theme-green">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-work')">Next: Cross Curricular ➔</button>
             </div>
 
-            <h2 style="margin-top: 30px;">Language at Work • Free Visual Description</h2>
-            <p class="instruction">Look at the pictures, circle people using different colours and write sentences about them. Follow the 4 points (a, b, c, d):</p>
+            <h2>📖 3. LANGUAGE GUIDE</h2>
+            <div class="instruction-box">
+                Look at the picture of the rest of the company team. Use <strong>THIS / THESE</strong> (near) and <strong>THAT / THOSE</strong> (far) to complete the sentences:
+            </div>
 
             <div class="card-box">
-                <div style="margin-bottom: 16px;">
-                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                        a) Name the people:
-                    </label>
-                    <textarea class="textarea-input eval-desc" id="law-names" rows="2" placeholder="e.g. In the blue circle is Alan; in the yellow circle is Claire; in the green circle are Brian and Tom."></textarea>
-                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            👤 Jones (standing close next to the desk):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-jones" data-ans="This is Jones." placeholder="e.g. This is Jones.">
+                    </div>
 
-                <div style="margin-bottom: 16px;">
-                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                        b) Describe their physical appearance:
-                    </label>
-                    <textarea class="textarea-input eval-desc" id="law-appearance" rows="2" placeholder="e.g. Alan is tall with short brown hair. Claire is slim and has got long blond hair. Brian is strong with a beard."></textarea>
-                </div>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            👤 Samuel (standing across the conference room over there):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-samuel" data-ans="That is Samuel." placeholder="e.g. That is Samuel.">
+                    </div>
 
-                <div style="margin-bottom: 16px;">
-                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                        c) Demonstrate them (this/that/these/those):
-                    </label>
-                    <textarea class="textarea-input eval-desc" id="law-demonstrate" rows="2" placeholder="e.g. This is Alan standing right here. That is Brian sitting at the back. Those are our graphic designers."></textarea>
-                </div>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            👤 Dana (right here at the reception counter):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-dana" data-ans="This is Dana." placeholder="e.g. This is Dana.">
+                    </div>
 
-                <div style="margin-bottom: 16px;">
-                    <label style="font-weight: bold; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                        d) Describe their clothes:
-                    </label>
-                    <textarea class="textarea-input eval-desc" id="law-clothes" rows="2" placeholder="e.g. Alan is wearing a smart navy blue blazer and white shirt. Claire is wearing a tailored grey jacket."></textarea>
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            👤 Richard (far at the end of the hallway):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-richard" data-ans="That is Richard." placeholder="e.g. That is Richard.">
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 6px;">
+                            👥 Samantha and Kathy (two colleagues standing together across the room):
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-samantha-kathy" data-ans="Those are Samantha and Kathy." placeholder="e.g. Those are Samantha and Kathy.">
+                    </div>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Now, It's Your Turn ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-work')">Next: Cross Curricular ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 4: NOW, IT'S YOUR TURN & SUMMARY -->
-        <div id="sec-4" class="activity-section theme-orange">
-            <h2>4. Now, It’s Your Turn • Personal Portrait Description</h2>
-            <p class="instruction">Paste a picture of your friends or family here (or imagine them). Describe their physical appearance in full detail.</p>
+        <!-- ========================================== -->
+        <!-- 4. CROSS CURRICULAR & LANGUAGE AT WORK -->
+        <!-- ========================================== -->
+        <div id="sec-work" class="activity-section theme-orange">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-guide')">⬅ Back</button>
+                <div></div>
+            </div>
+
+            <h2>🌍 4. CROSS CURRICULAR & LANGUAGE AT WORK</h2>
+            <div class="instruction-box">
+                Describe Ivete's Brazilian friends and their clothes. Use the notepad below to write detailed descriptions using <em>is/are</em>, <em>has got</em>, and clothes vocabulary:
+            </div>
 
             <div class="card-box">
-                <textarea class="textarea-input eval-desc" id="personal-portrait" rows="6" placeholder="Describe 2 or 3 people from your friends or family. Use BE (tall, short, slim, young, strong) and HAVE GOT (hair color, hair length, eye color, beard, glasses). Combine with demonstratives! e.g. This is my best friend Lucas. He is tall and athletic. He has got curly black hair and brown eyes..."></textarea>
+                <label style="font-weight: 800; color: #ea580c; font-size: 15px; display: block; margin-bottom: 8px;">
+                    📝 Friends & Clothes Description Notepad:
+                </label>
+                <textarea class="fancy-input" id="student-friends-description" rows="9" placeholder="Example: This is Carlos. He is tall and slim with short black hair and brown eyes. He is wearing a blue shirt and dark jeans. That is Mariana over there. She has got long blond hair and blue eyes. She is wearing a green jacket..."></textarea>
             </div>
 
-            <!-- TRANSIÇÃO NARRATIVA EXATA -->
-            <div class="story-transition-box">
-                <b>Story Update:</b>
-                "Ivete conheceu toda a equipe e ficou encantada. Alan, o assistente do CEO, pareceu muito simpático."
-            </div>
-
-            <button class="btn-finish" id="btn-finish-5c" onclick="calculateXP()">
-                Finish Lesson 5C & Calculate XP ➔
+            <!-- BOTÃO DE FINALIZAR LIÇÃO -->
+            <button class="btn-finish" id="btn-finish-lesson" onclick="calculateXP()">
+                ✅ Finish Lesson & Get XP
             </button>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-guide')">⬅ Back</button>
                 <div></div>
             </div>
         </div>
+
     </div>
 
-    <!-- RESULT MODAL -->
+    <!-- BOTÃO FLUTUANTE GRAMMAR TIP -->
+    <div class="grammar-floating-container">
+        <div class="grammar-box">
+            <h4>💡 Grammar Tip</h4>
+            <p>Use <strong>BE</strong> for general physical characteristics: <em>She is tall. He is slim.</em></p>
+            <p>Use <strong>HAVE GOT</strong> for features: <em>She has got brown eyes. I have got short hair.</em></p>
+            <p>Demonstratives:</p>
+            <p>• <strong>this / these</strong> for near (singular/plural).</p>
+            <p>• <strong>that / those</strong> for farther away (singular/plural).</p>
+        </div>
+        <div class="grammar-floating-btn">💡 Grammar Tip</div>
+    </div>
+
+    <!-- MODAL DE RESULTADO -->
     <div id="result-modal">
         <div class="modal-content">
-            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 5C Completed!</h2>
-            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
-            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
-            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
-                You mastered physical descriptions and company onboarding demonstratives!
-            </p>
-            <button class="btn-finish" onclick="proceedToNextLesson()">Continue to 5D (Unit Challenge) ➔</button>
+            <h2 style="color: var(--accent-main); margin-top:0; font-family: var(--font-title);">Mission Complete!</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 14px; text-transform: uppercase;">Lesson 5C • Onboarding Finished</p>
+            <div class="xp-circle" id="xp-gained-text">+100</div>
+            <p id="score-text" style="font-weight: bold; color: #475569;"></p>
+            <button class="btn-finish" onclick="proceedToNextLesson()">Collect XP & Next ➔</button>
         </div>
     </div>
 
-    <!-- FLOATING GRAMMAR TIP -->
-    <div class="grammar-floating-container">
-        <button class="grammar-floating-btn">💡 Grammar Tip</button>
-        <div class="grammar-box">
-            <h4 style="margin: 0 0 10px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 15px;">
-                BE vs. HAVE GOT & Demonstratives
-            </h4>
-            
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">1. BE (Physical Attributes & Age):</p>
-            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
-                Use <b>am / is / are</b> for stature, general body type, and age:<br>
-                • He <i>is</i> tall, slim, and young.<br>
-                • She <i>is</i> medium-height and athletic.
-            </p>
-
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">2. HAVE GOT (Features & Possessions):</p>
-            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
-                Use <b>have got / has got</b> for hair, eyes, facial features:<br>
-                • He <i>has got</i> short black hair and blue eyes.<br>
-                • They <i>have got</i> glasses and curly hair.
-            </p>
-
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">3. Demonstratives (Position & Distance):</p>
-            <p style="margin: 0; font-size: 12.5px; color: #475569;">
-                • <b>THIS</b> (singular, near): <i>This is Alan right beside me.</i><br>
-                • <b>THAT</b> (singular, far): <i>That is Samuel across the room.</i><br>
-                • <b>THESE</b> (plural, near): <i>These are my notes right here.</i><br>
-                • <b>THOSE</b> (plural, far): <i>Those are our colleagues by the window.</i>
-            </p>
-        </div>
-    </div>
-
+    <!-- SCRIPT DE NAVEGAÇÃO, ÁUDIO, VALIDAÇÃO E LMS -->
     <script>
+        // ==========================================
+        // NAVEGAÇÃO ENTRE SEÇÕES
+        // ==========================================
         function navigateSection(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
+            const hideEl = document.getElementById(hideId);
             const showEl = document.getElementById(showId);
-            showEl.classList.add('active');
-            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-        }
-
-        let audio5cRate = 1.0;
-
-        function changeAudio5cSpeed(rate) {
-            audio5cRate = rate;
-            const audio = document.getElementById('audio-5c');
-            if (audio) audio.playbackRate = rate;
-            const spdBtn = document.getElementById('spd-audio-5c');
-            if (spdBtn) spdBtn.innerText = '⚡ ' + rate.toFixed(2).replace('.00', '.0') + 'x';
-        }
-
-        function cycleAudio5cSpeed() {
-            const speeds = [0.75, 1.0, 1.25, 1.5];
-            let nextIndex = (speeds.indexOf(audio5cRate) + 1) % speeds.length;
-            if (nextIndex === -1) nextIndex = 1;
-            changeAudio5cSpeed(speeds[nextIndex]);
-        }
-
-        function playOnboardingAudio() {
-            const btn = document.getElementById('btn-audio-5c');
-            const audio = document.getElementById('audio-5c');
-
-            if (audio) {
-                if (!audio.paused) {
-                    audio.pause();
-                    btn.innerText = "▶ PLAY AUDIO";
-                    btn.style.background = "var(--blue-dark)";
-                    return;
-                }
-                audio.playbackRate = audio5cRate;
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.style.background = "#e67e22";
-                    }).catch(() => {
-                        playFallbackTTS();
-                    });
-                } else {
-                    btn.innerText = "⏸ PAUSE";
-                    btn.style.background = "#e67e22";
-                }
-                audio.onended = () => {
-                    btn.innerText = "▶ PLAY AUDIO";
-                    btn.style.background = "var(--blue-dark)";
-                };
-                audio.onerror = () => {
-                    playFallbackTTS();
-                };
-            } else {
-                playFallbackTTS();
+            if (hideEl) hideEl.classList.remove('active');
+            if (showEl) {
+                showEl.classList.add('active');
+                setTimeout(() => {
+                    showEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
             }
         }
 
-        function playFallbackTTS() {
-            const btn = document.getElementById('btn-audio-5c');
-            btn.innerText = "🔊 PLAYING...";
-            btn.style.background = "#e67e22";
+        // ==========================================
+        // CONTROLE DE ÁUDIOS PADRONIZADO
+        // ==========================================
+        const playerStates = {};
 
-            let text = "Hello Ivete! Welcome to our floor. Meet our key colleagues: This is Claire, our senior strategist. Beside her is Alan, the CEO's personal assistant. Over there at the developer terminal is Tom. Talking to him is Gemma, our art director. And by the window is Brian, who runs operations.";
-            let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-GB';
-            utterance.rate = audio5cRate;
-            utterance.onend = () => { btn.innerText = "▶ PLAY AUDIO"; btn.style.background = "var(--blue-dark)"; };
-            utterance.onerror = () => { btn.innerText = "▶ PLAY AUDIO"; btn.style.background = "var(--blue-dark)"; };
-            window.speechSynthesis.speak(utterance);
+        function getPlayerState(audioId) {
+            if (!playerStates[audioId]) {
+                playerStates[audioId] = { rate: 1.0, isPlaying: false };
+            }
+            return playerStates[audioId];
         }
 
-        let calculatedXP = 0;
+        function stopAllAudiosExcept(exceptId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== exceptId) {
+                    a.pause();
+                    a.currentTime = 0;
+                    const p = a.closest('.audio-player');
+                    if (p) {
+                        const btn = p.querySelector('.play-btn');
+                        if (btn) {
+                            btn.innerText = "▶ PLAY";
+                            btn.classList.remove('playing');
+                        }
+                    }
+                }
+            });
+        }
+
+        function toggleAudio(audioId, btnId) {
+            const audio = document.getElementById(audioId);
+            const btn = document.getElementById(btnId);
+            if (!audio || !btn) return;
+
+            if (!audio.paused) {
+                audio.pause();
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+            } else {
+                stopAllAudiosExcept(audioId);
+                const state = getPlayerState(audioId);
+                audio.playbackRate = state.rate;
+                audio.play().then(() => {
+                    btn.innerText = "⏸ PAUSE";
+                    btn.classList.add('playing');
+                }).catch(e => console.log("Audio play prevented:", e));
+            }
+
+            audio.onended = () => {
+                btn.innerText = "▶ PLAY";
+                btn.classList.remove('playing');
+            };
+        }
+
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const audio = document.getElementById(audioId);
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
+            if (audio) audio.playbackRate = targetRate;
+
+            const player = audio ? audio.closest('.audio-player') : null;
+            if (player) {
+                player.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+            }
+            if (clickedBtnId) {
+                const b = document.getElementById(clickedBtnId);
+                if (b) b.classList.add('active');
+            }
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = `⚡ ${targetRate}x`;
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25];
+            const state = getPlayerState(audioId);
+            let idx = speeds.indexOf(state.rate);
+            if (idx === -1) idx = 1;
+            let nextRate = speeds[(idx + 1) % speeds.length];
+
+            let clickedId = spdBtnId;
+            if (nextRate === 0.75) clickedId = spdBtnId.replace('spd-', 'slow-');
+            else if (nextRate === 1.25) clickedId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, nextRate, clickedId);
+        }
+
+        // ==========================================
+        // NORMALIZAÇÃO DE TEXTO PARA VALIDAÇÃO
+        // ==========================================
+        function normalizeText(txt) {
+            return (txt || '').toString().toLowerCase()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”’]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // ==========================================
+        // CALCULO DE XP & VALIDAÇÃO
+        // ==========================================
+        let finalXP = 100;
 
         function calculateXP() {
             let correct = 0;
             let total = 0;
+            const respostas = {};
 
-            let userAnswers = {
-                warmup: {
-                    abilities: document.getElementById('warmup-abilities').value,
-                    routine: document.getElementById('warmup-routine').value
-                },
-                inputs: {},
-                descriptions: {}
-            };
-
-            // 1. Inputs evaluated (14 cipher + 5 names + 5 demonstratives)
-            document.querySelectorAll('.eval-input').forEach(input => {
+            document.querySelectorAll('.eval-input').forEach(el => {
                 total++;
-                let val = input.value.trim().toLowerCase();
-                userAnswers.inputs[input.id] = input.value;
-                let accepted = input.getAttribute('data-ans').toLowerCase().split('|');
-                if (accepted.some(a => val.includes(a) || a.includes(val) && val.length > 2)) {
+                const expected = el.getAttribute('data-ans') || '';
+                const userVal = el.value || '';
+                respostas[el.id] = userVal;
+
+                const normUser = normalizeText(userVal);
+                const normExpected = normalizeText(expected);
+
+                let isMatch = false;
+                if (normUser.length > 0 && normExpected.length > 0) {
+                    if (normUser === normExpected) {
+                        isMatch = true;
+                    } else if (normExpected.includes(normUser) || normUser.includes(normExpected)) {
+                        isMatch = true;
+                    }
+                }
+
+                if (isMatch) {
                     correct++;
-                    input.style.borderColor = "#22c55e";
-                    input.style.backgroundColor = "#f0fdf4";
+                    el.style.borderColor = '#22c55e';
+                    el.style.backgroundColor = '#f0fdf4';
                 } else {
-                    input.style.borderColor = "#ef4444";
-                    input.style.backgroundColor = "#fef2f2";
+                    el.style.borderColor = '#ef4444';
+                    el.style.backgroundColor = '#fef2f2';
                 }
             });
 
-            // 2. Evaluated descriptions
-            document.querySelectorAll('.eval-desc').forEach(txt => {
-                total++;
-                let val = txt.value.trim();
-                userAnswers.descriptions[txt.id] = val;
-                if (val.length >= 8) {
-                    correct++;
-                    txt.style.borderColor = "#22c55e";
-                    txt.style.backgroundColor = "#f0fdf4";
-                } else {
-                    input.style.borderColor = "#ef4444";
-                }
-            });
+            // Resposta aberta da descrição
+            const descEl = document.getElementById('student-friends-description');
+            if (descEl) {
+                respostas['student-friends-description'] = descEl.value;
+                if (descEl.value.trim().length > 10) correct += 2;
+                total += 2;
+            }
 
-            localStorage.setItem('licao5c_respostas', JSON.stringify(userAnswers));
+            localStorage.setItem('licao5c_respostas', JSON.stringify(respostas));
 
-            let percentage = total > 0 ? (correct / total) : 1;
-            calculatedXP = Math.min(100, Math.round(percentage * 100));
+            const ratio = total > 0 ? (correct / total) : 1;
+            finalXP = Math.max(60, Math.round(ratio * 100));
 
-            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
-            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            document.getElementById('xp-gained-text').innerText = `+${finalXP} XP`;
+            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${finalXP}%).`;
             document.getElementById('result-modal').style.display = 'flex';
         }
 
         function proceedToNextLesson() {
-            let oldXP = parseInt(localStorage.getItem('licao_5c_xp')) || 0;
-            let diff = calculatedXP - oldXP;
+            const oldXP = parseInt(localStorage.getItem('licao_5c_xp')) || 0;
+            const diff = finalXP - oldXP;
 
             localStorage.setItem('licao_5c_status', 'concluida');
-            localStorage.setItem('licao_5c_xp', calculatedXP);
+            localStorage.setItem('licao_5c_xp', finalXP);
 
-            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
-            totalXP += diff;
+            const totalXP = (parseInt(localStorage.getItem('target_on_profile_xp')) || 0) + diff;
             localStorage.setItem('target_on_profile_xp', totalXP);
 
-            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
-            studentXP += diff;
+            const studentXP = (parseInt(localStorage.getItem('studentXP')) || 0) + diff;
             localStorage.setItem('studentXP', studentXP);
 
             if (window.parent && window.parent.completeUnit) {
-                window.parent.completeUnit(0, calculatedXP);
+                window.parent.completeUnit(0, finalXP);
             }
             if (window.parent && window.parent.avancarPara) {
                 window.parent.avancarPara('licao5d.html', 'link-5d');
                 return;
             }
-            if (window.parent && window.parent.loadPage) {
-                window.parent.loadPage('licao5d.html', null);
-                return;
-            }
             window.location.href = "licao5d.html";
         }
 
+        // ==========================================
+        // MODO LEITURA (READ-ONLY) NA INICIALIZAÇÃO
+        // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            let saved = localStorage.getItem('licao5c_respostas');
-            if (saved) {
-                try {
-                    let data = JSON.parse(saved);
-                    if (data.warmup) {
-                        if (data.warmup.abilities) document.getElementById('warmup-abilities').value = data.warmup.abilities;
-                        if (data.warmup.routine) document.getElementById('warmup-routine').value = data.warmup.routine;
-                    }
-                    if (data.inputs) {
-                        for (let id in data.inputs) {
-                            let el = document.getElementById(id);
-                            if (el) el.value = data.inputs[id];
-                        }
-                    }
-                    if (data.descriptions) {
-                        for (let id in data.descriptions) {
-                            let el = document.getElementById(id);
-                            if (el) el.value = data.descriptions[id];
-                        }
-                    }
-                } catch(e) {}
-            }
-
             if (localStorage.getItem('licao_5c_status') === 'concluida') {
-                let btnFinish = document.getElementById('btn-finish-5c');
-                if (btnFinish) {
-                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                const savedData = localStorage.getItem('licao5c_respostas');
+                if (savedData) {
+                    try {
+                        const respostas = JSON.parse(savedData);
+                        document.querySelectorAll('.eval-input, .fancy-input').forEach(el => {
+                            if (el.id && respostas[el.id] !== undefined) {
+                                el.value = respostas[el.id];
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Error parsing saved answers:", e);
+                    }
+                }
+
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                const finishBtn = document.getElementById('btn-finish-lesson');
+                if (finishBtn) {
+                    finishBtn.innerText = "🔒 Lesson Completed (Read-Only)";
+                    finishBtn.disabled = true;
+                    finishBtn.style.background = "#94a3b8";
+                    finishBtn.style.cursor = "not-allowed";
+                    finishBtn.style.boxShadow = "none";
                 }
             }
         });
