@@ -743,7 +743,7 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player" data-script-key="audio-1">
-                    <audio id="audio-1" src="https://files.catbox.moe/tzcgnr.mp3" preload="none"></audio>
+                    <audio id="audio-1" src="https://files.catbox.moe/phe46l.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--red-bus)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--red-bus)')" title="Pausar áudio">⏸ PAUSE</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
@@ -863,7 +863,7 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player" data-script-key="audio-2">
-                    <audio id="audio-2" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <audio id="audio-2" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1788831897/TARGET_1_-_4A_TARGET_SITUATION_rlezaf.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')" title="Pausar áudio">⏸</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
@@ -972,6 +972,19 @@
             <!-- COMPREHENSION MAP -->
             <div class="exercise-card" style="margin-bottom: 25px; border-color: var(--blue-dark);">
                 <p><b>Comprehension Map:</b> Listen to Ivete asking the hotel receptionist for information. Use the information to fill in the map.</p>
+
+                <div class="audio-wrapper" style="margin: 15px 0;">
+                    <div class="audio-player" data-script-key="audio-ts-map">
+                        <audio id="audio-ts-map" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1788831897/TARGET_1_-_4A_TARGET_SITUATION_rlezaf.mp3" preload="none"></audio>
+                        <button type="button" class="play-btn" id="btn-audio-ts-map" onclick="handleAudioPlay('audio-ts-map', 'btn-audio-ts-map', 'audio-ts-map', 'var(--blue-dark)')">▶ PLAY</button>
+                        <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-ts-map" onclick="handleAudioPause('audio-ts-map', 'btn-audio-ts-map', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
+                        <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-ts-map" onclick="changeSpeedDirect('audio-ts-map', 'spd-audio-ts-map', 0.75, 'slow-audio-ts-map')" title="0.75x">🐢</button>
+                        <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-ts-map" onclick="cycleSpeed('audio-ts-map', 'spd-audio-ts-map')" title="Alternar velocidade">⚡ 1.0x</button>
+                        <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-ts-map" onclick="changeSpeedDirect('audio-ts-map', 'spd-audio-ts-map', 1.25, 'fast-audio-ts-map')" title="1.25x">🐇</button>
+                        <span class="audio-track-label">Track 4A: Target Situation • Comprehension Map</span>
+                    </div>
+                </div>
+
                 <label style="color: #1e3a8a; font-weight: bold;">In the BLUE bus stop, write ways to ask about transportation:</label>
                 <textarea class="fancy-input eval-text" id="ans-blue-stop" rows="2" data-ans="Can I have some information|Which bus goes to|How much is the fare"></textarea>
                 
@@ -1315,7 +1328,8 @@
         // ==========================================
         const audioScripts = {
             'audio-1': "Track 4A point 1: Public Transport and Traffic Signs. Bus Stop. Bus Lane. No Entry. Stop Sign. Zebra Crossing. Roundabout. The Underground. Pay and Oyster Reader.",
-            'audio-2': "Track 4A point 2. Driver: Morning! Where are you heading today, love? Ivete: Good morning! Does this bus go to Oxford Street? Driver: Yes, it does! Straight along Regent Street to Oxford Circus. Ivete: Wonderful. How much is the fare, please? Driver: It's one pound seventy-five. Just tap your Oyster or contactless card on the yellow reader. Remember, we don't accept cash on London buses! Ivete: Understood. Could you please let me know when we arrive at my stop? Driver: Sure thing. It's about five stops ahead. Take a seat upstairs if you want the best view!"
+            'audio-2': "Track 4A point 2. Ivete: Excuse me, does this bus go to Oxford Street? Driver: Yes, it goes straight to Oxford Circus. Ivete: How much is the single fare? Driver: One pound seventy-five. Tap your Oyster card right here.",
+            'audio-ts-map': "Track 4A Target Situation: Comprehension Map. Listen to Ivete asking the hotel receptionist for information about public transportation to Oxford Street and Westminster."
         };
 
         const playerStates = {};

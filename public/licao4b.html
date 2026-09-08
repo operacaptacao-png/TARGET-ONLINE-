@@ -490,7 +490,7 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player" data-script-key="audio-1">
-                    <audio id="audio-1" src="https://files.catbox.moe/k3w40s.mp3" preload="none"></audio>
+                    <audio id="audio-1" src="https://files.catbox.moe/4jajwy.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--blue-dark)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
@@ -569,6 +569,18 @@
         <div id="sec-2" class="activity-section theme-purple">
             <h2>2. Target Situation • Asking for the British Museum</h2>
             <p class="instruction">Ivete has stepped off the bus and needs directions to reach the British Museum entrance.</p>
+
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="audio-2">
+                    <audio id="audio-2" src="https://files.catbox.moe/tfq26j.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')" title="Pausar áudio">⏸ PAUSE</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-2" onclick="cycleSpeed('audio-2', 'spd-audio-2')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 1.25, 'fast-audio-2')" title="1.25x">🐇</button>
+                    <span class="audio-track-label">Track 4B.2: Asking for Directions</span>
+                </div>
+            </div>
 
             <div class="dialogue-box">
                 <div class="dialogue-row">
@@ -782,7 +794,8 @@
         }
 
         const audioScripts = {
-            'audio-1': "Track 4B point 1: Direction Expressions. Turn Left. Turn Right. Go Straight On. Traffic Lights. Roundabout. Crossroads."
+            'audio-1': "Track 4B point 1: Direction Expressions. Turn Left. Turn Right. Go Straight On. Traffic Lights. Roundabout. Crossroads.",
+            'audio-2': "Track 4B point 2: Asking for Directions. Ivete: Excuse me! Could you tell me the way to the British Museum, please? Local: Yes, of course! Go straight on down this avenue until you see the traffic lights. Ivete: And what do I do at the traffic lights? Local: Turn right into Great Russell Street. Walk past the bookshop, and the museum will be directly on your left."
         };
 
         const playerStates = {};

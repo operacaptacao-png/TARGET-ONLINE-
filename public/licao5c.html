@@ -581,7 +581,11 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player">
-                    <button class="play-btn" id="btn-audio-5c" onclick="playOnboardingAudio()">▶ PLAY AUDIO</button>
+                    <audio id="audio-5c" src="https://files.catbox.moe/4sq816.mp3" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-5c" onclick="playOnboardingAudio()">▶ PLAY AUDIO</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-5c" onclick="changeAudio5cSpeed(0.75)" title="0.75x">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-5c" onclick="cycleAudio5cSpeed()" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-5c" onclick="changeAudio5cSpeed(1.25)" title="1.25x">🐇</button>
                     <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Track 5C.1: Meet the Overseas Team</span>
                 </div>
             </div>
@@ -808,15 +812,68 @@
             setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
         }
 
+        let audio5cRate = 1.0;
+
+        function changeAudio5cSpeed(rate) {
+            audio5cRate = rate;
+            const audio = document.getElementById('audio-5c');
+            if (audio) audio.playbackRate = rate;
+            const spdBtn = document.getElementById('spd-audio-5c');
+            if (spdBtn) spdBtn.innerText = '⚡ ' + rate.toFixed(2).replace('.00', '.0') + 'x';
+        }
+
+        function cycleAudio5cSpeed() {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            let nextIndex = (speeds.indexOf(audio5cRate) + 1) % speeds.length;
+            if (nextIndex === -1) nextIndex = 1;
+            changeAudio5cSpeed(speeds[nextIndex]);
+        }
+
         function playOnboardingAudio() {
-            let btn = document.getElementById('btn-audio-5c');
+            const btn = document.getElementById('btn-audio-5c');
+            const audio = document.getElementById('audio-5c');
+
+            if (audio) {
+                if (!audio.paused) {
+                    audio.pause();
+                    btn.innerText = "▶ PLAY AUDIO";
+                    btn.style.background = "var(--blue-dark)";
+                    return;
+                }
+                audio.playbackRate = audio5cRate;
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        btn.innerText = "⏸ PAUSE";
+                        btn.style.background = "#e67e22";
+                    }).catch(() => {
+                        playFallbackTTS();
+                    });
+                } else {
+                    btn.innerText = "⏸ PAUSE";
+                    btn.style.background = "#e67e22";
+                }
+                audio.onended = () => {
+                    btn.innerText = "▶ PLAY AUDIO";
+                    btn.style.background = "var(--blue-dark)";
+                };
+                audio.onerror = () => {
+                    playFallbackTTS();
+                };
+            } else {
+                playFallbackTTS();
+            }
+        }
+
+        function playFallbackTTS() {
+            const btn = document.getElementById('btn-audio-5c');
             btn.innerText = "🔊 PLAYING...";
             btn.style.background = "#e67e22";
 
             let text = "Hello Ivete! Welcome to our floor. Meet our key colleagues: This is Claire, our senior strategist. Beside her is Alan, the CEO's personal assistant. Over there at the developer terminal is Tom. Talking to him is Gemma, our art director. And by the window is Brian, who runs operations.";
             let utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-GB';
-            utterance.rate = 0.95;
+            utterance.rate = audio5cRate;
             utterance.onend = () => { btn.innerText = "▶ PLAY AUDIO"; btn.style.background = "var(--blue-dark)"; };
             utterance.onerror = () => { btn.innerText = "▶ PLAY AUDIO"; btn.style.background = "var(--blue-dark)"; };
             window.speechSynthesis.speak(utterance);

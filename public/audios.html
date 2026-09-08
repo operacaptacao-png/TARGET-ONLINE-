@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Opera Target | Media Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1E3C72">
+    
+    <!-- Meta tags para iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Target 1">
+    
+    <!-- Ícones para iPhone/iPad com quebra de cache (?v=2) para forçar a atualização -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/59P2L2Qz/audios.png?v=2">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://i.postimg.cc/59P2L2Qz/audios.png?v=2">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://i.postimg.cc/59P2L2Qz/audios.png?v=2">
+    <link rel="shortcut icon" href="https://i.postimg.cc/59P2L2Qz/audios.png?v=2">
+    
+    <style>
+        /* === VARIÁVEIS GLOBAIS === */
+        :root {
+            --black: #1A1A1A; --white: #FFFFFF; --blue-dark: #1E3C72; --blue-light: #2A5298; --orange-main: #E67E22; 
+            --theme-blue-border: #4f46e5; --theme-purple-border: #9333ea; --theme-orange-border: #ea580c;
+        }
+
+        /* === FUNDO FIXO E TRAVA DE TELA === */
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            font-family: 'Roboto', sans-serif; overflow: hidden; 
+            background: url('https://i.postimg.cc/xdX8Bn7J/foto-target-1.png') center/cover no-repeat fixed;
+            overscroll-behavior-y: none;
+        }
+
+        /* Camada de Vidro */
+        .app-wrapper {
+            display: flex; flex-direction: column; width: 100%; height: 100%; height: 100dvh;
+            background: rgba(241, 245, 249, 0.75); 
+            backdrop-filter: blur(8px); 
+            overflow: hidden;
+        }
+
+        /* === HEADER COM MENU HAMBÚRGUER === */
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(30, 60, 114, 0.98);
+            padding: max(15px, env(safe-area-inset-top)) 20px 15px 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; flex-shrink: 0;
+            width: 100%; box-sizing: border-box;
+        }
+        /* Correção para iOS: Hambúrguer branco */
+        .hamburger-btn { 
+            background: transparent; border: none; color: #ffffff !important; 
+            font-size: 28px; cursor: pointer; padding: 5px; outline: none; 
+            display: flex; align-items: center; justify-content: center;
+            -webkit-appearance: none; appearance: none; opacity: 1;
+        }
+        .app-header img { 
+            height: 35px; border: none; outline: none; 
+        } 
+        .header-spacer { width: 38px; }
+
+        /* === MENU LATERAL (DRAWER) === */
+        .sidebar { 
+            position: fixed; top: 0; left: -100%; width: 280px; height: 100%; height: 100dvh;
+            background: rgba(30, 60, 114, 0.98); color: white; 
+            display: flex; flex-direction: column; 
+            box-shadow: 5px 0 25px rgba(0,0,0,0.5); z-index: 2000; 
+            transition: left 0.3s ease; padding-top: max(20px, env(safe-area-inset-top));
+        }
+        .sidebar.open { left: 0; }
+        
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 1500; display: none;
+            backdrop-filter: blur(3px);
+        }
+        .sidebar-overlay.active { display: block; animation: fadeInOverlay 0.3s forwards; }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+        .sidebar-header { padding: 10px 20px 20px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; position: relative; }
+        .sidebar-header img { width: 160px; max-width: 100%; margin-bottom: 10px; }
+        .sidebar-header p { font-size: 13px; color: #cbd5e1; margin: 0; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; text-align: center;}
+        
+        /* Correção para iOS: Botão X branco absoluto */
+        .close-sidebar { 
+            position: absolute; top: 0px; right: 15px; background: transparent; border: none; 
+            color: #ffffff !important; font-size: 26px; font-weight: bold; cursor: pointer; 
+            padding: 10px; outline: none; -webkit-appearance: none; appearance: none; opacity: 1; 
+        }
+
+        .menu-list { flex: 1; overflow-y: auto; padding: 20px 0; }
+        .menu-list::-webkit-scrollbar { width: 6px; }
+        .menu-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .menu-btn { 
+            width: 100%; background: transparent; border: none; color: #94a3b8; 
+            padding: 16px 30px; text-align: left; font-family: 'Montserrat', sans-serif; 
+            font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.3s; 
+            border-left: 4px solid transparent; display: flex; align-items: center; justify-content: space-between; 
+        }
+        .menu-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .menu-btn.active { background: var(--orange-main); color: white; border-left-color: #fff; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);}
+        .menu-btn span.icon { font-size: 16px; opacity: 0; transition: 0.3s; transform: translateX(-10px); }
+        .menu-btn.active span.icon { opacity: 1; transform: translateX(0); }
+
+        /* === ÁREA PRINCIPAL === */
+        .main-content { flex: 1; overflow-y: auto; padding: 25px 20px 150px 20px; box-sizing: border-box; scroll-behavior: smooth; position: relative; width: 100%; }
+        
+        .unit-section { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; animation: fadeIn 0.5s forwards; max-width: 800px; margin: 0 auto;}
+        .unit-section.active { display: block; opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Cabeçalho da Unidade */
+        .unit-header { 
+            background: rgba(255, 255, 255, 0.95); padding: 25px 30px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 25px; border-left: 8px solid var(--blue-light); 
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+        .unit-header h2 { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 800; color: var(--blue-dark); margin: 0 0 5px 0; text-transform: uppercase; }
+        .unit-header p { margin: 0; color: #64748b; font-size: 15px; font-weight: 500;}
+
+        /* === ACORDEÃO DAS LIÇÕES === */
+        .lesson-accordion { 
+            background: rgba(255, 255, 255, 0.95); border-radius: 16px; margin-bottom: 15px; 
+            overflow: hidden; border-left: 6px solid transparent; box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            transition: 0.3s;
+        }
+        
+        .lesson-accordion-header { width: 100%; background: transparent; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; border: none; cursor: pointer; transition: 0.3s; }
+        .lesson-accordion-header:hover { background: rgba(0,0,0,0.02); }
+        .lesson-accordion-header h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; justify-content: center; }
+        .accordion-icon { font-size: 24px; font-weight: bold; color: #94a3b8; transition: transform 0.4s ease; }
+        
+        .theme-blue { border-left-color: var(--theme-blue-border); } .theme-blue .lesson-accordion-header h3 { color: var(--theme-blue-border); }
+        .theme-purple { border-left-color: var(--theme-purple-border); } .theme-purple .lesson-accordion-header h3 { color: var(--theme-purple-border); }
+        .theme-orange { border-left-color: var(--theme-orange-border); } .theme-orange .lesson-accordion-header h3 { color: var(--theme-orange-border); }
+
+        .lesson-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .lesson-accordion.open .lesson-accordion-content { max-height: 3000px; }
+        .lesson-accordion.open .accordion-icon { transform: rotate(45deg); color: var(--orange-main); }
+        
+        .inner-content { padding: 0 25px 25px 25px; border-top: 1px dashed #e2e8f0; margin-top: 5px; padding-top: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+        /* === ITENS DA LIÇÃO === */
+        .audio-list { display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center; }
+        
+        .audio-player { 
+            background: #f8fafc; border: 2px solid #e2e8f0; padding: 15px 20px; 
+            border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; width: 100%; max-width: 450px; text-align: center; box-sizing: border-box;
+        }
+        .audio-player:hover { border-color: #cbd5e1; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .play-btn { 
+            border: none; color: white; padding: 12px 20px; border-radius: 50px; 
+            cursor: pointer; font-weight: 800; font-family: 'Montserrat', sans-serif; 
+            text-transform: uppercase; font-size: 14px; letter-spacing: 1px; width: 100%; transition: 0.3s; outline: none;
+        }
+        .play-btn:active { transform: scale(0.95); }
+
+        .track-info { display: flex; flex-direction: column; gap: 6px; align-items: center; width: 100%; }
+        .track-page { font-size: 10px; font-weight: 900; background: var(--black); color: white; padding: 4px 8px; border-radius: 8px; width: max-content; letter-spacing: 1px;}
+        .track-title { font-size: 14px; color: #333; font-weight: 500; line-height: 1.3; text-align: center; }
+
+        .video-container { width: 100%; max-width: 450px; margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 16px; border: 2px dashed #cbd5e1; box-sizing: border-box; display: flex; flex-direction: column; align-items: center;}
+        .video-container h4 { margin: 0 0 10px 0; font-family: 'Montserrat', sans-serif; color: var(--black); font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;}
+        .video-container video { width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); outline: none; background: #000; }
+
+        /* =========================================
+           📲 PLAYER EM MODO APLICATIVO (BOTTOM SHEET)
+           ========================================= */
+        .bottom-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #004aad; border-top: 3px solid #38b6ff;
+            border-radius: 25px 25px 0 0; z-index: 3000;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5); 
+            padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+            color: white; display: flex; flex-direction: column; align-items: center;
+            box-sizing: border-box;
+        }
+        .bottom-sheet.open { bottom: 0; }
+        
+        /* Correção para iOS: Botão X branco absoluto */
+        .bs-close { 
+            position: absolute; top: 15px; right: 20px; background: transparent; border: none; 
+            color: #ffffff !important; font-size: 24px; font-weight: bold; cursor: pointer; 
+            padding: 5px; outline: none; -webkit-appearance: none; appearance: none; opacity: 1; 
+        }
+        .bs-title { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; margin-top: 15px; margin-bottom: 20px; text-align: center; width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .bs-progress-container { display: flex; align-items: center; gap: 15px; width: 100%; max-width: 450px; }
+        .bs-time { font-size: 12px; font-weight: bold; width: 40px; text-align: center; font-family: monospace; }
+        .bs-progress { flex: 1; -webkit-appearance: none; height: 6px; background: rgba(255,255,255,0.3); border-radius: 5px; outline: none; }
+        .bs-progress::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: white; border-radius: 50%; cursor: pointer; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        
+        .bs-controls { display: flex; align-items: center; justify-content: center; gap: 30px; margin-top: 25px; }
+        .bs-btn-skip { background: none; border: none; color: white; font-size: 22px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .bs-btn-skip span { font-size: 10px; font-weight: bold; margin-top: 2px; }
+        .bs-btn-play { background: #ff5757; color: white; border: none; width: 65px; height: 65px; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 87, 87, 0.4); display: flex; align-items: center; justify-content: center; transition: 0.2s; outline: none;}
+        .bs-btn-play:active { transform: scale(0.9); }
+        
+        .bs-speeds { display: flex; gap: 10px; margin-top: 25px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 15px; }
+        .bs-speed-btn { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 12px; font-weight: bold; cursor: pointer; padding: 6px 12px; border-radius: 10px; outline: none;}
+        .bs-speed-btn.active { background: #ffbd59; color: #004aad; }
+
+        /* =========================================
+           BANNERS DE INSTALAÇÃO PWA (ANDROID & IOS)
+           ========================================= */
+        .install-banner {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 400px; background: rgba(30, 60, 114, 0.98);
+            backdrop-filter: blur(10px); border: 2px solid var(--orange-main);
+            border-radius: 16px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 4000; color: white;
+            animation: slideDown 0.5s ease-out; box-sizing: border-box;
+        }
+        @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 15px; opacity: 1; } }
+        .install-content { display: flex; align-items: center; gap: 12px; }
+        .install-content img { width: 45px; height: 45px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .install-text { display: flex; flex-direction: column; }
+        .install-text strong { font-family: 'Montserrat', sans-serif; font-size: 13px; }
+        .install-text span { font-size: 11px; color: #cbd5e1; }
+        .btn-install-pwa { background: var(--orange-main); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4);}
+        .btn-install-pwa:active { transform: scale(0.95); }
+        
+        /* Correção para iOS: Botão X branco absoluto */
+        .btn-close-install { 
+            background: transparent; border: none; color: #ffffff !important; 
+            font-size: 20px; font-weight: bold; cursor: pointer; padding: 0 5px; 
+            margin-left: 8px; outline: none; -webkit-appearance: none; appearance: none; opacity: 1; 
+        }
+
+        /* Estilo Exclusivo do Banner iOS */
+        .ios-banner-text { font-size: 11px; color: #e2e8f0; line-height: 1.4; margin-top: 3px; }
+        .ios-icon-share { background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #ffbd59; }
+
+        /* =========================================
+           📲 OTIMIZAÇÃO MÁXIMA PARA CELULAR (MOBILE) 
+           ========================================= */
+        @media (max-width: 768px) {
+            .unit-header h2 { font-size: 22px; }
+            .unit-header p { font-size: 13px; }
+            .lesson-accordion-header { padding: 15px; }
+            .lesson-accordion-header h3 { font-size: 16px; }
+            .accordion-icon { font-size: 20px; }
+            .inner-content { padding: 0 15px 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- BANNER DE INSTALAÇÃO PWA (ANDROID) -->
+<div id="install-banner" class="install-banner" style="display: none;">
+    <div class="install-content">
+        <img src="https://i.postimg.cc/59P2L2Qz/audios.png" alt="App Icon">
+        <div class="install-text">
+            <strong>Instalar App Target</strong>
+            <span>Use offline no seu celular!</span>
+        </div>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <button id="btn-install" class="btn-install-pwa">INSTALAR</button>
+        <button id="btn-close-install" class="btn-close-install">✖</button>
+    </div>
+</div>
+
+<!-- BANNER DE INSTRUÇÃO PWA (IPHONE / IOS) -->
+<div id="ios-install-banner" class="install-banner" style="display: none;">
+    <div class="install-content">
+        <img src="https://i.postimg.cc/59P2L2Qz/audios.png" alt="App Icon">
+        <div class="install-text">
+            <strong>Instalar no iPhone</strong>
+            <span class="ios-banner-text">Toque em <span class="ios-icon-share">Compartilhar ⎋</span> no Safari e selecione <strong>"Adicionar à Tela de Início"</strong>.</span>
+        </div>
+    </div>
+    <button id="btn-close-ios-install" class="btn-close-install">✖</button>
+</div>
+
+<!-- CONTAINER PRINCIPAL -->
+<div class="app-wrapper">
+    
+    <!-- HEADER FIXO COM HAMBÚRGUER -->
+    <header class="app-header">
+        <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+        <img src="https://i.postimg.cc/MGGygYGg/logo-opera-png.png" alt="Logo Opera Target">
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- OVERLAY ESCURO -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- MENU LATERAL (DRAWER) -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <button class="close-sidebar" onclick="toggleSidebar()">✖</button>
+            <img src="https://i.postimg.cc/MGGygYGg/logo-opera-png.png" alt="Logo Opera Target">
+            <p>Listening Practice</p>
+        </div>
+        <div class="menu-list">
+            <button class="menu-btn active" onclick="switchUnit('unit-1', this)">Unit 1 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-2', this)">Unit 2 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-3', this)">Unit 3 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-4', this)">Unit 4 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-5', this)">Unit 5 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-6', this)">Unit 6 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-7', this)">Unit 7 <span class="icon">➔</span></button>
+            <button class="menu-btn" onclick="switchUnit('unit-8', this)">Unit 8 <span class="icon">➔</span></button>
+        </div>
+    </div>
+
+    <!-- ÁREA DE CONTEÚDO DAS LIÇÕES -->
+    <div class="main-content">
+        <!-- UNIT 1 -->
+        <div id="unit-1" class="unit-section active">
+            <div class="unit-header"><h2>Unit 1</h2><p>Arriving in a Foreign Country</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 1A - At the Airport</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('1A - Words and ideas', 'https://files.catbox.moe/tzcgnr.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 10</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('1A - Target situation', 'https://files.catbox.moe/eg41yt.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 11</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-blue-border);"><h4><span class="track-page" style="background:var(--theme-blue-border);">PAG 13</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/fu1l3l.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 1B - Getting a Taxi</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('1B - Target situation', 'https://files.catbox.moe/nrubf0.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 19</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 1C - Checking in a Hotel</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('1C - Target situation', 'https://files.catbox.moe/pxviso.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 27</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-orange-border);"><h4><span class="track-page" style="background:var(--theme-orange-border);">PAG 28</span> 🎬 Spelling Bee</h4><video controls src="https://files.catbox.moe/uuxfib.mp4" onplay="pausarAppPlayer()"></video></div>
+                <div class="video-container" style="border-color:var(--theme-orange-border);"><h4><span class="track-page" style="background:var(--theme-orange-border);">PAG 28</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/n1m5v6.mp4" onplay="pausarAppPlayer()"></video></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('1C - Language at work', 'https://files.catbox.moe/6y599k.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 30</span><span class="track-title"><strong>Language at work</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 2 -->
+        <div id="unit-2" class="unit-section">
+            <div class="unit-header"><h2>Unit 2</h2><p>Getting to know each other</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 2A - Having Dinner</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('2A - Target situation', 'https://files.catbox.moe/pr9irg.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 39</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-blue-border);"><h4><span class="track-page" style="background:var(--theme-blue-border);">PAG 41</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/3wi73g.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 2B - Fast Food</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('2B - Target situation', 'https://files.catbox.moe/fuqa5y.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 47</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('2B - Cross curricular', 'https://files.catbox.moe/9hib9e.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 49</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 2C - Grocery Shop</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('2C - Target situation', 'https://files.catbox.moe/jmr5iy.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 55</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('2C - Cross curricular', 'https://files.catbox.moe/qqzg9p.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 57</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 3 -->
+        <div id="unit-3" class="unit-section">
+            <div class="unit-header"><h2>Unit 3</h2><p>At the clothes shop</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 3A - Shopping for clothes</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('3A - Words and ideas', 'https://files.catbox.moe/z1uc6q.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 66</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('3A - Target situation', 'https://files.catbox.moe/cpsnhi.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 67</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('3A - Cross curricular', 'https://files.catbox.moe/btocrs.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 69</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 3B - Describing clothes</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('3B - Words and ideas', 'https://files.catbox.moe/aqsgn0.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 75</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('3B - Target situation', 'https://files.catbox.moe/3k1osu.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 75</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-purple-border);"><h4><span class="track-page" style="background:var(--theme-purple-border);">PAG 77</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/ymvsoi.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 3C - What to wear</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('3C - Target situation', 'https://files.catbox.moe/m29e25.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 83</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-orange-border);"><h4><span class="track-page" style="background:var(--theme-orange-border);">PAG 85</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/s57721.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 4 -->
+        <div id="unit-4" class="unit-section">
+            <div class="unit-header"><h2>Unit 4</h2><p>Round and about</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 4A - Taking a Bus</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('4A - Words and ideas', 'https://files.catbox.moe/phe46l.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 95</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('4A - Target situation', 'https://res.cloudinary.com/pfrqadfm/video/upload/v1788831897/TARGET_1_-_4A_TARGET_SITUATION_rlezaf.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 95</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('4A - Cross curricular 1', 'https://files.catbox.moe/drum9c.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 97</span><span class="track-title"><strong>Cross curricular (1)</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('4A - Cross curricular 2', 'https://files.catbox.moe/qbvjmv.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 97</span><span class="track-title"><strong>Cross curricular (2)</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 4B - Giving Directions</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('4B - Words and ideas', 'https://files.catbox.moe/4jajwy.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 102</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('4B - Target situation', 'https://files.catbox.moe/tfq26j.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 103</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('4B - Language at work', 'https://files.catbox.moe/87ej9g.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 104</span><span class="track-title"><strong>Language at work</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('4B - Cross curricular', 'https://files.catbox.moe/2m06lt.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 105</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 4C - Lesson C</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('4C - Words and ideas', 'https://files.catbox.moe/ep58ke.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 110</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('4C - Target situation', 'https://files.catbox.moe/es33tg.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 111</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 5 -->
+        <div id="unit-5" class="unit-section">
+            <div class="unit-header"><h2>Unit 5</h2><p>Daily Routine</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 5A</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('5A - Words and ideas', 'https://files.catbox.moe/3uuee3.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 122</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('5A - Target situation', 'https://files.catbox.moe/51ms7a.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 123</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-blue-border);"><h4><span class="track-page" style="background:var(--theme-blue-border);">PAG 125</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/3euqn0.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 5B</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('5B - Words and ideas', 'https://files.catbox.moe/ou3big.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 131</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('5B - Target situation', 'https://files.catbox.moe/ju4ybz.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 131</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-purple-border);"><h4><span class="track-page" style="background:var(--theme-purple-border);">PAG 134</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/0n2car.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 5C</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('5C - Words and ideas', 'https://files.catbox.moe/syxssf.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 139</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('5C - Target situation', 'https://files.catbox.moe/5x94yq.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 139</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 6 -->
+        <div id="unit-6" class="unit-section">
+            <div class="unit-header"><h2>Unit 6</h2><p>Free Time</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 6A</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('6A - Words and ideas', 'https://files.catbox.moe/9adqoc.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 151</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('6A - Target situation', 'https://files.catbox.moe/3nj2kp.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 151</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-blue-border);"><h4><span class="track-page" style="background:var(--theme-blue-border);">PAG 153</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/emtp9z.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 6B</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('6B - Words and ideas', 'https://files.catbox.moe/x7wm5n.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 158</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('6B - Target situation', 'https://files.catbox.moe/p4440z.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 159</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('6B - Cross curricular', 'https://files.catbox.moe/kb2z43.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 161</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 6C</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('6C - Words and ideas', 'https://files.catbox.moe/1a2l60.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 166</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('6C - Target situation', 'https://files.catbox.moe/bdp28g.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 167</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-orange-border);"><h4><span class="track-page" style="background:var(--theme-orange-border);">PAG 169</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/cyccjq.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 7 -->
+        <div id="unit-7" class="unit-section">
+            <div class="unit-header"><h2>Unit 7</h2><p>Past Events</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 7A</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('7A - Words and ideas', 'https://files.catbox.moe/jqg4ut.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 180</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('7A - Target situation', 'https://files.catbox.moe/bszet1.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 181</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('7A - Cross curricular', 'https://files.catbox.moe/apg1y0.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 183</span><span class="track-title"><strong>Cross curricular</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 7B</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('7B - Words and ideas', 'https://files.catbox.moe/g71h3g.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 189</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('7B - Target situation', 'https://files.catbox.moe/qexzld.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 189</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-orange"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 7C</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('7C - Words and ideas', 'https://files.catbox.moe/thd7am.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 196</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-orange-border)" style="background:var(--theme-orange-border);" onclick="openAppPlayer('7C - Target situation', 'https://files.catbox.moe/z1oiqw.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 197</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+
+        <!-- UNIT 8 -->
+        <div id="unit-8" class="unit-section">
+            <div class="unit-header"><h2>Unit 8</h2><p>Future Plans</p></div>
+            <div class="lesson-accordion theme-blue"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 8A</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('8A - Words and ideas', 'https://files.catbox.moe/glb5x6.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 208</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-blue-border)" style="background:var(--theme-blue-border);" onclick="openAppPlayer('8A - Target situation', 'https://files.catbox.moe/6fynxx.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 209</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+                <div class="video-container" style="border-color:var(--theme-blue-border);"><h4><span class="track-page" style="background:var(--theme-blue-border);">PAG 211</span> 🎬 Cross curricular</h4><video controls src="https://files.catbox.moe/beloh3.mp4" onplay="pausarAppPlayer()"></video></div>
+            </div></div></div></div>
+            <div class="lesson-accordion theme-purple"><button class="lesson-accordion-header" onclick="toggleLessonAccordion(this)"><h3>📖 8B</h3><span class="accordion-icon">+</span></button><div class="lesson-accordion-content"><div class="inner-content"><div class="audio-list">
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('8B - Words and ideas', 'https://files.catbox.moe/tj6afz.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 218</span><span class="track-title"><strong>Words and ideas</strong></span></div></div>
+                <div class="audio-player"><button class="play-btn" data-color="var(--theme-purple-border)" style="background:var(--theme-purple-border);" onclick="openAppPlayer('8B - Target situation', 'https://files.catbox.moe/pug5fc.mp3', this)">▶ PLAY</button><div class="track-info"><span class="track-page">PAG 219</span><span class="track-title"><strong>Target situation</strong></span></div></div>
+            </div></div></div></div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     APP BOTTOM SHEET PLAYER GERAL
+     ========================================== -->
+<div id="bottom-sheet" class="bottom-sheet">
+    <button class="bs-close" onclick="closeAppPlayer()">✖</button>
+    
+    <div class="bs-title" id="bs-title">Selecionar faixa</div>
+    
+    <div class="bs-progress-container">
+        <span class="bs-time" id="bs-time-current">0:00</span>
+        <input type="range" class="bs-progress" id="bs-progress" value="0" step="0.1">
+        <span class="bs-time" id="bs-time-total">0:00</span>
+    </div>
+    
+    <div class="bs-controls">
+        <button class="bs-btn-skip" onclick="skipAudio(-10)">&#8634; <span>10s</span></button>
+        <button class="bs-btn-play" id="bs-btn-play">&#9654;</button>
+        <button class="bs-btn-skip" onclick="skipAudio(10)">&#8635; <span>10s</span></button>
+    </div>
+    
+    <div class="bs-speeds">
+        <button class="bs-speed-btn" data-speed="0.5">0.5x</button>
+        <button class="bs-speed-btn" data-speed="0.75">0.75x</button>
+        <button class="bs-speed-btn active" data-speed="1">1x</button>
+        <button class="bs-speed-btn" data-speed="1.25">1.25x</button>
+    </div>
+</div>
+
+<!-- Áudio Único do Sistema (Invisível) -->
+<audio id="global-audio"></audio>
+
+<script>
+    // ==========================================
+    // CÉREBRO DA GAVETA (SIDEBAR / DRAWER)
+    // ==========================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    }
+
+    // ==========================================
+    // CÉREBRO DA NAVEGAÇÃO DE UNIDADES
+    // ==========================================
+    function switchUnit(unitId, btnElement) {
+        pausarAppPlayer();
+        closeAppPlayer();
+        document.querySelectorAll('video').forEach(v => v.pause());
+
+        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        document.querySelectorAll('.unit-section').forEach(section => { section.classList.remove('active'); });
+        
+        setTimeout(() => {
+            const targetSection = document.getElementById(unitId);
+            if(targetSection) targetSection.classList.add('active');
+            document.querySelectorAll('.lesson-accordion').forEach(acc => acc.classList.remove('open'));
+            document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
+            toggleSidebar();
+        }, 100); 
+    }
+
+    // ==========================================
+    // CÉREBRO DOS ACORDEÕES DAS LIÇÕES
+    // ==========================================
+    function toggleLessonAccordion(btnElement) {
+        const currentAccordion = btnElement.parentElement;
+        document.querySelectorAll('.lesson-accordion').forEach(acc => {
+            if(acc !== currentAccordion) acc.classList.remove('open');
+        });
+        currentAccordion.classList.toggle('open');
+        if(currentAccordion.classList.contains('open')) {
+            setTimeout(() => { currentAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+        }
+    }
+
+    // ==========================================
+    // CÉREBRO DO PWA BOTTOM SHEET PLAYER
+    // ==========================================
+    const globalAudio = document.getElementById('global-audio');
+    const bottomSheet = document.getElementById('bottom-sheet');
+    const bsTitle = document.getElementById('bs-title');
+    const bsBtnPlay = document.getElementById('bs-btn-play');
+    const bsProgress = document.getElementById('bs-progress');
+    const bsTimeCurrent = document.getElementById('bs-time-current');
+    const bsTimeTotal = document.getElementById('bs-time-total');
+    let currentPlayBtn = null;
+
+    function openAppPlayer(title, src, btnElement) {
+        document.querySelectorAll('video').forEach(v => v.pause());
+
+        if (currentPlayBtn && currentPlayBtn !== btnElement) {
+            currentPlayBtn.innerHTML = "▶ PLAY";
+            currentPlayBtn.style.background = currentPlayBtn.getAttribute('data-color');
+        }
+
+        bsTitle.innerHTML = title;
+        if(globalAudio.src !== src) {
+            globalAudio.src = src;
+        }
+        globalAudio.play();
+
+        currentPlayBtn = btnElement;
+        currentPlayBtn.innerHTML = "⏸ PAUSE";
+        currentPlayBtn.style.background = "#c0392b";
+
+        bottomSheet.classList.add('open');
+        updatePlayIcon();
+    }
+
+    function closeAppPlayer() {
+        bottomSheet.classList.remove('open');
+    }
+
+    function pausarAppPlayer() {
+        if (!globalAudio.paused) {
+            globalAudio.pause();
+            updatePlayIcon();
+            if(currentPlayBtn) {
+                currentPlayBtn.innerHTML = "▶ PLAY";
+                currentPlayBtn.style.background = currentPlayBtn.getAttribute('data-color');
+            }
+        }
+    }
+
+    bsBtnPlay.onclick = () => {
+        if (globalAudio.paused) {
+            globalAudio.play();
+            if(currentPlayBtn) {
+                currentPlayBtn.innerHTML = "⏸ PAUSE";
+                currentPlayBtn.style.background = "#c0392b";
+            }
+        } else {
+            globalAudio.pause();
+            if(currentPlayBtn) {
+                currentPlayBtn.innerHTML = "▶ PLAY";
+                currentPlayBtn.style.background = currentPlayBtn.getAttribute('data-color');
+            }
+        }
+        updatePlayIcon();
+    };
+
+    function updatePlayIcon() {
+        bsBtnPlay.innerHTML = globalAudio.paused ? "&#9654;" : "&#10074;&#10074;";
+    }
+
+    function skipAudio(seconds) {
+        globalAudio.currentTime = Math.max(0, Math.min(globalAudio.duration || 0, globalAudio.currentTime + seconds));
+    }
+
+    globalAudio.addEventListener('timeupdate', () => {
+        if (!globalAudio.duration) return;
+        bsProgress.value = globalAudio.currentTime;
+        bsTimeCurrent.innerText = formatTime(globalAudio.currentTime);
+    });
+
+    globalAudio.addEventListener('loadedmetadata', () => {
+        bsProgress.max = globalAudio.duration;
+        bsTimeTotal.innerText = formatTime(globalAudio.duration);
+        const activeSpeed = document.querySelector('.bs-speed-btn.active');
+        if (activeSpeed) globalAudio.playbackRate = parseFloat(activeSpeed.dataset.speed);
+    });
+
+    globalAudio.addEventListener('ended', () => {
+        updatePlayIcon();
+        if(currentPlayBtn) {
+            currentPlayBtn.innerHTML = "▶ PLAY";
+            currentPlayBtn.style.background = currentPlayBtn.getAttribute('data-color');
+        }
+    });
+
+    bsProgress.addEventListener('input', () => {
+        globalAudio.currentTime = bsProgress.value;
+    });
+
+    document.querySelectorAll('.bs-speed-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            document.querySelectorAll('.bs-speed-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            globalAudio.playbackRate = parseFloat(e.target.dataset.speed);
+        };
+    });
+
+    function formatTime(seconds) {
+        if(isNaN(seconds)) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // ==========================================
+    // DETECÇÃO E BANNERS DE INSTALAÇÃO (ANDROID & IOS)
+    // ==========================================
+    let deferredPrompt;
+    const installBanner = document.getElementById('install-banner');
+    const iosInstallBanner = document.getElementById('ios-install-banner');
+    const btnInstall = document.getElementById('btn-install');
+    const btnCloseInstall = document.getElementById('btn-close-install');
+    const btnCloseIosInstall = document.getElementById('btn-close-ios-install');
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!isStandalone) {
+            installBanner.style.display = 'flex';
+        }
+    });
+
+    btnInstall.addEventListener('click', async () => {
+        installBanner.style.display = 'none';
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Escolha de instalação: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
+
+    btnCloseInstall.addEventListener('click', () => {
+        installBanner.style.display = 'none';
+    });
+
+    if (isIOS && !isStandalone) {
+        iosInstallBanner.style.display = 'flex';
+    }
+
+    btnCloseIosInstall.addEventListener('click', () => {
+        iosInstallBanner.style.display = 'none';
+    });
+
+    // ==========================================
+    // REGISTO DO SERVICE WORKER (PWA)
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registado com sucesso.', reg))
+                .catch(err => console.error('Erro ao registar o Service Worker:', err));
+        });
+    }
+</script>
+</body>
+</html>
