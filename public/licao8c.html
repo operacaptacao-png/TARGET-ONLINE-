@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8C | Unit Challenge - What Comes Next?</title>
+    <title>8C | Unit Challenge • What Comes Next?</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- TRAVA DE SEGURANÇA GLOBAL OBRIGATÓRIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                alert("Access Denied");
+                window.parent.location.href = "index.html";
+            }
+        });
+    </script>
     
     <style>
         :root {
-            --black: #0f172a;
-            --white: #FFFFFF;
             --blue-dark: #0f172a;
             --blue-medium: #1e3a8a;
-            --blue-light: #3b82f6;
+            --blue-light: #2563eb;
             --accent-main: #e67e22;
             --accent-dark: #c2410c;
             
             --font-title: 'Montserrat', sans-serif;
             --font-text: 'Roboto', sans-serif;
+            --font-serif: 'Playfair Display', serif;
             
             --theme-blue-bg: #eff6ff; --theme-blue-border: #3b82f6;
             --theme-purple-bg: #faf5ff; --theme-purple-border: #9333ea;
@@ -27,37 +36,38 @@
             --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: var(--font-text);
-            color: var(--black);
+            background: #f1f5f9;
             margin: 0;
-            padding: 30px 15px 100px 15px;
+            padding: 20px;
+            color: #1e293b;
             display: flex;
             justify-content: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #c2410c 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
         }
 
         .book-page {
-            background-color: var(--white);
+            background: #ffffff;
             width: 100%;
             max-width: 920px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-            border-radius: 24px;
-            padding: 40px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 36px;
             position: relative;
-            box-sizing: border-box;
         }
 
+        /* BANNER */
         .lesson-banner {
             border-bottom: 3px solid var(--accent-main);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
         .unit-tag {
             font-family: var(--font-title);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent-main);
             text-transform: uppercase;
@@ -65,90 +75,210 @@
         }
         .lesson-banner h1 {
             font-family: var(--font-title);
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--blue-dark);
-            margin: 5px 0 0 0;
+            margin: 6px 0 4px 0;
+        }
+        .lesson-banner p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
         }
 
+        /* SEÇÕES */
         .activity-section {
             display: none;
-            padding: 25px;
+            padding: 28px;
             border-radius: 16px;
             margin-bottom: 30px;
             border-left: 6px solid;
-            animation: fadeIn 0.4s ease-in-out;
+            background: #ffffff;
+            animation: fadeIn 0.35s ease-in-out;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
         }
         .activity-section.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .theme-blue { background: var(--theme-blue-bg); border-color: var(--theme-blue-border); }
+        .theme-purple { background: var(--theme-purple-bg); border-color: var(--theme-purple-border); }
+        .theme-green { background: var(--theme-green-bg); border-color: var(--theme-green-border); }
         .theme-orange { background: var(--theme-orange-bg); border-color: var(--theme-orange-border); }
 
         .activity-section h2 {
             font-family: var(--font-title);
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 21px;
+            font-weight: 800;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .theme-blue h2 { color: var(--theme-blue-border); }
+        .theme-purple h2 { color: var(--theme-purple-border); }
+        .theme-green h2 { color: var(--theme-green-border); }
         .theme-orange h2 { color: var(--theme-orange-border); }
 
-        .instruction {
-            font-size: 14px;
+        .instruction-box {
+            font-size: 14.5px;
             color: #475569;
             margin-bottom: 20px;
-            font-style: italic;
+            line-height: 1.55;
+            background: rgba(255,255,255,0.7);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
+        /* INPUTS GAMIFICADOS */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: var(--font-text);
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        /* CARDS */
         .card-box {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
             border: 1px solid #e2e8f0;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
-        .textarea-styled {
+        /* 4 CARDS GRID (PLANNING THE TRIP) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media(max-width: 650px) { .cards-grid { grid-template-columns: 1fr; } }
+        .trip-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1.5px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .trip-card h4 {
+            margin: 0;
+            font-family: var(--font-title);
+            font-size: 14.5px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* INTERACTIVE CANVAS FOR DRAWING */
+        .canvas-container {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        #drawing-canvas {
+            background: #ffffff;
+            border: 1px solid #94a3b8;
+            border-radius: 8px;
+            cursor: crosshair;
+            touch-action: none;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+            max-width: 100%;
+        }
+        .canvas-tools {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .tool-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: var(--font-title);
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tool-btn:hover { background: #e2e8f0; }
+        .tool-btn.active { background: #1e293b; color: #ffffff; border-color: #1e293b; }
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 1px #cbd5e1;
+            display: inline-block;
+        }
+        .color-dot.active { box-shadow: 0 0 0 2.5px var(--accent-main); }
+
+        /* ESSAY / PERGAMINHO TEXTAREA */
+        .scroll-essay-box {
+            background: #fffdfa;
+            border: 2px solid #fbd38d;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: inset 0 2px 10px rgba(180, 83, 9, 0.05);
+            margin-bottom: 20px;
+        }
+        .essay-textarea {
             width: 100%;
-            min-height: 220px;
+            min-height: 200px;
             padding: 16px;
             border: 2px solid #cbd5e1;
             border-radius: 12px;
             font-family: var(--font-text);
-            font-size: 14.5px;
+            font-size: 15px;
             line-height: 1.65;
+            color: #1e293b;
+            box-sizing: border-box;
             outline: none;
             resize: vertical;
-            box-sizing: border-box;
-            transition: 0.2s;
+            background: #ffffff;
+            transition: all 0.2s ease;
         }
-        .textarea-styled:focus {
+        .essay-textarea:focus {
             border-color: var(--accent-main);
-            box-shadow: 0 0 0 3px rgba(230,126,34,0.15);
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
         }
-
-        .word-counter-badge {
-            display: inline-block;
-            background: #f1f5f9;
-            color: #475569;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 8px;
-        }
-
         .prompt-ideas {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 14px 0;
         }
         .prompt-chip {
             background: #eff6ff;
@@ -156,19 +286,19 @@
             color: #1e40af;
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12.5px;
+            font-weight: 700;
         }
 
         /* REPORT CARD */
         .report-card {
-            background: white;
+            background: #ffffff;
             border-radius: 20px;
             padding: 30px;
             border: 3px solid var(--accent-main);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
         }
         .rc-grid {
             display: grid;
@@ -183,7 +313,7 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
         }
-        .rc-item span { display: block; font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 4px; }
+        .rc-item span { display: block; font-size: 11.5px; color: #64748b; font-weight: 700; margin-bottom: 4px; }
         .rc-item strong { font-size: 22px; color: var(--blue-dark); font-family: var(--font-title); }
         .rc-total {
             background: #fff7ed;
@@ -192,53 +322,157 @@
             border: 2px dashed var(--accent-main);
             margin-bottom: 20px;
         }
-        .rc-total span { display: block; font-size: 13px; color: #9a3412; font-weight: bold; }
-        .rc-total strong { font-size: 36px; color: var(--accent-main); font-family: var(--font-title); }
+        .rc-total span { display: block; font-size: 13px; color: #9a3412; font-weight: 700; }
+        .rc-total strong { font-size: 38px; color: var(--accent-main); font-family: var(--font-title); }
 
-        .btn-finish {
+        /* FINAL BUTTON */
+        .btn-finish-grad {
             background: linear-gradient(135deg, #ea580c 0%, #16a34a 100%);
-            color: white;
+            color: #ffffff;
             border: none;
             width: 100%;
             padding: 18px;
             font-family: var(--font-title);
             font-weight: 800;
-            font-size: 17px;
+            font-size: 18px;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
-            transition: 0.2s;
+            transition: all 0.2s ease;
             margin-top: 15px;
             letter-spacing: 0.5px;
         }
-        .btn-finish:hover {
+        .btn-finish-grad:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(234, 88, 12, 0.55);
         }
 
+        /* NAVEGAÇÃO */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 25px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
+            margin-top: 26px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
             padding-top: 20px;
         }
+        .nav-buttons.top-nav {
+            margin-top: 0;
+            margin-bottom: 22px;
+            border-top: none;
+            border-bottom: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 0;
+            padding-bottom: 16px;
+        }
         .btn-nav {
-            padding: 10px 24px;
+            padding: 10px 22px;
             font-family: var(--font-title);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13.5px;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.2s;
-            background: white;
+            transition: all 0.2s ease;
+            background: #ffffff;
             border: 2px solid;
         }
         .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
-        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: #ffffff; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: #ffffff; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: #ffffff; }
         .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
-        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: #ffffff; }
+
+        /* CELEBRATION MODAL */
+        #celebration-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .modal-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: popUp 0.4s ease-out;
+        }
+        @keyframes popUp {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .medal-badge {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.35);
+        }
+
+        /* BOTÃO FLUTUANTE GRAMMAR TIP */
+        .grammar-floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .grammar-floating-btn {
+            background: var(--accent-main);
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 13.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+        .grammar-box {
+            visibility: hidden;
+            opacity: 0;
+            width: 340px;
+            background: #ffffff;
+            color: #1e293b;
+            text-align: left;
+            border-radius: 14px;
+            padding: 18px;
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-main);
+            transition: all 0.25s ease;
+            pointer-events: none;
+            font-size: 13.5px;
+            line-height: 1.55;
+        }
+        .grammar-floating-container:hover .grammar-box {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -246,139 +480,398 @@
     <div class="book-page">
         <!-- BANNER -->
         <div class="lesson-banner">
-            <span class="unit-tag">Unit 8 • Vacations and Trips</span>
-            <h1>8C | Unit Challenge • What Comes Next?</h1>
+            <span class="unit-tag">Unit 8 • Planning Ahead (Unit Challenge)</span>
+            <h1>8C | WHAT COMES NEXT?</h1>
+            <p>Arrival at Windermere, Lake District activities, future plans review, and graduation from Target 1</p>
         </div>
 
-        <!-- ================= 1. WHAT COMES NEXT? ================= -->
-        <div id="sec-1" class="activity-section theme-blue active">
-            <h2>1. WHAT COMES NEXT? • Essay on Ivete & Alan’s Future</h2>
-            <p class="instruction">
-                It is Ivete’s and Alan’s last day of vacation in the Lake District. What are they going to do next? 
-                Write an essay describing their future using the prompt ideas below or your own:
-            </p>
+        <!-- ========================================== -->
+        <!-- 1. STARTER: FUN BY THE LAKE! -->
+        <!-- ========================================== -->
+        <div id="sec-starter" class="activity-section theme-blue active">
+            <div class="nav-buttons top-nav">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-starter', 'sec-planning')">Next: Planning the Trip ➔</button>
+            </div>
 
-            <div class="prompt-ideas">
-                <span class="prompt-chip">✨ Visit new countries (France, Italy, Scotland)</span>
-                <span class="prompt-chip">🏡 Buy a country cottage house</span>
-                <span class="prompt-chip">🐕 Adopt a golden retriever dog</span>
-                <span class="prompt-chip">💼 Get promoted at Overseas Corporation</span>
-                <span class="prompt-chip">✈️ Invite family from Brazil to London</span>
+            <h2>🏞️ 1. STARTER: FUN BY THE LAKE!</h2>
+
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    We're finally here: Windermere! Describe Windermere.
+                </h3>
+                <div class="instruction-box">
+                    Ivete and Alan have just arrived in Windermere in the scenic Lake District. Write a description of this charming lakeside town:
+                </div>
+                <textarea class="fancy-input" id="desc-windermere" rows="3" placeholder="e.g. Windermere is England's largest natural lake, surrounded by green rolling hills, peaceful walking trails, cozy tea houses, and traditional stone cottages..."></textarea>
             </div>
 
             <div class="card-box">
-                <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 6px;">
-                    Final Course Essay:
-                </label>
-                <textarea class="textarea-styled" id="essay-text" oninput="updateWordCount()" placeholder="After this unforgettable vacation in the Lake District, Ivete and Alan have big plans for the future. First, they are going to return to London with renewed energy. Ivete is going to lead a new international campaign at Overseas Corporation..."></textarea>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="word-counter-badge" id="word-count-display">0 words (Target: 50+ words)</span>
-                    <span style="font-size: 12px; color: #64748b; font-style: italic;">Use 'be going to' and future expressions.</span>
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    🎨 Draw seven funny things we can do there:
+                </h3>
+                <div class="instruction-box">
+                    Use the interactive drawing panel below to sketch seven fun or surprising activities around the lake (e.g. feeding giant ducks, rowing a quirky boat, hiking with sheep, picnicking under the rain!):
                 </div>
+
+                <div class="canvas-container">
+                    <canvas id="drawing-canvas" width="600" height="280"></canvas>
+                    
+                    <div class="canvas-tools">
+                        <span style="font-size: 12px; font-weight: 700; color: #64748b;">Colors:</span>
+                        <div class="color-dot active" style="background: #0f172a;" onclick="setColor('#0f172a', this)"></div>
+                        <div class="color-dot" style="background: #2563eb;" onclick="setColor('#2563eb', this)"></div>
+                        <div class="color-dot" style="background: #e67e22;" onclick="setColor('#e67e22', this)"></div>
+                        <div class="color-dot" style="background: #16a34a;" onclick="setColor('#16a34a', this)"></div>
+                        <div class="color-dot" style="background: #dc2626;" onclick="setColor('#dc2626', this)"></div>
+
+                        <span style="margin-left: 10px; font-size: 12px; font-weight: 700; color: #64748b;">Brush:</span>
+                        <button type="button" class="tool-btn active" id="brush-thin" onclick="setBrushSize(2, this)">Thin</button>
+                        <button type="button" class="tool-btn" id="brush-med" onclick="setBrushSize(5, this)">Medium</button>
+                        <button type="button" class="tool-btn" id="brush-thick" onclick="setBrushSize(10, this)">Thick</button>
+                        <button type="button" class="tool-btn" onclick="clearCanvas()">🧹 Clear Canvas</button>
+                    </div>
+                </div>
+
+                <p style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin: 14px 0 6px 0;">
+                    Share your drawing with your classmates (describe the 7 funny things):
+                </p>
+                <textarea class="fancy-input" id="share-drawing-desc" rows="3" placeholder="e.g. 1. Renting a swan pedal boat. 2. Having fish & chips with curious seagulls. 3. Taking a selfie with local sheep. 4. Swimming in icy water..."></textarea>
             </div>
 
             <div class="nav-buttons">
                 <div></div>
-                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Unit 8 Report Card ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-starter', 'sec-planning')">Next: Planning the Trip ➔</button>
             </div>
         </div>
 
-        <!-- ================= 2. REPORT CARD ================= -->
-        <div id="sec-2" class="activity-section theme-orange">
-            <h2>2. UNIT 8 • DETAILED REPORT CARD & GRADUATION</h2>
-            <p class="instruction">Review your final unit scores. Completing this step records your course graduation across all 8 Units!</p>
+        <!-- ========================================== -->
+        <!-- 2. PLANNING THE TRIP -->
+        <!-- ========================================== -->
+        <div id="sec-planning" class="activity-section theme-purple">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-planning', 'sec-starter')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-planning', 'sec-next')">Next: What Comes Next? ➔</button>
+            </div>
+
+            <h2>🎒 2. PLANNING THE TRIP</h2>
+            <div class="instruction-box">
+                Walk and talk. Share your vacation preferences with your classmates using <em>'I would like to...'</em> or <em>'I'd like to...'</em>:
+            </div>
+
+            <div class="cards-grid">
+                <!-- Card 1 -->
+                <div class="trip-card">
+                    <h4>🍽️ 1. What would you like to eat?</h4>
+                    <textarea class="fancy-input" id="trip-eat" rows="3" placeholder="e.g. I would like to eat traditional British Cumberland sausages, fresh apple pie, and authentic afternoon tea with scones and clotted cream."></textarea>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="trip-card">
+                    <h4>🏰 2. Where would you like to visit?</h4>
+                    <textarea class="fancy-input" id="trip-visit" rows="3" placeholder="e.g. I'd like to visit Beatrix Potter's historic cottage, the scenic Wray Castle on the lakeshore, and the high viewpoints of Orrest Head."></textarea>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="trip-card">
+                    <h4>🚣 3. The activities you would like to do:</h4>
+                    <textarea class="fancy-input" id="trip-activities" rows="3" placeholder="e.g. I would like to take a lake cruise, rent mountain bikes through the forest, take photographs of the sunset, and go kayaking."></textarea>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="trip-card">
+                    <h4>🏡 4. Accommodations you would like to stay in:</h4>
+                    <textarea class="fancy-input" id="trip-accommodations" rows="3" placeholder="e.g. I'd love to stay in a cozy lakeside boutique hotel with a fireplace, stone walls, and a private balcony overlooking the water."></textarea>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-planning', 'sec-starter')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-planning', 'sec-next')">Next: What Comes Next? ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. WHAT COMES NEXT? -->
+        <!-- ========================================== -->
+        <div id="sec-next" class="activity-section theme-orange">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-next', 'sec-planning')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-next', 'sec-report')">Next: Graduation Report ➔</button>
+            </div>
+
+            <h2>🌅 3. WHAT COMES NEXT? • Essay on Ivete & Alan's Future</h2>
+            <div class="instruction-box">
+                Our journey is close to the end! Ivete and Alan will now enjoy the lake. Look at their journey across London, company challenges, flat hunting, and dining. What does the future of our characters hold? Write your narrative ideas below:
+            </div>
+
+            <div class="prompt-ideas">
+                <span class="prompt-chip">✨ Travel to other countries (France, Italy, Scotland)</span>
+                <span class="prompt-chip">🏡 Buy a country cottage by the lake</span>
+                <span class="prompt-chip">🐕 Adopt a playful golden retriever</span>
+                <span class="prompt-chip">💼 New leadership role at Overseas Corporation</span>
+                <span class="prompt-chip">✈️ Invite family from Brazil to visit the UK</span>
+            </div>
+
+            <div class="scroll-essay-box">
+                <label style="font-weight: 800; font-family: var(--font-title); font-size: 15px; color: var(--accent-dark); display: block; margin-bottom: 8px;">
+                    📜 Narrative Essay: The Future of Ivete & Alan
+                </label>
+                <textarea class="essay-textarea" id="essay-text" oninput="updateWordCount()" placeholder="After this unforgettable vacation in the Lake District, Ivete and Alan have exciting plans for the future. First, they are going to return to London with renewed energy and enthusiasm. Ivete is going to take charge of a major international marketing project at Overseas Corporation..."></textarea>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                    <span id="word-count-badge" style="background: #f1f5f9; color: #475569; padding: 5px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700;">0 words (Target: 40+ words)</span>
+                    <span style="font-size: 12px; color: #78350f; font-style: italic;">Combine 'be going to' and 'would like to'.</span>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-next', 'sec-planning')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-next', 'sec-report')">Next: Graduation Report ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. FINAL GRADUATION & REPORT CARD -->
+        <!-- ========================================== -->
+        <div id="sec-report" class="activity-section theme-green">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-report', 'sec-next')">⬅ Back</button>
+                <div></div>
+            </div>
+
+            <h2>🎓 4. UNIT 8 REPORT CARD & GRADUATION</h2>
+            <div class="instruction-box">
+                Review your final Unit 8 performance. Completing this step records your course graduation across all 8 Units of Target 1!
+            </div>
 
             <div class="report-card">
                 <h3 style="font-family: var(--font-title); font-size: 24px; color: var(--blue-dark); margin: 0 0 6px 0;">
                     Target On Course Completion
                 </h3>
-                <p style="font-size: 13.5px; color: #64748b; margin: 0 0 15px 0;">Official Academic Transcript • Overseas Corporation Curriculum</p>
+                <p style="font-size: 13.5px; color: #64748b; margin: 0 0 15px 0;">Official Academic Transcript • Overseas Corporation English Curriculum</p>
 
                 <div class="rc-grid">
-                    <div class="rc-item"><span>8A: Vacations & Trips</span> <strong id="rc-8a">0%</strong></div>
-                    <div class="rc-item"><span>8B: Timetables</span> <strong id="rc-8b">0%</strong></div>
-                    <div class="rc-item"><span>8C: What Comes Next?</span> <strong id="rc-8c">0%</strong></div>
+                    <div class="rc-item"><span>8A: Vacations & Trips</span> <strong id="rc-8a">95%</strong></div>
+                    <div class="rc-item"><span>8B: Timetables</span> <strong id="rc-8b">100%</strong></div>
+                    <div class="rc-item"><span>8C: What Comes Next?</span> <strong id="rc-8c">100%</strong></div>
                 </div>
 
                 <div class="rc-total">
                     <span>UNIT 8 FINAL XP</span>
-                    <strong id="rc-total-xp">0 XP</strong>
+                    <strong id="rc-total-xp">+100 XP</strong>
                 </div>
 
-                <p style="font-size: 14px; color: #475569; margin: 0 0 20px 0;">
-                    🎉 Congratulations! You have journeyed with Ivete from Heathrow Airport all the way through English proficiency.
+                <p style="font-size: 14.5px; color: #475569; margin: 0 0 20px 0; line-height: 1.5;">
+                    🎉 <strong>Congratulations!</strong> You have accompanied Ivete from Heathrow Airport all the way through meetings, social invitations, flat rental, and holiday planning to complete English proficiency.
                 </p>
 
-                <button class="btn-finish" id="btn-graduate" onclick="graduateAndProceed()">
-                    🎬 Complete Course & Watch Grand Finale ➔
+                <button type="button" class="btn-finish-grad" id="btn-finish-target" onclick="completeCourse()">
+                    🎉 Finish Target 1!
                 </button>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-report', 'sec-next')">⬅ Back</button>
                 <div></div>
             </div>
+        </div>
+
+    </div>
+
+    <!-- CELEBRATION MODAL -->
+    <div id="celebration-modal">
+        <div class="modal-card">
+            <div class="medal-badge">🏆</div>
+            <h2 style="font-family: var(--font-title); font-size: 26px; color: var(--blue-dark); margin: 0 0 10px 0;">
+                TARGET 1 COMPLETE!
+            </h2>
+            <p style="color: #64748b; font-size: 15px; margin: 0 0 20px 0; line-height: 1.5;">
+                Sensational achievement! You have mastered all 8 units of the Target On program.
+            </p>
+            <button type="button" class="btn-finish-grad" onclick="proceedToGrandFinale()">
+                🎬 Watch Grand Finale & Credits ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- GRAMMAR TIP FLOATING BUTTON -->
+    <div class="grammar-floating-container">
+        <button type="button" class="grammar-floating-btn">
+            💡 Grammar Tip
+        </button>
+        <div class="grammar-box">
+            <b style="color: var(--accent-dark); font-size: 14.5px; display: block; margin-bottom: 8px;">Unit 8 Review:</b>
+            <p style="margin: 0 0 8px 0;">
+                To talk about <strong>future intentions and plans</strong>, use <strong>going to</strong>:
+                <br>• <em>I'm going to travel next month.</em>
+                <br>• <em>They are going to relax by the lake.</em>
+            </p>
+            <p style="margin: 0;">
+                To express <strong>wishes or polite preferences</strong>, use <strong>would like to</strong>:
+                <br>• <em>I'd like to visit the lake.</em>
+                <br>• <em>What would you like to eat?</em>
+            </p>
         </div>
     </div>
 
     <script>
-        function updateWordCount() {
-            let text = document.getElementById('essay-text').value.trim();
-            let words = text ? text.split(/\s+/).length : 0;
-            let display = document.getElementById('word-count-display');
-            display.innerText = words + " words (Target: 50+ words)";
-            if (words >= 50) {
-                display.style.background = "#dcfce7";
-                display.style.color = "#15803d";
-            } else {
-                display.style.background = "#f1f5f9";
-                display.style.color = "#475569";
+        // ==========================================
+        // NAVEGAÇÃO
+        // ==========================================
+        function navigateSection(currentId, targetId) {
+            document.querySelectorAll('.activity-section').forEach(sec => sec.classList.remove('active'));
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        }
-
-        function navigateSection(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
-            const showEl = document.getElementById(showId);
-            showEl.classList.add('active');
-            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-            if (showId === 'sec-2') {
+            if (targetId === 'sec-report') {
                 updateReportCard();
             }
         }
 
-        let current8cXP = 0;
+        // ==========================================
+        // CANVAS DE DESENHO INTERATIVO
+        // ==========================================
+        const canvas = document.getElementById('drawing-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let currentColor = '#0f172a';
+        let currentBrushSize = 2;
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * (canvas.width / rect.width),
+                y: (clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const coords = getCanvasCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const coords = getCanvasCoords(e);
+            ctx.lineTo(coords.x, coords.y);
+            ctx.strokeStyle = currentColor;
+            ctx.lineWidth = currentBrushSize;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                ctx.closePath();
+                isDrawing = false;
+                try {
+                    localStorage.setItem('licao8c_drawing', canvas.toDataURL());
+                } catch(err) {}
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function setColor(color, el) {
+            currentColor = color;
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function setBrushSize(size, el) {
+            currentBrushSize = size;
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            localStorage.removeItem('licao8c_drawing');
+        }
+
+        // ==========================================
+        // WORD COUNTER
+        // ==========================================
+        function updateWordCount() {
+            const text = document.getElementById('essay-text').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const badge = document.getElementById('word-count-badge');
+            badge.innerText = `${words} words (Target: 40+ words)`;
+
+            if (words >= 40) {
+                badge.style.background = "#dcfce7";
+                badge.style.color = "#15803d";
+            } else {
+                badge.style.background = "#f1f5f9";
+                badge.style.color = "#475569";
+            }
+        }
+
+        // ==========================================
+        // REPORT CARD LOGIC
+        // ==========================================
+        let calculated8cXP = 100;
 
         function updateReportCard() {
-            let essay = document.getElementById('essay-text').value.trim();
-            let words = essay ? essay.split(/\s+/).length : 0;
+            const essay = document.getElementById('essay-text').value.trim();
+            const words = essay ? essay.split(/\s+/).length : 0;
 
-            if (words >= 50) current8cXP = 100;
-            else if (words >= 30) current8cXP = 85;
-            else if (words >= 15) current8cXP = 70;
-            else current8cXP = 50;
+            if (words >= 40) calculated8cXP = 100;
+            else if (words >= 25) calculated8cXP = 85;
+            else if (words >= 10) calculated8cXP = 70;
+            else calculated8cXP = 60;
 
-            localStorage.setItem('licao8c_essay', essay);
-
-            let xp8a = parseInt(localStorage.getItem('licao_8a_xp')) || 90;
-            let xp8b = parseInt(localStorage.getItem('licao_8b_xp')) || 95;
-            let xp8c = current8cXP;
+            const xp8a = parseInt(localStorage.getItem('licao_8a_xp')) || 95;
+            const xp8b = parseInt(localStorage.getItem('licao_8b_xp')) || 100;
+            const xp8c = calculated8cXP;
 
             document.getElementById('rc-8a').innerText = xp8a + "%";
             document.getElementById('rc-8b').innerText = xp8b + "%";
             document.getElementById('rc-8c').innerText = xp8c + "%";
 
-            let avgXP = Math.round((xp8a + xp8b + xp8c) / 3);
+            const avgXP = Math.round((xp8a + xp8b + xp8c) / 3);
             document.getElementById('rc-total-xp').innerText = "+" + avgXP + " XP";
         }
 
-        function graduateAndProceed() {
+        // ==========================================
+        // COMPLETION & GRADUATION
+        // ==========================================
+        function completeCourse() {
             updateReportCard();
 
-            let oldXP = parseInt(localStorage.getItem('licao_8c_xp')) || 0;
-            let diff = current8cXP - oldXP;
+            // Salvar respostas
+            const userAnswers = {
+                descWindermere: document.getElementById('desc-windermere').value,
+                shareDrawing: document.getElementById('share-drawing-desc').value,
+                tripEat: document.getElementById('trip-eat').value,
+                tripVisit: document.getElementById('trip-visit').value,
+                tripActivities: document.getElementById('trip-activities').value,
+                tripAccommodations: document.getElementById('trip-accommodations').value,
+                essay: document.getElementById('essay-text').value
+            };
+            localStorage.setItem('licao8c_respostas', JSON.stringify(userAnswers));
+
+            const oldXP = parseInt(localStorage.getItem('licao_8c_xp')) || 0;
+            const diff = calculated8cXP - oldXP;
 
             localStorage.setItem('licao_8c_status', 'concluida');
-            localStorage.setItem('licao_8c_xp', current8cXP);
+            localStorage.setItem('licao_8c_xp', calculated8cXP);
             localStorage.setItem('unit8_completed', 'true');
             localStorage.setItem('curso_concluido', 'true');
 
@@ -386,27 +879,40 @@
             studentXP += diff;
             localStorage.setItem('studentXP', studentXP);
 
-            let btn = document.getElementById('btn-graduate');
-            btn.innerText = "⏳ Recording Graduation & Launching Finale...";
-            btn.disabled = true;
+            let targetXP = (parseInt(localStorage.getItem('target_on_profile_xp')) || 0) + diff;
+            localStorage.setItem('target_on_profile_xp', targetXP);
 
+            // Disparar confetti épico
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            document.getElementById('celebration-modal').style.display = 'flex';
+        }
+
+        function proceedToGrandFinale() {
+            const btn = document.getElementById('btn-finish-target');
+            if (btn) {
+                btn.innerText = "🔒 Lesson Completed";
+                btn.disabled = true;
+            }
+
+            // Sync com a nuvem / Google Apps Script se configurado
             const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPnScrpyBKJxI3hvG1S7u2s2COsH7vLDnf1AvTWDdLNTvL88kTmLVR4CGyv_nZtcaXZw/exec";
             const userCode = localStorage.getItem('userCode') || 'TARGET1ONT1-DEMO';
-            const userName = localStorage.getItem('userName') || 'Ivete Silva';
+            const userName = localStorage.getItem('userName') || 'Student';
 
             const payload = {
                 code: userCode,
                 name: userName,
                 turma: "Turma 1",
-                xp: studentXP,
-                unit1: true,
-                unit2: true,
-                unit3: true,
-                unit4: true,
-                unit5: true,
-                unit6: true,
-                unit7: true,
-                unit8: true,
+                xp: parseInt(localStorage.getItem('studentXP')) || 800,
+                unit1: true, unit2: true, unit3: true, unit4: true,
+                unit5: true, unit6: true, unit7: true, unit8: true,
                 graduated: true
             };
 
@@ -414,26 +920,63 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
-            }).catch(e => console.log('Cloud sync fallback: cached locally', e))
+            }).catch(e => console.log('Offline / Cloud sync:', e))
             .finally(() => {
                 setTimeout(() => {
                     if (window.parent && window.parent.completeUnit) {
-                        window.parent.completeUnit(8, current8cXP);
+                        window.parent.completeUnit(8, calculated8cXP);
                     }
                     if (window.parent && window.parent.avancarPara) {
                         window.parent.avancarPara('encerramento.html', 'encerramento');
                         return;
                     }
                     window.location.href = "encerramento.html";
-                }, 800);
+                }, 600);
             });
         }
 
+        // ==========================================
+        // RESTAURAÇÃO & MODO LEITURA
+        // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            let saved = localStorage.getItem('licao8c_essay');
-            if (saved) {
-                document.getElementById('essay-text').value = saved;
-                updateWordCount();
+            const savedAnswers = localStorage.getItem('licao8c_respostas');
+            if (savedAnswers) {
+                try {
+                    const data = JSON.parse(savedAnswers);
+                    if (data.descWindermere) document.getElementById('desc-windermere').value = data.descWindermere;
+                    if (data.shareDrawing) document.getElementById('share-drawing-desc').value = data.shareDrawing;
+                    if (data.tripEat) document.getElementById('trip-eat').value = data.tripEat;
+                    if (data.tripVisit) document.getElementById('trip-visit').value = data.tripVisit;
+                    if (data.tripActivities) document.getElementById('trip-activities').value = data.tripActivities;
+                    if (data.tripAccommodations) document.getElementById('trip-accommodations').value = data.tripAccommodations;
+                    if (data.essay) {
+                        document.getElementById('essay-text').value = data.essay;
+                        updateWordCount();
+                    }
+                } catch(e) {}
+            }
+
+            const savedDrawing = localStorage.getItem('licao8c_drawing');
+            if (savedDrawing) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = savedDrawing;
+            }
+
+            if (localStorage.getItem('licao_8c_status') === 'concluida') {
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+                const gradBtn = document.getElementById('btn-finish-target');
+                if (gradBtn) {
+                    gradBtn.innerText = "🔒 Lesson Completed";
+                    gradBtn.disabled = true;
+                    gradBtn.style.background = "#94a3b8";
+                    gradBtn.style.cursor = "not-allowed";
+                    gradBtn.style.boxShadow = "none";
+                }
             }
         });
     </script>

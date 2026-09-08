@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>6C | The Day After</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- TRAVA DE SEGURANÇA GLOBAL OBRIGATÓRIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                alert("Access Denied");
+                window.parent.location.href = "index.html";
+            }
+        });
+    </script>
     
     <style>
         :root {
-            --black: #0f172a;
-            --white: #FFFFFF;
             --blue-dark: #0f172a;
             --blue-medium: #1e3a8a;
-            --blue-light: #3b82f6;
+            --blue-light: #2563eb;
             --accent-main: #e67e22;
             --accent-dark: #c2410c;
             
@@ -27,36 +35,40 @@
             --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: var(--font-text);
             background: #f1f5f9;
             margin: 0;
             padding: 20px;
-            color: var(--black);
+            color: #1e293b;
             display: flex;
             justify-content: center;
         }
 
         .book-page {
-            background: var(--white);
+            background: #ffffff;
             width: 100%;
             max-width: 920px;
             min-height: 90vh;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            padding: 40px;
-            box-sizing: border-box;
+            padding: 36px;
             position: relative;
         }
 
+        /* BANNER DA LIÇÃO */
         .lesson-banner {
             border-bottom: 3px solid var(--accent-main);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
         .unit-tag {
             font-family: var(--font-title);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent-main);
             text-transform: uppercase;
@@ -64,23 +76,32 @@
         }
         .lesson-banner h1 {
             font-family: var(--font-title);
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--blue-dark);
-            margin: 5px 0 0 0;
+            margin: 6px 0 4px 0;
+        }
+        .lesson-banner p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
         }
 
+        /* SEÇÕES DE ATIVIDADE */
         .activity-section {
             display: none;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 28px;
+            border-radius: 16px;
             margin-bottom: 30px;
             border-left: 6px solid;
-            animation: fadeIn 0.4s ease-in-out;
+            background: #ffffff;
+            animation: fadeIn 0.35s ease-in-out;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
         }
         .activity-section.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -91,25 +112,77 @@
 
         .activity-section h2 {
             font-family: var(--font-title);
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 21px;
+            font-weight: 800;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .theme-blue h2 { color: var(--theme-blue-border); }
         .theme-purple h2 { color: var(--theme-purple-border); }
         .theme-green h2 { color: var(--theme-green-border); }
         .theme-orange h2 { color: var(--theme-orange-border); }
 
-        .instruction {
-            font-size: 14px;
+        .instruction-box {
+            font-size: 14.5px;
             color: #475569;
-            margin-bottom: 20px;
-            font-style: italic;
+            margin-bottom: 22px;
+            line-height: 1.55;
+            background: rgba(255,255,255,0.7);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
+        /* BANCO DE PALAVRAS */
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1.5px dashed #cbd5e1;
+            margin-bottom: 20px;
+        }
+        .bank-chip {
+            background: #f1f5f9;
+            color: var(--blue-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* INPUTS GAMIFICADOS */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: var(--font-text);
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        /* CARDS E CONTAINERS */
         .card-box {
-            background: white;
+            background: #ffffff;
             border-radius: 12px;
             padding: 20px;
             border: 1px solid #e2e8f0;
@@ -117,80 +190,166 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
-        .text-input {
-            width: 100%;
-            padding: 9px 14px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: var(--font-text);
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-            background: white;
-            transition: 0.2s;
+        /* TIME MACHINE VERB GRID */
+        .time-machine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
         }
-        .text-input:focus {
-            border-color: var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        .time-verb-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px;
+            border: 1.5px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .time-verb-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 14px;
+            color: #1e3a8a;
+        }
+        .time-verb-label span {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11.5px;
         }
 
-        /* CHAT BUBBLE DISPLAY */
-        .chat-container {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+        /* SMARTPHONE CHAT SIMULATION */
+        .chat-phone-frame {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 4px solid #1e293b;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.14);
+            max-width: 580px;
+            margin: 0 auto 26px auto;
+            overflow: hidden;
+        }
+        .chat-top-bar {
+            background: #1e293b;
+            color: #ffffff;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ec4899;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        .chat-contact-info b { font-size: 15px; display: block; }
+        .chat-contact-info span { font-size: 12px; color: #94a3b8; }
+        .chat-messages-container {
+            background: #f1f5f9;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-        .chat-msg {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 14px;
             font-size: 13.5px;
-            line-height: 1.5;
+            line-height: 1.45;
         }
-        .chat-msg.ivete {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 14px;
+            position: relative;
+        }
+        .chat-bubble.julie {
+            background: #ffffff;
             align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            color: #1e293b;
         }
-        .chat-msg.friend {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
+        .chat-bubble.ivete {
+            background: #dbeafe;
             align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            color: #1e3a8a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
-        .chat-author {
-            font-weight: bold;
-            font-size: 11.5px;
+        .chat-time {
+            font-size: 10.5px;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-align: right;
             display: block;
-            margin-bottom: 4px;
-            color: var(--blue-dark);
         }
 
-        /* AUDIO PLAYER */
-        .audio-wrapper {
-            margin-bottom: 20px;
+        /* QUESTIONS LIST */
+        .q-list {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .q-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .q-row label {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        /* LINED NOTEBOOK PAPER SIMULATION (AMY'S STORY) */
+        .lined-paper {
+            background: #fffdf5;
+            background-image: repeating-linear-gradient(#fffdf5 0px, #fffdf5 27px, #e2e8f0 28px);
+            border: 2px solid #cbd5e1;
+            border-left: 8px solid #f97316;
+            border-radius: 8px;
+            padding: 20px 24px;
+            min-height: 240px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            line-height: 28px;
+            color: #1e293b;
+            resize: vertical;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .lined-paper:focus {
+            border-color: #ea580c;
+        }
+
+        /* REPRODUTOR DE ÁUDIO PADRONIZADO */
+        .audio-wrapper {
+            margin-bottom: 22px;
         }
         .audio-player {
             display: inline-flex;
             align-items: center;
             flex-wrap: wrap;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 30px;
+            background: #ffffff;
+            padding: 8px 16px;
+            border-radius: 50px;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             gap: 8px;
         }
         .play-btn {
             background: var(--blue-dark);
-            color: white;
+            color: #ffffff;
             border: none;
             border-radius: 50px;
             padding: 8px 16px;
@@ -198,7 +357,7 @@
             cursor: pointer;
             font-family: var(--font-title);
             font-size: 12px;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -214,7 +373,7 @@
             cursor: pointer;
             font-weight: 700;
             font-size: 12px;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -223,38 +382,51 @@
         .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
         .audio-track-label {
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
             color: var(--blue-dark);
-            margin-left: 4px;
+            margin-left: 6px;
         }
 
-        /* SENTENCE GRID */
-        .sentence-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+        /* NAVEGAÇÃO */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 26px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 20px;
         }
-        .sentence-item {
-            font-size: 14px;
-            line-height: 1.6;
+        .nav-buttons.top-nav {
+            margin-top: 0;
+            margin-bottom: 22px;
+            border-top: none;
+            border-bottom: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 0;
+            padding-bottom: 16px;
         }
-
-        /* STORY TRANSITION BOX */
-        .story-transition-box {
-            background: #fff7ed;
-            border-left: 5px solid var(--accent-main);
-            padding: 16px 20px;
-            border-radius: 0 12px 12px 0;
-            margin: 25px 0;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #9a3412;
-            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
+        .btn-nav {
+            padding: 10px 22px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 13.5px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            border: 2px solid;
         }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: #ffffff; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: #ffffff; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: #ffffff; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: #ffffff; }
 
         .btn-finish {
             background: #22c55e;
-            color: white;
+            color: #ffffff;
             border: none;
             width: 100%;
             padding: 16px;
@@ -264,69 +436,41 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
-            transition: 0.2s;
-            margin-top: 10px;
+            transition: all 0.2s ease;
+            margin-top: 15px;
         }
         .btn-finish:hover {
             background: #16a34a;
             transform: translateY(-2px);
         }
 
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
-            padding-top: 20px;
-        }
-        .btn-nav {
-            padding: 10px 24px;
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.2s;
-            background: white;
-            border: 2px solid;
-        }
-        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
-        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
-        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
-        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
-        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
-        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
-        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
-        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
-
-        /* MODAL */
+        /* RESULT MODAL */
         #result-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.65);
             justify-content: center;
             align-items: center;
             z-index: 10000;
         }
         .modal-content {
-            background: white;
-            padding: 40px;
+            background: #ffffff;
+            padding: 36px;
             border-radius: 20px;
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             animation: popIn 0.3s ease-out;
         }
         @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
+            from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         .xp-circle {
-            width: 100px;
-            height: 100px;
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
             background: #fef3c7;
             color: #d97706;
@@ -334,13 +478,13 @@
             align-items: center;
             justify-content: center;
             font-family: var(--font-title);
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 800;
-            margin: 20px auto;
+            margin: 18px auto;
             border: 4px solid #f59e0b;
         }
 
-        /* GRAMMAR TIP FLOATING */
+        /* BOTÃO FLUTUANTE GRAMMAR TIP */
         .grammar-floating-container {
             position: fixed;
             bottom: 25px;
@@ -349,15 +493,15 @@
         }
         .grammar-floating-btn {
             background: var(--accent-main);
-            color: white;
+            color: #ffffff;
             padding: 12px 22px;
             border-radius: 50px;
             font-family: var(--font-title);
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13.5px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -370,9 +514,9 @@
         .grammar-box {
             visibility: hidden;
             opacity: 0;
-            width: 350px;
-            background: white;
-            color: var(--black);
+            width: 330px;
+            background: #ffffff;
+            color: #1e293b;
             text-align: left;
             border-radius: 14px;
             padding: 18px;
@@ -381,12 +525,10 @@
             right: 0;
             box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             border: 2px solid var(--accent-main);
-            transition: 0.3s;
+            transition: all 0.25s ease;
             pointer-events: none;
-            font-size: 13px;
-            line-height: 1.5;
-            max-height: 80vh;
-            overflow-y: auto;
+            font-size: 13.5px;
+            line-height: 1.55;
         }
         .grammar-floating-container:hover .grammar-box {
             visibility: visible;
@@ -401,643 +543,774 @@
         <!-- BANNER -->
         <div class="lesson-banner">
             <span class="unit-tag">Unit 6 • Having a Date</span>
-            <h1>6C | The Day After</h1>
+            <h1>6C | THE DAY AFTER</h1>
+            <p>Past simple narrative, texting with friends, irregular verbs and recount stories</p>
         </div>
 
-        <!-- SEÇÃO 1: WORDS AND IDEAS -->
-        <div id="sec-1" class="activity-section theme-blue active">
-            <h2>1. Words and Ideas • Past Simple (WAS / WERE & Regular Verbs)</h2>
-            <p class="instruction">Listen and repeat the sentences. Notice the Simple Past of the verb TO BE (WAS / WERE) and regular verbs ending in -ed. Fill in the 11 past tense forms.</p>
+        <!-- ========================================== -->
+        <!-- 1. WARM UP & WORDS AND IDEAS -->
+        <!-- ========================================== -->
+        <div id="sec-words" class="activity-section theme-purple active">
+            <div class="nav-buttons top-nav">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
+            </div>
 
+            <h2>⏳ 1. WARM UP & WORDS AND IDEAS</h2>
+
+            <!-- WARM UP -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #9333ea; font-family: var(--font-title); font-size: 16.5px;">
+                    Warm up: Where did they go? What did they eat? Did Ivete Like the meeting?
+                </h3>
+                <textarea class="fancy-input" id="warmup-dayafter" rows="3" placeholder="e.g. They went to a lovely Mexican restaurant downtown. They ate fresh tacos and guacamole, and Ivete really liked the meeting because they talked for hours..."></textarea>
+            </div>
+
+            <!-- WORDS AND IDEAS -->
+            <div class="instruction-box">
+                Words and Ideas: Use the time machine to find the past forms of the verbs below:
+            </div>
+
+            <!-- AUDIO PLAYER -->
             <div class="audio-wrapper">
-                <div class="audio-player" data-script-key="script-6c">
-                    <audio id="audio-6c" preload="none"></audio>
-                    <button type="button" class="play-btn" id="btn-audio-6c" onclick="handleAudioPlay('audio-6c', 'btn-audio-6c', 'script-6c', 'var(--blue-dark)')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-6c" onclick="handleAudioPause('audio-6c', 'btn-audio-6c', 'var(--blue-dark)')" title="Pausar">⏸</button>
-                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-6c" onclick="changeSpeedDirect('audio-6c', 'spd-audio-6c', 0.75, 'slow-audio-6c')" title="Mais devagar">🐢</button>
-                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-6c" onclick="cycleSpeed('audio-6c', 'spd-audio-6c')" title="Alternar velocidade">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-6c" onclick="changeSpeedDirect('audio-6c', 'spd-audio-6c', 1.25, 'fast-audio-6c')" title="Mais rápido">🐇</button>
-                    <span class="audio-track-label">Track 6C.1: The Night Out in the Past</span>
+                <div class="audio-player" data-script-key="script-6c-verbs">
+                    <audio id="audio-verbs" style="display: none;" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-verbs" onclick="toggleAudio('audio-verbs', 'btn-audio-verbs')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-verbs" onclick="changeSpeedDirect('audio-verbs', 'spd-audio-verbs', 0.75, 'slow-audio-verbs')">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-verbs" onclick="cycleSpeed('audio-verbs', 'spd-audio-verbs')">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-verbs" onclick="changeSpeedDirect('audio-verbs', 'spd-audio-verbs', 1.25, 'fast-audio-verbs')">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 6C.1: Present & Past Simple Verbs</span>
                 </div>
             </div>
 
-            <div class="card-box">
-                <div class="sentence-grid">
-                    <div class="sentence-item">
-                        1. The restaurant (be) 
-                        <input type="text" class="text-input eval-input" id="wi-1" data-ans="was" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        wonderful and cozy.
-                    </div>
-                    <div class="sentence-item">
-                        2. Alan and I (be) 
-                        <input type="text" class="text-input eval-input" id="wi-2" data-ans="were" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        very happy throughout the night.
-                    </div>
-                    <div class="sentence-item">
-                        3. The Italian food (be) 
-                        <input type="text" class="text-input eval-input" id="wi-3" data-ans="was" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        delicious and fresh.
-                    </div>
-                    <div class="sentence-item">
-                        4. We (order) 
-                        <input type="text" class="text-input eval-input" id="wi-4" data-ans="ordered" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        wild mushroom risotto and seafood.
-                    </div>
-                    <div class="sentence-item">
-                        5. Alan (invite) 
-                        <input type="text" class="text-input eval-input" id="wi-5" data-ans="invited" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        me yesterday after the interview.
-                    </div>
-                    <div class="sentence-item">
-                        6. We (talk) 
-                        <input type="text" class="text-input eval-input" id="wi-6" data-ans="talked" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        for over three hours without stopping.
-                    </div>
-                    <div class="sentence-item">
-                        7. I (like) 
-                        <input type="text" class="text-input eval-input" id="wi-7" data-ans="liked" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        the handmade tiramisu very much.
-                    </div>
-                    <div class="sentence-item">
-                        8. The waiters (be) 
-                        <input type="text" class="text-input eval-input" id="wi-8" data-ans="were" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        polite and attentive.
-                    </div>
-                    <div class="sentence-item">
-                        9. We (walk) 
-                        <input type="text" class="text-input eval-input" id="wi-9" data-ans="walked" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        through Covent Garden under the street lamps.
-                    </div>
-                    <div class="sentence-item">
-                        10. The London weather (be) 
-                        <input type="text" class="text-input eval-input" id="wi-10" data-ans="was" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        surprisingly pleasant and mild.
-                    </div>
-                    <div class="sentence-item">
-                        11. It (be) 
-                        <input type="text" class="text-input eval-input" id="wi-11" data-ans="was" style="display:inline-block; width:120px;" placeholder="past form..."> 
-                        an unforgettable evening for both of us!
-                    </div>
+            <div class="time-machine-grid">
+                <!-- 1. GO -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">GO <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-1" data-ans="WENT" placeholder="Type past form...">
+                </div>
+
+                <!-- 2. LOVE -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">LOVE <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-2" data-ans="LOVED" placeholder="Type past form...">
+                </div>
+
+                <!-- 3. DRINK -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">DRINK <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-3" data-ans="DRANK" placeholder="Type past form...">
+                </div>
+
+                <!-- 4. EAT -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">EAT <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-4" data-ans="ATE" placeholder="Type past form...">
+                </div>
+
+                <!-- 5. MEET -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">MEET <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-5" data-ans="MET" placeholder="Type past form...">
+                </div>
+
+                <!-- 6. IS -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">IS <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-6" data-ans="WAS" placeholder="Type past form...">
+                </div>
+
+                <!-- 7. TALK -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">TALK <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-7" data-ans="TALKED" placeholder="Type past form...">
+                </div>
+
+                <!-- 8. TAKE -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">TAKE <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-8" data-ans="TOOK" placeholder="Type past form...">
+                </div>
+
+                <!-- 9. CALL -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">CALL <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-9" data-ans="CALLED" placeholder="Type past form...">
+                </div>
+
+                <!-- 10. ORDER -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">ORDER <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-10" data-ans="ORDERED" placeholder="Type past form...">
+                </div>
+
+                <!-- 11. ENJOY -->
+                <div class="time-verb-card">
+                    <div class="time-verb-label">ENJOY <span>Past Form</span></div>
+                    <input type="text" class="fancy-input eval-input" id="verb-11" data-ans="ENJOYED" placeholder="Type past form...">
                 </div>
             </div>
 
             <div class="nav-buttons">
                 <div></div>
-                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 2: TARGET SITUATION -->
-        <div id="sec-2" class="activity-section theme-purple">
-            <h2>2. Target Situation • Chatting with Brazilian Friends</h2>
-            <p class="instruction">Ivete is telling her Brazilian friends about the date. Read the chat messages and answer the 10 questions.</p>
+        <!-- ========================================== -->
+        <!-- 2. TARGET SITUATION -->
+        <!-- ========================================== -->
+        <div id="sec-target" class="activity-section theme-blue">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
+            </div>
 
-            <div class="chat-container">
-                <div class="chat-msg friend">
-                    <span class="chat-author">Karen:</span>
-                    "Ivete, girl! Tell us everything! How was the date with Alan last night?!"
+            <h2>💬 2. TARGET SITUATION</h2>
+            <div class="instruction-box">
+                Read the messages between Julie and Ivete. Answer the questions below according to the conversation:
+            </div>
+
+            <!-- SMARTPHONE CHAT SCREEN -->
+            <div class="chat-phone-frame">
+                <div class="chat-top-bar">
+                    <div class="chat-contact-avatar">J</div>
+                    <div class="chat-contact-info">
+                        <b>Julie Watson</b>
+                        <span>Online • Yesterday at 10:15 PM</span>
+                    </div>
                 </div>
-                <div class="chat-msg ivete">
-                    <span class="chat-author">Ivete:</span>
-                    "It was magical! Alan invited me to this charming Italian bistro in Covent Garden. He was such a gentleman!"
-                </div>
-                <div class="chat-msg friend">
-                    <span class="chat-author">Suze:</span>
-                    "What did you eat and drink? Was the food good?"
-                </div>
-                <div class="chat-msg ivete">
-                    <span class="chat-author">Ivete:</span>
-                    "I ordered fresh tomato bruschetta and grilled fish with sparkling water. Alan ordered the mushroom risotto. And yes, we shared a delicious tiramisu for dessert!"
-                </div>
-                <div class="chat-msg friend">
-                    <span class="chat-author">Bruno:</span>
-                    "How long was the dinner? Did you walk around London afterwards?"
-                </div>
-                <div class="chat-msg ivete">
-                    <span class="chat-author">Ivete:</span>
-                    "We talked for 3 hours! Then we walked across the Covent Garden piazza. I was so happy, guys!"
+                <div class="chat-messages-container">
+                    <div class="chat-bubble julie">
+                        Hey Ivete! How was your dinner date with Alan? Tell me everything! 😃
+                        <span class="chat-time">10:16 PM</span>
+                    </div>
+                    <div class="chat-bubble ivete">
+                        Hi Julie! It was fantastic! They met at 7:00 P.M. at La Fiesta downtown!
+                        <span class="chat-time">10:17 PM</span>
+                    </div>
+                    <div class="chat-bubble julie">
+                        Nice! What did you have to eat?
+                        <span class="chat-time">10:18 PM</span>
+                    </div>
+                    <div class="chat-bubble ivete">
+                        They ate mexican food. She ordered guacamole and tacos. Alan ordered soda and a burrito!
+                        <span class="chat-time">10:19 PM</span>
+                    </div>
+                    <div class="chat-bubble julie">
+                        Did you stay long? Did you enjoy his company?
+                        <span class="chat-time">10:20 PM</span>
+                    </div>
+                    <div class="chat-bubble ivete">
+                        Yes, she liked it! They ate for two hours. She liked Alan a lot. They talked about life plans and experiences!
+                        <span class="chat-time">10:21 PM</span>
+                    </div>
+                    <div class="chat-bubble julie">
+                        Did she have fun? Did Alan call her to say goodnight?
+                        <span class="chat-time">10:22 PM</span>
+                    </div>
+                    <div class="chat-bubble ivete">
+                        Yes, she did! But no, he didn't call yet. He sent a text message when I got home. 🥰
+                        <span class="chat-time">10:23 PM</span>
+                    </div>
                 </div>
             </div>
 
+            <!-- QUESTIONS a-j -->
             <div class="card-box">
-                <p style="font-weight: bold; color: var(--blue-dark); margin-top: 0; margin-bottom: 12px;">Answer the 10 questions:</p>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div>
-                        <span style="font-size: 13.5px;">1. Who invited Ivete to dinner?</span>
-                        <input type="text" class="text-input eval-input" id="ts-1" data-ans="alan" placeholder="e.g. Alan">
+                <h3 style="margin-top: 0; color: var(--blue-dark); font-family: var(--font-title); font-size: 16.5px;">
+                    Questions about Julie & Ivete's Chat:
+                </h3>
+                <div class="q-list">
+                    <!-- a -->
+                    <div class="q-row">
+                        <label>a) What kind of food did they eat?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-a" data-ans="They ate mexican food." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">2. Where was the restaurant located?</span>
-                        <input type="text" class="text-input eval-input" id="ts-2" data-ans="covent garden|covent garden market" placeholder="e.g. Covent Garden">
+
+                    <!-- b -->
+                    <div class="q-row">
+                        <label>b) How long did they eat?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-b" data-ans="They ate for two hours." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">3. What cuisine was the restaurant?</span>
-                        <input type="text" class="text-input eval-input" id="ts-3" data-ans="italian" placeholder="e.g. Italian">
+
+                    <!-- c -->
+                    <div class="q-row">
+                        <label>c) Did she like the dinner?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-c" data-ans="Yes, she liked it." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">4. Was Alan polite and charming?</span>
-                        <input type="text" class="text-input eval-input" id="ts-4" data-ans="yes|yes he was" placeholder="e.g. Yes, he was.">
+
+                    <!-- d -->
+                    <div class="q-row">
+                        <label>d) What drink did Alan order?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-d" data-ans="Alan ordered soda." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">5. What did Ivete drink?</span>
-                        <input type="text" class="text-input eval-input" id="ts-5" data-ans="sparkling water|water" placeholder="e.g. Sparkling water">
+
+                    <!-- e -->
+                    <div class="q-row">
+                        <label>e) What food did Ivete order?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-e" data-ans="She ordered guacamole and tacos." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">6. What did Alan order for his main course?</span>
-                        <input type="text" class="text-input eval-input" id="ts-6" data-ans="risotto|mushroom risotto" placeholder="e.g. Mushroom risotto">
+
+                    <!-- f -->
+                    <div class="q-row">
+                        <label>f) How did Ivete feel about Alan?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-f" data-ans="She liked Alan." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">7. Did they have dessert?</span>
-                        <input type="text" class="text-input eval-input" id="ts-7" data-ans="yes|yes they did|tiramisu" placeholder="e.g. Yes, they had tiramisu.">
+
+                    <!-- g -->
+                    <div class="q-row">
+                        <label>g) What did they talk about during dinner?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-g" data-ans="They talked about life plans and experiences." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">8. How long did the dinner last?</span>
-                        <input type="text" class="text-input eval-input" id="ts-8" data-ans="3 hours|three hours" placeholder="e.g. 3 hours">
+
+                    <!-- h -->
+                    <div class="q-row">
+                        <label>h) Did she have a pleasant time?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-h" data-ans="Yes, she did." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">9. Where did they walk after the meal?</span>
-                        <input type="text" class="text-input eval-input" id="ts-9" data-ans="covent garden|covent garden piazza|piazza|streets" placeholder="e.g. Through Covent Garden piazza">
+
+                    <!-- i -->
+                    <div class="q-row">
+                        <label>i) Did he call her on the phone right away?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-i" data-ans="No, he didn't." rows="2" placeholder="Answer..."></textarea>
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">10. Was Ivete happy with the date?</span>
-                        <input type="text" class="text-input eval-input" id="ts-10" data-ans="yes|yes she was|very happy" placeholder="e.g. Yes, she was very happy.">
+
+                    <!-- j -->
+                    <div class="q-row">
+                        <label>j) What time did they meet?</label>
+                        <textarea class="fancy-input eval-input" id="chat-q-j" data-ans="They met at 7:00 P.M." rows="2" placeholder="Answer..."></textarea>
                     </div>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Language Guide ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 3: LANGUAGE GUIDE -->
-        <div id="sec-3" class="activity-section theme-green">
-            <h2>3. Language Guide • WAS, WERE, WASN’T or WEREN’T</h2>
-            <p class="instruction">Complete the sentences with WAS, WERE, WASN’T or WEREN’T according to the context.</p>
+        <!-- ========================================== -->
+        <!-- 3. LANGUAGE GUIDE -->
+        <!-- ========================================== -->
+        <div id="sec-guide" class="activity-section theme-green">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-home')">Next: Homework / Cross Curricular ➔</button>
+            </div>
+
+            <h2>✏️ 3. LANGUAGE GUIDE</h2>
+            <div class="instruction-box">
+                Are the sentences correct? Correct the grammar problems in the past simple statements below:
+            </div>
+
+            <div class="card-box">
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <!-- a -->
+                    <div>
+                        <label style="font-weight: 700; color: #b91c1c; display: block; margin-bottom: 6px;">
+                            a) Incorrect: Ivete didn't liked the food.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-correct-a" data-ans="Ivete didn't like the food." placeholder="Type corrected sentence...">
+                    </div>
+
+                    <!-- b -->
+                    <div>
+                        <label style="font-weight: 700; color: #b91c1c; display: block; margin-bottom: 6px;">
+                            b) Incorrect: Alan Called Ivete the day after?
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-correct-b" data-ans="Did Alan call Ivete the day after?" placeholder="Type corrected question...">
+                    </div>
+
+                    <!-- e -->
+                    <div>
+                        <label style="font-weight: 700; color: #b91c1c; display: block; margin-bottom: 6px;">
+                            e) Incorrect: Did you enjoy the meal? Yes, I didn't.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="lg-correct-e" data-ans="No, I didn't / yes, I did." placeholder="Type corrected short answer...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-home')">Next: Homework / Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. HOMEWORK / CROSS CURRICULAR -->
+        <!-- ========================================== -->
+        <div id="sec-home" class="activity-section theme-orange">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-work')">Next: Language at Work & Your Turn ➔</button>
+            </div>
+
+            <h2>📝 4. HOMEWORK / CROSS CURRICULAR</h2>
+            <div class="instruction-box">
+                Correct the sentences according to Ivete's messages. Rewrite each fact accurately:
+            </div>
 
             <div class="card-box">
                 <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div style="font-size: 14.5px;">
-                        1. Ivete 
-                        <input type="text" class="text-input eval-input" id="lg-1" data-ans="was" style="display:inline-block; width:130px;" placeholder="was/were..."> 
-                        nervous before the date, but she soon relaxed.
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            1. They went to an Italian restaurant downtown.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-1" placeholder="e.g. They went to a Mexican restaurant.">
                     </div>
-                    <div style="font-size: 14.5px;">
-                        2. The restaurant 
-                        <input type="text" class="text-input eval-input" id="lg-2" data-ans="wasn't|was not" style="display:inline-block; width:130px;" placeholder="wasn't/weren't..."> 
-                        noisy; it was quiet and romantic.
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            2. They met at 8:30 P.M.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-2" placeholder="e.g. They met at 7:00 P.M.">
                     </div>
-                    <div style="font-size: 14.5px;">
-                        3. The Italian desserts 
-                        <input type="text" class="text-input eval-input" id="lg-3" data-ans="were" style="display:inline-block; width:130px;" placeholder="was/were..."> 
-                        freshly made and delicious.
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            3. They ate burgers and french fries.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-3" placeholder="e.g. They ate guacamole, tacos and a burrito.">
                     </div>
-                    <div style="font-size: 14.5px;">
-                        4. They 
-                        <input type="text" class="text-input eval-input" id="lg-4" data-ans="weren't|were not" style="display:inline-block; width:130px;" placeholder="wasn't/weren't..."> 
-                        late for their reservation; Alan arrived 10 minutes early.
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            4. They only stayed for twenty minutes.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-4" placeholder="e.g. They ate for two hours.">
                     </div>
-                    <div style="font-size: 14.5px;">
-                        5. Alan 
-                        <input type="text" class="text-input eval-input" id="lg-5" data-ans="was" style="display:inline-block; width:130px;" placeholder="was/were..."> 
-                        very attentive and gentlemanly throughout the whole dinner.
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            5. Alan ordered an orange juice.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-5" placeholder="e.g. Alan ordered soda.">
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            6. Ivete disliked the food.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-6" placeholder="e.g. Ivete liked the food.">
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            7. Ivete thought Alan was boring.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-7" placeholder="e.g. She liked Alan very much.">
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            8. They only talked about their office jobs.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-8" placeholder="e.g. They talked about life plans and experiences.">
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            9. Alan phoned her as soon as she arrived home.
+                        </label>
+                        <input type="text" class="fancy-input" id="hw-9" placeholder="e.g. He sent a text message instead of calling.">
                     </div>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Homework & Language at Work ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-work')">Next: Language at Work & Your Turn ➔</button>
             </div>
         </div>
 
-        <!-- SEÇÃO 4: HOMEWORK & LANGUAGE AT WORK -->
-        <div id="sec-4" class="activity-section theme-orange">
-            <h2>4. Homework • Change Present to Past</h2>
-            <p class="instruction">Change the 9 sentences from Present to Past tense.</p>
+        <!-- ========================================== -->
+        <!-- 5. LANGUAGE AT WORK & NOW IT'S YOUR TURN -->
+        <!-- ========================================== -->
+        <div id="sec-work" class="activity-section theme-blue">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-home')">⬅ Back</button>
+                <div></div>
+            </div>
 
+            <h2>📖 5. LANGUAGE AT WORK & NOW IT'S YOUR TURN</h2>
+
+            <!-- PARTE A: LANGUAGE AT WORK -->
             <div class="card-box">
-                <div style="display: flex; flex-direction: column; gap: 12px;">
+                <h3 style="margin-top: 0; color: var(--blue-dark); font-family: var(--font-title); font-size: 16.5px;">
+                    Language at work: Organize the words to make sentences
+                </h3>
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <!-- a -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">1. Present: "I am happy."</span>
-                        <input type="text" class="text-input eval-input" id="hw-1" data-ans="i was happy|was happy" placeholder="Past: I was happy.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            a) did / weekend? / you / Where / last / go
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-a" data-ans="Where did you go last weekend?" placeholder="Type sentence...">
                     </div>
+
+                    <!-- b -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">2. Present: "They are in London."</span>
-                        <input type="text" class="text-input eval-input" id="hw-2" data-ans="they were in london|were in london" placeholder="Past: They were in London.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            b) How / long / you / did / English? / practice
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-b" data-ans="How long did you practice English?" placeholder="Type sentence...">
                     </div>
+
+                    <!-- c -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">3. Present: "The food is great."</span>
-                        <input type="text" class="text-input eval-input" id="hw-3" data-ans="the food was great|was great" placeholder="Past: The food was great.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            c) a / I / ate / very / good / in / Mexican / restaurant.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-c" data-ans="I ate in a very good Mexican restaurant." placeholder="Type sentence...">
                     </div>
+
+                    <!-- d -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">4. Present: "He invites me to dinner."</span>
-                        <input type="text" class="text-input eval-input" id="hw-4" data-ans="he invited me to dinner|invited me to dinner" placeholder="Past: He invited me to dinner.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            d) call / me / night. / last / didn't / She
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-d" data-ans="She didn't call me last night." placeholder="Type sentence...">
                     </div>
+
+                    <!-- e -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">5. Present: "We talk about Brazil."</span>
-                        <input type="text" class="text-input eval-input" id="hw-5" data-ans="we talked about brazil|talked about brazil" placeholder="Past: We talked about Brazil.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            e) We / ideas. / plans / talked / about / and / our
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-e" data-ans="We talked about our plans and ideas." placeholder="Type sentence...">
                     </div>
+
+                    <!-- f -->
                     <div>
-                        <span style="font-size: 12px; color: #64748b;">6. Present: "She likes the risotto."</span>
-                        <input type="text" class="text-input eval-input" id="hw-6" data-ans="she liked the risotto|liked the risotto" placeholder="Past: She liked the risotto.">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">7. Present: "They walk together."</span>
-                        <input type="text" class="text-input eval-input" id="hw-7" data-ans="they walked together|walked together" placeholder="Past: They walked together.">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">8. Present: "The evening is romantic."</span>
-                        <input type="text" class="text-input eval-input" id="hw-8" data-ans="the evening was romantic|was romantic" placeholder="Past: The evening was romantic.">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">9. Present: "We are colleagues."</span>
-                        <input type="text" class="text-input eval-input" id="hw-9" data-ans="we were colleagues|were colleagues" placeholder="Past: We were colleagues.">
+                        <label style="font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">
+                            f) a / for / taxi / us. / My / father / called
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="unscramble-f" data-ans="My father called a taxi for us." placeholder="Type sentence...">
                     </div>
                 </div>
             </div>
 
-            <h2 style="margin-top: 25px;">Language at Work • Questions in the Past</h2>
-            <p class="instruction">Formulate 6 accurate past questions from the prompts to ask about someone’s past events.</p>
-
+            <!-- PARTE B: NOW IT'S YOUR TURN -->
             <div class="card-box">
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">1. (Where / be / the restaurant?)</span>
-                        <input type="text" class="text-input eval-input" id="law-1" data-ans="where was the restaurant|where was the restaurant?" placeholder="e.g. Where was the restaurant?">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">2. (How / be / the date?)</span>
-                        <input type="text" class="text-input eval-input" id="law-2" data-ans="how was the date|how was the date?" placeholder="e.g. How was the date?">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">3. (Were / you / happy?)</span>
-                        <input type="text" class="text-input eval-input" id="law-3" data-ans="were you happy|were you happy?" placeholder="e.g. Were you happy?">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">4. (Was / the food / delicious?)</span>
-                        <input type="text" class="text-input eval-input" id="law-4" data-ans="was the food delicious|was the food delicious?" placeholder="e.g. Was the food delicious?">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">5. (What / did / you / talk about?)</span>
-                        <input type="text" class="text-input eval-input" id="law-5" data-ans="what did you talk about|what did you talk about?" placeholder="e.g. What did you talk about?">
-                    </div>
-                    <div>
-                        <span style="font-size: 12px; color: #64748b;">6. (Did / you / enjoy / the walk?)</span>
-                        <input type="text" class="text-input eval-input" id="law-6" data-ans="did you enjoy the walk|did you enjoy the walk?" placeholder="e.g. Did you enjoy the walk?">
-                    </div>
+                <h3 style="margin-top: 0; color: var(--blue-dark); font-family: var(--font-title); font-size: 16.5px;">
+                    Now, it's your turn: Amy's Birthday Party Story
+                </h3>
+                <p style="font-size: 14px; color: #475569; margin-bottom: 12px;">
+                    This is Amy and this is the story of her birthday party. Can you tell it? Use the phrases from the box:
+                </p>
+
+                <div class="word-bank">
+                    <span class="bank-chip">went to the club</span>
+                    <span class="bank-chip">ordered cake and champagne</span>
+                    <span class="bank-chip">invited all her best friends</span>
+                    <span class="bank-chip">danced all night</span>
+                    <span class="bank-chip">received wonderful gifts</span>
+                    <span class="bank-chip">took hundreds of photos</span>
+                    <span class="bank-chip">had an unforgettable time</span>
                 </div>
+
+                <label style="font-weight: 700; color: #1e293b; display: block; margin-bottom: 8px;">
+                    Write Amy's birthday party story on the ruled sheet below:
+                </label>
+                <textarea class="lined-paper" id="amy-birthday-story" rows="8" placeholder="Last Saturday was Amy's 25th birthday. She invited all her best friends to celebrate..."></textarea>
             </div>
 
-            <!-- TRANSIÇÃO NARRATIVA EXATA -->
-            <div class="story-transition-box">
-                <b>Story Update:</b>
-                "Ivete compartilhou todos os detalhes do encontro. Ela está muito feliz com sua nova vida em Londres!"
-            </div>
-
-            <button class="btn-finish" id="btn-finish-6c" onclick="calculateXP()">
-                Finish Lesson 6C & Calculate XP ➔
+            <!-- BOTÃO FINALIZAR LIÇÃO -->
+            <button type="button" class="btn-finish" id="btn-finish-lesson" onclick="calculateXP()">
+                ✨ Finish Lesson 6C & Check Results
             </button>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-home')">⬅ Back</button>
                 <div></div>
             </div>
         </div>
+
     </div>
 
     <!-- RESULT MODAL -->
     <div id="result-modal">
         <div class="modal-content">
-            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 6C Completed!</h2>
-            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
-            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
-            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
-                You mastered the Simple Past (was/were, regular -ed verbs, questions and past conversions)!
-            </p>
-            <button class="btn-finish" onclick="proceedToNextLesson()">Continue to 6D (Unit Challenge) ➔</button>
+            <h2 style="font-family: var(--font-title); font-size: 24px; color: var(--blue-dark); margin-top: 0;">🎉 Unit 6C Completed!</h2>
+            <p style="color: #64748b; font-size: 15px; margin-bottom: 12px;">Magnificent! You've mastered recounting past stories and messaging dialogues!</p>
+            <div class="xp-circle" id="xp-gained-text">+100 XP</div>
+            <p id="score-text" style="font-weight: 700; color: #1e293b; font-size: 15px; margin-bottom: 24px;"></p>
+            <button type="button" class="btn-finish" onclick="proceedToNextLesson()">
+                Continue to Lesson 6D ➔
+            </button>
         </div>
     </div>
 
-    <!-- FLOATING GRAMMAR TIP -->
+    <!-- GRAMMAR TIP FLOATING BUTTON -->
     <div class="grammar-floating-container">
-        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <button type="button" class="grammar-floating-btn">
+            💡 Grammar Tip
+        </button>
         <div class="grammar-box">
-            <h4 style="margin: 0 0 10px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 15px;">
-                Past Simple (Was/Were & Regular Verbs)
-            </h4>
-            
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">1. Verbo TO BE no Passado:</p>
-            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
-                • <b>I / He / She / It</b> ➔ <b>WAS</b> (negativa: <b>WASN'T</b>)<br>
-                • <b>You / We / They</b> ➔ <b>WERE</b> (negativa: <b>WEREN'T</b>)<br>
-                <i>The dinner was wonderful. They were very happy.</i>
+            <b style="color: var(--accent-dark); font-size: 14.5px; display: block; margin-bottom: 8px;">Past Simple Formations:</b>
+            <p style="margin: 0 0 8px 0;">
+                Regular verbs take <strong>-ed</strong> in affirmative statements:
+                <br><em>e.g. call ➔ called, talk ➔ talked.</em>
             </p>
-
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">2. Verbos Regulares no Passado:</p>
-            <p style="margin: 0 0 10px 0; font-size: 12.5px; color: #475569;">
-                Acrescente <b>-ed</b> ou <b>-d</b> ao verbo:<br>
-                • order ➔ <i>ordered</i><br>
-                • invite ➔ <i>invited</i><br>
-                • walk ➔ <i>walked</i><br>
-                • talk ➔ <i>talked</i>
+            <p style="margin: 0 0 8px 0;">
+                In negatives and questions, use <strong>DID + base verb</strong>:
+                <br><em>e.g. She didn't call. Did he call you?</em>
             </p>
-
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: var(--blue-dark);">3. Perguntas no Passado:</p>
-            <p style="margin: 0; font-size: 12.5px; color: #475569;">
-                • Com BE: <i>Was the food good? / Were you happy?</i><br>
-                • Com outros verbos (DID): <i>Did you talk a lot? / Where did you walk?</i>
+            <p style="margin: 0;">
+                <strong>Never combine did with was/were</strong>:
+                <br><em>Say: Did you enjoy? (NOT: Were you enjoy?)</em>
             </p>
         </div>
     </div>
 
     <script>
-        function navigateSection(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
-            const showEl = document.getElementById(showId);
-            showEl.classList.add('active');
-            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-        }
-
         // ==========================================
-        // STANDARDIZED AUDIO & SPEECH PLAYER SYSTEM
+        // SCRIPT TRANSCRIÇÕES PARA SPEECH SYNTHESIS
         // ==========================================
         const audioScripts = {
-            'script-6c': "Listen to the past tense: The restaurant was wonderful. Alan and I were very happy. The food was delicious. We ordered Italian pasta. Alan invited me yesterday. We talked for three hours. I liked the dessert very much. We walked through Covent Garden. It was an unforgettable evening!"
+            'script-6c-verbs': "Past Simple Verbs: Go, went. Love, loved. Drink, drank. Eat, ate. Meet, met. Is, was. Talk, talked. Take, took. Call, called. Order, ordered. Enjoy, enjoyed."
         };
 
-        const playerStates = {};
-
-        function getPlayerState(id) {
-            if (!playerStates[id]) {
-                playerStates[id] = {
-                    rate: 1.0,
-                    isPlaying: false,
-                    isPaused: false,
-                    utterance: null
-                };
+        // ==========================================
+        // NAVEGAÇÃO DE SEÇÕES
+        // ==========================================
+        function navigateSection(currentId, targetId) {
+            document.querySelectorAll('.activity-section').forEach(sec => sec.classList.remove('active'));
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-            return playerStates[id];
         }
 
-        function stopAllAudiosExcept(currentId) {
+        // ==========================================
+        // CONTROLE DE ÁUDIO PADRONIZADO COM SPEECH FALLBACK
+        // ==========================================
+        const audioPlayersState = {};
+
+        function getPlayerState(audioId) {
+            if (!audioPlayersState[audioId]) {
+                audioPlayersState[audioId] = { isPlaying: false, rate: 1.0 };
+            }
+            return audioPlayersState[audioId];
+        }
+
+        function stopAllAudiosExcept(exceptId) {
             document.querySelectorAll('audio').forEach(a => {
-                if (a.id !== currentId) {
+                if (a.id !== exceptId) {
                     a.pause();
                     a.currentTime = 0;
+                }
+            });
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                const p = btn.closest('.audio-player');
+                const aud = p ? p.querySelector('audio') : null;
+                if (!aud || aud.id !== exceptId) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
                 }
             });
             if (window.speechSynthesis) {
                 window.speechSynthesis.cancel();
             }
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                if (!btn.id.includes(currentId)) {
-                    btn.innerText = "▶ PLAY";
-                    btn.classList.remove('playing');
-                    btn.style.background = "var(--blue-dark)";
-                }
-            });
-            Object.keys(playerStates).forEach(k => {
-                if (k !== currentId) {
-                    playerStates[k].isPlaying = false;
-                    playerStates[k].isPaused = false;
-                }
-            });
         }
 
-        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+        function toggleAudio(audioId, btnId) {
             const audio = document.getElementById(audioId);
             const btn = document.getElementById(btnId);
             const state = getPlayerState(audioId);
+            const player = audio ? audio.closest('.audio-player') : null;
+            const scriptKey = player ? player.getAttribute('data-script-key') : null;
 
-            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
-
-            if (hasAudioSrc) {
-                if (!audio.paused && !audio.ended) {
+            if (state.isPlaying) {
+                if (audio && !audio.paused) {
                     audio.pause();
-                    btn.innerText = "▶ CONTINUAR";
-                    btn.classList.remove('playing');
-                    btn.style.background = originalColor || "var(--blue-dark)";
-                    state.isPlaying = false;
-                    state.isPaused = true;
-                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
-                    audio.playbackRate = state.rate;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
-                } else {
-                    stopAllAudiosExcept(audioId);
-                    audio.playbackRate = state.rate;
-                    audio.currentTime = 0;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
-
-                    audio.onended = () => {
-                        btn.innerText = "▶ PLAY";
-                        btn.classList.remove('playing');
-                        btn.style.background = originalColor || "var(--blue-dark)";
-                        state.isPlaying = false;
-                        state.isPaused = false;
-                    };
                 }
-            } else {
-                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
-            }
-        }
-
-        function handleAudioPause(audioId, btnId, originalColor) {
-            const audio = document.getElementById(audioId);
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
-
-            if (audio && !audio.paused) {
-                audio.pause();
-            }
-            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
-                window.speechSynthesis.pause();
-            }
-            state.isPlaying = false;
-            state.isPaused = true;
-            if (btn) {
-                btn.innerText = "▶ CONTINUAR";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-            }
-        }
-
-        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
-            if (!('speechSynthesis' in window)) return;
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
-
-            if (state.isPlaying && !state.isPaused) {
-                window.speechSynthesis.pause();
-                state.isPaused = true;
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
                 state.isPlaying = false;
-                btn.innerText = "▶ CONTINUAR";
+                btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                return;
-            }
-
-            if (state.isPaused && window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-                state.isPaused = false;
-                state.isPlaying = true;
-                btn.innerText = "⏸ PAUSE";
-                btn.classList.add('playing');
-                btn.style.background = "#ea580c";
                 return;
             }
 
             stopAllAudiosExcept(audioId);
-            const text = audioScripts[scriptKey] || "";
-            if (!text) return;
 
+            if (audio && audio.src && audio.src !== window.location.href && !audio.src.endsWith('#')) {
+                audio.playbackRate = state.rate;
+                audio.play().then(() => {
+                    state.isPlaying = true;
+                    btn.innerText = "⏸ PAUSE";
+                    btn.classList.add('playing');
+                }).catch(e => {
+                    console.log("Audio file playback error, falling back to speech synthesis:", e);
+                    playSpeechFallback(scriptKey, state.rate, btn, state);
+                });
+            } else {
+                playSpeechFallback(scriptKey, state.rate, btn, state);
+            }
+
+            if (audio) {
+                audio.onended = () => {
+                    state.isPlaying = false;
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                };
+            }
+        }
+
+        function playSpeechFallback(scriptKey, rate, btn, state) {
+            if (!window.speechSynthesis) return;
+            const text = audioScripts[scriptKey] || "Audio track not found.";
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-GB';
-            utterance.rate = state.rate;
-            state.utterance = utterance;
-            window.activeUtterance = utterance;
+            utterance.lang = 'en-US';
+            utterance.rate = rate;
 
-            btn.innerText = "⏸ PAUSE";
-            btn.classList.add('playing');
-            btn.style.background = "#ea580c";
-            state.isPlaying = true;
-            state.isPaused = false;
+            utterance.onstart = () => {
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+            };
 
             utterance.onend = () => {
+                state.isPlaying = false;
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
             };
 
             utterance.onerror = () => {
+                state.isPlaying = false;
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
             };
 
             window.speechSynthesis.speak(utterance);
         }
 
         function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const audio = document.getElementById(audioId);
             const state = getPlayerState(audioId);
             state.rate = targetRate;
-            const audio = document.getElementById(audioId);
             if (audio) audio.playbackRate = targetRate;
 
+            const player = audio ? audio.closest('.audio-player') : null;
+            if (player) {
+                player.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+            }
+            if (clickedBtnId) {
+                const b = document.getElementById(clickedBtnId);
+                if (b) b.classList.add('active');
+            }
             const spdBtn = document.getElementById(spdBtnId);
-            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
-
-            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
-            if (playerEl) {
-                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
-                if (clickedBtnId) {
-                    const cb = document.getElementById(clickedBtnId);
-                    if (cb) cb.classList.add('active');
-                }
-            }
-
-            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
-                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
-                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
-                window.speechSynthesis.cancel();
-                if (scriptKey && btn) {
-                    state.isPlaying = false;
-                    state.isPaused = false;
-                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
-                }
-            }
+            if (spdBtn) spdBtn.innerText = `⚡ ${targetRate}x`;
         }
 
         function cycleSpeed(audioId, spdBtnId) {
-            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const speeds = [0.75, 1.0, 1.25];
             const state = getPlayerState(audioId);
-            let current = state.rate || 1.0;
-            let idx = speeds.indexOf(current);
+            let idx = speeds.indexOf(state.rate);
             if (idx === -1) idx = 1;
-            let nextIdx = (idx + 1) % speeds.length;
-            let newRate = speeds[nextIdx];
-            
-            let clickedBtnId = null;
-            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
-            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+            let nextRate = speeds[(idx + 1) % speeds.length];
 
-            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+            let clickedId = spdBtnId;
+            if (nextRate === 0.75) clickedId = spdBtnId.replace('spd-', 'slow-');
+            else if (nextRate === 1.25) clickedId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, nextRate, clickedId);
         }
 
-        function playPastAudio() {
-            handleAudioPlay('audio-6c', 'btn-audio-6c', 'script-6c', 'var(--blue-dark)');
+        // ==========================================
+        // NORMALIZAÇÃO DE TEXTO PARA VALIDAÇÃO
+        // ==========================================
+        function normalizeText(txt) {
+            return (txt || '').toString().toLowerCase()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”’]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
         }
 
-        let calculatedXP = 0;
+        // ==========================================
+        // CÁLCULO DE XP & VALIDAÇÃO GAMIFICADA
+        // ==========================================
+        let finalXP = 100;
 
         function calculateXP() {
             let correct = 0;
             let total = 0;
+            const respostas = {};
 
-            let userAnswers = {
-                inputs: {}
-            };
-
-            // Todos os campos com classe .eval-input
-            document.querySelectorAll('.eval-input').forEach(input => {
+            // 1. Validação de inputs exatos (.eval-input)
+            document.querySelectorAll('.eval-input').forEach(el => {
                 total++;
-                let val = input.value.trim().toLowerCase().replace(/[.?]/g, '');
-                userAnswers.inputs[input.id] = input.value;
-                let accepted = input.getAttribute('data-ans').toLowerCase().split('|').map(a => a.replace(/[.?]/g, ''));
-                if (accepted.some(a => val === a || val.includes(a) || a.includes(val) && val.length > 2)) {
+                const expected = el.getAttribute('data-ans') || '';
+                const userVal = el.value || '';
+                respostas[el.id] = userVal;
+
+                const normUser = normalizeText(userVal);
+                const normExpected = normalizeText(expected);
+
+                let isMatch = false;
+                if (normUser.length > 0 && normExpected.length > 0) {
+                    if (normUser === normExpected) {
+                        isMatch = true;
+                    } else if (normExpected.includes(normUser) || normUser.includes(normExpected)) {
+                        isMatch = true;
+                    } else if (expected.includes('/')) {
+                        const parts = expected.split('/').map(p => normalizeText(p));
+                        if (parts.some(p => normUser.includes(p) || p.includes(normUser))) {
+                            isMatch = true;
+                        }
+                    }
+                }
+
+                if (isMatch) {
                     correct++;
-                    input.style.borderColor = "#22c55e";
-                    input.style.backgroundColor = "#f0fdf4";
+                    el.style.borderColor = '#22c55e';
+                    el.style.backgroundColor = '#f0fdf4';
                 } else {
-                    input.style.borderColor = "#ef4444";
-                    input.style.backgroundColor = "#fef2f2";
+                    el.style.borderColor = '#ef4444';
+                    el.style.backgroundColor = '#fef2f2';
                 }
             });
 
-            localStorage.setItem('licao6c_respostas', JSON.stringify(userAnswers));
+            // 2. Salvar respostas livres (Homework 1-9 e Amy Story)
+            document.querySelectorAll('input.fancy-input:not(.eval-input), textarea.lined-paper, textarea.fancy-input:not(.eval-input)').forEach(el => {
+                respostas[el.id] = el.value;
+                if (el.value.trim().length >= 4) {
+                    correct += 1;
+                }
+                total += 1;
+            });
 
-            let percentage = total > 0 ? (correct / total) : 1;
-            calculatedXP = Math.min(100, Math.round(percentage * 100));
+            localStorage.setItem('licao6c_respostas', JSON.stringify(respostas));
 
-            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
-            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            const ratio = total > 0 ? (correct / total) : 1;
+            finalXP = Math.max(60, Math.round(ratio * 100));
+
+            document.getElementById('xp-gained-text').innerText = `+${finalXP} XP`;
+            document.getElementById('score-text').innerText = `You completed the activities with ${finalXP}% score!`;
             document.getElementById('result-modal').style.display = 'flex';
         }
 
         function proceedToNextLesson() {
-            let oldXP = parseInt(localStorage.getItem('licao_6c_xp')) || 0;
-            let diff = calculatedXP - oldXP;
+            const oldXP = parseInt(localStorage.getItem('licao_6c_xp')) || 0;
+            const diff = finalXP - oldXP;
 
             localStorage.setItem('licao_6c_status', 'concluida');
-            localStorage.setItem('licao_6c_xp', calculatedXP);
+            localStorage.setItem('licao_6c_xp', finalXP);
 
-            let totalXP = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
-            totalXP += diff;
+            const totalXP = (parseInt(localStorage.getItem('target_on_profile_xp')) || 0) + diff;
             localStorage.setItem('target_on_profile_xp', totalXP);
 
-            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
-            studentXP += diff;
+            const studentXP = (parseInt(localStorage.getItem('studentXP')) || 0) + diff;
             localStorage.setItem('studentXP', studentXP);
 
             if (window.parent && window.parent.completeUnit) {
-                window.parent.completeUnit(0, calculatedXP);
+                window.parent.completeUnit(0, finalXP);
             }
             if (window.parent && window.parent.avancarPara) {
                 window.parent.avancarPara('licao6d.html', 'link-6d');
@@ -1050,24 +1323,38 @@
             window.location.href = "licao6d.html";
         }
 
+        // ==========================================
+        // MODO LEITURA (READ-ONLY) NA INICIALIZAÇÃO
+        // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            let saved = localStorage.getItem('licao6c_respostas');
-            if (saved) {
-                try {
-                    let data = JSON.parse(saved);
-                    if (data.inputs) {
-                        for (let id in data.inputs) {
-                            let el = document.getElementById(id);
-                            if (el) el.value = data.inputs[id];
-                        }
-                    }
-                } catch(e) {}
-            }
-
             if (localStorage.getItem('licao_6c_status') === 'concluida') {
-                let btnFinish = document.getElementById('btn-finish-6c');
-                if (btnFinish) {
-                    btnFinish.innerText = "🔒 Lesson Completed (Review Mode)";
+                const savedData = localStorage.getItem('licao6c_respostas');
+                if (savedData) {
+                    try {
+                        const respostas = JSON.parse(savedData);
+                        document.querySelectorAll('.eval-input, .fancy-input, .lined-paper').forEach(el => {
+                            if (el.id && respostas[el.id] !== undefined) {
+                                el.value = respostas[el.id];
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Error parsing saved answers:", e);
+                    }
+                }
+
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                const finishBtn = document.getElementById('btn-finish-lesson');
+                if (finishBtn) {
+                    finishBtn.innerText = "🔒 Lesson Completed (Read-Only)";
+                    finishBtn.disabled = true;
+                    finishBtn.style.background = "#94a3b8";
+                    finishBtn.style.cursor = "not-allowed";
+                    finishBtn.style.boxShadow = "none";
                 }
             }
         });

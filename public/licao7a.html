@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>7A | Renting a Flat</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- TRAVA DE SEGURANÇA GLOBAL OBRIGATÓRIA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                alert("Access Denied");
+                window.parent.location.href = "index.html";
+            }
+        });
+    </script>
     
     <style>
         :root {
-            --black: #0f172a;
-            --white: #FFFFFF;
             --blue-dark: #0f172a;
             --blue-medium: #1e3a8a;
-            --blue-light: #3b82f6;
+            --blue-light: #2563eb;
             --accent-main: #e67e22;
             --accent-dark: #c2410c;
             
@@ -27,36 +35,40 @@
             --theme-orange-bg: #fff7ed; --theme-orange-border: #ea580c;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: var(--font-text);
             background: #f1f5f9;
             margin: 0;
             padding: 20px;
-            color: var(--black);
+            color: #1e293b;
             display: flex;
             justify-content: center;
         }
 
         .book-page {
-            background: var(--white);
+            background: #ffffff;
             width: 100%;
             max-width: 920px;
             min-height: 90vh;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            padding: 40px;
-            box-sizing: border-box;
+            padding: 36px;
             position: relative;
         }
 
+        /* BANNER DA LIÇÃO */
         .lesson-banner {
             border-bottom: 3px solid var(--accent-main);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
         .unit-tag {
             font-family: var(--font-title);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent-main);
             text-transform: uppercase;
@@ -64,23 +76,32 @@
         }
         .lesson-banner h1 {
             font-family: var(--font-title);
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--blue-dark);
-            margin: 5px 0 0 0;
+            margin: 6px 0 4px 0;
+        }
+        .lesson-banner p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
         }
 
+        /* SEÇÕES DE ATIVIDADE */
         .activity-section {
             display: none;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 28px;
+            border-radius: 16px;
             margin-bottom: 30px;
             border-left: 6px solid;
-            animation: fadeIn 0.4s ease-in-out;
+            background: #ffffff;
+            animation: fadeIn 0.35s ease-in-out;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
         }
         .activity-section.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -91,25 +112,96 @@
 
         .activity-section h2 {
             font-family: var(--font-title);
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 21px;
+            font-weight: 800;
             margin-top: 0;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .theme-blue h2 { color: var(--theme-blue-border); }
         .theme-purple h2 { color: var(--theme-purple-border); }
         .theme-green h2 { color: var(--theme-green-border); }
         .theme-orange h2 { color: var(--theme-orange-border); }
 
-        .instruction {
-            font-size: 14px;
+        .instruction-box {
+            font-size: 14.5px;
             color: #475569;
-            margin-bottom: 20px;
-            font-style: italic;
+            margin-bottom: 22px;
+            line-height: 1.55;
+            background: rgba(255,255,255,0.7);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
+        /* TAGS DE CÔMODOS & PALAVRAS */
+        .room-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1.5px dashed #cbd5e1;
+            margin-bottom: 20px;
+        }
+        .room-tag {
+            background: #f1f5f9;
+            color: var(--blue-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* INPUTS GAMIFICADOS */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: var(--font-text);
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        .inline-eval-input {
+            display: inline-block;
+            width: 170px;
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-text);
+            font-size: 14px;
+            color: #1e293b;
+            background: #ffffff;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .inline-eval-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+        }
+
+        /* CARDS E CONTAINERS */
         .card-box {
-            background: white;
+            background: #ffffff;
             border-radius: 12px;
             padding: 20px;
             border: 1px solid #e2e8f0;
@@ -117,63 +209,168 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
-        .text-input {
-            width: 100%;
-            padding: 9px 14px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: var(--font-text);
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-            background: white;
-            transition: 0.2s;
-            margin-top: 4px;
+        /* CARD DE ANÚNCIO (ADVERTISEMENT) */
+        .rent-ad-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.15);
+            position: relative;
         }
-        .text-input:focus {
-            border-color: var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-
-        .textarea-styled {
-            width: 100%;
-            min-height: 120px;
-            padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-family: var(--font-text);
-            font-size: 14px;
-            outline: none;
-            resize: vertical;
-            box-sizing: border-box;
-            transition: 0.2s;
-        }
-        .textarea-styled:focus {
-            border-color: var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        .ad-badge {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: #dc2626;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 11.5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
         }
 
-        /* STANDARDIZED AUDIO PLAYER */
-        .audio-wrapper {
-            margin-bottom: 20px;
+        /* DIALOGUE BUBBLE */
+        .dialogue-container {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 22px;
+            border: 1.5px solid #e2e8f0;
+            line-height: 2.2;
+            font-size: 15px;
+            margin-bottom: 22px;
+        }
+        .dialogue-speaker {
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        /* WARM UP MULTIPLE CHOICE OPTIONS */
+        .housing-options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .housing-option-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+        }
+        .housing-option-card:hover {
+            border-color: #3b82f6;
+            background: #f8fafc;
+        }
+        .housing-option-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: var(--font-title);
+        }
+        .housing-option-card.selected .option-letter {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        /* MATCHING GRID */
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        @media (max-width: 650px) {
+            .matching-grid { grid-template-columns: 1fr; }
+        }
+        .matching-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* TRUE / FALSE BUTTONS */
+        .tf-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+        .tf-statement {
+            font-size: 14.5px;
+            font-weight: 500;
+            color: #1e293b;
+            max-width: 70%;
+        }
+        .tf-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+        .tf-btn {
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tf-btn.active-true {
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+        .tf-btn.active-false {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        /* REPRODUTOR DE ÁUDIO PADRONIZADO */
+        .audio-wrapper {
+            margin-bottom: 22px;
         }
         .audio-player {
             display: inline-flex;
             align-items: center;
             flex-wrap: wrap;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 30px;
+            background: #ffffff;
+            padding: 8px 16px;
+            border-radius: 50px;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             gap: 8px;
         }
         .play-btn {
             background: var(--blue-dark);
-            color: white;
+            color: #ffffff;
             border: none;
             border-radius: 50px;
             padding: 8px 16px;
@@ -181,7 +378,7 @@
             cursor: pointer;
             font-family: var(--font-title);
             font-size: 12px;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -197,7 +394,7 @@
             cursor: pointer;
             font-weight: 700;
             font-size: 12px;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -206,56 +403,51 @@
         .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
         .audio-track-label {
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
             color: var(--blue-dark);
-            margin-left: 4px;
+            margin-left: 6px;
         }
 
-        .word-bank {
+        /* NAVEGAÇÃO */
+        .nav-buttons {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 26px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 20px;
         }
-        .word-chip {
-            background: white;
-            border: 1px solid #94a3b8;
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-weight: bold;
-            font-size: 13px;
-            color: var(--blue-dark);
+        .nav-buttons.top-nav {
+            margin-top: 0;
+            margin-bottom: 22px;
+            border-top: none;
+            border-bottom: 1px dashed rgba(0,0,0,0.12);
+            padding-top: 0;
+            padding-bottom: 16px;
         }
-
-        .dialogue-box {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.8;
+        .btn-nav {
+            padding: 10px 22px;
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 13.5px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            border: 2px solid;
         }
-
-        .story-transition-box {
-            background: #fff7ed;
-            border-left: 5px solid var(--accent-main);
-            padding: 16px 20px;
-            border-radius: 0 12px 12px 0;
-            margin: 25px 0;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #9a3412;
-            box-shadow: 0 3px 10px rgba(230,126,34,0.1);
-        }
+        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
+        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: #ffffff; }
+        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
+        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: #ffffff; }
+        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
+        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: #ffffff; }
+        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
+        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: #ffffff; }
 
         .btn-finish {
             background: #22c55e;
-            color: white;
+            color: #ffffff;
             border: none;
             width: 100%;
             padding: 16px;
@@ -265,69 +457,41 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
-            transition: 0.2s;
-            margin-top: 10px;
+            transition: all 0.2s ease;
+            margin-top: 15px;
         }
         .btn-finish:hover {
             background: #16a34a;
             transform: translateY(-2px);
         }
 
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
-            padding-top: 20px;
-        }
-        .btn-nav {
-            padding: 10px 24px;
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.2s;
-            background: white;
-            border: 2px solid;
-        }
-        .theme-blue .btn-nav { color: var(--theme-blue-border); border-color: var(--theme-blue-border); }
-        .theme-blue .btn-nav:hover { background: var(--theme-blue-border); color: white; }
-        .theme-purple .btn-nav { color: var(--theme-purple-border); border-color: var(--theme-purple-border); }
-        .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
-        .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
-        .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
-        .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
-        .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
-
-        /* MODAL */
+        /* RESULT MODAL */
         #result-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.65);
             justify-content: center;
             align-items: center;
             z-index: 10000;
         }
         .modal-content {
-            background: white;
-            padding: 40px;
+            background: #ffffff;
+            padding: 36px;
             border-radius: 20px;
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             animation: popIn 0.3s ease-out;
         }
         @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
+            from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         .xp-circle {
-            width: 90px;
-            height: 90px;
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
             background: #fef3c7;
             color: #d97706;
@@ -337,11 +501,11 @@
             font-family: var(--font-title);
             font-size: 28px;
             font-weight: 800;
-            margin: 15px auto;
+            margin: 18px auto;
             border: 4px solid #f59e0b;
         }
 
-        /* FLOATING GRAMMAR TIP */
+        /* BOTÃO FLUTUANTE GRAMMAR TIP */
         .grammar-floating-container {
             position: fixed;
             bottom: 25px;
@@ -350,24 +514,30 @@
         }
         .grammar-floating-btn {
             background: var(--accent-main);
-            color: white;
+            color: #ffffff;
             padding: 12px 22px;
             border-radius: 50px;
             font-family: var(--font-title);
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13.5px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             border: none;
         }
-        .grammar-floating-btn:hover { transform: scale(1.05); }
+        .grammar-floating-btn:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
         .grammar-box {
             visibility: hidden;
             opacity: 0;
             width: 340px;
-            background: white;
-            color: var(--black);
+            background: #ffffff;
+            color: #1e293b;
             text-align: left;
             border-radius: 14px;
             padding: 18px;
@@ -376,10 +546,10 @@
             right: 0;
             box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             border: 2px solid var(--accent-main);
-            transition: 0.3s;
+            transition: all 0.25s ease;
             pointer-events: none;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 13.5px;
+            line-height: 1.55;
         }
         .grammar-floating-container:hover .grammar-box {
             visibility: visible;
@@ -394,526 +564,778 @@
         <!-- BANNER -->
         <div class="lesson-banner">
             <span class="unit-tag">Unit 7 • Home Sweet Home</span>
-            <h1>7A | Renting a Flat</h1>
+            <h1>7A | RENTING A FLAT</h1>
+            <p>House hunting, parts of a home, rooms, and describing ongoing actions with the Present Continuous</p>
         </div>
 
-        <!-- ================= 1. WORDS AND IDEAS ================= -->
-        <div id="sec-1" class="activity-section theme-blue active">
-            <h2>1. WORDS AND IDEAS • Describing Your House</h2>
-            <p class="instruction">What is your house like? Draw a floor plan of it (or imagine it). Then, describe it in detail below.</p>
+        <!-- ========================================== -->
+        <!-- 1. WARM UP & WORDS AND IDEAS -->
+        <!-- ========================================== -->
+        <div id="sec-warmup" class="activity-section theme-blue active">
+            <div class="nav-buttons top-nav">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-warmup', 'sec-target')">Next: Target Situation ➔</button>
+            </div>
 
+            <h2>🏠 1. WARM UP & WORDS AND IDEAS</h2>
+
+            <!-- WARM UP -->
             <div class="card-box">
-                <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 8px;">
-                    Write your house description (mention rooms, colors, furniture, and location):
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    Warm up: Ivete and Alan are very close friends now... What kind of housing does Ivete need?
+                </h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 14px;">Select the best option based on her current lifestyle:</p>
+
+                <div class="housing-options-grid">
+                    <div class="housing-option-card" onclick="selectHousingOption(this, 'opt-a')">
+                        <div class="option-letter">A</div>
+                        <div>
+                            <b>A single-family detached house in the countryside</b>
+                            <div style="font-size: 13px; color: #64748b;">A large suburban home with a big backyard, 4 bedrooms, and a garage.</div>
+                        </div>
+                    </div>
+
+                    <div class="housing-option-card selected" onclick="selectHousingOption(this, 'opt-b')">
+                        <div class="option-letter">B</div>
+                        <div>
+                            <b>A cozy, modern flat in the central urban area</b>
+                            <div style="font-size: 13px; color: #64748b;">Close to subway stations, work, quiet, comfortable, and affordable.</div>
+                        </div>
+                    </div>
+
+                    <div class="housing-option-card" onclick="selectHousingOption(this, 'opt-c')">
+                        <div class="option-letter">C</div>
+                        <div>
+                            <b>A shared university dormitory room</b>
+                            <div style="font-size: 13px; color: #64748b;">A communal student residence room with shared kitchen and bunk beds.</div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="warmup-housing-choice" class="fancy-input" value="opt-b">
+            </div>
+
+            <!-- WORDS AND IDEAS -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    Words and Ideas: What is your house like?
+                </h3>
+                <div class="instruction-box">
+                    What is your house like? Draw a floor plan of it. Then, describe it using the vocabulary tags below:
+                </div>
+
+                <div class="room-tags-container">
+                    <span class="room-tag">Sitting room</span>
+                    <span class="room-tag">Kitchen</span>
+                    <span class="room-tag">Bathroom</span>
+                    <span class="room-tag">Bedroom</span>
+                    <span class="room-tag">Dining room</span>
+                    <span class="room-tag">Yard</span>
+                    <span class="room-tag">Cellar</span>
+                    <span class="room-tag">Garage</span>
+                    <span class="room-tag">Hallway</span>
+                    <span class="room-tag">Attic</span>
+                    <span class="room-tag">Hall</span>
+                </div>
+
+                <label style="font-weight: 700; color: #1e293b; font-size: 14px; display: block; margin-bottom: 6px;">
+                    Describe your house and floor plan:
                 </label>
-                <textarea class="textarea-styled" id="wai-desc" placeholder="e.g. My flat has a spacious living room, two cozy bedrooms, a modern kitchen with a dining table, and a small balcony with flowers..."></textarea>
+                <textarea class="fancy-input" id="house-desc" rows="4" placeholder="e.g. My apartment has a bright living room, a modern kitchen with a breakfast bar, two bedrooms, and a clean bathroom..."></textarea>
             </div>
 
             <div class="nav-buttons">
                 <div></div>
-                <button class="btn-nav" onclick="navigateSection('sec-1', 'sec-2')">Next: Target Situation ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-warmup', 'sec-target')">Next: Target Situation ➔</button>
             </div>
         </div>
 
-        <!-- ================= 2. TARGET SITUATION ================= -->
-        <div id="sec-2" class="activity-section theme-purple">
-            <h2>2. TARGET SITUATION • Visiting a Flat</h2>
-            <p class="instruction">Ivete and Alan are visiting a flat. Read the advertisement and complete the dialogue with the 7 missing words.</p>
-
-            <div class="dialogue-box">
-                <b>Property Advertisement:</b> Charming two-bedroom flat in Queen's Road with a bright living room, modern fitted kitchen, family bathroom, and garden view.<br><br>
-                <b>Estate Agent:</b> "Welcome to the flat! As you can see, this is the main 
-                <input type="text" class="text-input eval-input" id="ts-1" data-ans="living room" style="display:inline-block; width:150px;" placeholder="room..."> 
-                with large windows."<br>
-                <b>Ivete:</b> "It's wonderful! And where is the 
-                <input type="text" class="text-input eval-input" id="ts-2" data-ans="kitchen" style="display:inline-block; width:140px;" placeholder="room..."> 
-                ? We love cooking dinner together."<br>
-                <b>Estate Agent:</b> "Right through this door. It has an oven, fridge, and marble counters."<br>
-                <b>Alan:</b> "How many 
-                <input type="text" class="text-input eval-input" id="ts-3" data-ans="bedrooms" style="display:inline-block; width:140px;" placeholder="rooms..."> 
-                does the apartment have?"<br>
-                <b>Estate Agent:</b> "There are two. The master bedroom and a guest room or home office. Here is the 
-                <input type="text" class="text-input eval-input" id="ts-4" data-ans="bathroom" style="display:inline-block; width:140px;" placeholder="room..."> 
-                with a full bathtub."<br>
-                <b>Ivete:</b> "Look, Alan, there's also a lovely 
-                <input type="text" class="text-input eval-input" id="ts-5" data-ans="balcony|garden" style="display:inline-block; width:140px;" placeholder="outdoor space..."> 
-                overlooking the trees!"<br>
-                <b>Estate Agent:</b> "Yes! The monthly 
-                <input type="text" class="text-input eval-input" id="ts-6" data-ans="rent" style="display:inline-block; width:120px;" placeholder="payment..."> 
-                includes building maintenance and heating."<br>
-                <b>Alan:</b> "We love it! We would like to sign the 
-                <input type="text" class="text-input eval-input" id="ts-7" data-ans="contract|lease" style="display:inline-block; width:140px;" placeholder="legal agreement..."> 
-                right away!"
+        <!-- ========================================== -->
+        <!-- 2. TARGET SITUATION -->
+        <!-- ========================================== -->
+        <div id="sec-target" class="activity-section theme-purple">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-warmup')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide & Up To You ➔</button>
             </div>
 
-            <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-1')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-2', 'sec-3')">Next: Up To You ➔</button>
-            </div>
-        </div>
-
-        <!-- ================= 3. UP TO YOU ================= -->
-        <div id="sec-3" class="activity-section theme-green">
-            <h2>3. UP TO YOU • Meet the Neighbours (Present Continuous)</h2>
-            <p class="instruction">These are Ivete’s neighbours in the building. What are they doing right now? Create complete phrases using the Present Continuous (is/are + verb-ing).</p>
-
-            <div class="card-box">
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">1. Mark:</span>
-                        <input type="text" class="text-input eval-input" id="uty-1" data-ans="mark is cleaning|is cleaning|is listening" placeholder="e.g. Mark is cleaning his bicycle in the hallway.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">2. Mary:</span>
-                        <input type="text" class="text-input eval-input" id="uty-2" data-ans="mary is watering|is watering|is reading" placeholder="e.g. Mary is watering the plants on the balcony.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">3. Spencer:</span>
-                        <input type="text" class="text-input eval-input" id="uty-3" data-ans="spencer is cooking|is cooking|is eating" placeholder="e.g. Spencer is cooking pasta in the kitchen.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">4. Romeo and Meg:</span>
-                        <input type="text" class="text-input eval-input" id="uty-4" data-ans="are walking|are playing|are talking" placeholder="e.g. Romeo and Meg are walking their dog.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">5. The Blackwoods:</span>
-                        <input type="text" class="text-input eval-input" id="uty-5" data-ans="are watching|are having|are talking" placeholder="e.g. The Blackwoods are watching television in the living room.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">6. Jennifer and Caio:</span>
-                        <input type="text" class="text-input eval-input" id="uty-6" data-ans="are studying|are drinking|are talking" placeholder="e.g. Jennifer and Caio are studying English together.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">7. Josh:</span>
-                        <input type="text" class="text-input eval-input" id="uty-7" data-ans="josh is playing|is playing|is listening" placeholder="e.g. Josh is playing the acoustic guitar.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">8. Pedro:</span>
-                        <input type="text" class="text-input eval-input" id="uty-8" data-ans="pedro is working|is working|is typing" placeholder="e.g. Pedro is working on his laptop in the study.">
-                    </div>
-                    <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">9. Lili:</span>
-                        <input type="text" class="text-input eval-input" id="uty-9" data-ans="lili is sleeping|is sleeping|is resting" placeholder="e.g. Lili is sleeping peacefully on the sofa.">
-                    </div>
-                </div>
+            <h2>🛋️ 2. TARGET SITUATION</h2>
+            <div class="instruction-box">
+                Ivete and Alan are visiting a flat. Read the rent advertisement and complete the dialogue with the correct rooms and spaces:
             </div>
 
-            <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-2')">⬅ Back</button>
-                <button class="btn-nav" onclick="navigateSection('sec-3', 'sec-4')">Next: Cross Curricular & Language at Work ➔</button>
+            <!-- ADVERTISEMENT CARD -->
+            <div class="rent-ad-card">
+                <span class="ad-badge">HOT OFFER</span>
+                <h3 style="margin: 0 0 6px 0; color: #92400e; font-family: var(--font-title); font-size: 19px;">
+                    FOR RENT: Beautiful Flat! Very quiet... LOW PRICE
+                </h3>
+                <p style="margin: 0; font-size: 14px; color: #78350f; line-height: 1.5;">
+                    Charming apartment in residential building. Two bedrooms (one single, one double), sunny sitting room, fitted kitchen, modern bathroom, and combined dining room. Immediate availability!
+                </p>
             </div>
-        </div>
 
-        <!-- ================= 4. CROSS CURRICULAR & LANGUAGE AT WORK ================= -->
-        <div id="sec-4" class="activity-section theme-orange">
-            <h2>4. CROSS CURRICULAR • Description of a Flat in Queen’s Road</h2>
-            <p class="instruction">Listen to the audio description of the flat in Queen’s Road and mark True (T) or False (F) for statements A through E.</p>
-
+            <!-- AUDIO PLAYER -->
             <div class="audio-wrapper">
-                <div class="audio-player" data-script-key="script-7a">
-                    <audio id="audio-7a" preload="none"></audio>
-                    <button type="button" class="play-btn" id="btn-audio-7a" onclick="handleAudioPlay('audio-7a', 'btn-audio-7a', 'script-7a', 'var(--blue-dark)')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-7a" onclick="handleAudioPause('audio-7a', 'btn-audio-7a', 'var(--blue-dark)')" title="Pausar">⏸</button>
-                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-7a" onclick="changeSpeedDirect('audio-7a', 'spd-audio-7a', 0.75, 'slow-audio-7a')" title="Mais devagar">🐢</button>
-                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-7a" onclick="cycleSpeed('audio-7a', 'spd-audio-7a')" title="Alternar velocidade">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-7a" onclick="changeSpeedDirect('audio-7a', 'spd-audio-7a', 1.25, 'fast-audio-7a')" title="Mais rápido">🐇</button>
-                    <span class="audio-track-label">Track 7A.1: Description of Flat in Queen's Road</span>
+                <div class="audio-player" data-script-key="script-7a-dialogue">
+                    <audio id="audio-flat-dialogue" style="display: none;" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-flat" onclick="toggleAudio('audio-flat-dialogue', 'btn-audio-flat')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-flat" onclick="changeSpeedDirect('audio-flat-dialogue', 'spd-audio-flat', 0.75, 'slow-audio-flat')">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-flat" onclick="cycleSpeed('audio-flat-dialogue', 'spd-audio-flat')">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-flat" onclick="changeSpeedDirect('audio-flat-dialogue', 'spd-audio-flat', 1.25, 'fast-audio-flat')">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 7A.1: Visiting the Flat with the Real Estate Agent</span>
+                </div>
+            </div>
+
+            <!-- DIALOGUE COM LACUNAS EVAL-INPUT -->
+            <div class="dialogue-container">
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Ivete:</span> Wow! The 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-1" data-ans="living room" placeholder="room..."> 
+                    is amazing! That's beautiful! 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-2" data-ans="kitchen" placeholder="room..."> 
+                    in the house?
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Alan:</span> I loved it!
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Ivete:</span> Is there a 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-3" data-ans="dining room" placeholder="room...">?
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">REA:</span> Yes, there is.
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Alan:</span> How many bedrooms are there?
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">REA:</span> There are two bedrooms. A single and a double.
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Ivete:</span> Hey! What's that?
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Alan:</span> Geez! That's wonderful!
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">REA:</span> Oh, that! Those are the 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-4" data-ans="sitting room" placeholder="room..."> 
+                    and the 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-5" data-ans="bathroom" placeholder="room...">. 
+                    In this kind of flat, they are in the same area.
+                </p>
+
+                <p style="margin: 0 0 8px 0;">
+                    <span class="dialogue-speaker">Ivete:</span> That's modern. That's really nice.
+                </p>
+
+                <p style="margin: 0;">
+                    <span class="dialogue-speaker">REA:</span> Finally, there is a 
+                    <input type="text" class="inline-eval-input eval-input" id="diag-6" data-ans="bedrooms" placeholder="room..."> 
+                    next to the opposite the which is. It's not big, but it's very comfortable...
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-warmup')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide & Up To You ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. LANGUAGE GUIDE & UP TO YOU -->
+        <!-- ========================================== -->
+        <div id="sec-guide" class="activity-section theme-green">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-home')">Next: Homework / Cross Curricular ➔</button>
+            </div>
+
+            <h2>🍕 3. LANGUAGE GUIDE & UP TO YOU</h2>
+
+            <!-- MATCH THE PHRASES -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #15803d; font-family: var(--font-title); font-size: 16.5px;">
+                    Match the phrases to the pictures:
+                </h3>
+                <p style="font-size: 14px; color: #475569; margin-bottom: 16px;">
+                    Write the corresponding number (1, 2, 3 or 4) for each action:
+                </p>
+
+                <div class="matching-grid">
+                    <div class="matching-card">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px;">
+                            a) Alan and Ivete are eating pizza.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="match-a" data-ans="3|a" placeholder="Picture number (e.g. 3)...">
+                    </div>
+
+                    <div class="matching-card">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px;">
+                            b) Ivete is taking the boxes.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="match-b" data-ans="2|b" placeholder="Picture number (e.g. 2)...">
+                    </div>
+
+                    <div class="matching-card">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px;">
+                            c) Alan is sleeping.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="match-c" data-ans="1|c" placeholder="Picture number (e.g. 1)...">
+                    </div>
+
+                    <div class="matching-card">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px;">
+                            d) Ivete is talking on the phone.
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="match-d" data-ans="4|d" placeholder="Picture number (e.g. 4)...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEIGHBOURS ACTIVITIES -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #15803d; font-family: var(--font-title); font-size: 16.5px;">
+                    Ivete's Neighbours: What are they doing?
+                </h3>
+                <p style="font-size: 14px; color: #475569; margin-bottom: 12px;">
+                    These are Ivete's neighbours in the building. What are they doing right now? Create complete sentences using the Present Continuous (e.g. <em>Mr. Miller is reading a newspaper</em>, <em>The children are playing outside</em>):
+                </p>
+                <textarea class="fancy-input" id="neighbours-text" rows="3" placeholder="Write sentences about what the neighbours are doing..."></textarea>
+            </div>
+
+            <!-- UP TO YOU: GUESS WHO! -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #15803d; font-family: var(--font-title); font-size: 16.5px;">
+                    🎮 Up to You: Guess Who!
+                </h3>
+                <div class="instruction-box">
+                    <strong>Game Instructions:</strong> Think of a person in the building or in your classroom. Don't say their name! Describe what they are doing and what they are wearing right now. Write your description below for a classmate to guess:
+                </div>
+                <textarea class="fancy-input" id="guess-who-game" rows="3" placeholder="e.g. He is wearing a blue jacket and jeans. He is sitting on the couch and he is drinking a cup of coffee. Who is he?"></textarea>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-home')">Next: Homework / Cross Curricular ➔</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. HOMEWORK / CROSS CURRICULAR -->
+        <!-- ========================================== -->
+        <div id="sec-home" class="activity-section theme-orange">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-work')">Next: Language at Work & Your Turn ➔</button>
+            </div>
+
+            <h2>🎧 4. HOMEWORK / CROSS CURRICULAR</h2>
+            <div class="instruction-box">
+                Listen to the description of a flat. Mark True or False for each statement below:
+            </div>
+
+            <!-- AUDIO PLAYER -->
+            <div class="audio-wrapper">
+                <div class="audio-player" data-script-key="script-7a-flat-desc">
+                    <audio id="audio-desc-flat" style="display: none;" preload="none"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-desc-flat" onclick="toggleAudio('audio-desc-flat', 'btn-audio-desc-flat')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-desc-flat" onclick="changeSpeedDirect('audio-desc-flat', 'spd-audio-desc-flat', 0.75, 'slow-audio-desc-flat')">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-desc-flat" onclick="cycleSpeed('audio-desc-flat', 'spd-audio-desc-flat')">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-desc-flat" onclick="changeSpeedDirect('audio-desc-flat', 'spd-audio-desc-flat', 1.25, 'fast-audio-desc-flat')">🐇 1.25x</button>
+                    <span class="audio-track-label">Track 7A.2: Detailed Audio Description of the Flat</span>
                 </div>
             </div>
 
             <div class="card-box">
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div>
-                        <span style="font-size: 13.5px;">A. The flat is located on the ground floor.</span>
-                        <input type="text" class="text-input eval-input" id="cc-1" data-ans="f|false" placeholder="T or F">
+                <!-- a -->
+                <div class="tf-row">
+                    <span class="tf-statement">a) The flat is located on a very noisy industrial avenue.</span>
+                    <div class="tf-btn-group">
+                        <button type="button" class="tf-btn" onclick="setTF('tf-a', 'True', this)">TRUE</button>
+                        <button type="button" class="tf-btn" onclick="setTF('tf-a', 'False', this)">FALSE</button>
+                        <input type="hidden" class="eval-input" id="tf-a" data-ans="False" value="">
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">B. There are two bedrooms in the flat.</span>
-                        <input type="text" class="text-input eval-input" id="cc-2" data-ans="t|true" placeholder="T or F">
+                </div>
+
+                <!-- b -->
+                <div class="tf-row">
+                    <span class="tf-statement">b) There is only one single bedroom in the flat.</span>
+                    <div class="tf-btn-group">
+                        <button type="button" class="tf-btn" onclick="setTF('tf-b', 'True', this)">TRUE</button>
+                        <button type="button" class="tf-btn" onclick="setTF('tf-b', 'False', this)">FALSE</button>
+                        <input type="hidden" class="eval-input" id="tf-b" data-ans="False" value="">
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">C. The kitchen is old and needs repairs.</span>
-                        <input type="text" class="text-input eval-input" id="cc-3" data-ans="f|false" placeholder="T or F">
+                </div>
+
+                <!-- c -->
+                <div class="tf-row">
+                    <span class="tf-statement">c) The kitchen and the living room are bright and comfortable.</span>
+                    <div class="tf-btn-group">
+                        <button type="button" class="tf-btn" onclick="setTF('tf-c', 'True', this)">TRUE</button>
+                        <button type="button" class="tf-btn" onclick="setTF('tf-c', 'False', this)">FALSE</button>
+                        <input type="hidden" class="eval-input" id="tf-c" data-ans="True" value="">
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">D. There is a supermarket just five minutes away.</span>
-                        <input type="text" class="text-input eval-input" id="cc-4" data-ans="t|true" placeholder="T or F">
+                </div>
+
+                <!-- d -->
+                <div class="tf-row">
+                    <span class="tf-statement">d) The rent price is affordable and includes essential services.</span>
+                    <div class="tf-btn-group">
+                        <button type="button" class="tf-btn" onclick="setTF('tf-d', 'True', this)">TRUE</button>
+                        <button type="button" class="tf-btn" onclick="setTF('tf-d', 'False', this)">FALSE</button>
+                        <input type="hidden" class="eval-input" id="tf-d" data-ans="True" value="">
                     </div>
-                    <div>
-                        <span style="font-size: 13.5px;">E. Pets are completely prohibited in the building.</span>
-                        <input type="text" class="text-input eval-input" id="cc-5" data-ans="f|false" placeholder="T or F">
+                </div>
+
+                <!-- e -->
+                <div class="tf-row">
+                    <span class="tf-statement">e) Ivete and Alan really love the apartment and want to rent it.</span>
+                    <div class="tf-btn-group">
+                        <button type="button" class="tf-btn" onclick="setTF('tf-e', 'True', this)">TRUE</button>
+                        <button type="button" class="tf-btn" onclick="setTF('tf-e', 'False', this)">FALSE</button>
+                        <input type="hidden" class="eval-input" id="tf-e" data-ans="True" value="">
                     </div>
                 </div>
             </div>
 
-            <h2 style="margin-top: 25px;">LANGUAGE AT WORK • People on Queen’s Road</h2>
-            <p class="instruction">
-                Look at the people on Queen's Road. What are they doing? Use the actions from the box: 
-                <b>Talk (2x) – Play – Listen to – Eat – Read</b>
-            </p>
+            <div class="nav-buttons">
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-home', 'sec-work')">Next: Language at Work & Your Turn ➔</button>
+            </div>
+        </div>
 
-            <div class="word-bank">
-                <span class="word-chip">Talk (2x)</span>
-                <span class="word-chip">Play</span>
-                <span class="word-chip">Listen to</span>
-                <span class="word-chip">Eat</span>
-                <span class="word-chip">Read</span>
+        <!-- ========================================== -->
+        <!-- 5. LANGUAGE AT WORK & NOW IT'S YOUR TURN -->
+        <!-- ========================================== -->
+        <div id="sec-work" class="activity-section theme-blue">
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-home')">⬅ Back</button>
+                <div></div>
             </div>
 
+            <h2>📝 5. LANGUAGE AT WORK & NOW IT'S YOUR TURN</h2>
+
+            <!-- PARTE A: LANGUAGE AT WORK -->
             <div class="card-box">
-                <div style="display: flex; flex-direction: column; gap: 12px;">
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    Language at work: What are the people doing?
+                </h3>
+                <div class="instruction-box">
+                    What are the people doing? Use the actions from the box: <strong>(Talk, Play, Listen to, Eat, Read)</strong> in the Present Continuous:
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <!-- 1 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 1:</span>
-                        <input type="text" class="text-input eval-input" id="law-1" data-ans="is talking|talking" placeholder="e.g. Character 1 is talking on the mobile phone.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            1. Girl with headphones:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-1" data-ans="She is listening to music." placeholder="Type complete sentence...">
                     </div>
+
+                    <!-- 2 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 2:</span>
-                        <input type="text" class="text-input eval-input" id="law-2" data-ans="is reading|reading" placeholder="e.g. Character 2 is reading the London morning newspaper.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            2. Boy tapping a mobile game:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-2" data-ans="He is playing on the phone." placeholder="Type complete sentence...">
                     </div>
+
+                    <!-- 3 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 3:</span>
-                        <input type="text" class="text-input eval-input" id="law-3" data-ans="is listening to|listening to|listening" placeholder="e.g. Character 3 is listening to music on headphones.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            3. Man having lunch at the table:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-3" data-ans="He is eating pizza." placeholder="Type complete sentence...">
                     </div>
+
+                    <!-- 4 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 4:</span>
-                        <input type="text" class="text-input eval-input" id="law-4" data-ans="is eating|eating" placeholder="e.g. Character 4 is eating a sandwich on the bench.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            4. Student in the armchair:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-4" data-ans="He is reading a book." placeholder="Type complete sentence...">
                     </div>
+
+                    <!-- 5 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 5:</span>
-                        <input type="text" class="text-input eval-input" id="law-5" data-ans="is playing|playing" placeholder="e.g. Character 5 is playing with a golden ball in the park.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            5. Two friends in the café:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-5" data-ans="They are talking." placeholder="Type complete sentence...">
                     </div>
+
+                    <!-- 6 -->
                     <div>
-                        <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">Character 6:</span>
-                        <input type="text" class="text-input eval-input" id="law-6" data-ans="is talking|talking" placeholder="e.g. Character 6 is talking to the building doorman.">
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 5px;">
+                            6. Man holding a phone to his ear:
+                        </label>
+                        <input type="text" class="fancy-input eval-input" id="law-6" data-ans="He is talking on the phone." placeholder="Type complete sentence...">
                     </div>
                 </div>
             </div>
 
-            <!-- TRANSIÇÃO NARRATIVA EXATA -->
-            <div class="story-transition-box">
-                <b>Story Update:</b>
-                "O apartamento perfeito foi alugado! Agora, eles precisam comprar os móveis para deixá-lo com a cara deles."
+            <!-- PARTE B: NOW IT'S YOUR TURN -->
+            <div class="card-box">
+                <h3 style="margin-top: 0; color: #1e3a8a; font-family: var(--font-title); font-size: 16.5px;">
+                    📸 Now it's your turn: 6 Moments of Your Life
+                </h3>
+                <div class="instruction-box">
+                    Send or imagine 6 different photos of you doing everyday actions. Tell your teacher what you are doing in each moment (e.g. <em>In photo 1, I am studying English at my desk. In photo 2, I am cooking dinner for my family...</em>):
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 4px;">Photo 1 & 2 Description:</label>
+                        <textarea class="fancy-input" id="turn-photos-1" rows="2" placeholder="In photo 1, I am... / In photo 2, I am..."></textarea>
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 4px;">Photo 3 & 4 Description:</label>
+                        <textarea class="fancy-input" id="turn-photos-2" rows="2" placeholder="In photo 3, I am... / In photo 4, I am..."></textarea>
+                    </div>
+
+                    <div>
+                        <label style="font-weight: 700; color: #1e293b; font-size: 13.5px; display: block; margin-bottom: 4px;">Photo 5 & 6 Description:</label>
+                        <textarea class="fancy-input" id="turn-photos-3" rows="2" placeholder="In photo 5, I am... / In photo 6, I am..."></textarea>
+                    </div>
+                </div>
             </div>
 
-            <button class="btn-finish" id="btn-finish-7a" onclick="calculateXP()">
-                Finish Lesson 7A & Calculate XP ➔
+            <!-- BOTÃO FINALIZAR LIÇÃO -->
+            <button type="button" class="btn-finish" id="btn-finish-lesson" onclick="calculateXP()">
+                ✨ Finish Lesson 7A & Check Results
             </button>
 
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-work', 'sec-home')">⬅ Back</button>
                 <div></div>
             </div>
         </div>
+
     </div>
 
     <!-- RESULT MODAL -->
     <div id="result-modal">
         <div class="modal-content">
-            <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin: 0 0 10px 0;">Lesson 7A Completed!</h2>
-            <p style="color: #64748b; font-size: 14px; margin: 0;" id="score-text"></p>
-            <div class="xp-circle" id="xp-gained-text">+0 XP</div>
-            <p style="font-size: 13.5px; color: #475569; margin-bottom: 25px;">
-                You mastered Present Continuous and vocabulary for renting a flat!
-            </p>
-            <button class="btn-finish" onclick="proceedTo7B()">Continue to 7B (Furnishing) ➔</button>
+            <h2 style="font-family: var(--font-title); font-size: 24px; color: var(--blue-dark); margin-top: 0;">🎉 Unit 7A Completed!</h2>
+            <p style="color: #64748b; font-size: 15px; margin-bottom: 12px;">Fantastic! You've mastered housing vocabulary and the Present Continuous!</p>
+            <div class="xp-circle" id="xp-gained-text">+100 XP</div>
+            <p id="score-text" style="font-weight: 700; color: #1e293b; font-size: 15px; margin-bottom: 24px;"></p>
+            <button type="button" class="btn-finish" onclick="proceedToNextLesson()">
+                Continue to Lesson 7B ➔
+            </button>
         </div>
     </div>
 
-    <!-- FLOATING GRAMMAR TIP -->
+    <!-- GRAMMAR TIP FLOATING BUTTON -->
     <div class="grammar-floating-container">
-        <button class="grammar-floating-btn">💡 Grammar Tip</button>
+        <button type="button" class="grammar-floating-btn">
+            💡 Grammar Tip
+        </button>
         <div class="grammar-box">
-            <h4 style="margin: 0 0 8px 0; color: var(--accent-main); font-family: var(--font-title); font-size: 14px;">
-                Present Continuous (Actions happening now)
-            </h4>
-            <p style="margin: 0 0 6px 0;"><b>Structure:</b> Subject + BE (am / is / are) + Verb-ing</p>
-            <p style="margin: 0 0 6px 0;">
-                • <b>I am</b> cooking dinner.<br>
-                • <b>He / She is</b> reading a book.<br>
-                • <b>They are</b> talking on Queen’s Road.
+            <b style="color: var(--accent-dark); font-size: 14.5px; display: block; margin-bottom: 8px;">Present Continuous Tense:</b>
+            <p style="margin: 0 0 8px 0;">
+                The Present Continuous describes actions happening <strong>right now</strong> at this moment:
+                <br><strong>subject + am/is/are + verb-ing</strong>
             </p>
-            <p style="margin: 0;"><b>Negatives:</b> is not (isn't) / are not (aren't) + verb-ing.<br><b>Questions:</b> Are you listening?</p>
+            <p style="margin: 0 0 8px 0;">
+                <em>Examples:</em>
+                <br>• She <strong>is listening</strong> to music.
+                <br>• They <strong>are talking</strong> about the flat.
+                <br>• He <strong>is eating</strong> delicious pizza.
+            </p>
+            <p style="margin: 0;">
+                Negatives use <strong>not</strong> (<em>is not / isn't, are not / aren't</em>) and questions invert (<em>Are you studying?</em>).
+            </p>
         </div>
     </div>
 
     <script>
-        function navigateSection(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
-            const showEl = document.getElementById(showId);
-            showEl.classList.add('active');
-            setTimeout(() => { showEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
-        }
-
         // ==========================================
-        // STANDARDIZED AUDIO & SPEECH PLAYER SYSTEM
+        // SCRIPT TRANSCRIÇÕES PARA SPEECH SYNTHESIS
         // ==========================================
         const audioScripts = {
-            'script-7a': "Welcome to Queen's Road flat. It is on the second floor of a lovely Victorian building. There are two sunny bedrooms, a modern fully equipped kitchen, a spacious living room, and a supermarket just five minutes away. Small pets are welcome in the community."
+            'script-7a-dialogue': "Ivete: Wow! The living room is amazing! That's beautiful! Kitchen in the house? Alan: I loved it! Ivete: Is there a dining room? Real Estate Agent: Yes, there is. Alan: How many bedrooms are there? Real Estate Agent: There are two bedrooms. A single and a double. Ivete: Hey! What's that? Alan: Geez! That's wonderful! Real Estate Agent: Oh, that! Those are the sitting room and the bathroom. In this kind of flat, they are in the same area. Ivete: That's modern. That's really nice. Real Estate Agent: Finally, there is a bedrooms next to the opposite the which is. It's not big, but it's very comfortable!",
+            'script-7a-flat-desc': "Description of the flat: The flat is in a peaceful, quiet neighborhood, not on a noisy industrial street. There are two comfortable bedrooms: a master double bedroom and a bright single room. The kitchen and living room are spacious and filled with natural light. The rent is low and includes maintenance. Ivete and Alan love everything about it and can't wait to move in!"
         };
 
-        const playerStates = {};
-
-        function getPlayerState(id) {
-            if (!playerStates[id]) {
-                playerStates[id] = {
-                    rate: 1.0,
-                    isPlaying: false,
-                    isPaused: false,
-                    utterance: null
-                };
+        // ==========================================
+        // NAVEGAÇÃO DE SEÇÕES
+        // ==========================================
+        function navigateSection(currentId, targetId) {
+            document.querySelectorAll('.activity-section').forEach(sec => sec.classList.remove('active'));
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-            return playerStates[id];
         }
 
-        function stopAllAudiosExcept(currentId) {
+        // ==========================================
+        // WARM UP HOUSING SELECTION
+        // ==========================================
+        function selectHousingOption(cardEl, optVal) {
+            document.querySelectorAll('.housing-option-card').forEach(c => c.classList.remove('selected'));
+            cardEl.classList.add('selected');
+            document.getElementById('warmup-housing-choice').value = optVal;
+        }
+
+        // ==========================================
+        // TRUE / FALSE TOGGLE
+        // ==========================================
+        function setTF(inputId, val, btnEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.value = val;
+
+            const group = btnEl.parentElement;
+            group.querySelectorAll('.tf-btn').forEach(b => {
+                b.classList.remove('active-true', 'active-false');
+            });
+
+            if (val === 'True') {
+                btnEl.classList.add('active-true');
+            } else {
+                btnEl.classList.add('active-false');
+            }
+        }
+
+        // ==========================================
+        // CONTROLE DE ÁUDIO PADRONIZADO COM SPEECH FALLBACK
+        // ==========================================
+        const audioPlayersState = {};
+
+        function getPlayerState(audioId) {
+            if (!audioPlayersState[audioId]) {
+                audioPlayersState[audioId] = { isPlaying: false, rate: 1.0 };
+            }
+            return audioPlayersState[audioId];
+        }
+
+        function stopAllAudiosExcept(exceptId) {
             document.querySelectorAll('audio').forEach(a => {
-                if (a.id !== currentId) {
+                if (a.id !== exceptId) {
                     a.pause();
                     a.currentTime = 0;
+                }
+            });
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                const p = btn.closest('.audio-player');
+                const aud = p ? p.querySelector('audio') : null;
+                if (!aud || aud.id !== exceptId) {
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
                 }
             });
             if (window.speechSynthesis) {
                 window.speechSynthesis.cancel();
             }
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                if (!btn.id.includes(currentId)) {
-                    btn.innerText = "▶ PLAY";
-                    btn.classList.remove('playing');
-                    btn.style.background = "var(--blue-dark)";
-                }
-            });
-            Object.keys(playerStates).forEach(k => {
-                if (k !== currentId) {
-                    playerStates[k].isPlaying = false;
-                    playerStates[k].isPaused = false;
-                }
-            });
         }
 
-        function handleAudioPlay(audioId, btnId, scriptKey, originalColor) {
+        function toggleAudio(audioId, btnId) {
             const audio = document.getElementById(audioId);
             const btn = document.getElementById(btnId);
             const state = getPlayerState(audioId);
+            const player = audio ? audio.closest('.audio-player') : null;
+            const scriptKey = player ? player.getAttribute('data-script-key') : null;
 
-            const hasAudioSrc = audio && audio.src && audio.src.startsWith('http') && !audio.src.includes('undefined');
-
-            if (hasAudioSrc) {
-                if (!audio.paused && !audio.ended) {
+            if (state.isPlaying) {
+                if (audio && !audio.paused) {
                     audio.pause();
-                    btn.innerText = "▶ CONTINUAR";
-                    btn.classList.remove('playing');
-                    btn.style.background = originalColor || "var(--blue-dark)";
-                    state.isPlaying = false;
-                    state.isPaused = true;
-                } else if (state.isPaused && audio.paused && audio.currentTime > 0) {
-                    audio.playbackRate = state.rate;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
-                } else {
-                    stopAllAudiosExcept(audioId);
-                    audio.playbackRate = state.rate;
-                    audio.currentTime = 0;
-                    audio.play().then(() => {
-                        btn.innerText = "⏸ PAUSE";
-                        btn.classList.add('playing');
-                        btn.style.background = "#ea580c";
-                        state.isPlaying = true;
-                        state.isPaused = false;
-                    }).catch(() => fallbackSpeech(audioId, btnId, scriptKey, originalColor));
-
-                    audio.onended = () => {
-                        btn.innerText = "▶ PLAY";
-                        btn.classList.remove('playing');
-                        btn.style.background = originalColor || "var(--blue-dark)";
-                        state.isPlaying = false;
-                        state.isPaused = false;
-                    };
                 }
-            } else {
-                fallbackSpeech(audioId, btnId, scriptKey, originalColor);
-            }
-        }
-
-        function handleAudioPause(audioId, btnId, originalColor) {
-            const audio = document.getElementById(audioId);
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
-
-            if (audio && !audio.paused) {
-                audio.pause();
-            }
-            if (window.speechSynthesis && (window.speechSynthesis.speaking || state.isPlaying)) {
-                window.speechSynthesis.pause();
-            }
-            state.isPlaying = false;
-            state.isPaused = true;
-            if (btn) {
-                btn.innerText = "▶ CONTINUAR";
-                btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-            }
-        }
-
-        function fallbackSpeech(audioId, btnId, scriptKey, originalColor) {
-            if (!('speechSynthesis' in window)) return;
-            const btn = document.getElementById(btnId);
-            const state = getPlayerState(audioId);
-
-            if (state.isPlaying && !state.isPaused) {
-                window.speechSynthesis.pause();
-                state.isPaused = true;
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
                 state.isPlaying = false;
-                btn.innerText = "▶ CONTINUAR";
+                btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                return;
-            }
-
-            if (state.isPaused && window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-                state.isPaused = false;
-                state.isPlaying = true;
-                btn.innerText = "⏸ PAUSE";
-                btn.classList.add('playing');
-                btn.style.background = "#ea580c";
                 return;
             }
 
             stopAllAudiosExcept(audioId);
-            const text = audioScripts[scriptKey] || "";
-            if (!text) return;
 
+            if (audio && audio.src && audio.src !== window.location.href && !audio.src.endsWith('#')) {
+                audio.playbackRate = state.rate;
+                audio.play().then(() => {
+                    state.isPlaying = true;
+                    btn.innerText = "⏸ PAUSE";
+                    btn.classList.add('playing');
+                }).catch(e => {
+                    console.log("Audio file playback error, falling back to speech synthesis:", e);
+                    playSpeechFallback(scriptKey, state.rate, btn, state);
+                });
+            } else {
+                playSpeechFallback(scriptKey, state.rate, btn, state);
+            }
+
+            if (audio) {
+                audio.onended = () => {
+                    state.isPlaying = false;
+                    btn.innerText = "▶ PLAY";
+                    btn.classList.remove('playing');
+                };
+            }
+        }
+
+        function playSpeechFallback(scriptKey, rate, btn, state) {
+            if (!window.speechSynthesis) return;
+            const text = audioScripts[scriptKey] || "Audio track not found.";
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-GB';
-            utterance.rate = state.rate;
-            state.utterance = utterance;
-            window.activeUtterance = utterance;
+            utterance.lang = 'en-US';
+            utterance.rate = rate;
 
-            btn.innerText = "⏸ PAUSE";
-            btn.classList.add('playing');
-            btn.style.background = "#ea580c";
-            state.isPlaying = true;
-            state.isPaused = false;
+            utterance.onstart = () => {
+                state.isPlaying = true;
+                btn.innerText = "⏸ PAUSE";
+                btn.classList.add('playing');
+            };
 
             utterance.onend = () => {
+                state.isPlaying = false;
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
             };
 
             utterance.onerror = () => {
+                state.isPlaying = false;
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
-                btn.style.background = originalColor || "var(--blue-dark)";
-                state.isPlaying = false;
-                state.isPaused = false;
             };
 
             window.speechSynthesis.speak(utterance);
         }
 
         function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const audio = document.getElementById(audioId);
             const state = getPlayerState(audioId);
             state.rate = targetRate;
-            const audio = document.getElementById(audioId);
             if (audio) audio.playbackRate = targetRate;
 
+            const player = audio ? audio.closest('.audio-player') : null;
+            if (player) {
+                player.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+            }
+            if (clickedBtnId) {
+                const b = document.getElementById(clickedBtnId);
+                if (b) b.classList.add('active');
+            }
             const spdBtn = document.getElementById(spdBtnId);
-            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(2) + 'x';
-
-            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
-            if (playerEl) {
-                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
-                if (clickedBtnId) {
-                    const cb = document.getElementById(clickedBtnId);
-                    if (cb) cb.classList.add('active');
-                }
-            }
-
-            if (state.isPlaying && window.speechSynthesis && window.speechSynthesis.speaking) {
-                const btn = playerEl ? playerEl.querySelector('.play-btn') : null;
-                const scriptKey = playerEl ? playerEl.getAttribute('data-script-key') : null;
-                window.speechSynthesis.cancel();
-                if (scriptKey && btn) {
-                    state.isPlaying = false;
-                    state.isPaused = false;
-                    fallbackSpeech(audioId, btn.id, scriptKey, 'var(--blue-dark)');
-                }
-            }
+            if (spdBtn) spdBtn.innerText = `⚡ ${targetRate}x`;
         }
 
         function cycleSpeed(audioId, spdBtnId) {
-            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const speeds = [0.75, 1.0, 1.25];
             const state = getPlayerState(audioId);
-            let current = state.rate || 1.0;
-            let idx = speeds.indexOf(current);
+            let idx = speeds.indexOf(state.rate);
             if (idx === -1) idx = 1;
-            let nextIdx = (idx + 1) % speeds.length;
-            let newRate = speeds[nextIdx];
-            
-            let clickedBtnId = null;
-            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
-            else if (newRate === 1.25 || newRate === 1.5) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+            let nextRate = speeds[(idx + 1) % speeds.length];
 
-            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
+            let clickedId = spdBtnId;
+            if (nextRate === 0.75) clickedId = spdBtnId.replace('spd-', 'slow-');
+            else if (nextRate === 1.25) clickedId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, nextRate, clickedId);
         }
 
-        function playAudioQueensRoad() {
-            handleAudioPlay('audio-7a', 'btn-audio-7a', 'script-7a', 'var(--blue-dark)');
+        // ==========================================
+        // NORMALIZAÇÃO DE TEXTO PARA VALIDAÇÃO
+        // ==========================================
+        function normalizeText(txt) {
+            return (txt || '').toString().toLowerCase()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”’]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
         }
 
-        let calculatedXP = 0;
+        // ==========================================
+        // CÁLCULO DE XP & VALIDAÇÃO GAMIFICADA
+        // ==========================================
+        let finalXP = 100;
 
         function calculateXP() {
             let correct = 0;
             let total = 0;
-            let userAnswers = { inputs: {}, textarea: document.getElementById('wai-desc').value };
+            const respostas = {};
 
-            document.querySelectorAll('.eval-input').forEach(input => {
+            // 1. Validação de inputs exatos (.eval-input)
+            document.querySelectorAll('.eval-input').forEach(el => {
                 total++;
-                let val = input.value.trim().toLowerCase().replace(/[.?]/g, '');
-                userAnswers.inputs[input.id] = input.value;
-                let accepted = input.getAttribute('data-ans').toLowerCase().split('|').map(a => a.replace(/[.?]/g, ''));
-                if (accepted.some(a => val === a || val.includes(a) || (a.includes(val) && val.length > 2))) {
+                const expected = el.getAttribute('data-ans') || '';
+                const userVal = el.value || '';
+                respostas[el.id] = userVal;
+
+                const normUser = normalizeText(userVal);
+                const normExpected = normalizeText(expected);
+
+                let isMatch = false;
+                if (normUser.length > 0 && normExpected.length > 0) {
+                    if (normUser === normExpected) {
+                        isMatch = true;
+                    } else if (normExpected.includes(normUser) || normUser.includes(normExpected)) {
+                        isMatch = true;
+                    } else if (expected.includes('|') || expected.includes('/')) {
+                        const parts = expected.split(/[|\/]/).map(p => normalizeText(p));
+                        if (parts.some(p => normUser.includes(p) || p.includes(normUser))) {
+                            isMatch = true;
+                        }
+                    }
+                }
+
+                if (isMatch) {
                     correct++;
-                    input.style.borderColor = "#22c55e";
-                    input.style.backgroundColor = "#f0fdf4";
+                    el.style.borderColor = '#22c55e';
+                    el.style.backgroundColor = '#f0fdf4';
                 } else {
-                    input.style.borderColor = "#ef4444";
-                    input.style.backgroundColor = "#fef2f2";
+                    el.style.borderColor = '#ef4444';
+                    el.style.backgroundColor = '#fef2f2';
                 }
             });
 
-            localStorage.setItem('licao7a_respostas', JSON.stringify(userAnswers));
+            // 2. Salvar respostas abertas
+            document.querySelectorAll('textarea.fancy-input:not(.eval-input), input.fancy-input:not(.eval-input)').forEach(el => {
+                respostas[el.id] = el.value;
+                if (el.value.trim().length >= 4) {
+                    correct += 1;
+                }
+                total += 1;
+            });
 
-            let percentage = total > 0 ? (correct / total) : 1;
-            calculatedXP = Math.min(100, Math.round(percentage * 100));
+            localStorage.setItem('licao7a_respostas', JSON.stringify(respostas));
 
-            document.getElementById('xp-gained-text').innerText = "+" + calculatedXP + " XP";
-            document.getElementById('score-text').innerText = `You scored ${correct} out of ${total} points (${calculatedXP}%).`;
+            const ratio = total > 0 ? (correct / total) : 1;
+            finalXP = Math.max(60, Math.round(ratio * 100));
+
+            document.getElementById('xp-gained-text').innerText = `+${finalXP} XP`;
+            document.getElementById('score-text').innerText = `You completed the activities with ${finalXP}% score!`;
             document.getElementById('result-modal').style.display = 'flex';
         }
 
-        function proceedTo7B() {
-            let oldXP = parseInt(localStorage.getItem('licao_7a_xp')) || 0;
-            let diff = calculatedXP - oldXP;
+        function proceedToNextLesson() {
+            const oldXP = parseInt(localStorage.getItem('licao_7a_xp')) || 0;
+            const diff = finalXP - oldXP;
 
             localStorage.setItem('licao_7a_status', 'concluida');
-            localStorage.setItem('licao_7a_xp', calculatedXP);
+            localStorage.setItem('licao_7a_xp', finalXP);
 
-            let studentXP = parseInt(localStorage.getItem('studentXP')) || 0;
-            studentXP += diff;
+            const totalXP = (parseInt(localStorage.getItem('target_on_profile_xp')) || 0) + diff;
+            localStorage.setItem('target_on_profile_xp', totalXP);
+
+            const studentXP = (parseInt(localStorage.getItem('studentXP')) || 0) + diff;
             localStorage.setItem('studentXP', studentXP);
 
             if (window.parent && window.parent.completeUnit) {
-                window.parent.completeUnit(7, calculatedXP);
+                window.parent.completeUnit(0, finalXP);
             }
             if (window.parent && window.parent.avancarPara) {
                 window.parent.avancarPara('licao7b.html', 'link-7b');
@@ -926,19 +1348,53 @@
             window.location.href = "licao7b.html";
         }
 
+        // ==========================================
+        // MODO LEITURA (READ-ONLY) NA INICIALIZAÇÃO
+        // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            let saved = localStorage.getItem('licao7a_respostas');
-            if (saved) {
-                try {
-                    let data = JSON.parse(saved);
-                    if (data.textarea) document.getElementById('wai-desc').value = data.textarea;
-                    if (data.inputs) {
-                        for (let id in data.inputs) {
-                            let el = document.getElementById(id);
-                            if (el) el.value = data.inputs[id];
-                        }
+            if (localStorage.getItem('licao_7a_status') === 'concluida') {
+                const savedData = localStorage.getItem('licao7a_respostas');
+                if (savedData) {
+                    try {
+                        const respostas = JSON.parse(savedData);
+                        document.querySelectorAll('.eval-input, .fancy-input').forEach(el => {
+                            if (el.id && respostas[el.id] !== undefined) {
+                                el.value = respostas[el.id];
+
+                                // Atualizar botões TF se for o caso
+                                if (el.id.startsWith('tf-')) {
+                                    const group = el.parentElement;
+                                    if (group) {
+                                        if (respostas[el.id] === 'True') {
+                                            const btn = group.querySelector('.tf-btn:first-child');
+                                            if (btn) btn.classList.add('active-true');
+                                        } else if (respostas[el.id] === 'False') {
+                                            const btn = group.querySelector('.tf-btn:last-of-type');
+                                            if (btn) btn.classList.add('active-false');
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Error parsing saved answers:", e);
                     }
-                } catch(e) {}
+                }
+
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                const finishBtn = document.getElementById('btn-finish-lesson');
+                if (finishBtn) {
+                    finishBtn.innerText = "🔒 Lesson Completed";
+                    finishBtn.disabled = true;
+                    finishBtn.style.background = "#94a3b8";
+                    finishBtn.style.cursor = "not-allowed";
+                    finishBtn.style.boxShadow = "none";
+                }
             }
         });
     </script>
