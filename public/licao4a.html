@@ -260,6 +260,22 @@
             background-color: #fff7ed;
             box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
         }
+        textarea.fancy-input {
+            max-width: 100%;
+            width: 100%;
+            font-family: var(--font-text);
+            resize: vertical;
+            display: block;
+        }
+        .exercise-card label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .exercise-card input.fancy-input {
+            margin-bottom: 12px;
+        }
         .fancy-input-inline {
             display: inline-block;
             width: auto;
@@ -953,6 +969,19 @@
                 </div>
             </div>
 
+            <!-- COMPREHENSION MAP -->
+            <div class="exercise-card" style="margin-bottom: 25px; border-color: var(--blue-dark);">
+                <p><b>Comprehension Map:</b> Listen to Ivete asking the hotel receptionist for information. Use the information to fill in the map.</p>
+                <label style="color: #1e3a8a; font-weight: bold;">In the BLUE bus stop, write ways to ask about transportation:</label>
+                <textarea class="fancy-input eval-text" id="ans-blue-stop" rows="2" data-ans="Can I have some information|Which bus goes to|How much is the fare"></textarea>
+                
+                <label style="color: #b45309; font-weight: bold;">In the YELLOW bus stop, write the instructions by the receptionist:</label>
+                <textarea class="fancy-input eval-text" id="ans-yellow-stop" rows="2" data-ans="Take the bus to|Don't get off|Stay on the bus|Get off"></textarea>
+                
+                <label style="color: #b91c1c; font-weight: bold;">In the RED bus stop, write the means of transportation mentioned:</label>
+                <textarea class="fancy-input eval-text" id="ans-red-stop" rows="2" data-ans="Bus, Taxi, Bike, On foot"></textarea>
+            </div>
+
             <!-- SITUATION COMPREHENSION CHECKS -->
             <div class="exercise-card">
                 <p>1. Does Route 14 go to Oxford Street?</p>
@@ -1067,6 +1096,36 @@
             <p class="instruction">Complete the situational review and write your autonomous travel dialogue.</p>
 
             <div class="exercise-card">
+                <p><b>Giving Directions:</b></p>
+                <label>e) How can I get to the British Museum?</label>
+                <input type="text" class="fancy-input eval-text" id="ask-bm" data-ans="Take a taxi" placeholder="Type your answer...">
+                
+                <label>f) How can I get to the Grocery store?</label>
+                <input type="text" class="fancy-input eval-text" id="ask-gs" data-ans="Go on foot" placeholder="Type your answer...">
+                
+                <label>g) How can I get to Big Ben?</label>
+                <input type="text" class="fancy-input eval-text" id="ask-bb" data-ans="Take a bus" placeholder="Type your answer...">
+                
+                <label>h) How can I get to Liverpool?</label>
+                <input type="text" class="fancy-input eval-text" id="ask-liv" data-ans="Take a train" placeholder="Type your answer...">
+            </div>
+
+            <div id="sec-uptoyou" class="activity-section theme-yellow active" style="margin-top: 25px;">
+                <h2>Up To You • Hop On and Hop Off</h2>
+                <div class="exercise-card">
+                    <p><b>City Tour Brochure:</b> You have a tourism agency in your city. Follow the instructions:</p>
+                    <ul style="font-size: 15px; color: #334155; line-height: 1.6;">
+                        <li>a) Draw a map of a small city.</li>
+                        <li>b) Add pointers to five important places in it.</li>
+                        <li>c) Colour routes to get from your location to your destination.</li>
+                        <li>d) Illustrate your brochure.</li>
+                    </ul>
+                    <label>e) Create 5 instructions about how to get to the pointed places:</label>
+                    <textarea class="fancy-input" id="ans-agency-instructions" rows="4" placeholder="Instruction 1...&#10;Instruction 2..."></textarea>
+                </div>
+            </div>
+
+            <div class="exercise-card">
                 <p><b>Situational Review 1:</b> What must you do before your bus stop arrives in the UK?</p>
                 <select class="fancy-input eval-select" id="hw-1" data-ans="bell">
                     <option value="">-- Choose action --</option>
@@ -1108,10 +1167,15 @@
                 <textarea id="final-dialogue" class="notepad-area" placeholder="You: Good morning! Does this bus go to the British Museum?&#10;Driver: Yes, it stops right outside on Great Russell Street.&#10;You: How much is the fare?&#10;Driver: It's £1.75 with your Oyster card.&#10;You: Thank you! Please let me know when we arrive."></textarea>
             </div>
 
+            <div class="exercise-card" style="background: #eff6ff; border-color: #3b82f6;">
+                <p><b>Now It's Your Turn:</b> Your teacher wants to visit you. Help them get to your place. Use OPERA as a reference and give instructions on how to get to your house.</p>
+                <textarea class="fancy-input" id="ans-opera-house" rows="4" placeholder="From Opera Idiomas, you need to..."></textarea>
+            </div>
+
             <!-- CAIXA DE TRANSIÇÃO NARRATIVA -->
             <div class="story-transition-box">
                 <b>The Journey Continues...</b><br>
-                Ivete desceu no ponto com sucesso no coração de Londres! Agora ela está a pé nas ruas movimentadas de Westminster e precisa chegar ao British Museum. Como ela vai pedir informações e seguir direções corretas nas esquinas londrinas? Prepare-se para a Lição 4B | Giving Directions!
+                Ivete has successfully gotten off at the bus stop in the heart of London! Now she is on foot on the busy streets of Westminster and needs to get to the British Museum. How will she ask for information and follow the correct directions around London's street corners? Get ready for Lesson 4B | Giving Directions!
             </div>
 
             <!-- BOTÃO DE FINALIZAÇÃO -->
@@ -1176,9 +1240,13 @@
                 if (savedData) {
                     let respostas = JSON.parse(savedData);
 
-                    // Restaura Texto do Diálogo
+                    // Restaura Texto do Diálogo e campos autônomos
                     let diagEl = document.getElementById('final-dialogue');
                     if(diagEl && respostas.dialogue) { diagEl.value = respostas.dialogue; diagEl.disabled = true; }
+                    let agencyEl = document.getElementById('ans-agency-instructions');
+                    if(agencyEl && respostas.agencyInstructions) { agencyEl.value = respostas.agencyInstructions; agencyEl.disabled = true; }
+                    let operaEl = document.getElementById('ans-opera-house');
+                    if(operaEl && respostas.operaHouse) { operaEl.value = respostas.operaHouse; operaEl.disabled = true; }
 
                     // Restaura Drag & Drop das placas
                     if(respostas.dragDrop) {
@@ -1595,7 +1663,9 @@
                 selects: {},
                 texts: {},
                 inputs: {},
-                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : ""
+                dialogue: document.getElementById('final-dialogue') ? document.getElementById('final-dialogue').value : "",
+                agencyInstructions: document.getElementById('ans-agency-instructions') ? document.getElementById('ans-agency-instructions').value : "",
+                operaHouse: document.getElementById('ans-opera-house') ? document.getElementById('ans-opera-house').value : ""
             };
 
             // 1. Avalia Drag and Drop (Placas de trânsito)
@@ -1616,14 +1686,14 @@
                 if(sel.value === sel.getAttribute('data-ans')) correct++;
             });
 
-            // 3. Avalia Texts (Perguntas de viagem)
+            // 3. Avalia Texts (Perguntas de viagem e direções)
             document.querySelectorAll('.eval-text').forEach(input => {
                 total++;
                 respostasFotografadas.texts[input.id] = input.value;
                 let userVal = input.value.trim().toLowerCase();
                 let expected = input.getAttribute('data-ans').toLowerCase();
-                let acceptedList = expected.split('|');
-                if(acceptedList.includes(userVal)) correct++;
+                let acceptedList = expected.split('|').map(s => s.trim());
+                if(acceptedList.some(acc => userVal === acc || (acc.length >= 3 && userVal.includes(acc)))) correct++;
             });
 
             // 4. Avalia Inputs Hidden (True/False se houver)
