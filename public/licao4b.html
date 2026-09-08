@@ -115,42 +115,6 @@
             font-style: italic;
         }
 
-        /* TABS DE ATIVIDADE */
-        .section-tabs-bar {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 12px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e2e8f0;
-            scrollbar-width: thin;
-        }
-        .section-tab-btn {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            padding: 9px 16px;
-            border-radius: 50px;
-            font-family: var(--font-title);
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: 0.2s;
-        }
-        .section-tab-btn:hover {
-            background: #e2e8f0;
-            color: var(--blue-dark);
-        }
-        .section-tab-btn.active {
-            background: var(--orange-main);
-            color: white;
-            border-color: var(--orange-main);
-            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.35);
-        }
-
         /* CARDS DE ATIVIDADE */
         .activity-section {
             display: none;
@@ -180,7 +144,7 @@
             font-weight: 800;
             font-size: 22px;
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -239,7 +203,7 @@
             border: 1.5px solid #e2e8f0;
         }
 
-        /* AUDIO PLAYER */
+        /* REPRODUTOR DE ÁUDIO PADRONIZADO */
         .audio-wrapper {
             display: flex;
             justify-content: center;
@@ -257,6 +221,9 @@
             gap: 10px;
             font-weight: 600;
             box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+        .audio-player audio {
+            display: none;
         }
         .play-btn {
             background: var(--orange-main);
@@ -281,15 +248,23 @@
             background: #f1f5f9;
             border: 1px solid #cbd5e1;
             color: #1e293b;
-            padding: 7px 13px;
+            padding: 7px 14px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 800;
             font-size: 12px;
             transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
         .audio-ctrl-btn:hover { background: #e2e8f0; transform: scale(1.05); }
-        .audio-ctrl-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .audio-ctrl-btn.active {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
         .audio-track-label {
             font-size: 12px;
             font-weight: 700;
@@ -437,27 +412,38 @@
         }
         .btn-tool:hover { background: #e2e8f0; }
 
-        /* NAVIGATION BUTTONS */
+        /* PADRONIZAÇÃO DE NAVEGAÇÃO (.nav-buttons) */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 35px;
+            margin-top: 30px;
             border-top: 1px dashed rgba(0,0,0,0.15);
-            padding-top: 20px;
+            padding-top: 18px;
+        }
+        .nav-buttons.top-nav {
+            margin-top: 0;
+            margin-bottom: 22px;
+            border-top: none;
+            border-bottom: 1px dashed rgba(0,0,0,0.15);
+            padding-top: 0;
+            padding-bottom: 14px;
         }
         .btn-nav {
-            padding: 12px 26px;
+            padding: 11px 24px;
             font-family: var(--font-title);
             font-weight: 800;
             font-size: 13px;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.25s;
             background: white;
             border: 2px solid;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .theme-orange .btn-nav { color: var(--theme-orange-border); border-color: var(--theme-orange-border); }
         .theme-orange .btn-nav:hover { background: var(--theme-orange-border); color: white; }
@@ -467,6 +453,8 @@
         .theme-purple .btn-nav:hover { background: var(--theme-purple-border); color: white; }
         .theme-green .btn-nav { color: var(--theme-green-border); border-color: var(--theme-green-border); }
         .theme-green .btn-nav:hover { background: var(--theme-green-border); color: white; }
+        .theme-yellow .btn-nav { color: var(--theme-yellow-border); border-color: var(--theme-yellow-border); }
+        .theme-yellow .btn-nav:hover { background: var(--theme-yellow-border); color: white; }
 
         /* BOTÃO FINALIZAR */
         .btn-finish {
@@ -617,23 +605,16 @@
             <p>Giving Directions • Street Abbreviations • Prepositions of Place</p>
         </div>
 
-        <!-- TABS DE NAVEGAÇÃO SUPERIOR -->
-        <div class="section-tabs-bar">
-            <button class="section-tab-btn active" onclick="showTab(0)">1. Warm Up</button>
-            <button class="section-tab-btn" onclick="showTab(1)">2. Words & Ideas</button>
-            <button class="section-tab-btn" onclick="showTab(2)">3. Target Situation</button>
-            <button class="section-tab-btn" onclick="showTab(3)">4. Language Guide</button>
-            <button class="section-tab-btn" onclick="showTab(4)">5. Up to You</button>
-            <button class="section-tab-btn" onclick="showTab(5)">6. Cross Curricular</button>
-            <button class="section-tab-btn" onclick="showTab(6)">7. Language at Work 1</button>
-            <button class="section-tab-btn" onclick="showTab(7)">8. Language at Work 2</button>
-            <button class="section-tab-btn" onclick="showTab(8)">9. Your Turn</button>
-        </div>
-
         <!-- ========================================== -->
         <!-- 1. WARM UP -->
         <!-- ========================================== -->
         <div class="activity-section theme-orange active" id="sec-warmup">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <div></div>
+                <button class="btn-nav" onclick="navigateSection('sec-warmup', 'sec-words')">Next: Words & Ideas ➔</button>
+            </div>
+
             <h2>🧭 WARM UP</h2>
             <div class="instruction-box">
                 Create drawings for the directions and find the abbreviations for the places:
@@ -675,9 +656,10 @@
                 </div>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
                 <div></div>
-                <button class="btn-nav" onclick="showTab(1)">Next: Words and Ideas ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-warmup', 'sec-words')">Next: Words & Ideas ➔</button>
             </div>
         </div>
 
@@ -685,18 +667,25 @@
         <!-- 2. WORDS AND IDEAS -->
         <!-- ========================================== -->
         <div class="activity-section theme-blue" id="sec-words">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-warmup')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
+            </div>
+
             <h2>🗣️ WORDS AND IDEAS</h2>
             <div class="instruction-box">
                 Create drawings for the directions. Check the examples:
             </div>
 
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
-                <div class="audio-player">
+                <div class="audio-player" id="player-words">
                     <audio id="audio-words" src="https://files.catbox.moe/4jajwy.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-words" onclick="toggleAudio('audio-words', 'btn-audio-words')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 0.75)">🐢 0.75x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 1.0)">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-words', 1.25)">🐇 1.25x</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-words" onclick="changeSpeedDirect('audio-words', 'spd-audio-words', 0.75, 'slow-audio-words')" title="0.75x">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-words" onclick="cycleSpeed('audio-words', 'spd-audio-words')" title="Velocidade normal">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-words" onclick="changeSpeedDirect('audio-words', 'spd-audio-words', 1.25, 'fast-audio-words')" title="1.25x">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.1: Direction Expressions</span>
                 </div>
             </div>
@@ -725,9 +714,10 @@
                 </div>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(0)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(2)">Next: Target Situation ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-warmup')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-words', 'sec-target')">Next: Target Situation ➔</button>
             </div>
         </div>
 
@@ -735,18 +725,25 @@
         <!-- 3. TARGET SITUATION -->
         <!-- ========================================== -->
         <div class="activity-section theme-purple" id="sec-target">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
+            </div>
+
             <h2>🎯 TARGET SITUATION</h2>
             <div class="instruction-box">
                 Ivete is at Overseas Co. Now she is looking for a post office. Can you help her? Write the directions. Give details.
             </div>
 
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
-                <div class="audio-player">
+                <div class="audio-player" id="player-target">
                     <audio id="audio-target" src="https://files.catbox.moe/tfq26j.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-target" onclick="toggleAudio('audio-target', 'btn-audio-target')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 0.75)">🐢 0.75x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 1.0)">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-target', 1.25)">🐇 1.25x</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-target" onclick="changeSpeedDirect('audio-target', 'spd-audio-target', 0.75, 'slow-audio-target')" title="0.75x">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-target" onclick="cycleSpeed('audio-target', 'spd-audio-target')" title="Velocidade normal">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-target" onclick="changeSpeedDirect('audio-target', 'spd-audio-target', 1.25, 'fast-audio-target')" title="1.25x">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.2: Asking for Directions</span>
                 </div>
             </div>
@@ -779,9 +776,10 @@
                 <textarea class="fancy-input" id="target-directions-text" rows="6" placeholder="Example: Go straight ahead on King's Road. Turn left at Green Street. Go past the Cinema, and the Post Office is on your right next to the Café..."></textarea>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(1)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(3)">Next: Language Guide ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-words')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-target', 'sec-guide')">Next: Language Guide ➔</button>
             </div>
         </div>
 
@@ -789,6 +787,12 @@
         <!-- 4. LANGUAGE GUIDE -->
         <!-- ========================================== -->
         <div class="activity-section theme-green" id="sec-guide">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-uptoyou')">Next: Up to You ➔</button>
+            </div>
+
             <h2>📖 LANGUAGE GUIDE</h2>
             <div class="instruction-box">
                 To give more details and tell directions we can use the positions below: 
@@ -830,9 +834,10 @@
                 <textarea class="fancy-input eval-input" id="lg-cafe-streets" rows="2" data-ans="The café is between King's road and green street." placeholder="Write complete sentence..."></textarea>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(2)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(4)">Next: Up to You ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-target')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-guide', 'sec-uptoyou')">Next: Up to You ➔</button>
             </div>
         </div>
 
@@ -840,6 +845,12 @@
         <!-- 5. UP TO YOU -->
         <!-- ========================================== -->
         <div class="activity-section theme-blue" id="sec-uptoyou">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-uptoyou', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-uptoyou', 'sec-cross')">Next: Cross Curricular ➔</button>
+            </div>
+
             <h2>👥 UP TO YOU</h2>
             <div class="instruction-box">
                 Work in pairs. Read the Map.<br>
@@ -857,9 +868,10 @@
                 <textarea class="fancy-input" id="uptoyou-dialogue" rows="5" placeholder="Student A: Excuse me, can you tell me the way to...&#10;Student B: Sure! Go straight ahead..."></textarea>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(3)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(5)">Next: Cross Curricular ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-uptoyou', 'sec-guide')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-uptoyou', 'sec-cross')">Next: Cross Curricular ➔</button>
             </div>
         </div>
 
@@ -867,6 +879,12 @@
         <!-- 6. CROSS CURRICULAR -->
         <!-- ========================================== -->
         <div class="activity-section theme-orange" id="sec-cross">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-cross', 'sec-uptoyou')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-cross', 'sec-law1')">Next: Language at Work 1 ➔</button>
+            </div>
+
             <h2>🌍 CROSS CURRICULAR</h2>
             <div class="instruction-box">
                 Ivete is in a different area of the city. She is looking for some places. Listen and write the places according to the box.<br><br>
@@ -878,13 +896,14 @@
                 </div>
             </div>
 
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
-                <div class="audio-player">
+                <div class="audio-player" id="player-cross">
                     <audio id="audio-cross" src="https://files.catbox.moe/2m06lt.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-cross" onclick="toggleAudio('audio-cross', 'btn-audio-cross')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 0.75)">🐢 0.75x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 1.0)">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-cross', 1.25)">🐇 1.25x</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-cross" onclick="changeSpeedDirect('audio-cross', 'spd-audio-cross', 0.75, 'slow-audio-cross')" title="0.75x">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-cross" onclick="cycleSpeed('audio-cross', 'spd-audio-cross')" title="Velocidade normal">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-cross" onclick="changeSpeedDirect('audio-cross', 'spd-audio-cross', 1.25, 'fast-audio-cross')" title="1.25x">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.3: Cross Curricular Listening</span>
                 </div>
             </div>
@@ -908,9 +927,10 @@
                 </div>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(4)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(6)">Next: Language at Work 1 ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-cross', 'sec-uptoyou')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-cross', 'sec-law1')">Next: Language at Work 1 ➔</button>
             </div>
         </div>
 
@@ -918,18 +938,25 @@
         <!-- 7. LANGUAGE AT WORK 1 -->
         <!-- ========================================== -->
         <div class="activity-section theme-purple" id="sec-law1">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-law1', 'sec-cross')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law1', 'sec-law2')">Next: Language at Work 2 ➔</button>
+            </div>
+
             <h2>🎧 LANGUAGE AT WORK 1</h2>
             <div class="instruction-box">
                 Listen to Ivete again. Fill the gaps according to what she says.
             </div>
 
+            <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
-                <div class="audio-player">
+                <div class="audio-player" id="player-law1">
                     <audio id="audio-law1" src="https://files.catbox.moe/87ej9g.mp3" preload="none"></audio>
                     <button type="button" class="play-btn" id="btn-audio-law1" onclick="toggleAudio('audio-law1', 'btn-audio-law1')">▶ PLAY</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 0.75)">🐢 0.75x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 1.0)">⚡ 1.0x</button>
-                    <button type="button" class="audio-ctrl-btn" onclick="setSpeed('audio-law1', 1.25)">🐇 1.25x</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-law1" onclick="changeSpeedDirect('audio-law1', 'spd-audio-law1', 0.75, 'slow-audio-law1')" title="0.75x">🐢 0.75x</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-law1" onclick="cycleSpeed('audio-law1', 'spd-audio-law1')" title="Velocidade normal">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-law1" onclick="changeSpeedDirect('audio-law1', 'spd-audio-law1', 1.25, 'fast-audio-law1')" title="1.25x">🐇 1.25x</button>
                     <span class="audio-track-label">Track 4B.4: Language at Work Audio</span>
                 </div>
             </div>
@@ -986,9 +1013,10 @@
                 <p><strong>Local:</strong> No. Just two minutes, that's all.</p>
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(5)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(7)">Next: Language at Work 2 ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law1', 'sec-cross')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law1', 'sec-law2')">Next: Language at Work 2 ➔</button>
             </div>
         </div>
 
@@ -996,6 +1024,12 @@
         <!-- 8. LANGUAGE AT WORK 2 -->
         <!-- ========================================== -->
         <div class="activity-section theme-green" id="sec-law2">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-law2', 'sec-law1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law2', 'sec-turn')">Next: Now, It's Your Turn ➔</button>
+            </div>
+
             <h2>📍 LANGUAGE AT WORK 2</h2>
             <div class="instruction-box">
                 How can Ivete get to the places? Give instructions according to the pictures from the previous activity. Use: 
@@ -1025,9 +1059,10 @@
                 <input type="text" class="fancy-input eval-input" id="law2-shops" data-ans="The bookshop is between the post office and the music shop." placeholder="Write the sentence...">
             </div>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(6)">⬅ Previous</button>
-                <button class="btn-nav" onclick="showTab(8)">Next: Now, It's Your Turn ➔</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law2', 'sec-law1')">⬅ Back</button>
+                <button class="btn-nav" onclick="navigateSection('sec-law2', 'sec-turn')">Next: Now, It's Your Turn ➔</button>
             </div>
         </div>
 
@@ -1035,6 +1070,12 @@
         <!-- 9. NOW, IT'S YOUR TURN -->
         <!-- ========================================== -->
         <div class="activity-section theme-yellow" id="sec-turn">
+            <!-- Barra de Navegação no Topo -->
+            <div class="nav-buttons top-nav">
+                <button class="btn-nav" onclick="navigateSection('sec-turn', 'sec-law2')">⬅ Back</button>
+                <div></div>
+            </div>
+
             <h2>⭐ NOW, IT'S YOUR TURN</h2>
             <div class="instruction-box">
                 Draw a map of the streets in your neighbourhood. Then, write 10 sentences about the places in it. Follow the example:<br>
@@ -1063,8 +1104,9 @@
                 ✅ Finish Lesson & Get XP
             </button>
 
+            <!-- Barra de Navegação no Final -->
             <div class="nav-buttons">
-                <button class="btn-nav" onclick="showTab(7)">⬅ Previous</button>
+                <button class="btn-nav" onclick="navigateSection('sec-turn', 'sec-law2')">⬅ Back</button>
                 <div></div>
             </div>
         </div>
@@ -1101,68 +1143,131 @@
     <!-- SCRIPT DE LÓGICA, VALIDAÇÃO, ÁUDIO, CANVASES E LMS -->
     <script>
         // ==========================================
-        // CONTROLE DE ABAS SUPERIORES
+        // NAVEGAÇÃO ENTRE SEÇÕES (PADRÃO DO LIVRO)
         // ==========================================
+        function navigateSection(hideId, showId) {
+            const hideEl = document.getElementById(hideId);
+            const showEl = document.getElementById(showId);
+            if (hideEl) hideEl.classList.remove('active');
+            if (showEl) {
+                showEl.classList.add('active');
+                setTimeout(() => {
+                    showEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }
+        }
+
+        // Fallback compatibilidade showTab se necessário
         const sections = [
             'sec-warmup', 'sec-words', 'sec-target', 'sec-guide',
             'sec-uptoyou', 'sec-cross', 'sec-law1', 'sec-law2', 'sec-turn'
         ];
-
         function showTab(index) {
             sections.forEach((id, i) => {
                 const el = document.getElementById(id);
                 if (el) el.classList.toggle('active', i === index);
             });
-            document.querySelectorAll('.section-tab-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ==========================================
-        // CONTROLE DE ÁUDIOS
+        // CONTROLE DE ÁUDIOS PADRONIZADO
         // ==========================================
-        let activeAudio = null;
-        let activeBtn = null;
+        const playerStates = {};
+
+        function getPlayerState(audioId) {
+            if (!playerStates[audioId]) {
+                playerStates[audioId] = { rate: 1.0, isPlaying: false, isPaused: false };
+            }
+            return playerStates[audioId];
+        }
+
+        function stopAllAudiosExcept(exceptId) {
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== exceptId) {
+                    a.pause();
+                    a.currentTime = 0;
+                    const p = a.closest('.audio-player');
+                    if (p) {
+                        const btn = p.querySelector('.play-btn');
+                        if (btn) {
+                            btn.innerText = "▶ PLAY";
+                            btn.classList.remove('playing');
+                        }
+                    }
+                    if (playerStates[a.id]) {
+                        playerStates[a.id].isPlaying = false;
+                        playerStates[a.id].isPaused = false;
+                    }
+                }
+            });
+        }
 
         function toggleAudio(audioId, btnId) {
             const audio = document.getElementById(audioId);
             const btn = document.getElementById(btnId);
-            if (!audio) return;
-
-            if (activeAudio && activeAudio !== audio) {
-                activeAudio.pause();
-                activeAudio.currentTime = 0;
-                if (activeBtn) {
-                    activeBtn.innerText = "▶ PLAY";
-                    activeBtn.classList.remove('playing');
-                }
-            }
+            if (!audio || !btn) return;
+            const state = getPlayerState(audioId);
 
             if (audio.paused) {
+                stopAllAudiosExcept(audioId);
+                audio.playbackRate = state.rate;
                 audio.play().then(() => {
                     btn.innerText = "⏸ PAUSE";
                     btn.classList.add('playing');
-                    activeAudio = audio;
-                    activeBtn = btn;
+                    state.isPlaying = true;
+                    state.isPaused = false;
                 }).catch(err => console.warn("Audio play prevented:", err));
             } else {
                 audio.pause();
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
+                state.isPlaying = false;
+                state.isPaused = true;
             }
 
             audio.onended = () => {
                 btn.innerText = "▶ PLAY";
                 btn.classList.remove('playing');
+                state.isPlaying = false;
+                state.isPaused = false;
             };
         }
 
-        function setSpeed(audioId, rate) {
+        function changeSpeedDirect(audioId, spdBtnId, targetRate, clickedBtnId) {
+            const state = getPlayerState(audioId);
+            state.rate = targetRate;
             const audio = document.getElementById(audioId);
-            if (audio) {
-                audio.playbackRate = rate;
+            if (audio) audio.playbackRate = targetRate;
+
+            const spdBtn = document.getElementById(spdBtnId);
+            if (spdBtn) spdBtn.innerText = '⚡ ' + targetRate.toFixed(1) + 'x';
+
+            const playerEl = document.getElementById(audioId) ? document.getElementById(audioId).closest('.audio-player') : null;
+            if (playerEl) {
+                playerEl.querySelectorAll('.audio-ctrl-btn').forEach(b => b.classList.remove('active'));
+                if (clickedBtnId) {
+                    const cb = document.getElementById(clickedBtnId);
+                    if (cb) cb.classList.add('active');
+                }
             }
+        }
+
+        function cycleSpeed(audioId, spdBtnId) {
+            const speeds = [0.75, 1.0, 1.25, 1.5];
+            const state = getPlayerState(audioId);
+            let current = state.rate || 1.0;
+            let idx = speeds.indexOf(current);
+            if (idx === -1) idx = 1;
+            let nextIdx = (idx + 1) % speeds.length;
+            let newRate = speeds[nextIdx];
+
+            let clickedBtnId = null;
+            if (newRate === 0.75) clickedBtnId = spdBtnId.replace('spd-', 'slow-');
+            else if (newRate === 1.0) clickedBtnId = spdBtnId;
+            else if (newRate === 1.25) clickedBtnId = spdBtnId.replace('spd-', 'fast-');
+
+            changeSpeedDirect(audioId, spdBtnId, newRate, clickedBtnId);
         }
 
         // ==========================================
