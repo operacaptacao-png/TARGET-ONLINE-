@@ -12,7 +12,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             if (!localStorage.getItem('userCode')) {
-                alert("Access Denied");
                 window.parent.location.href = "index.html";
             }
         });
@@ -340,6 +339,32 @@
         .grammar-box { visibility: hidden; opacity: 0; width: 340px; background: white; color: var(--black); border-radius: 16px; padding: 20px; position: absolute; bottom: 60px; right: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid var(--accent-main); transition: 0.3s; pointer-events: none; font-size: 13px; line-height: 1.5; max-height: 75vh; overflow-y: auto; text-align: left; }
         .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; pointer-events: auto; }
         .review-section-title { font-weight: 800; color: var(--accent-main); font-family: var(--font-title); font-size: 13px; margin: 10px 0 4px 0; border-bottom: 1px solid #fed7aa; padding-bottom: 2px; }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -363,7 +388,7 @@
                     <span class="timer-badge" onclick="startTimer('timer-1', 60)">⏱️ 1 Min Timer: <b id="timer-1">60s</b></span>
                 </div>
                 <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., tall, short, slim, chubby, blond, curly hair, blue eyes, young, old, strong...)</p>
-                <textarea class="textarea-memory eval-mem" id="mem-physical" rows="4" placeholder="Type all physical traits you recall from Unit 5..."></textarea>
+                <textarea class="textarea-memory eval-mem fancy-input" id="mem-physical" rows="4" placeholder="Type all physical traits you recall from Unit 5..."></textarea>
             </div>
 
             <!-- CAIXA 2: ROUTINE -->
@@ -373,7 +398,7 @@
                     <span class="timer-badge" onclick="startTimer('timer-2', 60)">⏱️ 1 Min Timer: <b id="timer-2">60s</b></span>
                 </div>
                 <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., wake up at 7:00 AM, always arrive early, have lunch, check emails, finish work, usually, sometimes, never...)</p>
-                <textarea class="textarea-memory eval-mem" id="mem-routine" rows="4" placeholder="Type all routine verbs, schedules, and adverbs of frequency..."></textarea>
+                <textarea class="textarea-memory eval-mem fancy-input" id="mem-routine" rows="4" placeholder="Type all routine verbs, schedules, and adverbs of frequency..."></textarea>
             </div>
 
             <!-- CAIXA 3: ACTIVITIES / ABILITIES -->
@@ -383,7 +408,7 @@
                     <span class="timer-badge" onclick="startTimer('timer-3', 60)">⏱️ 1 Min Timer: <b id="timer-3">60s</b></span>
                 </div>
                 <p style="font-size: 12.5px; color: #64748b; margin: 0 0 10px 0;">(e.g., can speak English, can write reports, can organize meetings, can design, can use software, can't code...)</p>
-                <textarea class="textarea-memory eval-mem" id="mem-abilities" rows="4" placeholder="Type all professional activities and can/can't expressions..."></textarea>
+                <textarea class="textarea-memory eval-mem fancy-input" id="mem-abilities" rows="4" placeholder="Type all professional activities and can/can't expressions..."></textarea>
             </div>
 
             <div class="nav-buttons">
@@ -606,7 +631,7 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
 
         function navigateSection(hideId, showId) {
             document.getElementById(hideId).classList.remove('active');
@@ -692,6 +717,22 @@
             }
 
             localStorage.setItem('licao5d_respostas', JSON.stringify(recorded));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao5d', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao5d', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             let finalXP = Math.round(percentage * 100);
@@ -834,6 +875,102 @@
                 }
             }
         });
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao5d';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_5d_status') === 'concluida' || localStorage.getItem('licao5d_respostas'))) {
+                const legacy = localStorage.getItem('licao5d_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_5d_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_5d_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

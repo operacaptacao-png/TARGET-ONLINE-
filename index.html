@@ -283,7 +283,7 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
 
         let playerName = ""; 
         let avatarUrl = ""; 
@@ -369,6 +369,107 @@
                 return null;
             }
         }
+
+        // ========================================================
+        // LMS INTEGRATION: SALVAMENTO E RECUPERAÇÃO DAS LIÇÕES
+        // ========================================================
+        window.salvarLicaoNaNuvem = async function(nomeLicao, acertos, erros, xp, respostas) {
+            if (!nomeLicao) return;
+            const userCode = localStorage.getItem('userCode') || '';
+            const payload = {
+                acertos: Number(acertos) || 0,
+                erros: Number(erros) || 0,
+                xp: Number(xp) || 0,
+                respostas: respostas || {}
+            };
+
+            // 1. Backup imediato no localStorage
+            localStorage.setItem('target_progresso_' + nomeLicao, JSON.stringify(payload));
+
+            // Sincronização retrocompatível de status e dados
+            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
+            if (cleanId) {
+                localStorage.setItem('licao_' + cleanId + '_status', 'concluida');
+                localStorage.setItem('licao_' + cleanId + '_xp', payload.xp);
+                localStorage.setItem('licao' + cleanId + '_respostas', JSON.stringify(respostas));
+                if (cleanId !== nomeLicao) {
+                    localStorage.setItem('target_progresso_' + cleanId, JSON.stringify(payload));
+                }
+            }
+
+            if (typeof verificarProgressoDoAluno === 'function') {
+                verificarProgressoDoAluno();
+            }
+            if (typeof saveToCloud === 'function') {
+                saveToCloud();
+            }
+
+            // 2. Fetch para o Apps Script (POST no-cors)
+            try {
+                const bodyPayload = {
+                    action: "save_lesson",
+                    code: userCode,
+                    nomeLicao: nomeLicao,
+                    acertos: Number(acertos) || 0,
+                    erros: Number(erros) || 0,
+                    xp: Number(xp) || 0,
+                    respostas: respostas || {}
+                };
+
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(bodyPayload)
+                });
+                console.log(`[Cloud] Lição ${nomeLicao} salva na nuvem.`);
+            } catch (err) {
+                console.warn(`[Cloud] Falha no salvamento remoto de ${nomeLicao} (backup local preservado):`, err);
+            }
+        };
+
+        window.obterDadosLicao = function(nomeLicao) {
+            if (!nomeLicao) return null;
+            const directVal = localStorage.getItem('target_progresso_' + nomeLicao);
+            if (directVal) {
+                try {
+                    return JSON.parse(directVal);
+                } catch(e) {
+                    console.error('Erro ao ler target_progresso_' + nomeLicao, e);
+                }
+            }
+
+            // Tentativa com id curto ou variações
+            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
+            const altKeys = [
+                'target_progresso_' + cleanId,
+                'target_progresso_licao' + cleanId,
+                'target_progresso_' + cleanId.toUpperCase()
+            ];
+            for (const k of altKeys) {
+                const val = localStorage.getItem(k);
+                if (val) {
+                    try { return JSON.parse(val); } catch(e) {}
+                }
+            }
+
+            // Fallback para lições já concluídas anteriormente
+            if (cleanId && localStorage.getItem('licao_' + cleanId + '_status') === 'concluida') {
+                const legacyAns = localStorage.getItem('licao' + cleanId + '_respostas') || localStorage.getItem('licao_' + cleanId + '_respostas');
+                if (legacyAns) {
+                    try {
+                        return {
+                            acertos: 0,
+                            erros: 0,
+                            xp: parseInt(localStorage.getItem('licao_' + cleanId + '_xp')) || 100,
+                            respostas: JSON.parse(legacyAns)
+                        };
+                    } catch(e) {}
+                }
+            }
+
+            return null;
+        };
 
         const todasAsLicoes = [
             { id: '1a', titulo: '1a - At the airport' },

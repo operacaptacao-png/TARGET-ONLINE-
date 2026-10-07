@@ -199,7 +199,46 @@
         .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
         .modal-content h2 { color: #f97316; font-size: 32px; margin-bottom: 10px; }
         .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -315,7 +354,7 @@
                 <div class="group-box">
                     <div class="group-header" id="gh1">
                         <div class="group-color-drop" ondrop="dropColor(event, 'gh1')" ondragover="allowDrop(event)">Drop Color</div>
-                        <input type="text" class="group-name-input eval-group-name" id="gn-1" data-ans="styles" placeholder="Group 1 Name...">
+                        <input type="text" class="group-name-input eval-group-name fancy-input" id="gn-1" data-ans="styles" placeholder="Group 1 Name...">
                     </div>
                     <div class="group-drop-zone" id="group-styles" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
                 </div>
@@ -323,7 +362,7 @@
                 <div class="group-box">
                     <div class="group-header" id="gh2">
                         <div class="group-color-drop" ondrop="dropColor(event, 'gh2')" ondragover="allowDrop(event)">Drop Color</div>
-                        <input type="text" class="group-name-input eval-group-name" id="gn-2" data-ans="size" placeholder="Group 2 Name...">
+                        <input type="text" class="group-name-input eval-group-name fancy-input" id="gn-2" data-ans="size" placeholder="Group 2 Name...">
                     </div>
                     <div class="group-drop-zone" id="group-size" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
                 </div>
@@ -331,7 +370,7 @@
                 <div class="group-box">
                     <div class="group-header" id="gh3">
                         <div class="group-color-drop" ondrop="dropColor(event, 'gh3')" ondragover="allowDrop(event)">Drop Color</div>
-                        <input type="text" class="group-name-input eval-group-name" id="gn-3" data-ans="clothes" placeholder="Group 3 Name...">
+                        <input type="text" class="group-name-input eval-group-name fancy-input" id="gn-3" data-ans="clothes" placeholder="Group 3 Name...">
                     </div>
                     <div class="group-drop-zone" id="group-clothes" ondrop="dropVocab(event)" ondragover="allowDrop(event)"></div>
                 </div>
@@ -361,19 +400,19 @@
             <div class="ts-list-area">
                 <div class="ts-list-item">
                     <div class="ts-num">1</div>
-                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i1" data-ans="medium green shirt" placeholder="Write the item and details...">
+                    <input type="text" class="text-input eval-ts fancy-input" style="margin-bottom:0;" id="ts-i1" data-ans="medium green shirt" placeholder="Write the item and details...">
                 </div>
                 <div class="ts-list-item">
                     <div class="ts-num">2</div>
-                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i2" data-ans="black medium jeans" placeholder="Write the item and details...">
+                    <input type="text" class="text-input eval-ts fancy-input" style="margin-bottom:0;" id="ts-i2" data-ans="black medium jeans" placeholder="Write the item and details...">
                 </div>
                 <div class="ts-list-item">
                     <div class="ts-num">3</div>
-                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i3" data-ans="small brown shoes" placeholder="Write the item and details...">
+                    <input type="text" class="text-input eval-ts fancy-input" style="margin-bottom:0;" id="ts-i3" data-ans="small brown shoes" placeholder="Write the item and details...">
                 </div>
                 <div class="ts-list-item">
                     <div class="ts-num">4</div>
-                    <input type="text" class="text-input eval-ts" style="margin-bottom:0;" id="ts-i4" data-ans="red medium skirt" placeholder="Write the item and details...">
+                    <input type="text" class="text-input eval-ts fancy-input" style="margin-bottom:0;" id="ts-i4" data-ans="red medium skirt" placeholder="Write the item and details...">
                 </div>
             </div>
 
@@ -402,22 +441,22 @@
             <div class="gap-fill-box">
                 <b>A:</b> Excuse me, madam.<br>
                 <div style="margin-left: 20px; color: #64748b; font-style: italic;">What are you looking for?</div>
-                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-1" data-ans="i am looking for a dress" placeholder="Write here..."><br>
+                <b>B:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-1" data-ans="i am looking for a dress" placeholder="Write here..."><br>
                 <br>
                 <b>A:</b> May I Help you, sir? What size are you?<br>
-                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-2" data-ans="i am a medium" placeholder="Write here..."><br>
+                <b>B:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-2" data-ans="i am a medium" placeholder="Write here..."><br>
                 <br>
                 <b>A:</b> A blouse? Certainly!<br>
                 <div style="margin-left: 20px; color: #64748b; font-style: italic;">What colour would you like to buy?</div>
-                <b>B:</b> <input type="text" class="gap-input eval-lg" id="lg-3" data-ans="i'd like it in black" placeholder="Write here..."><br>
+                <b>B:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-3" data-ans="i'd like it in black" placeholder="Write here..."><br>
                 <br>
-                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-4" data-ans="what color would you like" placeholder="Write here..."><br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-4" data-ans="what color would you like" placeholder="Write here..."><br>
                 <b>B:</b> I would like it in green, please.<br>
                 <br>
-                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-5" data-ans="what size are you" placeholder="Write here..."><br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-5" data-ans="what size are you" placeholder="Write here..."><br>
                 <b>B:</b> I am Extra large.<br>
                 <br>
-                <b>A:</b> <input type="text" class="gap-input eval-lg" id="lg-6" data-ans="what are you looking for" placeholder="Write here..."><br>
+                <b>A:</b> <input type="text" class="gap-input eval-lg fancy-input" id="lg-6" data-ans="what are you looking for" placeholder="Write here..."><br>
                 <b>B:</b> I am looking for a pair of jeans, please.
             </div>
 
@@ -433,7 +472,7 @@
             <p class="instruction">Write your own dialogue in a clothes shop. Use Sizes, Colours, Clothes and Opinions.</p>
             
             <div id="uptoyou-capture-area">
-                <textarea id="uptoyou-dialogue" class="large-textarea" placeholder="Start your script here..."></textarea>
+                <textarea id="uptoyou-dialogue" class="large-textarea fancy-input" placeholder="Start your script here..."></textarea>
             </div>
 
             <div class="btn-finish-wrapper" style="margin-top: 15px;">
@@ -461,15 +500,15 @@
             <div class="cc-grid">
                 <div class="cc-card">
                     <p>1. What is she looking for?</p>
-                    <input type="text" class="text-input eval-cc" id="cc-1" data-ans="black medium jacket" placeholder="Type here...">
+                    <input type="text" class="text-input eval-cc fancy-input" id="cc-1" data-ans="black medium jacket" placeholder="Type here...">
                 </div>
                 <div class="cc-card">
                     <p>2. What is she looking for?</p>
-                    <input type="text" class="text-input eval-cc" id="cc-2" data-ans="brown large pants" placeholder="Type here...">
+                    <input type="text" class="text-input eval-cc fancy-input" id="cc-2" data-ans="brown large pants" placeholder="Type here...">
                 </div>
                 <div class="cc-card">
                     <p>3. What is he looking for?</p>
-                    <input type="text" class="text-input eval-cc" id="cc-3" data-ans="blue shoes size 36" placeholder="Type here...">
+                    <input type="text" class="text-input eval-cc fancy-input" id="cc-3" data-ans="blue shoes size 36" placeholder="Type here...">
                 </div>
             </div>
 
@@ -509,29 +548,29 @@
                     <div class="comic-panel">
                         <div class="comic-img"><img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 1"></div>
                         <div class="comic-bubbles">
-                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
-                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                            <textarea class="bubble-textarea bubble-right fancy-input" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left fancy-input" placeholder="Customer says..."></textarea>
                         </div>
                     </div>
                     <div class="comic-panel">
                         <div class="comic-img"><img src="https://images.unsplash.com/photo-1567113463300-102a7eb3cb26?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 2"></div>
                         <div class="comic-bubbles">
-                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
-                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                            <textarea class="bubble-textarea bubble-right fancy-input" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left fancy-input" placeholder="Customer says..."></textarea>
                         </div>
                     </div>
                     <div class="comic-panel">
                         <div class="comic-img"><img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 3"></div>
                         <div class="comic-bubbles">
-                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
-                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                            <textarea class="bubble-textarea bubble-right fancy-input" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left fancy-input" placeholder="Customer says..."></textarea>
                         </div>
                     </div>
                     <div class="comic-panel">
                         <div class="comic-img"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80" alt="Shop Scene 4"></div>
                         <div class="comic-bubbles">
-                            <textarea class="bubble-textarea bubble-right" placeholder="Sales person says..."></textarea>
-                            <textarea class="bubble-textarea bubble-left" placeholder="Customer says..."></textarea>
+                            <textarea class="bubble-textarea bubble-right fancy-input" placeholder="Sales person says..."></textarea>
+                            <textarea class="bubble-textarea bubble-left fancy-input" placeholder="Customer says..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -870,6 +909,22 @@
             bubbles.forEach(b => respostasFotografadas.comics.push(b.value));
 
             localStorage.setItem('licao3b_respostas', JSON.stringify(respostasFotografadas));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao3b', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao3b', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = correct / total;
             finalXP = Math.round(percentage * 100); 
@@ -900,6 +955,102 @@
             }
             window.location.href = "licao3c.html"; 
         }
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao3b';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_3b_status') === 'concluida' || localStorage.getItem('licao3b_respostas'))) {
+                const legacy = localStorage.getItem('licao3b_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_3b_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_3b_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

@@ -111,7 +111,46 @@
         .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
         .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
         .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -134,10 +173,10 @@
         <div id="sec-1" class="activity-section theme-purple">
             <h2>Words and Ideas</h2>
             <div class="scramble-grid">
-                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/RhQrvtNn/54.png" alt="Sugar"><div class="scramble-info"><div class="scramble-letters">ZBNHY</div><input type="text" class="scramble-input eval-cipher" id="c-1" data-ans="SUGAR" placeholder="Your answer..."></div></div>
-                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/c4p3p8ff/rice.png" alt="Oil"><div class="scramble-info"><div class="scramble-letters">VPS</div><input type="text" class="scramble-input eval-cipher" id="c-2" data-ans="OIL" placeholder="Your answer..."></div></div>
-                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/xdkWchXd/55.png" alt="Water"><div class="scramble-info"><div class="scramble-letters">DHALY</div><input type="text" class="scramble-input eval-cipher" id="c-3" data-ans="WATER" placeholder="Your answer..."></div></div>
-                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/qRVZgRfn/58.png" alt="Rice"><div class="scramble-info"><div class="scramble-letters">YPJL</div><input type="text" class="scramble-input eval-cipher" id="c-4" data-ans="RICE" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/RhQrvtNn/54.png" alt="Sugar"><div class="scramble-info"><div class="scramble-letters">ZBNHY</div><input type="text" class="scramble-input eval-cipher fancy-input" id="c-1" data-ans="SUGAR" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/c4p3p8ff/rice.png" alt="Oil"><div class="scramble-info"><div class="scramble-letters">VPS</div><input type="text" class="scramble-input eval-cipher fancy-input" id="c-2" data-ans="OIL" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/xdkWchXd/55.png" alt="Water"><div class="scramble-info"><div class="scramble-letters">DHALY</div><input type="text" class="scramble-input eval-cipher fancy-input" id="c-3" data-ans="WATER" placeholder="Your answer..."></div></div>
+                <div class="scramble-card"><img class="scramble-img" src="https://i.postimg.cc/qRVZgRfn/58.png" alt="Rice"><div class="scramble-info"><div class="scramble-letters">YPJL</div><input type="text" class="scramble-input eval-cipher fancy-input" id="c-4" data-ans="RICE" placeholder="Your answer..."></div></div>
             </div>
 
             <div class="nav-buttons">
@@ -166,10 +205,10 @@
                 <div class="notebook-wrapper">
                     <div class="notebook-paper">
                         <div style="font-weight: bold; margin-bottom: 20px; font-size: 22px;">Shopping List:</div>
-                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-1-item" data-ans="rice" placeholder="rice"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-1-qty" data-ans="5kg" placeholder="5kg"></div>
-                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-2-item" data-ans="cheese" placeholder="cheese"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-2-qty" data-ans="0.5kg" placeholder="0.5kg"></div>
-                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-3-item" data-ans="oil" placeholder="oil"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-3-qty" data-ans="3l" placeholder="3L"></div>
-                        <div class="note-row">- <input type="text" class="note-input item eval-list" id="nl-4-item" data-ans="milk" placeholder="milk"> <span>Qty:</span> <input type="text" class="note-input qty eval-list" id="nl-4-qty" data-ans="1l" placeholder="1L"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list fancy-input" id="nl-1-item" data-ans="rice" placeholder="rice"> <span>Qty:</span> <input type="text" class="note-input qty eval-list fancy-input" id="nl-1-qty" data-ans="5kg" placeholder="5kg"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list fancy-input" id="nl-2-item" data-ans="cheese" placeholder="cheese"> <span>Qty:</span> <input type="text" class="note-input qty eval-list fancy-input" id="nl-2-qty" data-ans="0.5kg" placeholder="0.5kg"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list fancy-input" id="nl-3-item" data-ans="oil" placeholder="oil"> <span>Qty:</span> <input type="text" class="note-input qty eval-list fancy-input" id="nl-3-qty" data-ans="3l" placeholder="3L"></div>
+                        <div class="note-row">- <input type="text" class="note-input item eval-list fancy-input" id="nl-4-item" data-ans="milk" placeholder="milk"> <span>Qty:</span> <input type="text" class="note-input qty eval-list fancy-input" id="nl-4-qty" data-ans="1l" placeholder="1L"></div>
                     </div>
                 </div>
             </div>
@@ -204,7 +243,7 @@
         <div id="sec-4" class="activity-section theme-orange">
             <h2>Up To You</h2>
             <p class="instruction">Write a shopping list and script for a grocery run:</p>
-            <textarea id="uptoyou-dialogue" class="dialogue-textarea" placeholder="Customer: Good morning, I'd like a kilo of rice..."></textarea>
+            <textarea id="uptoyou-dialogue" class="dialogue-textarea fancy-input" placeholder="Customer: Good morning, I'd like a kilo of rice..."></textarea>
             <div class="nav-buttons">
                 <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-3')">⬅️ Back</button>
                 <button class="btn-nav" onclick="navigateSection('sec-4', 'sec-5')">Next Activity ➔</button>
@@ -244,7 +283,7 @@
 
         <div id="sec-7" class="activity-section theme-blue">
             <h2>Now It's Your Turn!</h2>
-            <textarea id="nowturn-dialogue" class="dialogue-textarea" placeholder="Write your dialogue here..."></textarea>
+            <textarea id="nowturn-dialogue" class="dialogue-textarea fancy-input" placeholder="Write your dialogue here..."></textarea>
 
             <div class="story-transition-box">
                 <b>The Journey Continues...</b><br>
@@ -435,6 +474,22 @@
 
         function returnToMap() {
             localStorage.setItem('licao_2c_status', 'concluida');
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao2c', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao2c', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
             localStorage.setItem('licao_2c_xp', finalXP);
 
             if(window.parent && window.parent.completeUnit) {
@@ -446,6 +501,102 @@
             }
             window.location.href = "licao2d.html"; 
         }
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao2c';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_2c_status') === 'concluida' || localStorage.getItem('licao2c_respostas'))) {
+                const legacy = localStorage.getItem('licao2c_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_2c_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_2c_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

@@ -380,7 +380,46 @@
             opacity: 1;
             pointer-events: auto;
         }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -421,34 +460,34 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-1" data-ans="sofa|velvet sofa" placeholder="e.g. Velvet Sofa"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-1" data-ans="1|one" placeholder="e.g. 1"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-1" data-ans="450|£450" placeholder="e.g. £450"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-1" data-ans="sofa|velvet sofa" placeholder="e.g. Velvet Sofa"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-1" data-ans="1|one" placeholder="e.g. 1"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-1" data-ans="450|£450" placeholder="e.g. £450"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-2" data-ans="dining chairs|chairs" placeholder="e.g. Dining Chairs"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-2" data-ans="4|four" placeholder="e.g. 4"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-2" data-ans="200|£200" placeholder="e.g. £200"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-2" data-ans="dining chairs|chairs" placeholder="e.g. Dining Chairs"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-2" data-ans="4|four" placeholder="e.g. 4"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-2" data-ans="200|£200" placeholder="e.g. £200"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-3" data-ans="coffee table|table" placeholder="e.g. Wooden Coffee Table"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-3" data-ans="1|one" placeholder="e.g. 1"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-3" data-ans="95|£95" placeholder="e.g. £95"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-3" data-ans="coffee table|table" placeholder="e.g. Wooden Coffee Table"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-3" data-ans="1|one" placeholder="e.g. 1"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-3" data-ans="95|£95" placeholder="e.g. £95"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-4" data-ans="bed|double bed" placeholder="e.g. Double Bed Frame"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-4" data-ans="1|one" placeholder="e.g. 1"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-4" data-ans="380|£380" placeholder="e.g. £380"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-4" data-ans="bed|double bed" placeholder="e.g. Double Bed Frame"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-4" data-ans="1|one" placeholder="e.g. 1"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-4" data-ans="380|£380" placeholder="e.g. £380"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-5" data-ans="bedside lamps|lamps" placeholder="e.g. Table Lamps"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-5" data-ans="2|two" placeholder="e.g. 2"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-5" data-ans="60|£60" placeholder="e.g. £60"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-5" data-ans="bedside lamps|lamps" placeholder="e.g. Table Lamps"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-5" data-ans="2|two" placeholder="e.g. 2"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-5" data-ans="60|£60" placeholder="e.g. £60"></td>
                         </tr>
                         <tr>
-                            <td><input type="text" class="text-input eval-input" id="furn-item-6" data-ans="bookshelf|bookcase" placeholder="e.g. Oak Bookcase"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-qty-6" data-ans="1|one" placeholder="e.g. 1"></td>
-                            <td><input type="text" class="text-input eval-input" id="furn-price-6" data-ans="120|£120" placeholder="e.g. £120"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-item-6" data-ans="bookshelf|bookcase" placeholder="e.g. Oak Bookcase"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-qty-6" data-ans="1|one" placeholder="e.g. 1"></td>
+                            <td><input type="text" class="text-input eval-input fancy-input" id="furn-price-6" data-ans="120|£120" placeholder="e.g. £120"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -469,19 +508,19 @@
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. much / are / how / chairs / the / dining?</span>
-                        <input type="text" class="text-input eval-input" id="lg-1" data-ans="how much are the dining chairs|how much are the dining chairs?" placeholder="Write the corrected question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lg-1" data-ans="how much are the dining chairs|how much are the dining chairs?" placeholder="Write the corrected question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. many / room / in / cushions / how / living / the / are?</span>
-                        <input type="text" class="text-input eval-input" id="lg-2" data-ans="how many cushions are in the living room|how many cushions are in the living room?" placeholder="Write the corrected question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lg-2" data-ans="how many cushions are in the living room|how many cushions are in the living room?" placeholder="Write the corrected question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. is / cost / sofa / how / the / much?</span>
-                        <input type="text" class="text-input eval-input" id="lg-3" data-ans="how much is the sofa|how much does the sofa cost" placeholder="Write the corrected question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lg-3" data-ans="how much is the sofa|how much does the sofa cost" placeholder="Write the corrected question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. need / cups / many / we / how / tea / of?</span>
-                        <input type="text" class="text-input eval-input" id="lg-4" data-ans="how many cups of tea do we need|how many cups of tea do we need?" placeholder="Write the corrected question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lg-4" data-ans="how many cups of tea do we need|how many cups of tea do we need?" placeholder="Write the corrected question...">
                     </div>
                 </div>
             </div>
@@ -501,23 +540,23 @@
                 <div style="display: flex; flex-direction: column; gap: 14px;">
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. Answer: "There are four chairs around the dining table."</span>
-                        <input type="text" class="text-input eval-input" id="lawq-1" data-ans="how many chairs are there around the dining table|how many chairs are there" placeholder="Write the question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lawq-1" data-ans="how many chairs are there around the dining table|how many chairs are there" placeholder="Write the question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. Answer: "The modern microwave oven costs £85."</span>
-                        <input type="text" class="text-input eval-input" id="lawq-2" data-ans="how much is the microwave|how much does the microwave cost|how much does the modern microwave oven cost" placeholder="Write the question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lawq-2" data-ans="how much is the microwave|how much does the microwave cost|how much does the modern microwave oven cost" placeholder="Write the question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. Answer: "We have got two bedrooms in the new flat."</span>
-                        <input type="text" class="text-input eval-input" id="lawq-3" data-ans="how many bedrooms have you got|how many bedrooms do you have|how many bedrooms are there" placeholder="Write the question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lawq-3" data-ans="how many bedrooms have you got|how many bedrooms do you have|how many bedrooms are there" placeholder="Write the question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. Answer: "There is one bottle of milk in the fridge."</span>
-                        <input type="text" class="text-input eval-input" id="lawq-4" data-ans="how much milk is in the fridge|how many bottles of milk are in the fridge|how much milk is there" placeholder="Write the question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lawq-4" data-ans="how much milk is in the fridge|how many bottles of milk are in the fridge|how much milk is there" placeholder="Write the question...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">E. Answer: "The rent is £1,200 per month."</span>
-                        <input type="text" class="text-input eval-input" id="lawq-5" data-ans="how much is the rent|how much is the rent per month" placeholder="Write the question...">
+                        <input type="text" class="text-input eval-input fancy-input" id="lawq-5" data-ans="how much is the rent|how much is the rent per month" placeholder="Write the question...">
                     </div>
                 </div>
             </div>
@@ -539,7 +578,7 @@
                 <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 8px;">
                     Model: "My favourite room is the living room because it is sunny and peaceful. There is a comfortable sofa and many books..."
                 </label>
-                <textarea class="textarea-styled" id="fav-room-desc" placeholder="Write your text here in English..."></textarea>
+                <textarea class="textarea-styled fancy-input" id="fav-room-desc" placeholder="Write your text here in English..."></textarea>
             </div>
 
             <!-- TRANSIÇÃO NARRATIVA EXATA -->
@@ -847,6 +886,22 @@
             });
 
             localStorage.setItem('licao7b_respostas', JSON.stringify(userAnswers));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao7b', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao7b', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             calculatedXP = Math.min(100, Math.round(percentage * 100));
@@ -896,6 +951,102 @@
                 } catch(e) {}
             }
         });
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao7b';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_7b_status') === 'concluida' || localStorage.getItem('licao7b_respostas'))) {
+                const legacy = localStorage.getItem('licao7b_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_7b_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_7b_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

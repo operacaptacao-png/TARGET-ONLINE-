@@ -110,7 +110,46 @@
         .grammar-floating-btn { background: #9333ea; color: white; padding: 15px 25px; border-radius: 50px; font-family: var(--font-title); font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); transition: 0.3s; }
         .grammar-box { visibility: hidden; opacity: 0; width: 320px; background-color: var(--white); color: var(--black); text-align: left; border-radius: 16px; padding: 25px; position: absolute; bottom: calc(100% + 20px); right: 0; transform: translateY(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 2px solid #9333ea; transition: 0.4s; font-family: var(--font-text); font-size: 14px; line-height: 1.6; pointer-events: none; }
         .grammar-floating-container:hover .grammar-box { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -196,11 +235,11 @@
                 </div>
 
                 <div class="ts-questions">
-                    <div>a. What does the receptionist say to greet Ivete?<br><input type="text" id="ts-input-1" data-ans="good morning" class="text-input eval-input" style="width:100%;"></div>
-                    <div>b. How many nights does Ivete have a booking for?<br><input type="text" id="ts-input-2" data-ans="5 nights" class="text-input eval-input" style="width:100%;"></div>
-                    <div>c. Why does the receptionist ask Ivete to spell her name?<br><input type="text" id="ts-input-3" data-ans="to find her booking" class="text-input eval-input" style="width:100%;"></div>
-                    <div>d. What is the room number assigned to Ivete?<br><input type="text" id="ts-input-4" data-ans="1029" class="text-input eval-input" style="width:100%;"></div>
-                    <div>e. What does the receptionist request to see from Ivete?<br><input type="text" id="ts-input-5" data-ans="passport" class="text-input eval-input" style="width:100%;"></div>
+                    <div>a. What does the receptionist say to greet Ivete?<br><input type="text" id="ts-input-1" data-ans="good morning" class="text-input eval-input fancy-input" style="width:100%;"></div>
+                    <div>b. How many nights does Ivete have a booking for?<br><input type="text" id="ts-input-2" data-ans="5 nights" class="text-input eval-input fancy-input" style="width:100%;"></div>
+                    <div>c. Why does the receptionist ask Ivete to spell her name?<br><input type="text" id="ts-input-3" data-ans="to find her booking" class="text-input eval-input fancy-input" style="width:100%;"></div>
+                    <div>d. What is the room number assigned to Ivete?<br><input type="text" id="ts-input-4" data-ans="1029" class="text-input eval-input fancy-input" style="width:100%;"></div>
+                    <div>e. What does the receptionist request to see from Ivete?<br><input type="text" id="ts-input-5" data-ans="passport" class="text-input eval-input fancy-input" style="width:100%;"></div>
                 </div>
             </div>
 
@@ -217,17 +256,17 @@
             <div class="keyboard-container">
                 <div style="text-align: left; margin-bottom: 15px;">
                     <label style="font-weight: 600; color: var(--black);">1. How do you spell your name?</label><br>
-                    <input type="text" id="spell-1" class="key-input spell-field eval-input" data-ans="ivete" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                    <input type="text" id="spell-1" class="key-input spell-field eval-input fancy-input" data-ans="ivete" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
                 </div>
                 
                 <div style="text-align: left; margin-bottom: 15px;">
                     <label style="font-weight: 600; color: var(--black);">2. Can you spell your last name, please?</label><br>
-                    <input type="text" id="spell-2" class="key-input spell-field eval-input" data-ans="alves" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                    <input type="text" id="spell-2" class="key-input spell-field eval-input fancy-input" data-ans="alves" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
                 </div>
 
                 <div style="text-align: left; margin-bottom: 15px;">
                     <label style="font-weight: 600; color: var(--black);">3. Could you spell Feira de Santana, please?</label><br>
-                    <input type="text" id="spell-3" class="key-input spell-field eval-input" data-ans="f-e-i-r-a d-e s-a-n-t-a-n-a" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
+                    <input type="text" id="spell-3" class="key-input spell-field eval-input fancy-input" data-ans="f-e-i-r-a d-e s-a-n-t-a-n-a" onclick="setActiveInput(this)" placeholder="Click here and type..." readonly>
                 </div>
 
                 <div class="keyboard" id="keyboard"></div>
@@ -235,10 +274,10 @@
 
             <p class="instruction">Spelling bee! Write the names you know:</p>
             <div class="list-inputs">
-                <div>1. <input type="text" id="lg-list-1" class="text-input eval-input" data-ans="john" style="width: 80%;"></div>
-                <div>2. <input type="text" id="lg-list-2" class="text-input eval-input" data-ans="mary" style="width: 80%;"></div>
-                <div>3. <input type="text" id="lg-list-3" class="text-input eval-input" data-ans="peter" style="width: 80%;"></div>
-                <div>4. <input type="text" id="lg-list-4" class="text-input eval-input" data-ans="sarah" style="width: 80%;"></div>
+                <div>1. <input type="text" id="lg-list-1" class="text-input eval-input fancy-input" data-ans="john" style="width: 80%;"></div>
+                <div>2. <input type="text" id="lg-list-2" class="text-input eval-input fancy-input" data-ans="mary" style="width: 80%;"></div>
+                <div>3. <input type="text" id="lg-list-3" class="text-input eval-input fancy-input" data-ans="peter" style="width: 80%;"></div>
+                <div>4. <input type="text" id="lg-list-4" class="text-input eval-input fancy-input" data-ans="sarah" style="width: 80%;"></div>
             </div>
 
             <div class="nav-buttons">
@@ -272,11 +311,11 @@
                 <b>R:</b> Single or double?<br>
                 <b>G:</b> Single, please.<br>
                 <b>R:</b> Your last name, please.<br>
-                <b>G:</b> <input type="text" id="hw-input-1" data-ans="brown" class="text-input eval-input" style="width: 150px;">.<br>
+                <b>G:</b> <input type="text" id="hw-input-1" data-ans="brown" class="text-input eval-input fancy-input" style="width: 150px;">.<br>
                 <b>R:</b> And your first name?<br>
-                <b>G:</b> <input type="text" id="hw-input-2" data-ans="david" class="text-input eval-input" style="width: 150px;">.<br>
+                <b>G:</b> <input type="text" id="hw-input-2" data-ans="david" class="text-input eval-input fancy-input" style="width: 150px;">.<br>
                 <b>R:</b> Home address?<br>
-                <b>G:</b> <input type="text" id="hw-input-3" data-ans="farm road" class="text-input eval-input" style="width: 200px;"> New Zealand.<br>
+                <b>G:</b> <input type="text" id="hw-input-3" data-ans="farm road" class="text-input eval-input fancy-input" style="width: 200px;"> New Zealand.<br>
             </div>
 
             <div class="nav-buttons">
@@ -301,7 +340,7 @@
             <div style="background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center;">
                 <p style="font-weight: bold; color: var(--theme-gray-border); font-size: 18px;">Type the word you hear:</p>
                 <div style="margin-bottom: 20px;">
-                    <input type="text" id="lw-word-display" data-ans="PASSPORT" class="lw-word-display eval-input" readonly placeholder="WORD...">
+                    <input type="text" id="lw-word-display" data-ans="PASSPORT" class="lw-word-display eval-input fancy-input" readonly placeholder="WORD...">
                 </div>
                 <div class="keyboard" id="keyboard-lw"></div>
             </div>
@@ -315,7 +354,7 @@
         <div id="sec-7" class="activity-section theme-yellow">
             <h2>Now It's Your Turn</h2>
             <p class="instruction">Write your spelling practice words below.</p>
-            <textarea id="final-notes" class="notebook-area" placeholder="Write your words here..."></textarea>
+            <textarea id="final-notes" class="notebook-area fancy-input" placeholder="Write your words here..."></textarea>
 
             <div class="story-transition-box">
                 <b>The Journey Continues...</b><br>
@@ -499,6 +538,22 @@
             });
 
             localStorage.setItem('licao1c_respostas', JSON.stringify(respostasFotografadas));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao1c', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao1c', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             finalXP = Math.round(percentage * 100); 
@@ -521,6 +576,102 @@
             }
             window.location.href = "licao1d.html"; 
         }
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao1c';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_1c_status') === 'concluida' || localStorage.getItem('licao1c_respostas'))) {
+                const legacy = localStorage.getItem('licao1c_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_1c_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_1c_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

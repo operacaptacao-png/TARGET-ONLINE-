@@ -376,7 +376,46 @@
             opacity: 1;
             pointer-events: auto;
         }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -409,37 +448,37 @@
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. Is the phone </span>
-                        <input type="text" class="text-input eval-input" id="prep-a" data-ans="on" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-a" data-ans="on" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the coffee table?</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. No, look </span>
-                        <input type="text" class="text-input eval-input" id="prep-b" data-ans="under" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-b" data-ans="under" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the velvet armchair cushion.</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. Maybe she left it </span>
-                        <input type="text" class="text-input eval-input" id="prep-c" data-ans="in" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-c" data-ans="in" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> her handbag in the hallway.</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. Look, it's resting </span>
-                        <input type="text" class="text-input eval-input" id="prep-d" data-ans="between" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-d" data-ans="between" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the two recipe books on the kitchen counter.</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">E. Wait, is it hiding </span>
-                        <input type="text" class="text-input eval-input" id="prep-e" data-ans="behind" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-e" data-ans="behind" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the large flower vase?</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">F. Yes! It is right </span>
-                        <input type="text" class="text-input eval-input" id="prep-f" data-ans="next to" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-f" data-ans="next to" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the birthday card.</span>
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">G. And just </span>
-                        <input type="text" class="text-input eval-input" id="prep-g" data-ans="in front of" style="display:inline-block; width:130px;" placeholder="preposition..."> 
+                        <input type="text" class="text-input eval-input fancy-input" id="prep-g" data-ans="in front of" style="display:inline-block; width:130px;" placeholder="preposition..."> 
                         <span> the fruit bowl!</span>
                     </div>
                 </div>
@@ -462,27 +501,27 @@
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">1. Idea 1 (Old bakery vs Modern café):</span>
-                        <input type="text" class="text-input eval-input" id="rd-1" data-ans="there was|there is" placeholder="e.g. In the past there was an old bakery, but now there is a modern café.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-1" data-ans="there was|there is" placeholder="e.g. In the past there was an old bakery, but now there is a modern café.">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">2. Idea 2 (Horses/carriages vs Electric cars):</span>
-                        <input type="text" class="text-input eval-input" id="rd-2" data-ans="there were|there are" placeholder="e.g. Fifty years ago there were horses, but today there are electric cars.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-2" data-ans="there were|there are" placeholder="e.g. Fifty years ago there were horses, but today there are electric cars.">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">3. Idea 3 (Small houses vs Tall apartment buildings):</span>
-                        <input type="text" class="text-input eval-input" id="rd-3" data-ans="there were|there are" placeholder="e.g. There were small brick houses, but now there are tall apartment buildings.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-3" data-ans="there were|there are" placeholder="e.g. There were small brick houses, but now there are tall apartment buildings.">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">4. Idea 4 (Gas lamps vs LED street lights):</span>
-                        <input type="text" class="text-input eval-input" id="rd-4" data-ans="there were|there are" placeholder="e.g. In the past there were gas street lamps, but now there are LED street lights.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-4" data-ans="there were|there are" placeholder="e.g. In the past there were gas street lamps, but now there are LED street lights.">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">5. Idea 5 (Quiet riverbank vs Bustling park):</span>
-                        <input type="text" class="text-input eval-input" id="rd-5" data-ans="there was|there is" placeholder="e.g. There was a quiet riverbank, but now there is a vibrant park with restaurants.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-5" data-ans="there was|there is" placeholder="e.g. There was a quiet riverbank, but now there is a vibrant park with restaurants.">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">6. Idea 6 (Local post office vs Co-working hub):</span>
-                        <input type="text" class="text-input eval-input" id="rd-6" data-ans="there was|there is" placeholder="e.g. In the 1970s there was a post office, but now there is a modern co-working hub.">
+                        <input type="text" class="text-input eval-input fancy-input" id="rd-6" data-ans="there was|there is" placeholder="e.g. In the 1970s there was a post office, but now there is a modern co-working hub.">
                     </div>
                 </div>
             </div>
@@ -506,23 +545,23 @@
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <div>
                         <span style="font-size: 13.5px;">A. Fifty years ago, there was a train station on Riverside Street.</span>
-                        <input type="text" class="text-input eval-input" id="tf-a" data-ans="t|true" placeholder="T or F">
+                        <input type="text" class="text-input eval-input fancy-input" id="tf-a" data-ans="t|true" placeholder="T or F">
                     </div>
                     <div>
                         <span style="font-size: 13.5px;">B. There were many skyscrapers in the district in the past.</span>
-                        <input type="text" class="text-input eval-input" id="tf-b" data-ans="f|false" placeholder="T or F">
+                        <input type="text" class="text-input eval-input fancy-input" id="tf-b" data-ans="f|false" placeholder="T or F">
                     </div>
                     <div>
                         <span style="font-size: 13.5px;">C. In the present, there are bike lanes along the river.</span>
-                        <input type="text" class="text-input eval-input" id="tf-c" data-ans="t|true" placeholder="T or F">
+                        <input type="text" class="text-input eval-input fancy-input" id="tf-c" data-ans="t|true" placeholder="T or F">
                     </div>
                     <div>
                         <span style="font-size: 13.5px;">D. There was no public library in the neighbourhood fifty years ago.</span>
-                        <input type="text" class="text-input eval-input" id="tf-d" data-ans="f|false" placeholder="T or F">
+                        <input type="text" class="text-input eval-input fancy-input" id="tf-d" data-ans="f|false" placeholder="T or F">
                     </div>
                     <div>
                         <span style="font-size: 13.5px;">E. Today, Riverside Street is one of the greenest avenues in London.</span>
-                        <input type="text" class="text-input eval-input" id="tf-e" data-ans="t|true" placeholder="T or F">
+                        <input type="text" class="text-input eval-input fancy-input" id="tf-e" data-ans="t|true" placeholder="T or F">
                     </div>
                 </div>
             </div>
@@ -550,7 +589,7 @@
                 <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 8px;">
                     Rewrite Kevin's text with all mistakes corrected:
                 </label>
-                <textarea class="textarea-styled" id="kevin-corrected" placeholder="Rewrite the text here with proper past and present forms: 'Fifty years ago, there were many trees...'"></textarea>
+                <textarea class="textarea-styled fancy-input" id="kevin-corrected" placeholder="Rewrite the text here with proper past and present forms: 'Fifty years ago, there were many trees...'"></textarea>
             </div>
 
             <!-- TRANSIÇÃO NARRATIVA EXATA -->
@@ -863,6 +902,22 @@
             total += 2;
 
             localStorage.setItem('licao7c_respostas', JSON.stringify(userAnswers));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao7c', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao7c', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             calculatedXP = Math.min(100, Math.round(percentage * 100));
@@ -912,6 +967,102 @@
                 } catch(e) {}
             }
         });
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao7c';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_7c_status') === 'concluida' || localStorage.getItem('licao7c_respostas'))) {
+                const legacy = localStorage.getItem('licao7c_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_7c_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_7c_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

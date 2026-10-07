@@ -410,7 +410,46 @@
             opacity: 1;
             pointer-events: auto;
         }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -444,39 +483,39 @@
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">1. Ancient ruins and museums:</span>
-                        <input type="text" class="text-input eval-input" id="act-1" data-ans="visit historical places" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-1" data-ans="visit historical places" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">2. Underwater exploring with oxygen tank:</span>
-                        <input type="text" class="text-input eval-input" id="act-2" data-ans="scuba dive" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-2" data-ans="scuba dive" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">3. Walking mountain trails with backpack:</span>
-                        <input type="text" class="text-input eval-input" id="act-3" data-ans="go hiking" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-3" data-ans="go hiking" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">4. Lying under the bright sunshine:</span>
-                        <input type="text" class="text-input eval-input" id="act-4" data-ans="sunbathe" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-4" data-ans="sunbathe" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">5. Sailing across the calm lake:</span>
-                        <input type="text" class="text-input eval-input" id="act-5" data-ans="take a boat trip" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-5" data-ans="take a boat trip" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">6. Tasting regional traditional dishes:</span>
-                        <input type="text" class="text-input eval-input" id="act-6" data-ans="try local cuisine" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-6" data-ans="try local cuisine" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">7. Touring the famous city monuments:</span>
-                        <input type="text" class="text-input eval-input" id="act-7" data-ans="go sightseeing" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-7" data-ans="go sightseeing" placeholder="Type activity...">
                     </div>
                     <div>
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">8. Sitting by the sea ocean waves:</span>
-                        <input type="text" class="text-input eval-input" id="act-8" data-ans="relax on the beach" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-8" data-ans="relax on the beach" placeholder="Type activity...">
                     </div>
                     <div style="grid-column: span 2;">
                         <span style="font-size: 13px; font-weight: bold; color: var(--blue-dark);">9. Sleeping in a tent under the night stars:</span>
-                        <input type="text" class="text-input eval-input" id="act-9" data-ans="go camping" placeholder="Type activity...">
+                        <input type="text" class="text-input eval-input fancy-input" id="act-9" data-ans="go camping" placeholder="Type activity...">
                     </div>
                 </div>
             </div>
@@ -519,15 +558,15 @@
                     <tbody>
                         <tr>
                             <td><b>Ivete</b></td>
-                            <td><textarea id="ivete-pref" placeholder="e.g. Loves green nature, peaceful scenery, and photography..."></textarea></td>
-                            <td><textarea id="ivete-act" placeholder="e.g. She is going to take a scenic boat cruise on Lake Windermere..."></textarea></td>
-                            <td><textarea id="ivete-op" placeholder="e.g. Believes the Lake District is the most romantic spot in Britain..."></textarea></td>
+                            <td><textarea id="ivete-pref" placeholder="e.g. Loves green nature, peaceful scenery, and photography..." class="fancy-input"></textarea></td>
+                            <td><textarea id="ivete-act" placeholder="e.g. She is going to take a scenic boat cruise on Lake Windermere..." class="fancy-input"></textarea></td>
+                            <td><textarea id="ivete-op" placeholder="e.g. Believes the Lake District is the most romantic spot in Britain..." class="fancy-input"></textarea></td>
                         </tr>
                         <tr>
                             <td><b>Alan</b></td>
-                            <td><textarea id="alan-pref" placeholder="e.g. Prefers hiking, historical countryside pubs, and mountain views..."></textarea></td>
-                            <td><textarea id="alan-act" placeholder="e.g. He is going to hike around the national park and try local food..."></textarea></td>
-                            <td><textarea id="alan-op" placeholder="e.g. Thinks it will be relaxing and energizing before the new corporate term..."></textarea></td>
+                            <td><textarea id="alan-pref" placeholder="e.g. Prefers hiking, historical countryside pubs, and mountain views..." class="fancy-input"></textarea></td>
+                            <td><textarea id="alan-act" placeholder="e.g. He is going to hike around the national park and try local food..." class="fancy-input"></textarea></td>
+                            <td><textarea id="alan-op" placeholder="e.g. Thinks it will be relaxing and energizing before the new corporate term..." class="fancy-input"></textarea></td>
                         </tr>
                     </tbody>
                 </table>
@@ -617,19 +656,19 @@
                 <div style="display: flex; flex-direction: column; gap: 14px;">
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">A. "Vitor going to travel next Friday."</span>
-                        <input type="text" class="text-input eval-input" id="law-v-1" data-ans="vitor is going to travel next friday|is going to travel" placeholder="Write corrected sentence...">
+                        <input type="text" class="text-input eval-input fancy-input" id="law-v-1" data-ans="vitor is going to travel next friday|is going to travel" placeholder="Write corrected sentence...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">B. "They is going to stay in a hotel."</span>
-                        <input type="text" class="text-input eval-input" id="law-v-2" data-ans="they are going to stay in a hotel|they are going to stay" placeholder="Write corrected sentence...">
+                        <input type="text" class="text-input eval-input fancy-input" id="law-v-2" data-ans="they are going to stay in a hotel|they are going to stay" placeholder="Write corrected sentence...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">C. "We are going visit the national park."</span>
-                        <input type="text" class="text-input eval-input" id="law-v-3" data-ans="we are going to visit the national park|are going to visit" placeholder="Write corrected sentence...">
+                        <input type="text" class="text-input eval-input fancy-input" id="law-v-3" data-ans="we are going to visit the national park|are going to visit" placeholder="Write corrected sentence...">
                     </div>
                     <div>
                         <span style="font-size: 13.5px; font-weight: bold; color: var(--blue-dark);">D. "He not going to work during vacation."</span>
-                        <input type="text" class="text-input eval-input" id="law-v-4" data-ans="he is not going to work during vacation|he isn't going to work during vacation" placeholder="Write corrected sentence...">
+                        <input type="text" class="text-input eval-input fancy-input" id="law-v-4" data-ans="he is not going to work during vacation|he isn't going to work during vacation" placeholder="Write corrected sentence...">
                     </div>
                 </div>
             </div>
@@ -657,7 +696,7 @@
                 <label style="font-weight: bold; font-size: 13.5px; color: var(--blue-dark); display: block; margin-bottom: 8px;">
                     Write your vacation letter here (minimum 40 words):
                 </label>
-                <textarea class="textarea-styled" id="vacation-letter" placeholder="Dear [Name], I am excited to tell you about my holiday plans! I am going to..."></textarea>
+                <textarea class="textarea-styled fancy-input" id="vacation-letter" placeholder="Dear [Name], I am excited to tell you about my holiday plans! I am going to..."></textarea>
             </div>
 
             <!-- TRANSIÇÃO NARRATIVA EXATA -->
@@ -990,6 +1029,22 @@
             total += 2;
 
             localStorage.setItem('licao8a_respostas', JSON.stringify(userAnswers));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao8a', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao8a', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             calculatedXP = Math.min(100, Math.round(percentage * 100));
@@ -1047,6 +1102,102 @@
                 } catch(e) {}
             }
         });
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao8a';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_8a_status') === 'concluida' || localStorage.getItem('licao8a_respostas'))) {
+                const legacy = localStorage.getItem('licao8a_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_8a_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_8a_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

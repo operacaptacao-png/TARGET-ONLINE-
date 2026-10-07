@@ -11,7 +11,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             if (!localStorage.getItem('userCode')) {
-                alert("Access Denied");
                 window.parent.location.href = "index.html";
             }
         });
@@ -526,6 +525,32 @@
             opacity: 1;
             pointer-events: auto;
         }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -623,19 +648,19 @@
                 <div style="display: flex; flex-direction: column; gap: 18px;">
                     <div>
                         <b>a) I hasn’t got a map.</b>
-                        <input type="text" class="text-input full-width eval-input" id="lg-q1" data-ans="I haven't got a map|I haven't got a map.|I have not got a map|I have not got a map." placeholder="Type corrected sentence here...">
+                        <input type="text" class="text-input full-width eval-input fancy-input" id="lg-q1" data-ans="I haven't got a map|I haven't got a map.|I have not got a map|I have not got a map." placeholder="Type corrected sentence here...">
                     </div>
                     <div>
                         <b>b) Has you got a smartphone?</b>
-                        <input type="text" class="text-input full-width eval-input" id="lg-q2" data-ans="Have you got a smartphone?|Have you got a smartphone|Have you got a smart phone?|Have you got a smart phone" placeholder="Type corrected sentence here...">
+                        <input type="text" class="text-input full-width eval-input fancy-input" id="lg-q2" data-ans="Have you got a smartphone?|Have you got a smartphone|Have you got a smart phone?|Have you got a smart phone" placeholder="Type corrected sentence here...">
                     </div>
                     <div>
                         <b>c) Ivete haves got a GPS.</b>
-                        <input type="text" class="text-input full-width eval-input" id="lg-q3" data-ans="Ivete has got a GPS|Ivete has got a GPS.|Ivete's got a GPS|Ivete's got a GPS." placeholder="Type corrected sentence here...">
+                        <input type="text" class="text-input full-width eval-input fancy-input" id="lg-q3" data-ans="Ivete has got a GPS|Ivete has got a GPS.|Ivete's got a GPS|Ivete's got a GPS." placeholder="Type corrected sentence here...">
                     </div>
                     <div>
                         <b>d) She doesn’t have got a map with her.</b>
-                        <input type="text" class="text-input full-width eval-input" id="lg-q4" data-ans="She hasn't got a map with her|She hasn't got a map with her.|She has not got a map with her|She has not got a map with her." placeholder="Type corrected sentence here...">
+                        <input type="text" class="text-input full-width eval-input fancy-input" id="lg-q4" data-ans="She hasn't got a map with her|She hasn't got a map with her.|She has not got a map with her|She has not got a map with her." placeholder="Type corrected sentence here...">
                     </div>
                 </div>
             </div>
@@ -683,27 +708,27 @@
                 <div class="step-container">
                     <div class="step-card">
                         <b>Step 1: Ask for a food recommendation</b>
-                        <textarea class="text-input full-width" id="step-1" rows="2" placeholder="e.g. Excuse me, is there a good place to eat near here?"></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-1" rows="2" placeholder="e.g. Excuse me, is there a good place to eat near here?"></textarea>
                     </div>
                     <div class="step-card">
                         <b>Step 2: Give first food option and location</b>
-                        <textarea class="text-input full-width" id="step-2" rows="2" placeholder="e.g. Yes, there's a great Italian restaurant on King's Road."></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-2" rows="2" placeholder="e.g. Yes, there's a great Italian restaurant on King's Road."></textarea>
                     </div>
                     <div class="step-card">
                         <b>Step 3: Ask for quick food / sandwich</b>
-                        <textarea class="text-input full-width" id="step-3" rows="2" placeholder="e.g. I haven't got much time. Have you got a quick sandwich option?"></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-3" rows="2" placeholder="e.g. I haven't got much time. Have you got a quick sandwich option?"></textarea>
                     </div>
                     <div class="step-card">
                         <b>Step 4: Direct to the sandwich bar or bakery</b>
-                        <textarea class="text-input full-width" id="step-4" rows="2" placeholder="e.g. Sure, the City Bakery is right on the corner of High Street."></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-4" rows="2" placeholder="e.g. Sure, the City Bakery is right on the corner of High Street."></textarea>
                     </div>
                     <div class="step-card">
                         <b>Step 5: Confirm walking directions</b>
-                        <textarea class="text-input full-width" id="step-5" rows="2" placeholder="e.g. Just go straight on for 50 metres, it's on your right."></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-5" rows="2" placeholder="e.g. Just go straight on for 50 metres, it's on your right."></textarea>
                     </div>
                     <div class="step-card">
                         <b>Step 6: Polite thank you & closing</b>
-                        <textarea class="text-input full-width" id="step-6" rows="2" placeholder="e.g. Thank you so much! Have a wonderful day!"></textarea>
+                        <textarea class="text-input full-width fancy-input" id="step-6" rows="2" placeholder="e.g. Thank you so much! Have a wonderful day!"></textarea>
                     </div>
                 </div>
             </div>
@@ -801,12 +826,12 @@
                     <div class="has-got-box positive">
                         <h3>✅ HAS GOT</h3>
                         <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">What items, tools, or documents has Ivete got?</p>
-                        <textarea class="text-input full-width" id="has-got-text" rows="4" placeholder="e.g. She has got her smartphone, her portfolio with her CV, and directions from the lady."></textarea>
+                        <textarea class="text-input full-width fancy-input" id="has-got-text" rows="4" placeholder="e.g. She has got her smartphone, her portfolio with her CV, and directions from the lady."></textarea>
                     </div>
                     <div class="has-got-box negative">
                         <h3>❌ HASN’T GOT</h3>
                         <p style="font-size: 13px; color: #64748b; margin: 0 0 10px 0;">What hasn't Ivete got with her?</p>
-                        <textarea class="text-input full-width" id="hasnt-got-text" rows="4" placeholder="e.g. She hasn't got battery on her phone, she hasn't got a physical map, and she hasn't got working GPS."></textarea>
+                        <textarea class="text-input full-width fancy-input" id="hasnt-got-text" rows="4" placeholder="e.g. She hasn't got battery on her phone, she hasn't got a physical map, and she hasn't got working GPS."></textarea>
                     </div>
                 </div>
             </div>
@@ -1171,6 +1196,22 @@
             total += 5;
 
             localStorage.setItem('licao4c_respostas', JSON.stringify(userAnswers));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao4c', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao4c', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = total > 0 ? (correct / total) : 1;
             calculatedXP = Math.min(100, Math.round(percentage * 100));
@@ -1265,6 +1306,102 @@
                 }
             }
         });
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao4c';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_4c_status') === 'concluida' || localStorage.getItem('licao4c_respostas'))) {
+                const legacy = localStorage.getItem('licao4c_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_4c_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_4c_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

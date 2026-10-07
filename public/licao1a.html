@@ -125,6 +125,32 @@
         .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; }
         .modal-content h2 { color: var(--orange-main); font-size: 32px; margin-bottom: 10px; }
         .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -246,12 +272,12 @@
             </div>
             
             <div class="flags-grid">
-                <div class="flag-card"><img src="https://i.postimg.cc/9019znZj/11.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-1" data-ans="brazilian"></div>
-                <div class="flag-card"><img src="https://i.postimg.cc/YCvFq8SX/12.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-2" data-ans="canadian"></div>
-                <div class="flag-card"><img src="https://i.postimg.cc/j54wkF8N/13.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-3" data-ans="south korean"></div>
-                <div class="flag-card"><img src="https://i.postimg.cc/tRDn38n4/14.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-4" data-ans="american"></div>
-                <div class="flag-card"><img src="https://i.postimg.cc/9MCzTBWX/15.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-5" data-ans="spanish"></div>
-                <div class="flag-card"><img src="https://i.postimg.cc/RVyFGmMQ/16.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-6" data-ans="vietnamese"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/9019znZj/11.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-1" data-ans="brazilian" class="fancy-input"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/YCvFq8SX/12.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-2" data-ans="canadian" class="fancy-input"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/j54wkF8N/13.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-3" data-ans="south korean" class="fancy-input"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/tRDn38n4/14.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-4" data-ans="american" class="fancy-input"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/9MCzTBWX/15.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-5" data-ans="spanish" class="fancy-input"></div>
+                <div class="flag-card"><img src="https://i.postimg.cc/RVyFGmMQ/16.png" style="height: 45px; margin-bottom: 15px;"><input type="text" id="nat-6" data-ans="vietnamese" class="fancy-input"></div>
             </div>
 
             <div class="nav-buttons"><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-4')">⬅️ Back</button><button class="btn-nav" onclick="navigateSection('sec-5', 'sec-6')">Next Activity ➔</button></div>
@@ -284,7 +310,7 @@
             <h2>Now It's Your Turn</h2>
             <p class="instruction">You are at the airport now. Produce a dialogue simulating the situation.</p>
             
-            <textarea id="final-dialogue" class="dialogue-area" placeholder="Write your dialogue script here... Example:
+            <textarea id="final-dialogue" class="dialogue-area fancy-input" placeholder="Write your dialogue script here... Example:
 Agent: Good morning, passport please.
 Me: Here it is."></textarea>
             
@@ -628,6 +654,22 @@ Me: Here it is."></textarea>
 
             // Guarda as respostas na Mochila antes de fechar a lição!
             localStorage.setItem('licao1a_respostas', JSON.stringify(respostasFotografadas));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao1a', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao1a', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = correct / total;
             finalXP = Math.round(percentage * 100); 
@@ -650,6 +692,102 @@ Me: Here it is."></textarea>
             }
             window.location.href = "about:blank"; 
         }
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao1a';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_1a_status') === 'concluida' || localStorage.getItem('licao1a_respostas'))) {
+                const legacy = localStorage.getItem('licao1a_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_1a_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_1a_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

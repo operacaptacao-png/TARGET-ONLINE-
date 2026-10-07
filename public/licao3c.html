@@ -204,7 +204,46 @@
         .modal-content { background: white; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; position: relative; margin: 0 auto; }
         .modal-content h2 { color: #f97316; font-size: 32px; margin-bottom: 10px; }
         .xp-circle { width: 120px; height: 120px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; margin: 20px auto; border: 8px solid #dcfce7; box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3); }
+    
+        /* PADRONIZAÇÃO .fancy-input */
+        .fancy-input {
+            width: 100%;
+            padding: 11px 15px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: #1e293b;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .fancy-input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3.5px rgba(230, 126, 34, 0.2);
+        }
+        .fancy-input:disabled {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #e2e8f0 !important;
+        }
+
     </style>
+    <!-- TRAVA DE SEGURANÇA SILENCIOSA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -269,21 +308,21 @@
                 <div class="venn-top">
                     <div class="venn-box" style="border-color: #0ea5e9;">
                         <h3 style="color: #0ea5e9;">WEATHER / SEASONS</h3>
-                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                        <textarea class="venn-textarea fancy-input" placeholder="Type here..."></textarea>
                     </div>
                 </div>
                 <div class="venn-bottom">
                     <div class="venn-box">
                         <h3>FORMAL</h3>
-                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                        <textarea class="venn-textarea fancy-input" placeholder="Type here..."></textarea>
                     </div>
                     <div class="venn-box" style="border-color: #a855f7;">
                         <h3 style="color: #a855f7;">BOTH</h3>
-                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                        <textarea class="venn-textarea fancy-input" placeholder="Type here..."></textarea>
                     </div>
                     <div class="venn-box" style="border-color: #ec4899;">
                         <h3 style="color: #ec4899;">INFORMAL</h3>
-                        <textarea class="venn-textarea" placeholder="Type here..."></textarea>
+                        <textarea class="venn-textarea fancy-input" placeholder="Type here..."></textarea>
                     </div>
                 </div>
             </div>
@@ -309,7 +348,7 @@
             </div>
 
             <div class="notebook-wrapper">
-                <textarea class="notebook-paper" placeholder="Notes:"></textarea>
+                <textarea class="notebook-paper fancy-input" placeholder="Notes:"></textarea>
             </div>
 
             <p class="instruction">Now, write information you understand in the correct frame. What is Ivete wearing? Draw and write the names of the clothes.</p>
@@ -317,11 +356,11 @@
             <div class="frame-grid">
                 <div class="drawing-frame">
                     <div class="frame-title" style="color: #ef4444;">HOT</div>
-                    <textarea class="frame-textarea eval-ts" id="ts-hot" data-ans="blouses hats shoes sunglasses shorts skirts" placeholder="Draw / Write clothes for hot weather here..."></textarea>
+                    <textarea class="frame-textarea eval-ts fancy-input" id="ts-hot" data-ans="blouses hats shoes sunglasses shorts skirts" placeholder="Draw / Write clothes for hot weather here..."></textarea>
                 </div>
                 <div class="drawing-frame" style="border-color: #3b82f6;">
                     <div class="frame-title" style="color: #3b82f6;">COLD</div>
-                    <textarea class="frame-textarea eval-ts" id="ts-cold" data-ans="coats boots socks gloves" style="color: #3b82f6;" placeholder="Draw / Write clothes for cold weather here..."></textarea>
+                    <textarea class="frame-textarea eval-ts fancy-input" id="ts-cold" data-ans="coats boots socks gloves" style="color: #3b82f6;" placeholder="Draw / Write clothes for cold weather here..."></textarea>
                 </div>
             </div>
 
@@ -448,31 +487,31 @@
             <div class="cc-question-list">
                 <div class="cc-item">
                     <p>a) What season is it in New England?</p>
-                    <input type="text" class="eval-cc" id="cc-1" data-ans="fall autumn" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-1" data-ans="fall autumn" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>b) What is the weather like?</p>
-                    <input type="text" class="eval-cc" id="cc-2" data-ans="cool sunny" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-2" data-ans="cool sunny" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>c) What is the man wearing?</p>
-                    <input type="text" class="eval-cc" id="cc-3" data-ans="suit tie shoes" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-3" data-ans="suit tie shoes" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>d) What are the school girls wearing?</p>
-                    <input type="text" class="eval-cc" id="cc-4" data-ans="uniforms" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-4" data-ans="uniforms" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>e) What are the school girls’ names?</p>
-                    <input type="text" class="eval-cc" id="cc-5" data-ans="megan jasmine" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-5" data-ans="megan jasmine" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>f) Describe the school girls’ uniforms.</p>
-                    <input type="text" class="eval-cc" id="cc-6" data-ans="blue shirt tie blouse socks sweter" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-6" data-ans="blue shirt tie blouse socks sweter" placeholder="Type your answer...">
                 </div>
                 <div class="cc-item">
                     <p>g) What is Julie’s mother wearing?</p>
-                    <input type="text" class="eval-cc" id="cc-7" data-ans="scarf boots jeans blouse sunglasses jacket" placeholder="Type your answer...">
+                    <input type="text" class="eval-cc fancy-input" id="cc-7" data-ans="scarf boots jeans blouse sunglasses jacket" placeholder="Type your answer...">
                 </div>
             </div>
 
@@ -517,12 +556,12 @@
                 <div class="hw-person-card">
                     <div class="hw-photo-ph"><img src="https://i.postimg.cc/mDyNbG35/80.png" alt="Ivete"></div>
                     <div class="hw-person-title">IVETE</div>
-                    <textarea class="text-input eval-law" id="law-1" data-ans="ivete is wearing a coat a scarf and gloves" style="height:100px; resize:none;" placeholder="What is she wearing?"></textarea>
+                    <textarea class="text-input eval-law fancy-input" id="law-1" data-ans="ivete is wearing a coat a scarf and gloves" style="height:100px; resize:none;" placeholder="What is she wearing?"></textarea>
                 </div>
                 <div class="hw-person-card">
                     <div class="hw-photo-ph"><img src="https://i.postimg.cc/X7zKNLFG/81.png" alt="Ralph"></div>
                     <div class="hw-person-title">RALPH</div>
-                    <textarea class="text-input eval-law" id="law-2" data-ans="he is wearing jeans a jacket shoes and a t-shirt" style="height:100px; resize:none;" placeholder="What is he wearing?"></textarea>
+                    <textarea class="text-input eval-law fancy-input" id="law-2" data-ans="he is wearing jeans a jacket shoes and a t-shirt" style="height:100px; resize:none;" placeholder="What is he wearing?"></textarea>
                 </div>
             </div>
 
@@ -815,6 +854,22 @@
             });
 
             localStorage.setItem('licao3c_respostas', JSON.stringify(respostasFotografadas));
+            // Sincronização com o LMS (Pai & Nuvem)
+            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
+                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
+                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                window.parent.salvarLicaoNaNuvem('licao3c', acertosCount, errosCount, finalScore, respObj);
+            } else {
+                localStorage.setItem('target_progresso_licao3c', JSON.stringify({
+                    acertos: (typeof correct !== 'undefined') ? correct : 0,
+                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
+                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
+                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
+                }));
+            }
+
 
             let percentage = correct / total;
             finalXP = Math.round(percentage * 100); 
@@ -845,6 +900,102 @@
             }
             window.location.href = "licao3d.html"; 
         }
+    
+        // ==========================================
+        // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
+        // ==========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem('userCode')) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.location.href = "index.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            const lessonKey = 'licao3c';
+            let dadosSalvos = null;
+            if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
+                dadosSalvos = window.parent.obterDadosLicao(lessonKey);
+            }
+            if (!dadosSalvos) {
+                const raw = localStorage.getItem('target_progresso_' + lessonKey);
+                if (raw) {
+                    try { dadosSalvos = JSON.parse(raw); } catch(e) {}
+                }
+            }
+            if (!dadosSalvos && (localStorage.getItem('licao_3c_status') === 'concluida' || localStorage.getItem('licao3c_respostas'))) {
+                const legacy = localStorage.getItem('licao3c_respostas');
+                dadosSalvos = {
+                    respostas: legacy ? JSON.parse(legacy) : {},
+                    xp: parseInt(localStorage.getItem('licao_3c_xp')) || 100
+                };
+            }
+
+            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            if (dadosSalvos || localStorage.getItem('licao_3c_status') === 'concluida') {
+                if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
+                    const r = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                        if (el.id && r[el.id] !== undefined) {
+                            el.value = r[el.id];
+                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
+                            el.value = r.inputs[el.id];
+                        }
+                    });
+
+                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
+                    if (r.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = r.dialogue;
+                    }
+                    if (r.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = r.letter;
+                    }
+                    if (r.table && typeof r.table === 'object') {
+                        for (let k in r.table) {
+                            const el = document.getElementById(k.replace('_', '-'));
+                            if (el) el.value = r.table[k];
+                        }
+                    }
+                    if (r.match && typeof r.match === 'object') {
+                        for (let k in r.match) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.match[k];
+                        }
+                    }
+                    if (r.nat && typeof r.nat === 'object') {
+                        for (let k in r.nat) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.nat[k];
+                        }
+                    }
+                    if (r.hw && typeof r.hw === 'object') {
+                        for (let k in r.hw) {
+                            const el = document.getElementById(k);
+                            if (el) el.value = r.hw[k];
+                        }
+                    }
+                }
+
+                // Bloqueia todos os campos
+                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                    el.style.backgroundColor = "#f1f5f9";
+                    el.style.cursor = "not-allowed";
+                });
+
+                // Desabilita e estiliza o botão de finalização
+                document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
+                    btn.innerText = "🔒 Lesson Completed";
+                    btn.disabled = true;
+                    btn.style.cursor = "not-allowed";
+                    btn.style.backgroundColor = "#94a3b8";
+                    btn.style.boxShadow = "none";
+                });
+            }
+        });
+
     </script>
 </body>
 </html>
