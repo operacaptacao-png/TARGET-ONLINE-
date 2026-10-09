@@ -437,9 +437,21 @@
                 Listen to Ivete on the phone with a furniture-store assistant. List the 6 items Ivete bought, how many she bought and their prices.
             </p>
 
-            <div class="audio-wrapper">
+                        <div class="audio-wrapper" style="margin-bottom: 20px;">
+                <div class="audio-player" data-script-key="script-7b-words">
+                    <audio id="audio-7b-words" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561641/TARGET_1_-_7B_WORD_AND_IDEAS_nnkdja.mp3"></audio>
+                    <button type="button" class="play-btn" id="btn-audio-7b-words" onclick="handleAudioPlay('audio-7b-words', 'btn-audio-7b-words', 'script-7b-words', 'var(--blue-dark)')">▶ PLAY</button>
+                    <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-7b-words" onclick="handleAudioPause('audio-7b-words', 'btn-audio-7b-words', 'var(--blue-dark)')" title="Pausar">⏸</button>
+                    <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-7b-words" onclick="changeSpeedDirect('audio-7b-words', 'spd-audio-7b-words', 0.75, 'slow-audio-7b-words')" title="Mais devagar">🐢</button>
+                    <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-7b-words" onclick="cycleSpeed('audio-7b-words', 'spd-audio-7b-words')" title="Alternar velocidade">⚡ 1.0x</button>
+                    <button type="button" class="audio-ctrl-btn fast-btn" id="fast-audio-7b-words" onclick="changeSpeedDirect('audio-7b-words', 'spd-audio-7b-words', 1.25, 'fast-audio-7b-words')" title="Mais rápido">🐇</button>
+                    <span class="audio-track-label">Track 7B.0: Words and Ideas Vocabulary</span>
+                </div>
+            </div>
+
+<div class="audio-wrapper">
                 <div class="audio-player" data-script-key="script-7b">
-                    <audio id="audio-7b" preload="none"></audio>
+                    <audio id="audio-7b" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561640/TARGET_1_-_7B_TARGET_SITUATION_lidzfq.mp3"></audio>
                     <button type="button" class="play-btn" id="btn-audio-7b" onclick="handleAudioPlay('audio-7b', 'btn-audio-7b', 'script-7b', 'var(--blue-dark)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-7b" onclick="handleAudioPause('audio-7b', 'btn-audio-7b', 'var(--blue-dark)')" title="Pausar">⏸</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-7b" onclick="changeSpeedDirect('audio-7b', 'spd-audio-7b', 0.75, 'slow-audio-7b')" title="Mais devagar">🐢</button>

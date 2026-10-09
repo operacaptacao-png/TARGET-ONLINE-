@@ -743,7 +743,7 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player" data-script-key="audio-1">
-                    <audio id="audio-1" src="https://files.catbox.moe/phe46l.mp3" preload="none"></audio>
+                    <audio id="audio-1" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561618/TARGET_1_-_4A_WORDS_AND_IDEAS_mr4sym.mp3"></audio>
                     <button type="button" class="play-btn" id="btn-audio-1" onclick="handleAudioPlay('audio-1', 'btn-audio-1', 'audio-1', 'var(--red-bus)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-1" onclick="handleAudioPause('audio-1', 'btn-audio-1', 'var(--red-bus)')" title="Pausar áudio">⏸ PAUSE</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-1" onclick="changeSpeedDirect('audio-1', 'spd-audio-1', 0.75, 'slow-audio-1')" title="0.75x">🐢</button>
@@ -863,7 +863,7 @@
 
             <div class="audio-wrapper">
                 <div class="audio-player" data-script-key="audio-2">
-                    <audio id="audio-2" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1788831897/TARGET_1_-_4A_TARGET_SITUATION_rlezaf.mp3" preload="none"></audio>
+                    <audio id="audio-2" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561617/TARGET_1_-_4A_TARGET_SITUATION_sgf6pg.mp3"></audio>
                     <button type="button" class="play-btn" id="btn-audio-2" onclick="handleAudioPlay('audio-2', 'btn-audio-2', 'audio-2', 'var(--theme-purple-border)')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-2" onclick="handleAudioPause('audio-2', 'btn-audio-2', 'var(--theme-purple-border)')" title="Pausar áudio">⏸</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-2" onclick="changeSpeedDirect('audio-2', 'spd-audio-2', 0.75, 'slow-audio-2')" title="0.75x">🐢</button>
@@ -975,7 +975,7 @@
 
                 <div class="audio-wrapper" style="margin: 15px 0;">
                     <div class="audio-player" data-script-key="audio-ts-map">
-                        <audio id="audio-ts-map" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1788831897/TARGET_1_-_4A_TARGET_SITUATION_rlezaf.mp3" preload="none"></audio>
+                        <audio id="audio-ts-map" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561617/TARGET_1_-_4A_TARGET_SITUATION_sgf6pg.mp3"></audio>
                         <button type="button" class="play-btn" id="btn-audio-ts-map" onclick="handleAudioPlay('audio-ts-map', 'btn-audio-ts-map', 'audio-ts-map', 'var(--blue-dark)')">▶ PLAY</button>
                         <button type="button" class="audio-ctrl-btn pause-btn" id="pause-audio-ts-map" onclick="handleAudioPause('audio-ts-map', 'btn-audio-ts-map', 'var(--blue-dark)')" title="Pausar áudio">⏸ PAUSE</button>
                         <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-ts-map" onclick="changeSpeedDirect('audio-ts-map', 'spd-audio-ts-map', 0.75, 'slow-audio-ts-map')" title="0.75x">🐢</button>
@@ -1123,6 +1123,21 @@
                 <input type="text" class="fancy-input eval-text" id="ask-liv" data-ans="Take a train" placeholder="Type your answer...">
             </div>
 
+            <div class="exercise-card" style="margin-bottom: 25px;">
+                <p><b>Cross Curricular Audio Tracks:</b></p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="audio-player" style="margin-bottom: 10px;">
+                        <audio id="audio-cc1" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561616/TARGET_1_-_4A_CROSS_CURRICULAR_ACTIVITY_1_m20akp.mp3"></audio>
+                        <button type="button" class="play-btn" onclick="toggleAudio('audio-cc1', this.id)" id="btn-cc1">▶ PLAY</button>
+                        <span>Cross Curricular Activity 1</span>
+                    </div>
+                    <div class="audio-player" style="margin-bottom: 10px;">
+                        <audio id="audio-cc2" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561616/TARGET_1_-_4A_CROSS_CURRICULAR_ACTIVITY_2_ljwkz1.mp3"></audio>
+                        <button type="button" class="play-btn" onclick="toggleAudio('audio-cc2', this.id)" id="btn-cc2">▶ PLAY</button>
+                        <span>Cross Curricular Activity 2</span>
+                    </div>
+                </div>
+            </div>
             <div id="sec-uptoyou" class="activity-section theme-yellow active" style="margin-top: 25px;">
                 <h2>Up To You • Hop On and Hop Off</h2>
                 <div class="exercise-card">

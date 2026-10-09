@@ -85,7 +85,7 @@ CLOUDINARY_MAP = {
     # 6B
     "6B_WORDS": "https://res.cloudinary.com/pfrqadfm/video/upload/v1791561634/TARGET_1_-_6B_WORDS_AND_IDEAS_jtqnuv.mp3",
     "6B_CROSS": "https://res.cloudinary.com/pfrqadfm/video/upload/v1791561632/TARGET_1_-_6B_CROSS_CIRCULAR_161.MP3_iqhpyl.mp3",
-    "6B_TARGET_PLACEHOLDER": "PENDENTE",
+    "6B_TARGET": "https://res.cloudinary.com/pfrqadfm/video/upload/v1791563626/TARGET_1-_6B_TARGET_SITUATION_159_m8gdw0.mp3",
 
     # 6C
     "6C_WORDS": "https://res.cloudinary.com/pfrqadfm/video/upload/v1791561636/TARGET_1_-_6C_WORDS_AND_IDEAS_ivc5nj.mp3",
@@ -465,7 +465,7 @@ update_file("licao6b.html", [
     ),
     (
         '<audio id="audio-dialogue" style="display: none;" preload="none"></audio>',
-        f'<audio id="audio-dialogue" style="display: none;" crossorigin="anonymous" preload="metadata" src="{CLOUDINARY_MAP["6B_TARGET_PLACEHOLDER"]}"></audio>'
+        f'<audio id="audio-dialogue" style="display: none;" crossorigin="anonymous" preload="metadata" src="{CLOUDINARY_MAP["6B_TARGET"]}"></audio>'
     ),
     (
         '<audio id="audio-tom" style="display: none;" preload="none"></audio>',

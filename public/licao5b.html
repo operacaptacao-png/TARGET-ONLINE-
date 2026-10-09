@@ -487,7 +487,7 @@
             <!-- REPRODUTOR DE ÁUDIO PADRONIZADO -->
             <div class="audio-wrapper">
                 <div class="audio-player" id="player-words">
-                    <audio id="audio-words" src="https://files.catbox.moe/3uuee3.mp3" preload="none"></audio>
+                    <audio id="audio-words" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561629/TARGET_1_-_5B_WORDS_AND_IDEAS_nroqsa.mp3"></audio>
                     <button type="button" class="play-btn" id="btn-audio-words" onclick="toggleAudio('audio-words', 'btn-audio-words')">▶ PLAY</button>
                     <button type="button" class="audio-ctrl-btn slow-btn" id="slow-audio-words" onclick="changeSpeedDirect('audio-words', 'spd-audio-words', 0.75, 'slow-audio-words')">🐢 0.75x</button>
                     <button type="button" class="audio-ctrl-btn speed-btn active" id="spd-audio-words" onclick="cycleSpeed('audio-words', 'spd-audio-words')">⚡ 1.0x</button>
@@ -613,6 +613,17 @@
         </div>
 
         <!-- ========================================== -->
+        <!-- TARGET SITUATION -->
+        <div style="background: white; padding: 25px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+            <h3 style="margin-top: 0; color: #1e293b; font-size: 18px;">🎯 Target Situation</h3>
+            <div class="audio-player" id="player-target">
+                <audio id="audio-target" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561627/TARGET_1_-_5B_TARGET_SITUATION_nq3m9s.mp3"></audio>
+                <button type="button" class="play-btn" id="btn-audio-target" onclick="toggleAudio('audio-target', 'btn-audio-target')">▶ PLAY</button>
+                <button type="button" class="audio-ctrl-btn speed-btn" id="spd-audio-target" onclick="cycleSpeed('audio-target', 'spd-audio-target')">⚡ 1.0x</button>
+                <span class="audio-track-label">Track 5B: Target Situation Routine</span>
+            </div>
+        </div>
+
         <!-- 2. LANGUAGE GUIDE -->
         <!-- ========================================== -->
         <div id="sec-guide" class="activity-section theme-purple">
@@ -679,8 +690,8 @@
             </div>
 
             <div style="margin-bottom: 22px; text-align: center;">
-                <video controls style="max-width: 100%; width: 620px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);" preload="metadata">
-                    <source src="https://files.catbox.moe/3euqn0.mp4" type="video/mp4">
+                <video controls crossorigin="anonymous" preload="metadata" style="max-width: 100%; width: 620px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
+                    <source src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561627/TARGET_1_-_5B_CROSS_CURRICULAR_zwqtag.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>

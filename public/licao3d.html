@@ -211,6 +211,11 @@
         <div id="sec-1" class="activity-section theme-purple active">
             <h2>Game 1: Fast Sorter</h2>
             <p class="instruction">Drag the clothes and items to the correct season: Summer or Winter?</p>
+            <div class="audio-player" style="background: var(--theme-purple-bg); border: 1px solid var(--theme-purple-border); color: var(--theme-purple-border); margin-bottom: 25px; padding: 12px 20px; border-radius: 50px; display: inline-flex; align-items: center; gap: 15px;">
+                <audio id="audio-starter" crossorigin="anonymous" preload="metadata" src="https://res.cloudinary.com/pfrqadfm/video/upload/v1791561650/TARGET_1_-3D_STARTER_90.mp3_oicip3.mp3"></audio>
+                <button type="button" class="btn-nav" id="btn-starter" style="padding: 6px 18px; font-size: 14px; background: var(--theme-purple-border); color: white; border: none;" onclick="const a=document.getElementById('audio-starter');if(a.paused){a.play();this.innerText='⏸ PAUSE';}else{a.pause();this.innerText='▶ PLAY';}a.onended=()=>{this.innerText='▶ PLAY';}">▶ PLAY</button>
+                <span style="font-weight: 700;">Track 3D: Starter Challenge Audio</span>
+            </div>
             
             <div id="word-pool" class="word-pool" ondrop="dropBack(event)" ondragover="allowDrop(event)">
                 <div class="draggable-word eval-sort" draggable="true" id="gw1" data-ans="z-summer" ondragstart="drag(event)">Sunglasses</div>
