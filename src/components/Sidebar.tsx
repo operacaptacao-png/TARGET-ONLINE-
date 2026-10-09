@@ -54,6 +54,15 @@ export default function Sidebar({
     return unlockedUnits.includes(unitNum);
   };
 
+  const isLessonUnlocked = (lessonId: string) => {
+    if (loginType === 'PROF') return true;
+    if (lessonId === '1A') return true;
+    const lessonIdx = LESSONS.findIndex(l => l.id === lessonId);
+    if (lessonIdx <= 0) return true;
+    const prevLesson = LESSONS[lessonIdx - 1];
+    return completedLessons.includes(prevLesson.id);
+  };
+
   return (
     <div className="w-[340px] h-screen bg-slate-900/95 backdrop-blur-xl border-r border-white/10 flex flex-col text-slate-100 flex-shrink-0 select-none shadow-2xl relative z-20">
       
@@ -159,19 +168,26 @@ export default function Sidebar({
                   {unitLessons.map((les) => {
                     const active = activeLessonId === les.id;
                     const done = completedLessons.includes(les.id);
+                    const lessonUnlocked = unlocked && isLessonUnlocked(les.id);
                     return (
                       <button
                         key={les.id}
-                        disabled={!unlocked}
-                        onClick={() => onSelectLesson(les.id)}
-                        className={`w-full flex items-center justify-between text-left py-2.5 px-3.5 rounded-lg text-xs font-semibold tracking-wide border transition-all duration-200 cursor-pointer ${
-                          active
-                            ? 'bg-gradient-to-r from-amber-500 to-orange-600 border-transparent text-white font-extrabold shadow-md transform translate-x-1'
-                            : 'bg-slate-800/40 hover:bg-slate-800 border-transparent text-slate-300 hover:text-white'
+                        disabled={!lessonUnlocked}
+                        onClick={() => lessonUnlocked && onSelectLesson(les.id)}
+                        className={`w-full flex items-center justify-between text-left py-2.5 px-3.5 rounded-lg text-xs font-semibold tracking-wide border transition-all duration-200 ${
+                          !lessonUnlocked
+                            ? 'opacity-40 cursor-not-allowed bg-slate-900/60 border-transparent text-slate-500'
+                            : active
+                            ? 'bg-gradient-to-r from-amber-500 to-orange-600 border-transparent text-white font-extrabold shadow-md transform translate-x-1 cursor-pointer'
+                            : 'bg-slate-800/40 hover:bg-slate-800 border-transparent text-slate-300 hover:text-white cursor-pointer'
                         }`}
                       >
                         <div className="flex items-center gap-2 max-w-[85%] truncate">
-                          <BookOpen size={13} className={active ? "text-white" : "text-slate-400"} />
+                          {!lessonUnlocked ? (
+                            <Lock size={13} className="text-slate-500 flex-shrink-0" />
+                          ) : (
+                            <BookOpen size={13} className={active ? "text-white" : "text-slate-400"} />
+                          )}
                           <span className="truncate">{les.title}</span>
                         </div>
                         {done && (
