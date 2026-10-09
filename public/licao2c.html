@@ -443,6 +443,16 @@
 
         let finalXP = 0;
         function calculateXP() {
+
+            // Mapeia todos os .fancy-input da tela para o objeto respostas
+            const respostas = {};
+            document.querySelectorAll('.fancy-input').forEach(el => {
+                const key = el.id || el.name;
+                if (key) {
+                    respostas[key] = el.value;
+                }
+            });
+
             let correct = 0; let total = 0;
             document.querySelectorAll('.eval-cipher, .eval-list').forEach(input => {
                 total++;
@@ -474,38 +484,30 @@
 
         function returnToMap() {
             localStorage.setItem('licao_2c_status', 'concluida');
-            // Sincronização com o LMS (Pai & Nuvem)
+            localStorage.setItem('licao_2c_xp', (typeof finalXP !== 'undefined' ? finalXP : 100));
+            if(window.parent && window.parent.completeUnit) {
+                window.parent.completeUnit(parseInt('2'), (typeof finalXP !== 'undefined' ? finalXP : 100));
+            }
+
             if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
                 const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
                 const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
                 const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
-                const respObj = (typeof respostas !== 'undefined') ? respostas : ((typeof userAnswers !== 'undefined') ? userAnswers : ((typeof respostasFotografadas !== 'undefined') ? respostasFotografadas : {}));
+                const respObj = (typeof respostas !== 'undefined') ? respostas : {};
                 window.parent.salvarLicaoNaNuvem('licao2c', acertosCount, errosCount, finalScore, respObj);
-            } else {
-                localStorage.setItem('target_progresso_licao2c', JSON.stringify({
-                    acertos: (typeof correct !== 'undefined') ? correct : 0,
-                    erros: (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0,
-                    xp: (typeof finalXP !== 'undefined') ? finalXP : 100,
-                    respostas: (typeof respostas !== 'undefined') ? respostas : {}
-                }));
             }
-
-            localStorage.setItem('licao_2c_xp', finalXP);
-
-            if(window.parent && window.parent.completeUnit) {
-                window.parent.completeUnit(0, finalXP); 
-                if(window.parent.avancarPara) {
-                    window.parent.avancarPara('licao2d.html', 'link-2d');
-                    return;
-                }
+            if (window.parent && typeof window.parent.avancarPara === 'function') {
+                window.parent.avancarPara('licao2d.html', 'link-2d');
+                return;
             }
-            window.location.href = "licao2d.html"; 
+            window.location.href = "licao2d.html";
         }
     
         // ==========================================
         // LMS INTEGRATION: INICIALIZAÇÃO & MODO LEITURA
         // ==========================================
         document.addEventListener("DOMContentLoaded", function() {
+            // 1. Verificação de segurança silenciosa
             if (!localStorage.getItem('userCode')) {
                 if (window.parent && window.parent !== window) {
                     window.parent.location.href = "index.html";
@@ -515,6 +517,7 @@
                 return;
             }
 
+            // 2. Consulta de progresso ao pai
             const lessonKey = 'licao2c';
             let dadosSalvos = null;
             if (window.parent && typeof window.parent.obterDadosLicao === 'function') {
@@ -534,61 +537,44 @@
                 };
             }
 
-            // Se a lição já foi concluída, aplicar Modo Leitura (Read-Only)
+            // 3. Modo Read-Only: preencher e travar se já concluída
             if (dadosSalvos || localStorage.getItem('licao_2c_status') === 'concluida') {
                 if (dadosSalvos && dadosSalvos.respostas && typeof dadosSalvos.respostas === 'object') {
-                    const r = dadosSalvos.respostas;
-                    document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
-                        if (el.id && r[el.id] !== undefined) {
-                            el.value = r[el.id];
-                        } else if (r.inputs && el.id && r.inputs[el.id] !== undefined) {
-                            el.value = r.inputs[el.id];
+                    const ans = dadosSalvos.respostas;
+                    document.querySelectorAll('.fancy-input').forEach(el => {
+                        const key = el.id || el.name;
+                        if (key && ans[key] !== undefined) {
+                            el.value = ans[key];
+                        } else if (ans.inputs && key && ans.inputs[key] !== undefined) {
+                            el.value = ans.inputs[key];
                         }
                     });
 
-                    // Tratamento para inputs especiais (True/False, Letter, Dialogue, Table)
-                    if (r.dialogue && document.getElementById('final-dialogue')) {
-                        document.getElementById('final-dialogue').value = r.dialogue;
+                    // Suporte a aninhamentos especiais caso existam
+                    if (ans.letter && document.getElementById('vacation-letter')) {
+                        document.getElementById('vacation-letter').value = ans.letter;
                     }
-                    if (r.letter && document.getElementById('vacation-letter')) {
-                        document.getElementById('vacation-letter').value = r.letter;
+                    if (ans.dialogue && document.getElementById('final-dialogue')) {
+                        document.getElementById('final-dialogue').value = ans.dialogue;
                     }
-                    if (r.table && typeof r.table === 'object') {
-                        for (let k in r.table) {
+                    if (ans.table && typeof ans.table === 'object') {
+                        for (let k in ans.table) {
                             const el = document.getElementById(k.replace('_', '-'));
-                            if (el) el.value = r.table[k];
-                        }
-                    }
-                    if (r.match && typeof r.match === 'object') {
-                        for (let k in r.match) {
-                            const el = document.getElementById(k);
-                            if (el) el.value = r.match[k];
-                        }
-                    }
-                    if (r.nat && typeof r.nat === 'object') {
-                        for (let k in r.nat) {
-                            const el = document.getElementById(k);
-                            if (el) el.value = r.nat[k];
-                        }
-                    }
-                    if (r.hw && typeof r.hw === 'object') {
-                        for (let k in r.hw) {
-                            const el = document.getElementById(k);
-                            if (el) el.value = r.hw[k];
+                            if (el) el.value = ans.table[k];
                         }
                     }
                 }
 
-                // Bloqueia todos os campos
-                document.querySelectorAll('.fancy-input, .eval-input, input, textarea, select').forEach(el => {
+                // Bloqueia todos os campos .fancy-input
+                document.querySelectorAll('.fancy-input').forEach(el => {
                     el.disabled = true;
                     el.style.backgroundColor = "#f1f5f9";
                     el.style.cursor = "not-allowed";
                 });
 
-                // Desabilita e estiliza o botão de finalização
+                // Muda o botão final para 🔒 Lesson Completed
                 document.querySelectorAll('.btn-finish, .btn-finish-grad, #btn-submit, #btn-finish-lesson, #btn-finish-target, #btn-save-cloud, [id^="btn-finish-"]').forEach(btn => {
-                    btn.innerText = "🔒 Lesson Completed";
+                    btn.innerHTML = '🔒 Lesson Completed';
                     btn.disabled = true;
                     btn.style.cursor = "not-allowed";
                     btn.style.backgroundColor = "#94a3b8";
@@ -596,7 +582,6 @@
                 });
             }
         });
-
-    </script>
+</script>
 </body>
 </html>

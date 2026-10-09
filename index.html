@@ -66,6 +66,7 @@
         .unit-block:not(.locked) .sub-lessons { display: block; }
         .sub-link { padding: 8px; display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; border-left: 1px solid rgba(255,255,255,0.2); transition: 0.3s; margin-bottom: 2px; }
         .sub-link:hover, .sub-link.active { color: white; border-left-color: var(--orange-grad); padding-left: 15px; background: rgba(255,255,255,0.1); border-radius: 0 4px 4px 0; font-weight: bold; }
+        .sub-link.sub-locked { opacity: 0.45 !important; pointer-events: none !important; cursor: not-allowed !important; filter: grayscale(80%); }
         .locked { opacity: 0.6; pointer-events: none; }
         .logout-btn { background: rgba(0, 0, 0, 0.3); color: rgba(255,255,255,0.6); border: none; padding: 18px; font-family: var(--font-main); font-weight: 700; font-size: 13px; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.1); text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.3s;}
         .logout-btn:hover { background: var(--orange-grad); color: white; }
@@ -345,8 +346,8 @@
             }
         }
 
-        // Safe Cloud Sync with 2500ms timeout - NEVER blocks or breaks entry
-        async function safeCloudSync(data, timeoutMs = 2500) {
+        // Safe Cloud Sync with 8000ms timeout - prevents AbortError
+        async function safeCloudSync(data, timeoutMs = 8000) {
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -419,6 +420,7 @@
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
+                    keepalive: true,
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(bodyPayload)
                 });
@@ -551,6 +553,7 @@
 
         window.onload = function() {
             verificarProgressoDoAluno();
+            atualizarTrilha();
             const savedCode = localStorage.getItem('userCode');
             const lastType = localStorage.getItem('lastLoginType');
 
@@ -955,31 +958,119 @@
             }
         }
 
-        function updateTrail() {
-            // Em modo teste / avaliação, desbloqueia todas as unidades automaticamente!
-            const unlockAll = localStorage.getItem('unlock_all_lessons');
-            if(unlockAll !== 'false') {
-                for(let i=1; i<=8; i++) {
-                    unlockUnit(i);
-                    const sub = document.getElementById(`sub-${i}`);
-                    if(sub) sub.style.display = 'block';
+        // ========================================================
+        // PARTE 1: BLOQUEIO RIGOROSO DA TRILHA NO MENU LATERAL
+        // ========================================================
+        const ordemDasLicoes = [
+            'licao1a', 'licao1b', 'licao1c', 'licao1d',
+            'licao2a', 'licao2b', 'licao2c', 'licao2d',
+            'licao3a', 'licao3b', 'licao3c', 'licao3d',
+            'licao4a', 'licao4b', 'licao4c', 'licao4d',
+            'licao5a', 'licao5b', 'licao5c', 'licao5d',
+            'licao6a', 'licao6b', 'licao6c', 'licao6d',
+            'licao7a', 'licao7b', 'licao7c', 'licao7d',
+            'licao8a', 'licao8b', 'licao8c', 'licao8d'
+        ];
+
+        function renderizarTrilha() {
+            const userCode = (localStorage.getItem('userCode') || '').toUpperCase().trim();
+            const isProfessor = userCode.startsWith('PROF') || userCode === 'ADMIN' || userCode === 'TEACHER';
+
+            // Exceção do Professor: Se começar com "PROF", libere TODOS os links imediatamente
+            if (isProfessor) {
+                for (let u = 1; u <= 8; u++) {
+                    unlockUnit(u);
                 }
-                const btn = document.getElementById('btn-unlock-all');
-                if(btn) {
-                    btn.innerText = "✓ Todas Liberadas";
-                    btn.style.background = "#16a34a";
-                }
+                ordemDasLicoes.forEach(nomeLicao => {
+                    const shortId = nomeLicao.replace('licao', '');
+                    const linkEl = document.getElementById('link-' + shortId);
+                    if (!linkEl) return;
+                    linkEl.classList.remove('sub-locked');
+                    linkEl.removeAttribute('aria-disabled');
+                    linkEl.removeAttribute('disabled');
+                    linkEl.setAttribute('href', '#');
+                    linkEl.style.pointerEvents = 'auto';
+                    linkEl.style.opacity = '1';
+                    linkEl.style.cursor = 'pointer';
+                });
                 return;
             }
-            const code = localStorage.getItem('userCode') || ''; 
-            if(code.includes('PROF') || code.includes('DEMO') || code.includes('TEST') || code.includes('ALUNO') || code.includes('STUDENT') || code.includes('GUEST')) { 
-                for(let i=1; i<=8; i++) unlockUnit(i); 
-                return; 
+
+            // Regra de Progressão do Aluno:
+            // A primeira lição (licao1a) está SEMPRE liberada
+            unlockUnit(1);
+            const licoesLiberadas = new Set(['licao1a']);
+
+            // Loop em cascata: libera a próxima lição SOMENTE se a anterior estiver finalizada no localStorage
+            for (let i = 0; i < ordemDasLicoes.length - 1; i++) {
+                const licaoAtual = ordemDasLicoes[i];
+                const shortAtual = licaoAtual.replace('licao', '');
+
+                const anteriorConcluida = localStorage.getItem('target_progresso_' + licaoAtual) !== null ||
+                                          localStorage.getItem('target_progresso_' + shortAtual) !== null ||
+                                          localStorage.getItem('licao_' + shortAtual + '_status') === 'concluida';
+
+                if (anteriorConcluida) {
+                    const proximaLicao = ordemDasLicoes[i + 1];
+                    licoesLiberadas.add(proximaLicao);
+
+                    const unitNum = parseInt(proximaLicao.replace('licao', '')[0]);
+                    if (unitNum >= 1 && unitNum <= 8) {
+                        unlockUnit(unitNum);
+                    }
+                } else {
+                    // Cascata interrompida se a lição anterior não estiver concluída
+                    break;
+                }
             }
-            for(let u=1; u<=7; u++) {
-                if (localStorage.getItem(`unit${u}_done`) === 'true') unlockUnit(u+1);
-            }
+
+            // Aplica os estados nos elementos do menu lateral
+            ordemDasLicoes.forEach(nomeLicao => {
+                const shortId = nomeLicao.replace('licao', '');
+                const linkEl = document.getElementById('link-' + shortId);
+                if (!linkEl) return;
+
+                const aulaInfo = todasAsLicoes.find(a => a.id === shortId);
+                const tituloBase = aulaInfo ? aulaInfo.titulo : (shortId.toUpperCase() + ' - Lesson');
+                const estaConcluida = localStorage.getItem('target_progresso_' + nomeLicao) !== null ||
+                                      localStorage.getItem('licao_' + shortId + '_status') === 'concluida';
+
+                if (licoesLiberadas.has(nomeLicao)) {
+                    // Lição liberada para acesso
+                    linkEl.classList.remove('sub-locked');
+                    linkEl.removeAttribute('aria-disabled');
+                    linkEl.removeAttribute('disabled');
+                    linkEl.setAttribute('href', '#');
+                    linkEl.style.pointerEvents = 'auto';
+                    linkEl.style.opacity = '1';
+                    linkEl.style.cursor = 'pointer';
+
+                    if (estaConcluida) {
+                        linkEl.classList.add('done');
+                        linkEl.innerHTML = `✅ ${tituloBase} (Done)`;
+                    } else {
+                        linkEl.classList.remove('done');
+                        linkEl.innerHTML = tituloBase;
+                    }
+                } else {
+                    // Comportamento padrão para alunos: totalmente bloqueado
+                    linkEl.classList.add('sub-locked');
+                    linkEl.classList.remove('done');
+                    linkEl.setAttribute('aria-disabled', 'true');
+                    linkEl.setAttribute('disabled', 'true');
+                    linkEl.removeAttribute('href');
+                    linkEl.style.pointerEvents = 'none';
+                    linkEl.style.opacity = '0.5';
+                    linkEl.style.cursor = 'not-allowed';
+                    linkEl.innerHTML = `🔒 ${tituloBase}`;
+                }
+            });
         }
+
+        const atualizarTrilha = renderizarTrilha;
+        window.renderizarTrilha = renderizarTrilha;
+        window.atualizarTrilha = renderizarTrilha;
+        window.updateTrail = renderizarTrilha;
 
         function unlockUnit(num) { 
             const block = document.getElementById(`unit-${num}-block`); 
@@ -998,10 +1089,10 @@
                 teacherBtn.style.display = 'none';
             }
             updatePlayerInfoUI(code); 
-            updateTrail(); 
+            atualizarTrilha(); 
             verificarProgressoDoAluno();
             document.getElementById('dashboard').classList.add('active'); 
-            loadPage('licao1a.html', document.querySelector('.sub-link.active')); 
+            loadPage('licao1a.html', document.querySelector('.sub-link.active') || document.getElementById('link-1a')); 
         }
         function loadPage(url, el) { document.querySelectorAll('.sub-link').forEach(l => l.classList.remove('active')); if(el) el.classList.add('active'); document.getElementById('content-frame').src = url; }
         window.avancarPara = function(url, linkId) {
@@ -1010,7 +1101,11 @@
                 teacherBtn.classList.add('hidden');
                 teacherBtn.style.display = 'none';
             }
-            updateTrail();
+            if (!linkId && url) {
+                const m = url.match(/licao(\d[a-z])\.html/);
+                if (m) linkId = 'link-' + m[1];
+            }
+            atualizarTrilha();
             verificarProgressoDoAluno();
             const linkEl = linkId ? document.getElementById(linkId) : null;
             loadPage(url, linkEl);
@@ -1023,7 +1118,7 @@
             let profileXp = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
             let bestXp = Math.max(currentXp, profileXp);
             localStorage.setItem('studentXP', bestXp);
-            updateTrail();
+            atualizarTrilha();
             updatePlayerInfoUI(localStorage.getItem('userCode') || '');
             verificarProgressoDoAluno();
             saveToCloud();
