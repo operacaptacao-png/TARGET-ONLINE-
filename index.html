@@ -274,6 +274,7 @@
                         <a id="link-8a" class="sub-link sub-locked" aria-disabled="true" disabled="true" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" onclick="loadPage('licao8a.html', this)">8a - Vacations And Trips</a>
                         <a id="link-8b" class="sub-link sub-locked" aria-disabled="true" disabled="true" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" onclick="loadPage('licao8b.html', this)">8b - Time Tables</a>
                         <a id="link-8c" class="sub-link sub-locked" aria-disabled="true" disabled="true" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" onclick="loadPage('licao8c.html', this)">8c - Unit Challenge</a>
+                        <a id="link-encerramento" class="sub-link sub-locked" aria-disabled="true" disabled="true" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" onclick="loadPage('encerramento.html', this)">🎬 Grand Finale (Créditos)</a>
                     </div>
                 </div>
             </div>
@@ -504,7 +505,8 @@
             { id: '7d', titulo: '7d - Unit Challenge' },
             { id: '8a', titulo: '8a - Vacations And Trips' },
             { id: '8b', titulo: '8b - Time Tables' },
-            { id: '8c', titulo: '8c - Unit Challenge' }
+            { id: '8c', titulo: '8c - Unit Challenge' },
+            { id: 'encerramento', titulo: '🎬 Grand Finale (Créditos)' }
         ];
 
         function verificarProgressoDoAluno() {
@@ -973,7 +975,7 @@
             'licao5a', 'licao5b', 'licao5c', 'licao5d',
             'licao6a', 'licao6b', 'licao6c', 'licao6d',
             'licao7a', 'licao7b', 'licao7c', 'licao7d',
-            'licao8a', 'licao8b', 'licao8c', 'licao8d'
+            'licao8a', 'licao8b', 'licao8c', 'encerramento'
         ];
 
         function isUserTeacher() {
@@ -1150,6 +1152,10 @@
             if (!linkId && url) {
                 const m = url.match(/licao(\d[a-z])\.html/);
                 if (m) linkId = 'link-' + m[1];
+                else if (url.includes('encerramento')) linkId = 'link-encerramento';
+            }
+            if (linkId && !linkId.startsWith('link-')) {
+                linkId = 'link-' + linkId;
             }
             atualizarTrilha();
             verificarProgressoDoAluno();

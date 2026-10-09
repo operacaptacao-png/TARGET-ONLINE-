@@ -133,6 +133,18 @@ export default function App() {
       if (completedId === "3D" && !updatedUnlocked.includes(4)) {
         updatedUnlocked.push(4);
       }
+      if (completedId === "4D" && !updatedUnlocked.includes(5)) {
+        updatedUnlocked.push(5);
+      }
+      if (completedId === "5D" && !updatedUnlocked.includes(6)) {
+        updatedUnlocked.push(6);
+      }
+      if (completedId === "6D" && !updatedUnlocked.includes(7)) {
+        updatedUnlocked.push(7);
+      }
+      if (completedId === "7D" && !updatedUnlocked.includes(8)) {
+        updatedUnlocked.push(8);
+      }
 
       return {
         ...prev,
@@ -145,22 +157,10 @@ export default function App() {
 
   // Intermediate route controllers
   const handleNavigateNext = (currentLessonId: string) => {
-    if (state.loginType === 'PROF') {
-      // Just progress linearly for teachers
-      let nextId = "1A";
-      if (currentLessonId === "1A") nextId = "1B";
-      else if (currentLessonId === "1B") nextId = "1C";
-      else if (currentLessonId === "1C") nextId = "1D";
-      else if (currentLessonId === "1D") nextId = "2A";
-      else if (currentLessonId === "2A") nextId = "2B";
-      else if (currentLessonId === "2B") nextId = "2C";
-      else if (currentLessonId === "2C") nextId = "2D";
-      else if (currentLessonId === "2D") nextId = "3A";
-      else if (currentLessonId === "3A") nextId = "3B";
-      else if (currentLessonId === "3B") nextId = "3C";
-      else if (currentLessonId === "3C") nextId = "3D";
-      else if (currentLessonId === "3D") nextId = "4A";
+    const lessonIdx = LESSONS.findIndex(l => l.id === currentLessonId);
+    let nextId = lessonIdx >= 0 && lessonIdx < LESSONS.length - 1 ? LESSONS[lessonIdx + 1].id : currentLessonId;
 
+    if (state.loginType === 'PROF') {
       setState(prev => ({ ...prev, activeLessonId: nextId }));
       return;
     }
@@ -173,18 +173,6 @@ export default function App() {
     } else if (currentLessonId === "3D") {
       setTransitionType("TRANSITION_3");
     } else {
-      // Normal progression logic
-      let nextId = "1A";
-      if (currentLessonId === "1A") nextId = "1B";
-      else if (currentLessonId === "1B") nextId = "1C";
-      else if (currentLessonId === "1C") nextId = "1D";
-      else if (currentLessonId === "2A") nextId = "2B";
-      else if (currentLessonId === "2B") nextId = "2C";
-      else if (currentLessonId === "2C") nextId = "2D";
-      else if (currentLessonId === "3A") nextId = "3B";
-      else if (currentLessonId === "3B") nextId = "3C";
-      else if (currentLessonId === "3C") nextId = "3D";
-
       setState(prev => ({ ...prev, activeLessonId: nextId }));
     }
   };
