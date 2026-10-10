@@ -105,6 +105,14 @@ export default function ImmigrationScreen({ onComplete }: ImmigrationScreenProps
             exit={{ opacity: 0, scale: 0.95 }}
             className="relative z-10 w-11/12 max-w-2xl bg-black/80 backdrop-blur-xl border border-white/10 p-8 rounded-3xl text-center shadow-2xl"
           >
+            <div className="flex justify-center mb-5">
+              <img
+                src="https://res.cloudinary.com/pfrqadfm/image/upload/v1791570858/logo_opeta_8_bits_lmvgwq.png"
+                alt="Opera Logo 8-Bit"
+                className="w-48 max-w-full h-auto drop-shadow-[0_4px_15px_rgba(245,158,11,0.35)]"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            </div>
             <h2 className="text-xl md:text-3xl font-bold font-display uppercase tracking-widest text-amber-500 mb-6 drop-shadow-md">
               Choose Your Avatar
             </h2>
@@ -183,6 +191,14 @@ export default function ImmigrationScreen({ onComplete }: ImmigrationScreenProps
             exit={{ opacity: 0, y: -25 }}
             className="relative z-10 w-11/12 max-w-md bg-stone-950/90 backdrop-blur-xl border-l-4 border-amber-500 border-y border-r border-white/5 py-10 px-8 rounded-2xl shadow-2xl text-center"
           >
+            <div className="flex justify-center mb-4">
+              <img
+                src="https://res.cloudinary.com/pfrqadfm/image/upload/v1791570858/logo_opeta_8_bits_lmvgwq.png"
+                alt="Opera Logo 8-Bit"
+                className="w-36 max-w-full h-auto drop-shadow-[0_4px_15px_rgba(245,158,11,0.35)]"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            </div>
             <div className="uppercase tracking-widest text-xs font-bold text-amber-500 mb-2">
               Immigration Officer (London Heath)
             </div>
