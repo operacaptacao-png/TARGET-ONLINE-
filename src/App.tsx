@@ -23,7 +23,7 @@ export default function App() {
       loginType: savedType || null,
       studentXP: savedXP ? parseInt(savedXP) : 0,
       completedLessons: savedComp ? JSON.parse(savedComp) : [],
-      unlockedUnits: savedUnl ? JSON.parse(savedUnl) : [1],
+      unlockedUnits: savedUnl ? JSON.parse(savedUnl) : [1, 2, 3, 4, 5, 6, 7, 8],
       activeLessonId: savedActive || '1A'
     };
   });
@@ -49,7 +49,7 @@ export default function App() {
     if (!state.userCode || state.loginType !== 'STUDENT' || !state.playerName) return;
 
     let isMounted = true;
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPnScrpyBKJxI3hvG1S7u2s2COsH7vLDnf1AvTWDdLNTvL88kTmLVR4CGyv_nZtcaXZw/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4TmjIaqXiA6MXhiLQR6QmF4NvTNHgzhX_7hKlaXHGyK34675_-OL5Tq09iXXVkomIGw/exec";
 
     let className = "Turma Desconhecida";
     if (state.userCode.includes('T1')) className = "Turma 1";
@@ -65,10 +65,10 @@ export default function App() {
       unit2: state.completedLessons.includes("2D"),
       unit3: state.completedLessons.includes("3D"),
       unit4: state.completedLessons.includes("4D"),
-      unit5: false,
-      unit6: false,
-      unit7: false,
-      unit8: false
+      unit5: state.completedLessons.includes("5D"),
+      unit6: state.completedLessons.includes("6D"),
+      unit7: state.completedLessons.includes("7D"),
+      unit8: state.completedLessons.includes("8C")
     };
 
     setCloudStatus('syncing');
@@ -108,8 +108,8 @@ export default function App() {
       avatarUrl: data.avatarUrl,
       userCode: data.userCode,
       loginType: data.loginType,
-      // unlocked all units instantly for Prof
-      unlockedUnits: data.loginType === 'PROF' ? [1, 2, 3, 4] : [1]
+      // Unlock all units for all users
+      unlockedUnits: [1, 2, 3, 4, 5, 6, 7, 8]
     }));
   };
 

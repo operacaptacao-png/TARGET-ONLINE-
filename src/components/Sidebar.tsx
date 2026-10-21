@@ -49,18 +49,12 @@ export default function Sidebar({
     return "Admin Portal";
   };
 
-  const isUnitUnlocked = (unitNum: number) => {
-    if (loginType === 'PROF') return true;
-    return unlockedUnits.includes(unitNum);
+  const isUnitUnlocked = (_unitNum: number) => {
+    return true;
   };
 
-  const isLessonUnlocked = (lessonId: string) => {
-    if (loginType === 'PROF') return true;
-    if (lessonId === '1A') return true;
-    const lessonIdx = LESSONS.findIndex(l => l.id === lessonId);
-    if (lessonIdx <= 0) return true;
-    const prevLesson = LESSONS[lessonIdx - 1];
-    return completedLessons.includes(prevLesson.id);
+  const isLessonUnlocked = (_lessonId: string) => {
+    return true;
   };
 
   return (

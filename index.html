@@ -294,7 +294,7 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0d33Kbpqb0zbKI54oGaz1VH6mECNLVzJ9YytxImo948JvL_lHm6Y3IV7plpvhMUWxeA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4TmjIaqXiA6MXhiLQR6QmF4NvTNHgzhX_7hKlaXHGyK34675_-OL5Tq09iXXVkomIGw/exec";
 
         let playerName = ""; 
         let avatarUrl = ""; 
@@ -602,6 +602,10 @@
                 unit2: localStorage.getItem('unit2_done') === 'true',
                 unit3: localStorage.getItem('unit3_done') === 'true',
                 unit4: localStorage.getItem('unit4_done') === 'true',
+                unit5: localStorage.getItem('unit5_done') === 'true',
+                unit6: localStorage.getItem('unit6_done') === 'true',
+                unit7: localStorage.getItem('unit7_done') === 'true',
+                unit8: localStorage.getItem('unit8_done') === 'true',
                 progressJSON: exportarProgressoDasLicoes(),
                 isLogin: false
             };
@@ -962,11 +966,6 @@
         }
 
         function toggleUnit(num) {
-            const isProfessor = isUserTeacher();
-            const block = document.getElementById('unit-' + num + '-block');
-            if(!isProfessor && block && block.classList.contains('locked')) {
-                return;
-            }
             const sub = document.getElementById('sub-' + num);
             if(sub) {
                 sub.style.display = (sub.style.display === 'none' || !sub.style.display) ? 'block' : 'none';
@@ -994,110 +993,36 @@
         }
 
         function renderizarTrilha() {
-            const isProfessor = isUserTeacher();
-
-            // Exceção do Professor: Se for professor, libere TODOS os links e unidades imediatamente
-            if (isProfessor) {
-                for (let u = 1; u <= 8; u++) {
-                    unlockUnit(u);
-                }
-                ordemDasLicoes.forEach(nomeLicao => {
-                    const shortId = nomeLicao.replace('licao', '');
-                    const linkEl = document.getElementById('link-' + shortId);
-                    if (!linkEl) return;
-                    linkEl.classList.remove('sub-locked');
-                    linkEl.removeAttribute('aria-disabled');
-                    linkEl.removeAttribute('disabled');
-                    linkEl.setAttribute('href', '#');
-                    linkEl.style.pointerEvents = 'auto';
-                    linkEl.style.opacity = '1';
-                    linkEl.style.cursor = 'pointer';
-
-                    const aulaInfo = todasAsLicoes.find(a => a.id === shortId);
-                    const tituloBase = aulaInfo ? aulaInfo.titulo : (shortId.toUpperCase() + ' - Lesson');
-                    const estaConcluida = localStorage.getItem('target_progresso_' + nomeLicao) !== null ||
-                                          localStorage.getItem('licao_' + shortId + '_status') === 'concluida';
-                    if (estaConcluida) {
-                        linkEl.classList.add('done');
-                        linkEl.innerHTML = '✅ ' + tituloBase + ' (Done)';
-                    } else {
-                        linkEl.classList.remove('done');
-                        linkEl.innerHTML = tituloBase;
-                    }
-                });
-                return;
+            // Libera todas as 8 unidades para todos os alunos e professores
+            for (let u = 1; u <= 8; u++) {
+                unlockUnit(u);
             }
 
-            // Regra de Progressão do Aluno:
-            // Tranca todas as unidades primeiro e mantém apenas as liberadas
-            for (let u = 2; u <= 8; u++) {
-                lockUnit(u);
-            }
-            unlockUnit(1);
-            const licoesLiberadas = new Set(['licao1a']);
-
-            // Loop em cascata: libera a próxima lição SOMENTE se a anterior estiver finalizada no localStorage
-            for (let i = 0; i < ordemDasLicoes.length - 1; i++) {
-                const licaoAtual = ordemDasLicoes[i];
-                const shortAtual = licaoAtual.replace('licao', '');
-
-                const anteriorConcluida = localStorage.getItem('target_progresso_' + licaoAtual) !== null ||
-                                          localStorage.getItem('target_progresso_' + shortAtual) !== null ||
-                                          localStorage.getItem('licao_' + shortAtual + '_status') === 'concluida';
-
-                if (anteriorConcluida) {
-                    const proximaLicao = ordemDasLicoes[i + 1];
-                    licoesLiberadas.add(proximaLicao);
-
-                    const unitNum = parseInt(proximaLicao.replace('licao', '')[0]);
-                    if (unitNum >= 1 && unitNum <= 8) {
-                        unlockUnit(unitNum);
-                    }
-                } else {
-                    // Cascata interrompida se a lição anterior não estiver concluída
-                    break;
-                }
-            }
-
-            // Aplica os estados nos elementos do menu lateral
+            // Aplica os links como desbloqueados e clicáveis para todas as lições
             ordemDasLicoes.forEach(nomeLicao => {
                 const shortId = nomeLicao.replace('licao', '');
                 const linkEl = document.getElementById('link-' + shortId);
                 if (!linkEl) return;
+
+                linkEl.classList.remove('sub-locked');
+                linkEl.removeAttribute('aria-disabled');
+                linkEl.removeAttribute('disabled');
+                linkEl.setAttribute('href', '#');
+                linkEl.style.pointerEvents = 'auto';
+                linkEl.style.opacity = '1';
+                linkEl.style.cursor = 'pointer';
 
                 const aulaInfo = todasAsLicoes.find(a => a.id === shortId);
                 const tituloBase = aulaInfo ? aulaInfo.titulo : (shortId.toUpperCase() + ' - Lesson');
                 const estaConcluida = localStorage.getItem('target_progresso_' + nomeLicao) !== null ||
                                       localStorage.getItem('licao_' + shortId + '_status') === 'concluida';
 
-                if (licoesLiberadas.has(nomeLicao)) {
-                    // Lição liberada para acesso
-                    linkEl.classList.remove('sub-locked');
-                    linkEl.removeAttribute('aria-disabled');
-                    linkEl.removeAttribute('disabled');
-                    linkEl.setAttribute('href', '#');
-                    linkEl.style.pointerEvents = 'auto';
-                    linkEl.style.opacity = '1';
-                    linkEl.style.cursor = 'pointer';
-
-                    if (estaConcluida) {
-                        linkEl.classList.add('done');
-                        linkEl.innerHTML = '✅ ' + tituloBase + ' (Done)';
-                    } else {
-                        linkEl.classList.remove('done');
-                        linkEl.innerHTML = tituloBase;
-                    }
+                if (estaConcluida) {
+                    linkEl.classList.add('done');
+                    linkEl.innerHTML = '✅ ' + tituloBase + ' (Done)';
                 } else {
-                    // Comportamento padrão para alunos: totalmente bloqueado
-                    linkEl.classList.add('sub-locked');
                     linkEl.classList.remove('done');
-                    linkEl.setAttribute('aria-disabled', 'true');
-                    linkEl.setAttribute('disabled', 'true');
-                    linkEl.removeAttribute('href');
-                    linkEl.style.pointerEvents = 'none';
-                    linkEl.style.opacity = '0.5';
-                    linkEl.style.cursor = 'not-allowed';
-                    linkEl.innerHTML = '🔒 ' + tituloBase;
+                    linkEl.innerHTML = tituloBase;
                 }
             });
         }
@@ -1143,10 +1068,6 @@
         }
 
         function loadPage(url, el) {
-            const isProfessor = isUserTeacher();
-            if (!isProfessor && el && el.classList.contains('sub-locked')) {
-                return;
-            }
             document.querySelectorAll('.sub-link').forEach(l => l.classList.remove('active'));
             if(el) el.classList.add('active');
             document.getElementById('content-frame').src = url;
