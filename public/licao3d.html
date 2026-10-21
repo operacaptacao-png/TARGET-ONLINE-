@@ -441,7 +441,14 @@
         // Sistema de Avaliação (XP e Mochila) Integrado à Checklist e ao Report Card
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('licao_3d_status') === 'concluida') {
-                let savedData = localStorage.getItem('licao3d_respostas');
+                let savedData = null;
+                if (window.parent && typeof window.parent.obterDadosLicao === "function") {
+                    const d = window.parent.obterDadosLicao("licao3d");
+                    if (d && d.respostas && Object.keys(d.respostas).length > 0) {
+                        savedData = JSON.stringify(d.respostas);
+                    }
+                }
+                if (!savedData) savedData = localStorage.getItem("licao3d_respostas");
                 if (savedData) {
                     let respostas = JSON.parse(savedData);
 

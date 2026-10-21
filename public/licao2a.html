@@ -584,7 +584,9 @@
             });
             localStorage.setItem('licao2a_respostas', JSON.stringify(respostasFotografadas));
             // Sincronização com o LMS (Pai & Nuvem)
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100); 
+                        if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
                 const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
                 const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
                 const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
@@ -599,8 +601,6 @@
                 }));
             }
 
-            let percentage = total > 0 ? (correct / total) : 1;
-            finalXP = Math.round(percentage * 100); 
             document.getElementById('xp-gained-text').innerText = "+" + finalXP;
             document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
             document.getElementById('result-modal').style.display = 'flex';
@@ -613,13 +613,6 @@
                 window.parent.completeUnit(parseInt('2'), (typeof finalXP !== 'undefined' ? finalXP : 100));
             }
 
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
-                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
-                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
-                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
-                const respObj = (typeof respostas !== 'undefined') ? respostas : {};
-                window.parent.salvarLicaoNaNuvem('licao2a', acertosCount, errosCount, finalScore, respObj);
-            }
             if (window.parent && typeof window.parent.avancarPara === 'function') {
                 window.parent.avancarPara('licao2b.html', 'link-2b');
                 return;

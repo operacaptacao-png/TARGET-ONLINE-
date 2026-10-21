@@ -386,23 +386,39 @@
         // ========================================================
         window.salvarLicaoNaNuvem = async function(nomeLicao, acertos, erros, xp, respostas) {
             if (!nomeLicao) return;
-            const userCode = localStorage.getItem('userCode') || '';
+            const userCode = (localStorage.getItem('userCode') || '').trim();
+            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
+
+            // Proteção contra payload vazio: Se o objeto de respostas vier vazio {},
+            // mas já existirem respostas salvas anteriormente, preserva as respostas anteriores!
+            let finalRespostas = (respostas && typeof respostas === 'object') ? respostas : {};
+            const isEmptyNew = Object.keys(finalRespostas).length === 0;
+            if (isEmptyNew) {
+                const existingData = window.obterDadosLicao(nomeLicao);
+                if (existingData && existingData.respostas && Object.keys(existingData.respostas).length > 0) {
+                    finalRespostas = existingData.respostas;
+                }
+            }
+
             const payload = {
                 acertos: Number(acertos) || 0,
                 erros: Number(erros) || 0,
                 xp: Number(xp) || 0,
-                respostas: respostas || {}
+                respostas: finalRespostas
             };
 
-            // 1. Backup imediato no localStorage
+            // 1. Backup imediato no localStorage (Global + Por Conta do Aluno)
             localStorage.setItem('target_progresso_' + nomeLicao, JSON.stringify(payload));
+            if (userCode) {
+                localStorage.setItem(userCode + '_progresso_' + nomeLicao, JSON.stringify(payload));
+                localStorage.setItem(userCode + '_licao_' + cleanId + '_respostas', JSON.stringify(finalRespostas));
+            }
 
             // Sincronização retrocompatível de status e dados
-            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
             if (cleanId) {
                 localStorage.setItem('licao_' + cleanId + '_status', 'concluida');
                 localStorage.setItem('licao_' + cleanId + '_xp', payload.xp);
-                localStorage.setItem('licao' + cleanId + '_respostas', JSON.stringify(respostas));
+                localStorage.setItem('licao' + cleanId + '_respostas', JSON.stringify(finalRespostas));
                 if (cleanId !== nomeLicao) {
                     localStorage.setItem('target_progresso_' + cleanId, JSON.stringify(payload));
                 }
@@ -415,16 +431,17 @@
                 saveToCloud();
             }
 
-            // 2. Fetch para o Apps Script (POST no-cors)
+            // 2. Fetch para o Apps Script (POST)
             try {
                 const bodyPayload = {
                     action: "save_lesson",
                     code: userCode,
+                    name: localStorage.getItem('userName') || "Student",
                     nomeLicao: nomeLicao,
                     acertos: Number(acertos) || 0,
                     erros: Number(erros) || 0,
                     xp: Number(xp) || 0,
-                    respostas: respostas || {}
+                    respostas: finalRespostas
                 };
 
                 await fetch(GOOGLE_SCRIPT_URL, {
@@ -434,7 +451,7 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(bodyPayload)
                 });
-                console.log(`[Cloud] Lição ${nomeLicao} salva na nuvem.`);
+                console.log(`[Cloud] Lição ${nomeLicao} salva na nuvem com sucesso.`);
             } catch (err) {
                 console.warn(`[Cloud] Falha no salvamento remoto de ${nomeLicao} (backup local preservado):`, err);
             }
@@ -442,6 +459,30 @@
 
         window.obterDadosLicao = function(nomeLicao) {
             if (!nomeLicao) return null;
+            const userCode = (localStorage.getItem('userCode') || '').trim();
+            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
+
+            // 1. Busca primeiro com o prefixo da conta logada
+            if (userCode) {
+                const userVal = localStorage.getItem(userCode + '_progresso_' + nomeLicao) || 
+                                localStorage.getItem(userCode + '_progresso_' + cleanId);
+                if (userVal) {
+                    try { return JSON.parse(userVal); } catch(e) {}
+                }
+                const userAns = localStorage.getItem(userCode + '_licao_' + cleanId + '_respostas');
+                if (userAns) {
+                    try {
+                        return {
+                            acertos: 0,
+                            erros: 0,
+                            xp: parseInt(localStorage.getItem('licao_' + cleanId + '_xp')) || 100,
+                            respostas: JSON.parse(userAns)
+                        };
+                    } catch(e) {}
+                }
+            }
+
+            // 2. Busca chave direta
             const directVal = localStorage.getItem('target_progresso_' + nomeLicao);
             if (directVal) {
                 try {
@@ -451,8 +492,7 @@
                 }
             }
 
-            // Tentativa com id curto ou variações
-            const cleanId = nomeLicao.toLowerCase().replace(/^licao_?/, '').trim();
+            // 3. Tentativa com id curto ou variações
             const altKeys = [
                 'target_progresso_' + cleanId,
                 'target_progresso_licao' + cleanId,
@@ -465,7 +505,7 @@
                 }
             }
 
-            // Fallback para lições já concluídas anteriormente
+            // 4. Fallback para lições já concluídas anteriormente
             if (cleanId && localStorage.getItem('licao_' + cleanId + '_status') === 'concluida') {
                 const legacyAns = localStorage.getItem('licao' + cleanId + '_respostas') || localStorage.getItem('licao_' + cleanId + '_respostas');
                 if (legacyAns) {
@@ -616,10 +656,12 @@
         window.completeUnit = function(unitNumber, xpGained) {
             if(unitNumber > 0) localStorage.setItem('unit' + unitNumber + '_done', 'true');
             let currentXP = parseInt(localStorage.getItem('studentXP')) || 0;
-            localStorage.setItem('studentXP', currentXP + xpGained);
+            const validGain = Number(xpGained) || 0;
+            localStorage.setItem('studentXP', currentXP + validGain);
 
-            updateTrail();
-            updatePlayerInfoUI(localStorage.getItem('userCode'));
+            atualizarTrilha();
+            verificarProgressoDoAluno();
+            updatePlayerInfoUI(localStorage.getItem('userCode') || '');
             saveToCloud(); 
         };
 
@@ -795,18 +837,29 @@
             localStorage.setItem('userAvatar', avatarUrl || 'https://i.postimg.cc/pVKGSvYX/Adriane.jpg'); 
             localStorage.setItem('lastLoginType', doc.includes('PROF') ? 'PROF' : 'STUDENT');
             
-            if (resData && resData.message === "Registered") {
-                localStorage.setItem('studentXP', 0);
-                for(let i=1; i<=8; i++) localStorage.removeItem('unit'+i+'_done');
-            } else if (resData && resData.message === "Sync loading" && resData.userData) {
-                localStorage.setItem('studentXP', resData.userData.xp || 0);
-                if(resData.userData.unit1) localStorage.setItem('unit1_done', 'true');
-                if(resData.userData.unit2) localStorage.setItem('unit2_done', 'true');
-                if(resData.userData.unit3) localStorage.setItem('unit3_done', 'true');
-                if(resData.userData.unit4) localStorage.setItem('unit4_done', 'true');
-                if(resData.userData.progressJSON) { importarProgressoDasLicoes(resData.userData.progressJSON); }
-            } else if(!localStorage.getItem('studentXP')) {
-                localStorage.setItem('studentXP', 0);
+            // Restaura XP e unidades da nuvem (ou do cache do aluno)
+            let cloudXP = 0;
+            if (resData && resData.userData && resData.userData.xp !== undefined) {
+                cloudXP = parseInt(resData.userData.xp) || 0;
+            } else if (resData && resData.data && resData.data.xp !== undefined) {
+                cloudXP = parseInt(resData.data.xp) || 0;
+            }
+            const savedLocalXP = parseInt(localStorage.getItem(doc + '_studentXP')) || parseInt(localStorage.getItem('studentXP')) || 0;
+            const finalXPToSet = Math.max(cloudXP, savedLocalXP);
+            localStorage.setItem('studentXP', finalXPToSet);
+            localStorage.setItem(doc + '_studentXP', finalXPToSet);
+
+            const uData = (resData && resData.userData) ? resData.userData : ((resData && resData.data) ? resData.data : null);
+            if (uData) {
+                for (let i = 1; i <= 8; i++) {
+                    if (uData['unit' + i]) {
+                        localStorage.setItem('unit' + i + '_done', 'true');
+                        localStorage.setItem(doc + '_unit' + i + '_done', 'true');
+                    }
+                }
+                if (uData.progressJSON) {
+                    importarProgressoDasLicoes(uData.progressJSON);
+                }
             }
 
             stopBgmSafely();
@@ -894,15 +947,29 @@
             localStorage.setItem('userCode', doc); 
             localStorage.setItem('lastLoginType', doc.includes('PROF') ? 'PROF' : 'STUDENT');
             
-            if (resData && resData.message === "Sync loading" && resData.userData) {
-                localStorage.setItem('studentXP', resData.userData.xp || 0);
-                if(resData.userData.unit1) localStorage.setItem('unit1_done', 'true');
-                if(resData.userData.unit2) localStorage.setItem('unit2_done', 'true');
-                if(resData.userData.unit3) localStorage.setItem('unit3_done', 'true');
-                if(resData.userData.unit4) localStorage.setItem('unit4_done', 'true');
-                if(resData.userData.progressJSON) { importarProgressoDasLicoes(resData.userData.progressJSON); }
-            } else if(!localStorage.getItem('studentXP')) {
-                localStorage.setItem('studentXP', 0);
+            // Restaura XP e unidades da nuvem (ou do cache do aluno)
+            let cloudXP = 0;
+            if (resData && resData.userData && resData.userData.xp !== undefined) {
+                cloudXP = parseInt(resData.userData.xp) || 0;
+            } else if (resData && resData.data && resData.data.xp !== undefined) {
+                cloudXP = parseInt(resData.data.xp) || 0;
+            }
+            const savedLocalXP = parseInt(localStorage.getItem(doc + '_studentXP')) || parseInt(localStorage.getItem('studentXP')) || 0;
+            const finalXPToSet = Math.max(cloudXP, savedLocalXP);
+            localStorage.setItem('studentXP', finalXPToSet);
+            localStorage.setItem(doc + '_studentXP', finalXPToSet);
+
+            const uData = (resData && resData.userData) ? resData.userData : ((resData && resData.data) ? resData.data : null);
+            if (uData) {
+                for (let i = 1; i <= 8; i++) {
+                    if (uData['unit' + i]) {
+                        localStorage.setItem('unit' + i + '_done', 'true');
+                        localStorage.setItem(doc + '_unit' + i + '_done', 'true');
+                    }
+                }
+                if (uData.progressJSON) {
+                    importarProgressoDasLicoes(uData.progressJSON);
+                }
             }
 
             const teacherBtn = document.getElementById('btn-top-teacher');
@@ -1091,19 +1158,6 @@
             verificarProgressoDoAluno();
             const linkEl = linkId ? document.getElementById(linkId) : null;
             loadPage(url, linkEl);
-        };
-        window.completeUnit = function(unitNum, xp) {
-            if (unitNum > 0) {
-                localStorage.setItem('unit' + unitNum + '_done', 'true');
-            }
-            let currentXp = parseInt(localStorage.getItem('studentXP')) || 0;
-            let profileXp = parseInt(localStorage.getItem('target_on_profile_xp')) || 0;
-            let bestXp = Math.max(currentXp, profileXp);
-            localStorage.setItem('studentXP', bestXp);
-            atualizarTrilha();
-            updatePlayerInfoUI(localStorage.getItem('userCode') || '');
-            verificarProgressoDoAluno();
-            saveToCloud();
         };
     </script>
 </body>

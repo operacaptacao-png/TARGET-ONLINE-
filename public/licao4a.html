@@ -1264,7 +1264,14 @@
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('licao_4a_status') === 'concluida') {
-                let savedData = localStorage.getItem('licao4a_respostas');
+                let savedData = null;
+                if (window.parent && typeof window.parent.obterDadosLicao === "function") {
+                    const d = window.parent.obterDadosLicao("licao4a");
+                    if (d && d.respostas && Object.keys(d.respostas).length > 0) {
+                        savedData = JSON.stringify(d.respostas);
+                    }
+                }
+                if (!savedData) savedData = localStorage.getItem("licao4a_respostas");
                 if (savedData) {
                     let respostas = JSON.parse(savedData);
 
@@ -1745,7 +1752,10 @@
 
             localStorage.setItem('licao4a_respostas', JSON.stringify(respostasFotografadas));
             // Sincronização com o LMS (Pai & Nuvem)
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
+            let percentage = total > 0 ? (correct / total) : 1;
+            finalXP = Math.round(percentage * 100);
+
+                        if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
                 const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
                 const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
                 const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
@@ -1760,9 +1770,6 @@
                 }));
             }
 
-
-            let percentage = total > 0 ? (correct / total) : 1;
-            finalXP = Math.round(percentage * 100);
 
             const xpGainedText = document.getElementById('xp-gained-text');
             if (xpGainedText) xpGainedText.innerText = "+" + finalXP;
@@ -1787,13 +1794,6 @@
                 window.parent.completeUnit(parseInt('4'), (typeof finalXP !== 'undefined' ? finalXP : 100));
             }
 
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
-                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
-                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
-                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
-                const respObj = (typeof respostas !== 'undefined') ? respostas : {};
-                window.parent.salvarLicaoNaNuvem('licao4a', acertosCount, errosCount, finalScore, respObj);
-            }
             if (window.parent && typeof window.parent.avancarPara === 'function') {
                 window.parent.avancarPara('licao4b.html', 'link-4b');
                 return;

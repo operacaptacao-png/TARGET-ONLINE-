@@ -346,7 +346,14 @@ Me: Here it is."></textarea>
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('licao_1a_status') === 'concluida') {
-                let savedData = localStorage.getItem('licao1a_respostas');
+                let savedData = null;
+                if (window.parent && typeof window.parent.obterDadosLicao === "function") {
+                    const d = window.parent.obterDadosLicao("licao1a");
+                    if (d && d.respostas && Object.keys(d.respostas).length > 0) {
+                        savedData = JSON.stringify(d.respostas);
+                    }
+                }
+                if (!savedData) savedData = localStorage.getItem("licao1a_respostas");
                 if (savedData) {
                     let respostas = JSON.parse(savedData);
 
@@ -664,7 +671,10 @@ Me: Here it is."></textarea>
 
             // Guarda as respostas na Mochila antes de fechar a lição!
             localStorage.setItem('licao1a_respostas', JSON.stringify(respostasFotografadas));
-            // Sincronização com o LMS (Pai & Nuvem)
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+                        // Sincronização com o LMS (Pai & Nuvem)
             if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
                 const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
                 const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
@@ -681,9 +691,6 @@ Me: Here it is."></textarea>
             }
 
 
-            let percentage = correct / total;
-            finalXP = Math.round(percentage * 100); 
-
             document.getElementById('xp-gained-text').innerText = "+" + finalXP;
             document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
             document.getElementById('result-modal').style.display = 'flex';
@@ -699,13 +706,6 @@ Me: Here it is."></textarea>
                 window.parent.completeUnit(parseInt('1'), (typeof finalXP !== 'undefined' ? finalXP : 100));
             }
 
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
-                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
-                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
-                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
-                const respObj = (typeof respostas !== 'undefined') ? respostas : {};
-                window.parent.salvarLicaoNaNuvem('licao1a', acertosCount, errosCount, finalScore, respObj);
-            }
             if (window.parent && typeof window.parent.avancarPara === 'function') {
                 window.parent.avancarPara('licao1b.html', 'link-1b');
                 return;

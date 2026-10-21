@@ -377,7 +377,14 @@
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('licao_1b_status') === 'concluida') {
-                let savedData = localStorage.getItem('licao1b_respostas');
+                let savedData = null;
+                if (window.parent && typeof window.parent.obterDadosLicao === "function") {
+                    const d = window.parent.obterDadosLicao("licao1b");
+                    if (d && d.respostas && Object.keys(d.respostas).length > 0) {
+                        savedData = JSON.stringify(d.respostas);
+                    }
+                }
+                if (!savedData) savedData = localStorage.getItem("licao1b_respostas");
                 if (savedData) {
                     let respostas = JSON.parse(savedData);
 
@@ -621,7 +628,10 @@
 
             // Guarda as respostas na Mochila
             localStorage.setItem('licao1b_respostas', JSON.stringify(respostasFotografadas));
-            // Sincronização com o LMS (Pai & Nuvem)
+            let percentage = correct / total;
+            finalXP = Math.round(percentage * 100); 
+
+                        // Sincronização com o LMS (Pai & Nuvem)
             if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
                 const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
                 const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
@@ -639,9 +649,6 @@
 
 
             // Calcula a percentagem de acertos e gera o valor final de XP
-            let percentage = correct / total;
-            finalXP = Math.round(percentage * 100); 
-
             // Exibe a pontuação final local
             document.getElementById('xp-gained-text').innerText = "+" + finalXP;
             document.getElementById('score-text').innerText = `You scored ${correct} out of ${total}.`;
@@ -656,13 +663,6 @@
                 window.parent.completeUnit(parseInt('1'), (typeof finalXP !== 'undefined' ? finalXP : 100));
             }
 
-            if (window.parent && typeof window.parent.salvarLicaoNaNuvem === 'function') {
-                const acertosCount = (typeof correct !== 'undefined') ? correct : 0;
-                const errosCount = (typeof total !== 'undefined' && typeof correct !== 'undefined') ? Math.max(0, total - correct) : 0;
-                const finalScore = (typeof finalXP !== 'undefined') ? finalXP : ((typeof calculatedXP !== 'undefined') ? calculatedXP : ((typeof calculated8cXP !== 'undefined') ? calculated8cXP : 100));
-                const respObj = (typeof respostas !== 'undefined') ? respostas : {};
-                window.parent.salvarLicaoNaNuvem('licao1b', acertosCount, errosCount, finalScore, respObj);
-            }
             if (window.parent && typeof window.parent.avancarPara === 'function') {
                 window.parent.avancarPara('licao1c.html', 'link-1c');
                 return;
